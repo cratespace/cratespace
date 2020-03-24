@@ -27,7 +27,7 @@ class OrderController extends Controller
      */
     public function store(OrderForm $request)
     {
-        (new OrderManager)->process($request->validated());
+        (new OrderManager())->process($request->validated());
 
         return success(route('listings'), 'Order placed successfully.');
     }
@@ -52,6 +52,8 @@ class OrderController extends Controller
      */
     public function update(Request $request, Order $order)
     {
-        //
+        $order->markAs($request->state);
+
+        return success(route('orders.index'), 'Order updated successfully.');
     }
 }

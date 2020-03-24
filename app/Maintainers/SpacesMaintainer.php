@@ -1,11 +1,10 @@
 <?php
 
-namespace App\Resources\Spaces;
+namespace App\Maintainers;
 
 use App\Models\Space;
-use App\Resources\Contracts\Maintainer as MaintainerContract;
 
-class SpacesMaintainer implements MaintainerContract
+class SpacesMaintainer extends Maintainer
 {
     /**
      * Run maintenance on resource.

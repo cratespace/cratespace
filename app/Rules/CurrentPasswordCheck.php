@@ -11,11 +11,15 @@ class CurrentPasswordCheck implements Rule
      * Determine if the validation rule passes.
      *
      * @param  string  $attribute
-     * @param  mixed  $value
+     * @param  string  $value
      * @return bool
      */
     public function passes($attribute, $value)
     {
+        if ($attribute) {
+            return Hash::check($value, $attribute);
+        }
+
         return Hash::check($value, user()->password);
     }
 

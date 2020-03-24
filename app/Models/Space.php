@@ -6,7 +6,6 @@ use App\Models\Traits\HasUid;
 use App\Models\Traits\Fillable;
 use App\Models\Traits\Filterable;
 use App\Models\Traits\Recordable;
-use App\Models\Traits\Searchable;
 use App\Models\Traits\Presentable;
 use Illuminate\Database\Eloquent\Model;
 
@@ -15,7 +14,6 @@ class Space extends Model
     use Fillable,
         Recordable,
         Filterable,
-        Searchable,
         HasUid,
         Presentable;
 
@@ -49,10 +47,9 @@ class Space extends Model
      * @var array
      */
     protected $fillable = [
-        'uid', 'departs_at', 'arrives_at', 'height',
-        'width', 'length', 'weight', 'note', 'price',
-        'user_id', 'origin', 'destination', 'status',
-        'type', 'base'
+        'uid', 'departs_at', 'arrives_at', 'height', 'width', 'length',
+        'weight', 'note', 'price', 'user_id', 'origin', 'destination',
+        'status', 'type', 'base'
     ];
 
     /**

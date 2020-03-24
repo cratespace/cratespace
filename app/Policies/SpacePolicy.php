@@ -15,7 +15,7 @@ class SpacePolicy
      *
      * @param  \App\Models\User  $user
      * @param  \App\Models\Space  $space
-     * @return mixed
+     * @return bool
      */
     public function manage(User $user, Space $space)
     {

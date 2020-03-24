@@ -4,10 +4,9 @@ namespace Tests\Unit;
 
 use Tests\TestCase;
 use App\Models\Space;
-use App\Filters\SpaceFilters;
-use App\Resources\Spaces\Listings;
+use App\Filters\SpaceFilter;
+use App\Listings\SpaceListing;
 use App\Http\Services\IpIdentifier;
-use App\Resources\Listings\SpaceListing;
 
 class ListingsTest extends TestCase
 {
@@ -53,7 +52,7 @@ class ListingsTest extends TestCase
      */
     protected function listings()
     {
-        return (new SpaceListing(new Space))->get(new SpaceFilters(request()));
+        return (new SpaceListing(new Space))->get(new SpaceFilter(request()));
     }
 
     /**

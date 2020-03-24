@@ -3,9 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Space;
-use App\Filters\SpaceFilters;
-use App\Resources\Spaces\Listings;
-use App\Resources\Listings\SpaceListing;
+use App\Filters\SpaceFilter;
 use App\Http\Controllers\Concerns\FiltersFormData;
 
 class ListingsController extends Controller
@@ -19,10 +17,8 @@ class ListingsController extends Controller
 
     /**
      * Create a new space controller instance.
-     *
-     * @return void
      */
-    public function __construct(Space $spaces)
+    public function __construct()
     {
         $this->listings = app('listings.space');
     }
@@ -32,7 +28,7 @@ class ListingsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function __invoke(SpaceFilters $filters)
+    public function __invoke(SpaceFilter $filters)
     {
         $spaces = $this->listings->get($filters);
 

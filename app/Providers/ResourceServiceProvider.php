@@ -3,9 +3,8 @@
 namespace App\Providers;
 
 use App\Models\Space;
-use App\Resources\Spaces\Listings;
+use App\Listings\SpaceListing;
 use Illuminate\Support\ServiceProvider;
-use App\Resources\Listings\SpaceListing;
 
 class ResourceServiceProvider extends ServiceProvider
 {

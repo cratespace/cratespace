@@ -1,10 +1,11 @@
 <?php
 
-namespace App\Http\Services;
+namespace App\Http\Services\Ip;
 
+use App\Http\Services\Service;
 use Stevebauman\Location\Facades\Location;
 
-class IpIdentifier
+class Validator extends Service
 {
     /**
      * IP addresses that are not allowed to be considered.
@@ -20,58 +21,12 @@ class IpIdentifier
     ];
 
     /**
-     * Index of sources to get client IP address from.
-     *
-     * @var array
-     */
-    protected $sources = [
-        'HTTP_CLIENT_IP',
-        'HTTP_X_FORWARDED_FOR',
-        'REMOTE_ADDR'
-    ];
-
-    /**
-     * Currently identified IP address.
-     *
-     * @var sttring
-     */
-    protected $adddress;
-
-    /**
-     * Get client IP address from valid source.
-     *
-     * @return string
-     */
-    public function get()
-    {
-        foreach ($this->sources as $source) {
-            $this->address = $_SERVER[$source] ?? request()->ip();
-        }
-
-        if ($this->isPrivate($this->address)) {
-            return null;
-        }
-
-        return $this->address;
-    }
-
-    /**
-     * Identify postion of client from client IP address.
-     *
-     * @return string
-     */
-    public function position()
-    {
-        return Location::get($this->get() ?? null);
-    }
-
-    /**
      * Determine if the identified IP address is black listed.
      *
      * @param string $address
      * @return bool
      */
-    protected function isPrivate($address)
+    public function isPrivate($address)
     {
         $longIp = ip2long($address);
 

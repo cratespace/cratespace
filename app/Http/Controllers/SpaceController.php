@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Space;
-use App\Filters\SpaceFilters;
+use App\Filters\SpaceFilter;
 use App\Resources\Spaces\Listings;
 use App\Resources\Listings\SpaceListing;
 use App\Http\Requests\Space as SpaceForm;
@@ -16,7 +16,7 @@ class SpaceController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(SpaceFilters $filters)
+    public function index(SpaceFilter $filters)
     {
         return view('businesses.spaces.index', [
             'spaces' => app('listings.space')->get($filters, user())

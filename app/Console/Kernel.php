@@ -10,11 +10,9 @@ class Kernel extends ConsoleKernel
     /**
      * The Artisan commands provided by your application.
      *
-     * @var array
+     * @var array[]
      */
-    protected $commands = [
-        //
-    ];
+    protected $commands = [];
 
     /**
      * Define the application's command schedule.
@@ -24,6 +22,10 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
+        if ($schedule) {
+            return;
+        }
+
         // $schedule->command('inspire')->hourly();
     }
 

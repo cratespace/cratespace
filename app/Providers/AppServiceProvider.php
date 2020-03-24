@@ -2,9 +2,8 @@
 
 namespace App\Providers;
 
-use App\Resources\Payments\Purchase;
+use App\Maintainers\SpacesMaintainer;
 use Illuminate\Support\ServiceProvider;
-use App\Resources\Spaces\SpacesMaintainer;
 use App\Providers\Traits\DatabaseConnecionCheck;
 
 class AppServiceProvider extends ServiceProvider
@@ -18,7 +17,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->registerPricingCalculator();
     }
 
     /**
@@ -31,21 +29,6 @@ class AppServiceProvider extends ServiceProvider
         if ($this->checkDatabaseConnection()) {
             $this->checkDepartedSpaces();
         }
-    }
-
-    /**
-     * Register product pricing calculator
-     */
-    protected function registerPricingCalculator()
-    {
-        $this->app->bind('purchase', function () {
-            $purchase = new Purchase();
-
-            $purchase->taxRate();
-            $purchase->serviceRate();
-
-            return $purchase;
-        });
     }
 
     /**

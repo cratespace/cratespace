@@ -46,10 +46,10 @@ trait Recordable
      *
      * @param string $event
      */
-    protected function recordActivity($event)
+    protected function recordActivity($event, ?User $user = null)
     {
         $this->activity()->create([
-            'user_id' => user('id') ?? null,
+            'user_id' => $user ?? user('id'),
             'type' => $this->getActivityType($event),
         ]);
     }

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Resources\Listings;
+namespace App\Listings;
 
 use App\Models\User;
 use App\Filters\Filter;
@@ -39,5 +39,5 @@ abstract class Listing
      * @param \App\Models\User|null $user
      * @return \Illuminate\Database\Eloquent\Collection
      */
-    abstract public function get(Filter $filters, User $user = null);
+    abstract public function get(Filter $filters, ?User $user = null);
 }

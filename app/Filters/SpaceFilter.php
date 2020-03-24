@@ -5,7 +5,7 @@ namespace App\Filters;
 use App\Models\Business;
 use Stevebauman\Location\Facades\Location;
 
-class SpaceFilters extends Filter
+class SpaceFilter extends Filter
 {
     /**
      * Attributes to filters from.

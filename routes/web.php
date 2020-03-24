@@ -11,7 +11,7 @@ Route::get('/coming-soon', function () {
  */
 Route::group([
     'middleware' => 'guest'
-], function () {
+], function (): void {
     /**
      * Carrier's Page...
      */
@@ -57,7 +57,7 @@ Route::group([
      */
     Route::group([
         'prefix' => 'checkout'
-    ], function () {
+    ], function (): void {
         /**
          * Checkout Page...
          */
@@ -102,7 +102,7 @@ Auth::routes();
  */
 Route::group([
     'middleware' => ['auth', 'business'],
-], function () {
+], function (): void {
     /**
      * Dashboard...
      */
@@ -119,7 +119,7 @@ Route::group([
  */
 Route::group([
     'middleware' => 'auth',
-], function () {
+], function (): void {
     /**
      * User Resources Routes...
      */
@@ -181,7 +181,7 @@ Route::group([
  */
 Route::group([
     'middleware' => ['auth', 'admin'],
-], function () {
+], function (): void {
     /**
      * Admin Dashboard...
      */

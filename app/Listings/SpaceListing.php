@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Resources\Listings;
+namespace App\Listings;
 
 use App\Models\User;
 use App\Filters\Filter;
-use App\Http\Services\IpIdentifier;
+use App\Http\Services\Ip\Retriever;
 
 class SpaceListing extends Listing
 {
@@ -15,7 +15,7 @@ class SpaceListing extends Listing
      * @param \App\Models\User|null $user
      * @return \Illuminate\Database\Eloquent\Collection
      */
-    public function get(Filter $filters, User $user = null)
+    public function get(Filter $filters, ?User $user = null)
     {
         return $this->getAuthorizedSpace($user)
             ->latest()
@@ -29,7 +29,7 @@ class SpaceListing extends Listing
      * @param  \App\Models\User|null $user
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    protected function getAuthorizedSpace(User $user = null)
+    protected function getAuthorizedSpace(?User $user = null)
     {
         if (! is_null($user)) {
             return $this->model->whereUserId($user->id);
@@ -60,6 +60,16 @@ class SpaceListing extends Listing
      */
     protected function getCountry()
     {
-        return (new IpIdentifier())->position()->countryName;
+        return $this->getIpRetriever()->position()->countryName;
+    }
+
+    /**
+     * Get IP address retriever.
+     *
+     * @return \App\Http\Services\Ip\Retriever
+     */
+    protected function getIpRetriever()
+    {
+        return new Retriever();
     }
 }

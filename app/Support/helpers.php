@@ -6,6 +6,9 @@ use Illuminate\Support\Str;
 if (! function_exists('user')) {
     /**
      * Get the authenticated user and/or attributes.
+     *
+     * @param  string|null $attribute
+     * @return string|\Illuminate\Database\Eloquent\Model
      */
     function user($attribute = null)
     {
@@ -20,6 +23,9 @@ if (! function_exists('user')) {
 if (! function_exists('business')) {
     /**
      * Get the authenticated business account and/or attributes.
+     *
+     * @param  string|null $attribute
+     * @return string|\Illuminate\Database\Eloquent\Model
      */
     function business($attribute = null)
     {
@@ -74,6 +80,11 @@ if (! function_exists('make_name')) {
 if (! function_exists('is_active')) {
     /**
      * Determine if the given route is active path.
+     *
+     * @param  string  $path
+     * @param  string  $active
+     * @param  string  $default
+     * @return bool
      */
     function is_active($path, $active = 'active', $default = '')
     {
@@ -116,26 +127,6 @@ if (! function_exists('make_username')) {
     }
 }
 
-if (! function_exists('make_password')) {
-    /**
-     * Generate a random secure password.
-     *
-     * @return string
-     */
-    function make_password()
-    {
-        $alphabet = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890';
-        $pass = [];
-
-        for ($i = 0; $i < 12; $i++) {
-            $number = rand(0, strlen($alphabet) - 1);
-            $pass[] = $alphabet[$number];
-        }
-
-        return implode($pass); //turn the array into a string
-    }
-}
-
 if (! function_exists('success')) {
     /**
      * Redirect to given path with success message.
@@ -144,7 +135,7 @@ if (! function_exists('success')) {
      * @param  string $message
      * @return \Illuminate\Routing\RedirectResponse
      */
-    function success(string $path, $message = 'Details succssfully saved to the database.')
+    function success($path, $message = 'Details succssfully saved to the database.')
     {
         return redirect($path)->with([
             'status' => $message,

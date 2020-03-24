@@ -2,9 +2,7 @@
 
 namespace App\Models\Traits;
 
-use Carbon\Carbon;
-use App\Resources\Reports\Graph;
-use Illuminate\Support\Facades\DB;
+use App\Reports\GraphReport;
 
 trait Graphable
 {
@@ -17,6 +15,6 @@ trait Graphable
      */
     public static function graph($userId = null)
     {
-        return Graph::collectDataOf(self, $userId)->make();
+        return GraphReport::collectDataOf(self, $userId)->make();
     }
 }

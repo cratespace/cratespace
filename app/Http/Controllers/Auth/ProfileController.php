@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Models\User;
+use App\Models\Activity;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\User as UserForm;
@@ -29,7 +30,10 @@ class ProfileController extends Controller
     {
         $this->authorize('manage', $user);
 
-        return view('auth.profiles.show', compact('user'));
+        return view('auth.profiles.show', [
+            'user' => $user,
+            'activity' => Activity::feed($user)
+        ]);
     }
 
     /**
