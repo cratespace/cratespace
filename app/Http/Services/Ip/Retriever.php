@@ -50,6 +50,6 @@ class Retriever extends Service
      */
     public function position()
     {
-        return Location::get($this->get() ?? null);
+        return Location::get($this->get());
     }
 }

@@ -17,6 +17,7 @@ window.flash = function(message, level = 'success') {
 Vue.component('apexchart', VueApexCharts);
 Vue.component("image-upload-form", require("./components/ImageUploadForm.vue").default);
 Vue.component("flash", require("./components/Flash.vue").default);
+Vue.component("order", require("./components/Orders/Order.vue").default);
 
 // Spaces
 // Vue.component("spaces", require("./components/Spaces/List.vue").default);

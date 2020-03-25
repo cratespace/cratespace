@@ -20,7 +20,7 @@ class SpaceListing extends Listing
         return $this->getAuthorizedSpace($user)
             ->latest()
             ->filter($filters)
-            ->paginate(request('perpage') ?? 12);
+            ->paginate(request('perpage') ?? 10);
     }
 
     /**
@@ -35,22 +35,9 @@ class SpaceListing extends Listing
             return $this->model->whereUserId($user->id);
         }
 
-        $this->listings = $this->applyRestrictions(
-            $this->model->whereStatus('Available')
-        );
+        $this->listings = $this->model->whereBase($this->getCountry());
 
         return $this->listings;
-    }
-
-    /**
-     * Apply geo restrictions to resources.
-     *
-     * @param  \Illuminate\Database\Eloquent\Builder $builder
-     * @return \Illuminate\Database\Eloquent\Builder
-     */
-    protected function applyRestrictions($builder)
-    {
-        return $builder->whereBase($this->getCountry());
     }
 
     /**

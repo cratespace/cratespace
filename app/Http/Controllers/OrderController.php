@@ -3,20 +3,29 @@
 namespace App\Http\Controllers;
 
 use App\Models\Order;
+use App\Filters\OrderFilter;
 use Illuminate\Http\Request;
 use App\Http\Requests\Order as OrderForm;
 use App\Resources\Orders\Manager as OrderManager;
+use App\Http\Requests\OrderUpdate as OrderUpdateForm;
 
 class OrderController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
+     * @param  \App\Filters\OrderFilter $filters
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(OrderFilter $filters)
     {
-        return view('businesses.orders.index');
+        if (! request()->has('status')) {
+            return redirect()->route('orders.index', ['status' => 'Pending']);
+        }
+
+        return view('businesses.orders.index', [
+            'orders' => app('listings.order')->get($filters, user())
+        ]);
     }
 
     /**
@@ -50,10 +59,12 @@ class OrderController extends Controller
      * @param  \App\Models\Order  $order
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Order $order)
+    public function update(OrderUpdateForm $request, Order $order)
     {
-        $order->markAs($request->state);
+        $order->markAs($request->status);
 
-        return success(route('orders.index'), 'Order updated successfully.');
+        return response([
+            'message' => $order->refresh()->status
+        ], 200);
     }
 }

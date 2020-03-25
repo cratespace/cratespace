@@ -14,10 +14,15 @@ class SpaceController extends Controller
     /**
      * Display a listing of the resource.
      *
+     * @param  \App\Filters\SpaceFilter $filters
      * @return \Illuminate\Http\Response
      */
     public function index(SpaceFilter $filters)
     {
+        if (! request()->has('status')) {
+            return redirect()->route('spaces.index', ['status' => 'Available']);
+        }
+
         return view('businesses.spaces.index', [
             'spaces' => app('listings.space')->get($filters, user())
         ]);

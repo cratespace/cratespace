@@ -112,6 +112,13 @@ Route::group([
      * Spaces Routes...
      */
     Route::resource('/spaces', 'SpaceController');
+
+    /**
+     * Orders Routes...
+     */
+    Route::resource('/orders', 'OrderController', [
+        'except' => ['store', 'edit', 'create']
+    ]);
 });
 
 /**

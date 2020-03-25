@@ -20,13 +20,6 @@ class Order extends Model
         Searchable;
 
     /**
-     * The relations to eager load on every query.
-     *
-     * @var array
-     */
-    protected $with = ['space'];
-
-    /**
      * The attributes that are mass assignable.
      *
      * @var array
@@ -36,6 +29,13 @@ class Order extends Model
         'total', 'tax', 'service', 'user_id', 'space_id',
         'uid',
     ];
+
+    /**
+     * The accessors to append to the model's array form.
+     *
+     * @var array
+     */
+    protected $appends = ['path'];
 
     /**
      * Get the space associated with the order.

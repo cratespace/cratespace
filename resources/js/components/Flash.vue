@@ -12,7 +12,7 @@
             </div>
 
             <div class="mr-4">
-                <div class="font-semibold">Successfully saved!</div>
+                <div class="font-semibold">Success!</div>
 
                 <p class="text-gray-600">
                     {{ body }}

@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\User;
+use App\Models\Order;
 use App\Models\Space;
 use App\Models\Profile;
 use App\Models\Category;
@@ -15,6 +16,9 @@ class DummyDataSeeder extends Seeder
      */
     public function run()
     {
-        create(Space::class, ['user_id' => 1], 100);
+        create(Order::class, [
+            'space_id' => create(Space::class, ['user_id' => 1]),
+            'user_id' => 1
+        ], 5);
     }
 }
