@@ -16,9 +16,13 @@ class DummyDataSeeder extends Seeder
      */
     public function run()
     {
-        create(Order::class, [
-            'space_id' => create(Space::class, ['user_id' => 1]),
+        create(Space::class, [
             'user_id' => 1
-        ], 5);
+        ], 5)->each(function ($space) {
+            create(Order::class, [
+                'user_id' => $space->user->id,
+                'space_id' => $space->id
+            ]);
+        });
     }
 }

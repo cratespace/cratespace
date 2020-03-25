@@ -23,8 +23,9 @@ abstract class Listing
     protected $listings;
 
     /**
-     * Create a new space controller instance.
+     * Create a listing manager instance.
      *
+     * @param \Illuminate\Database\Eloquent\Model
      * @return void
      */
     public function __construct(Model $model)

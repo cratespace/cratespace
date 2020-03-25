@@ -108,8 +108,17 @@ class Space extends Model
      */
     public function departed()
     {
-        return $this->departs_at <= now() ||
-            $this->status === 'Expired';
+        return $this->departs_at <= now() || $this->status === 'Expired';
+    }
+
+    /**
+     * Determine if the shipment has been ordered.
+     *
+     * @return bool
+     */
+    public function ordered()
+    {
+        return $this->order()->exists() || $this->status === 'Ordered';
     }
 
     /**
@@ -123,7 +132,7 @@ class Space extends Model
     /**
      * Mark space as ordered.
      */
-    public function order()
+    public function placeOrder()
     {
         $this->markAs('Ordered');
     }
@@ -136,5 +145,15 @@ class Space extends Model
     public function path()
     {
         return "/spaces/{$this->uid}";
+    }
+
+    /**
+     * Get the order details of the space.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function order()
+    {
+        return $this->hasOne(Order::class);
     }
 }

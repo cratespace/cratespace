@@ -20,6 +20,6 @@ $factory->define(Order::class, function (Faker $faker) {
         'total' => 11.5,
         'tax' => 0.5,
         'service' => 1.0,
-        'status' => $faker->randomElement(['Pending', 'Confirmed', 'Completed']),
+        'status' => 'Pending',
     ];
 });

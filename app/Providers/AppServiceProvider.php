@@ -2,14 +2,14 @@
 
 namespace App\Providers;
 
+use App\Models\Order;
+use App\Models\Space;
+use App\Maintainers\OrdersMaintainer;
 use App\Maintainers\SpacesMaintainer;
 use Illuminate\Support\ServiceProvider;
-use App\Providers\Traits\DatabaseConnecionCheck;
 
 class AppServiceProvider extends ServiceProvider
 {
-    use DatabaseConnecionCheck;
-
     /**
      * Register any application services.
      *
@@ -26,18 +26,5 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        if ($this->checkDatabaseConnection()) {
-            $this->checkDepartedSpaces();
-        }
-    }
-
-    /**
-     * Determine and mark expired shippments.
-     */
-    public function checkDepartedSpaces()
-    {
-        if (! $this->app->runningUnitTests()) {
-            (new SpacesMaintainer())->run();
-        }
     }
 }
