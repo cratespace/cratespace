@@ -20,19 +20,21 @@ class OrdersMaintainer extends Maintainer
     protected function updateOrderStatus()
     {
         $this->getResource()->map(function ($order) {
-            $this->makeAvailable($order);
+            $this->expire($space);
         });
     }
 
     /**
-     * Set status of space associated with order.
+     * Set order status as canceled if associated space has departed.
      *
-     * @param \App\Models\Order $order
+     * @param  \App\Models\Order  $order
      */
-    protected function makeAvailable(Order $order)
+    protected function expire(Order $order)
     {
-        if ($order->status === 'Canceled') {
-            $order->order->markAs('Available');
+        if ($order->status !== 'Completed' && $order->space->departed()) {
+            $order->markAs('Canceled');
+
+            $order->space->markAs('Expired');
         }
     }
 }

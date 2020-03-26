@@ -21,32 +21,18 @@ class SpacesMaintainer extends Maintainer
     {
         $this->getResource()->map(function ($space) {
             $this->expire($space);
-
-            $this->order($space);
         });
     }
 
     /**
-     * Determine availability by expiration date.
+     * Set space status as expired if space has departed.
      *
-     * @param \App\Models\Space $space
+     * @param  \App\Models\Order  $space
      */
     protected function expire(Space $space)
     {
-        if ($space->departed()) {
+        if (! $space->ordered() && $space->departed()) {
             $space->markAs('Expired');
-        }
-    }
-
-    /**
-     * Determine availability by customer purchase.
-     *
-     * @param \App\Models\Space $space
-     */
-    protected function order(Space $space)
-    {
-        if ($space->ordered()) {
-            $space->placeOrder();
         }
     }
 }

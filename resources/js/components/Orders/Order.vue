@@ -33,9 +33,9 @@
         </td>
 
         <td class="px-6 py-4 whitespace-no-wrap text-sm border-b border-gray-200">
-            <span class="relative inline-block px-3 py-1 font-semibold leading-tight" :class="{ 'text-yellow-800': status === 'Pending', 'text-indigo-800': status === 'Confirmed', 'text-green-800': status === 'Completed'  }">
+            <span class="relative inline-block px-3 py-1 font-semibold leading-tight" :class="{ 'text-yellow-800': status === 'Pending', 'text-indigo-800': status === 'Confirmed', 'text-green-800': status === 'Completed', 'text-red-800': status === 'Canceled'  }">
                 <span aria-hidden="true" class="absolute inset-0 opacity-50 rounded-full"
-                :class="{ 'bg-yellow-200': status === 'Pending', 'bg-indigo-200': status === 'Confirmed', 'bg-green-200': status === 'Completed'  }"></span>
+                :class="{ 'bg-yellow-200': status === 'Pending', 'bg-indigo-200': status === 'Confirmed', 'bg-green-200': status === 'Completed', 'bg-red-200': status === 'Canceled'  }"></span>
                 <span class="relative">{{ status }}</span>
             </span>
         </td>
@@ -51,7 +51,8 @@
                 <div class="dropdown-menu dropdown-menu-right rounded-lg shadow-lg z-50 mt-3" aria-labelledby="userDropDown">
                     <a href="#" v-if="statuses.includes('Confirmed')" @click.prevent="updateStatus('Confirmed')" class="dropdown-item font-medium block px-4 py-2 text-sm">Confirm</a>
                     <a href="#" v-if="statuses.includes('Completed')" @click.prevent="updateStatus('Completed')" class="dropdown-item font-medium block px-4 py-2 text-sm">Complete</a>
-                    <a href="#" v-if="statuses.includes('Pending')" @click.prevent="updateStatus('Pending')" class="dropdown-item font-medium block px-4 py-2 text-sm">Cancel</a>
+                    <a href="#" v-if="statuses.includes('Pending')" @click.prevent="updateStatus('Pending')" class="dropdown-item font-medium block px-4 py-2 text-sm">Pending</a>
+                    <a href="#" v-if="statuses.includes('Canceled')" @click.prevent="updateStatus('Canceled')" class="dropdown-item font-medium block px-4 py-2 text-sm">Cancel</a>
                 </div>
             </div>
         </td>
@@ -70,7 +71,7 @@
             return {
                 order: this.data,
                 status: this.data.status,
-                statuses: ['Pending', 'Confirmed', 'Completed'],
+                statuses: ['Pending', 'Confirmed', 'Completed', 'Canceled'],
             }
         },
 

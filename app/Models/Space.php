@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\Traits\HasUid;
+use Laravel\Scout\Searchable;
 use App\Models\Traits\Fillable;
 use App\Models\Traits\Filterable;
 use App\Models\Traits\Recordable;
@@ -127,14 +128,6 @@ class Space extends Model
     public function markAs($status)
     {
         $this->update(['status' => $status]);
-    }
-
-    /**
-     * Mark space as ordered.
-     */
-    public function placeOrder()
-    {
-        $this->markAs('Ordered');
     }
 
     /**

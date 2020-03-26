@@ -52,6 +52,10 @@
                                         <a href="?status=Completed" class="ml-8 {{ request('status') == 'Completed' ? 'border-indigo-500 text-indigo-500' : 'border-transparent text-gray-600 hover:text-gray-700 hover:border-gray-400' }} whitespace-no-wrap py-5 px-1 border-b-2 font-medium text-sm focus:outline-none focus:text-gray-700 focus:border-gray-300 transition ease-in-out duration-150">
                                             Completed
                                         </a>
+
+                                        <a href="?status=Canceled" class="ml-8 {{ request('status') == 'Canceled' ? 'border-indigo-500 text-indigo-500' : 'border-transparent text-gray-600 hover:text-gray-700 hover:border-gray-400' }} whitespace-no-wrap py-5 px-1 border-b-2 font-medium text-sm focus:outline-none focus:text-gray-700 focus:border-gray-300 transition ease-in-out duration-150">
+                                            Canceled
+                                        </a>
                                     </nav>
                                 </div>
                             </div>

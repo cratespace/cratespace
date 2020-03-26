@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\DB;
 use App\Maintainers\OrdersMaintainer;
 use App\Maintainers\SpacesMaintainer;
 use Illuminate\Support\ServiceProvider;
+use App\Maintainers\OrderSpaceMaintainer;
 
 class ResourceServiceProvider extends ServiceProvider
 {
@@ -31,6 +32,7 @@ class ResourceServiceProvider extends ServiceProvider
     protected $resourceMaintainers = [
         Space::class => SpacesMaintainer::class,
         Order::class => OrdersMaintainer::class,
+        Order::class => OrderSpaceMaintainer::class,
     ];
 
     /**
@@ -76,7 +78,7 @@ class ResourceServiceProvider extends ServiceProvider
     protected function runResourceMaintenance()
     {
         foreach ($this->resourceMaintainers as $resource => $maintainer) {
-            $this->app->makeWith($maintainer, ['model' => new $resource()]);
+            $this->app->makeWith($maintainer, ['model' => new $resource()])->run();
         }
     }
 
