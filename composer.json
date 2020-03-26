@@ -3,10 +3,7 @@
     "type": "project",
     "description": "A Freight space sales platform.",
     "keywords": [
-        "cratespace",
-        "freight",
-        "space",
-        "php"
+        "cratespace", "freight", "space", "php"
     ],
     "license": "MIT",
     "require": {
@@ -43,8 +40,7 @@
     },
     "autoload": {
         "files": [
-            "app/Support/helpers.php",
-            "tests/Support/helpers.php"
+            "app/Support/helpers.php"
         ],
         "psr-4": {
             "App\\": "app/"
@@ -55,6 +51,9 @@
         ]
     },
     "autoload-dev": {
+        "files": [
+            "tests/Support/helpers.php"
+        ],
         "psr-4": {
             "Tests\\": "tests/"
         }
