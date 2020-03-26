@@ -16,6 +16,7 @@ class Order extends Model
         Filterable,
         HasUid,
         GeneratesUid,
+        Searchable,
         Graphable;
 
     /**

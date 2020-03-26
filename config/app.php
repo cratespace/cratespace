@@ -167,7 +167,6 @@ return [
          */
         Laravel\Scout\ScoutServiceProvider::class,
         Stevebauman\Location\LocationServiceProvider::class,
-        TeamTNT\Scout\TNTSearchScoutServiceProvider::class,
 
 
         /*

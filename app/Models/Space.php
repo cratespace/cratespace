@@ -16,6 +16,7 @@ class Space extends Model
         Recordable,
         Filterable,
         HasUid,
+        Searchable,
         Presentable;
 
     /**
