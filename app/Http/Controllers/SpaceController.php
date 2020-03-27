@@ -24,7 +24,7 @@ class SpaceController extends Controller
         }
 
         return view('businesses.spaces.index', [
-            'spaces' => app('listings.space')->get($filters, user())
+            'spaces' => user()->spaces()->filter($filters)->latest()->paginate(10)
         ]);
     }
 

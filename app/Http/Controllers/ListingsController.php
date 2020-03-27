@@ -4,25 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\Space;
 use App\Filters\SpaceFilter;
-use App\Http\Controllers\Concerns\FiltersFormData;
 
 class ListingsController extends Controller
 {
-    /**
-     * All available space listings.
-     *
-     * @var \Illuminate\Database\Eloquent\Collection
-     */
-    protected $listings;
-
-    /**
-     * Create a new space controller instance.
-     */
-    public function __construct()
-    {
-        $this->listings = app('listings.space');
-    }
-
     /**
      * Show listings page with all available and filtered spaces.
      *
@@ -30,12 +14,27 @@ class ListingsController extends Controller
      */
     public function __invoke(SpaceFilter $filters)
     {
-        $spaces = $this->listings->get($filters);
+        $spaces = $this->getSpaces($filters);
 
         return view('listings', [
             'spaces' => $spaces,
             'filters' => $this->filters($spaces)
         ]);
+    }
+
+    /**
+     * Get specified spaces.
+     *
+     * @param  \App\Filters\SpaceFilter $filter
+     * @return \Illuminate\Database\Eloquent\Collection
+     */
+    protected function getSpaces(SpaceFilter $filters)
+    {
+        return Space::list()
+            ->with('user')
+            ->filter($filters)
+            ->latest()
+            ->paginate(10);
     }
 
     /**

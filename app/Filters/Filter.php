@@ -3,6 +3,7 @@
 namespace App\Filters;
 
 use Illuminate\Http\Request;
+use Illuminate\Database\Eloquent\Builder;
 
 abstract class Filter
 {
@@ -41,7 +42,7 @@ abstract class Filter
      * @param  \Illuminate\Database\Eloquent\Builder $builder
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function apply($builder)
+    public function apply(Builder $builder)
     {
         $this->builder = $builder;
 

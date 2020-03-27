@@ -15,16 +15,6 @@ use App\Maintainers\OrderSpaceMaintainer;
 class ResourceServiceProvider extends ServiceProvider
 {
     /**
-     * All listing classes.
-     *
-     * @var array
-     */
-    protected $listings = [
-        Space::class => SpaceListing::class,
-        Order::class => OrderListing::class,
-    ];
-
-    /**
      * Resource maintenance classes.
      *
      * @var array
@@ -42,7 +32,6 @@ class ResourceServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->registerListings();
     }
 
     /**
@@ -54,21 +43,6 @@ class ResourceServiceProvider extends ServiceProvider
     {
         if ($this->appReady()) {
             $this->runResourceMaintenance();
-        }
-    }
-
-    /**
-     * Boot up all listing objects with relevant dependencies.
-     */
-    protected function registerListings()
-    {
-        foreach ($this->listings as $model => $listing) {
-            $this->app->bind(
-                'listings.' . strtolower(class_basename($model)),
-                function () use ($model, $listing) {
-                    return new $listing(new $model());
-                }
-            );
         }
     }
 

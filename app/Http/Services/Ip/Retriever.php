@@ -30,7 +30,7 @@ class Retriever extends Service
      *
      * @return string
      */
-    protected function get()
+    public function get()
     {
         foreach ($this->sources as $source) {
             $this->address = $_SERVER[$source] ?? request()->ip();
@@ -41,15 +41,5 @@ class Retriever extends Service
         }
 
         return null;
-    }
-
-    /**
-     * Identify postion of client from client IP address.
-     *
-     * @return string
-     */
-    public function position()
-    {
-        return Location::get($this->get());
     }
 }

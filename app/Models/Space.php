@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Filters\SpaceFilter;
 use App\Models\Traits\HasUid;
 use Laravel\Scout\Searchable;
 use App\Models\Traits\Fillable;
@@ -9,6 +10,7 @@ use App\Models\Traits\Filterable;
 use App\Models\Traits\Recordable;
 use App\Models\Traits\Presentable;
 use Illuminate\Database\Eloquent\Model;
+use Facades\App\Http\Services\Ip\Location;
 
 class Space extends Model
 {
@@ -149,5 +151,16 @@ class Space extends Model
     public function order()
     {
         return $this->hasOne(Order::class);
+    }
+
+    /**
+     * Scope a query to only include spaces based in user's country.
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeList($query)
+    {
+        return $query->whereBase(Location::getCountry());
     }
 }

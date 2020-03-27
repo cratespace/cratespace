@@ -24,7 +24,7 @@ class OrderController extends Controller
         }
 
         return view('businesses.orders.index', [
-            'orders' => app('listings.order')->get($filters, user())
+            'orders' => user()->orders()->filter($filters)->paginate(10)
         ]);
     }
 
