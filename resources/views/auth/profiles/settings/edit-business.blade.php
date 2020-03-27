@@ -61,12 +61,6 @@
                                     <div>
                                         @include('components.forms.fields._phone', ['phone' => $user->business->phone, 'label' => 'Support phone number'])
                                     </div>
-
-                                    @error('phone')
-                                        <div class="mt-2" role="alert">
-                                            <span class="text-xs text-red-500 font-semibold">{{ $message }}</span>
-                                        </div>
-                                    @enderror
                                 </div>
 
                                 <div class="col-md-6 mb-6">
