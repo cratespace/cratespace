@@ -2,10 +2,9 @@
 
 namespace App\Http\Services\Ip;
 
-use App\Http\Services\Service;
 use Stevebauman\Location\Facades\Location;
 
-class Retriever extends Service
+class Retriever
 {
     /**
      * Index of sources to get client IP address from.

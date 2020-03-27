@@ -3,6 +3,7 @@
 namespace App\Person;
 
 use App\Models\User;
+use InvalidArgumentException;
 use App\Contracts\Responsibility;
 
 class Personage
@@ -26,7 +27,11 @@ class Personage
      */
     public function new(array $data)
     {
-        return $this->performResponsibilities(new User(), $data);
+        try {
+            return $this->performResponsibilities(new User(), $data);
+        } catch (Exception $e) {
+            abort(config('messages.registration'));
+        }
     }
 
     /**
@@ -39,14 +44,27 @@ class Personage
     protected function performResponsibilities(User $person, array $data)
     {
         foreach ($this->getResponsibilities() as $responsibilities) {
-            $responsibilities = resolve($responsibilities);
+            $responsibilities = $this->resolveResponsibility($responsibilities);
 
-            if ($responsibilities instanceof Responsibility) {
-                $person = $responsibilities->create($person, $data);
+            if (! $responsibilities instanceof Responsibility) {
+                throw new InvalidArgumentException();
             }
+
+            $person = $responsibilities->handle($person, $data);
         }
 
         return $person;
+    }
+
+    /**
+     * Instanciate the responsibility class.
+     *
+     * @param  string $responsibilities
+     * @return \App\Contracts\Responsibility
+     */
+    protected function resolveResponsibility(string $responsibilities)
+    {
+        return new $responsibilities();
     }
 
     /**

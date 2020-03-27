@@ -2,15 +2,14 @@
 
 namespace App\Models;
 
-use Illuminate\Support\Str;
+use App\Models\Traits\HasUid;
 use App\Models\Traits\Fillable;
-use App\Models\Traits\HasPhoto;
-use App\Models\Traits\Sluggable;
+use App\Models\Concerns\GeneratesUid;
 use Illuminate\Database\Eloquent\Model;
 
-class Business extends Model
+class Account extends Model
 {
-    use Fillable, HasPhoto;
+    use Fillable, HasUid;
 
     /**
      * The attributes that are mass assignable.
@@ -18,8 +17,7 @@ class Business extends Model
      * @var array
      */
     protected $fillable = [
-        'name', 'slug', 'description', 'photo', 'street', 'email',
-        'phone', 'city', 'state', 'country', 'postcode', 'user_id',
+        'credit', 'bank_acount_number', 'bank', 'user_id',
     ];
 
     /**

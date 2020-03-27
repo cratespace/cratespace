@@ -10,13 +10,13 @@ use Illuminate\Support\Facades\Hash;
 class Profile implements Responsibility
 {
     /**
-     * Perform create responsibility.
+     * Handle responsibility.
      *
      * @param  \App\Models\User   $user
      * @param  array  $data
      * @return App\Models\User
      */
-    public function create(User $person, array $data)
+    public function handle(User $person, array $data)
     {
         return $person->create([
             'name' => $data['name'],

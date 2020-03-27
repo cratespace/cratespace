@@ -2,10 +2,7 @@
 
 namespace App\Http\Services\Ip;
 
-use App\Http\Services\Service;
-use Stevebauman\Location\Facades\Location;
-
-class Validator extends Service
+class Validator
 {
     /**
      * IP addresses that are not allowed to be considered.

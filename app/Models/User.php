@@ -62,6 +62,16 @@ class User extends Authenticatable
     }
 
     /**
+     * Get the user's credit account details.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function account()
+    {
+        return $this->hasOne(Account::class);
+    }
+
+    /**
      * Get all spaces associated with the user.
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany

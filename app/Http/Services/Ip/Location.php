@@ -2,10 +2,9 @@
 
 namespace App\Http\Services\Ip;
 
-use App\Http\Services\Service;
 use Stevebauman\Location\Facades\Location as LocationIdentifier;
 
-class Location extends Service
+class Location
 {
     /**
      * Get client location country or default to Sri Lanka.
