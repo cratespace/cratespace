@@ -126,19 +126,3 @@ if (! function_exists('make_username')) {
         return $firstName;
     }
 }
-
-if (! function_exists('success')) {
-    /**
-     * Redirect to given path with success message.
-     *
-     * @param  string $path
-     * @param  string $message
-     * @return \Illuminate\Routing\RedirectResponse
-     */
-    function success($path, $message = 'Details succssfully saved to the database.')
-    {
-        return redirect($path)->with([
-            'status' => $message,
-        ]);
-    }
-}
