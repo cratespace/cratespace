@@ -38,7 +38,7 @@ class OrderController extends Controller
     {
         (new OrderManager())->process($request->validated());
 
-        return success(route('listings'), 'Order placed successfully.');
+        return $this->success(route('listings'), 'Order placed successfully.');
     }
 
     /**

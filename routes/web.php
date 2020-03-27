@@ -131,7 +131,7 @@ Route::group([
      * User Resources Routes...
      */
     Route::resource('/users', 'Auth\ProfileController', [
-        'except' => ['create', 'store', 'edit']
+        'only' => ['update', 'destroy']
     ]);
 
     /**
@@ -155,7 +155,7 @@ Route::group([
      */
     Route::put(
         '/users/{user}/update/notification',
-        'Auth\NotificationController@update'
+        'Auth\NotificationController'
     )->name('users.notifications');
 
     /**

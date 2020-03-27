@@ -15,7 +15,7 @@ class NotificationController extends Controller
      * @param  \App\Models\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, User $user)
+    public function __invoke(Request $request, User $user)
     {
         $user->update([
             'settings' => [
@@ -24,6 +24,6 @@ class NotificationController extends Controller
             ]
         ]);
 
-        return success(route('users.edit', ['user' => $user, 'page' => 'account']));
+        return $this->success(route('users.edit', ['user' => $user, 'page' => 'account']));
     }
 }

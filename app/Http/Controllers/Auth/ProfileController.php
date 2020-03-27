@@ -11,32 +11,6 @@ use App\Http\Requests\User as UserForm;
 class ProfileController extends Controller
 {
     /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\User  $user
-     * @return \Illuminate\Http\Response
-     */
-    public function show(User $user)
-    {
-        $this->authorize('manage', $user);
-
-        return view('auth.profiles.show', [
-            'user' => $user,
-            'activity' => Activity::feed($user)
-        ]);
-    }
-
-    /**
      * Show the form for editing the specified resource.
      *
      * @param  \App\Models\User  $user
@@ -45,8 +19,6 @@ class ProfileController extends Controller
     public function edit(User $user, $page = 'account')
     {
         $this->authorize('manage', $user);
-
-        // dd($user->settings);
 
         return view('auth.profiles.settings.edit-' . $page, compact('user'));
     }
@@ -62,7 +34,7 @@ class ProfileController extends Controller
     {
         $user->update($request->validated());
 
-        return success(url()->previous());
+        return $this->success(url()->previous());
     }
 
     /**
@@ -85,7 +57,7 @@ class ProfileController extends Controller
 
         auth()->logout();
 
-        return success(
+        return $this->success(
             route('listings'),
             'deleted',
             'We are sorry to see you go.'

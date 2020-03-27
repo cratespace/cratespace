@@ -7,7 +7,6 @@ use App\Models\Traits\HasUid;
 use Laravel\Scout\Searchable;
 use App\Models\Traits\Fillable;
 use App\Models\Traits\Filterable;
-use App\Models\Traits\Recordable;
 use App\Models\Traits\Presentable;
 use Illuminate\Database\Eloquent\Model;
 use Facades\App\Http\Services\Ip\Location;
@@ -15,7 +14,6 @@ use Facades\App\Http\Services\Ip\Location;
 class Space extends Model
 {
     use Fillable,
-        Recordable,
         Filterable,
         HasUid,
         Searchable,

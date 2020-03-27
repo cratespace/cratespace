@@ -34,6 +34,6 @@ class MessageController extends Controller
     {
         Message::create($request->only(Message::attributes()));
 
-        return success(route('contact'), null, $this->message);
+        return $this->success(route('contact'), null, $this->message);
     }
 }

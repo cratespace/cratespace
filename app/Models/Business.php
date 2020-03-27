@@ -6,12 +6,11 @@ use Illuminate\Support\Str;
 use App\Models\Traits\Fillable;
 use App\Models\Traits\HasPhoto;
 use App\Models\Traits\Sluggable;
-use App\Models\Traits\Recordable;
 use Illuminate\Database\Eloquent\Model;
 
 class Business extends Model
 {
-    use Fillable, Recordable, Sluggable, HasPhoto;
+    use Fillable, Sluggable, HasPhoto;
 
     /**
      * The attributes that are mass assignable.

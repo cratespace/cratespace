@@ -30,6 +30,6 @@ class ResetPasswordController extends Controller
     {
         $this->resetPassword($user, $request->password);
 
-        return success(route('users.edit', compact('user')));
+        return $this->success(route('users.edit', compact('user')));
     }
 }

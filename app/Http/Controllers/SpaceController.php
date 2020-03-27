@@ -48,7 +48,7 @@ class SpaceController extends Controller
     {
         user()->spaces()->create($request->validated());
 
-        return success(route('spaces.index'));
+        return $this->success(route('spaces.index'));
     }
 
     /**
@@ -88,7 +88,7 @@ class SpaceController extends Controller
     {
         $space->update($request->validated());
 
-        return success(route('spaces.edit', $space), 'updated');
+        return $this->success(route('spaces.edit', $space), 'updated');
     }
 
     /**
@@ -103,6 +103,6 @@ class SpaceController extends Controller
 
         $space->delete();
 
-        return success(route('spaces.index'), 'deleted');
+        return $this->success(route('spaces.index'), 'deleted');
     }
 }

@@ -48,6 +48,7 @@ trait ValidationRules
         return [
             'name' => ['required', 'string', 'max:255'],
             'username' => ['required', 'string', 'max:255'],
+            'business' => [! request('business') ? 'nullable' : 'required', 'string', 'max:255'],
             'email' => [
                 'required', 'string', 'email', 'max:255',
                 Rule::unique((new User())->getTable())->ignore(auth()->id())

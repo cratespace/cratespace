@@ -20,7 +20,6 @@ class UserTest extends TestCase
             'business' => $this->faker->company,
             'password' => 'Lambdaxion568',
             'password_confirmation' => 'Lambdaxion568',
-            'type' => 'business'
         ];
 
         $this->post(route('register'), $user)

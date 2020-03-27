@@ -1,8 +1,5 @@
 <?php
 
-use App\Models\User;
-use Illuminate\Support\Str;
-
 if (! function_exists('user')) {
     /**
      * Get the authenticated user and/or attributes.
@@ -63,20 +60,6 @@ if (! function_exists('greet')) {
     }
 }
 
-if (! function_exists('make_name')) {
-    /**
-     * Generate fullname of user using first nad last names.
-     *
-     * @param  string $firstName
-     * @param  string $lastName
-     * @return string
-     */
-    function make_name($firstName, $lastName)
-    {
-        return $firstName . ' ' . $lastName;
-    }
-}
-
 if (! function_exists('is_active')) {
     /**
      * Determine if the given route is active path.
@@ -89,40 +72,5 @@ if (! function_exists('is_active')) {
     function is_active($path, $active = 'active', $default = '')
     {
         return call_user_func_array('Request::is', (array) $path) ? $active : $default;
-    }
-}
-
-if (! function_exists('parse')) {
-    /**
-     * Parse markdown.
-     *
-     * @param string $content
-     *
-     * @return \Parsedown
-     */
-    function parse($content)
-    {
-        return app('markdown')->text($content);
-    }
-}
-
-if (! function_exists('make_username')) {
-    /**
-     * Generate unique username from first name.
-     *
-     * @param  string $name
-     * @return string
-     */
-    function make_username($name)
-    {
-        [$firstName, $lastName] = explode(' ', $name);
-
-        $count = User::where('username', 'like', '%'.$firstName.'%')->count();
-
-        if ($count < 0) {
-            return Str::kebab($firstName . $lastName);
-        }
-
-        return $firstName;
     }
 }
