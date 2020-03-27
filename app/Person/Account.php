@@ -18,7 +18,8 @@ class Account implements Responsibility
     public function handle(User $person, array $data)
     {
         AccountModel::create([
-            'user_id' => $person->id
+            'user_id' => $person->id,
+            'bank' => $data['business'],
         ]);
 
         return $person;

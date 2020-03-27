@@ -29,8 +29,8 @@ class Personage
     {
         try {
             return $this->performResponsibilities(new User(), $data);
-        } catch (Exception $e) {
-            abort(config('messages.registration'));
+        } catch (Exception $exception) {
+            abort(500, $exception->getMessage());
         }
     }
 
