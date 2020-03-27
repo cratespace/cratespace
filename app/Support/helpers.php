@@ -5,9 +5,9 @@ if (! function_exists('user')) {
      * Get the authenticated user and/or attributes.
      *
      * @param  string|null $attribute
-     * @return string|\Illuminate\Database\Eloquent\Model
+     * @return string|null
      */
-    function user($attribute = null)
+    function user(?string $attribute = null)
     {
         if (! is_null($attribute)) {
             return auth()->user()->{$attribute};
@@ -21,10 +21,10 @@ if (! function_exists('business')) {
     /**
      * Get the authenticated business account and/or attributes.
      *
-     * @param  string|null $attribute
-     * @return string|\Illuminate\Database\Eloquent\Model
+     * @param string|null $attribute
+     * @return string|null
      */
-    function business($attribute = null)
+    function business(?string $attribute = null)
     {
         if (! user()->isType(['business'])) {
             return null;
@@ -41,6 +41,8 @@ if (! function_exists('business')) {
 if (! function_exists('greet')) {
     /**
      * Greet user according to user's time.
+     *
+     * @return string
      */
     function greet()
     {
@@ -64,12 +66,12 @@ if (! function_exists('is_active')) {
     /**
      * Determine if the given route is active path.
      *
-     * @param  string  $path
-     * @param  string  $active
-     * @param  string  $default
-     * @return bool
+     * @param string $path
+     * @param string $active
+     * @param string $default
+     * @return bool|string
      */
-    function is_active($path, $active = 'active', $default = '')
+    function is_active(string $path, string $active = 'active', string $default = '')
     {
         return call_user_func_array('Request::is', (array) $path) ? $active : $default;
     }

@@ -41,7 +41,7 @@
                             <div class="bg-white px-4 sm:px-6 border-b border-gray-300">
                                 <div class="flex justify-between items-center">
                                     <nav class="-mb-px flex">
-                                        <a href="?status=Pending" class="{{ request('status') == 'Pending' ? 'border-indigo-500 text-indigo-500' : 'border-transparent text-gray-600 hover:text-gray-700 hover:border-gray-400' }} whitespace-no-wrap py-5 px-1 border-b-2 font-medium text-sm focus:outline-none focus:text-gray-700 focus:border-gray-300 transition ease-in-out duration-150">
+                                        <a href="?status=Pending" class="flex {{ request('status') == 'Pending' ? 'border-indigo-500 text-indigo-500' : 'border-transparent text-gray-600 hover:text-gray-700 hover:border-gray-400' }} whitespace-no-wrap py-5 px-1 border-b-2 font-medium text-sm focus:outline-none focus:text-gray-700 focus:border-gray-300 transition ease-in-out duration-150">
                                             Pending
                                         </a>
 

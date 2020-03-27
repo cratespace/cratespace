@@ -3,9 +3,6 @@
 namespace App\Person;
 
 use App\Models\User;
-use App\Person\Account;
-use App\Person\Profile;
-use App\Person\Business;
 use App\Contracts\Responsibility;
 
 class Personage
@@ -16,9 +13,9 @@ class Personage
      * @var array
      */
     protected $responsibilities = [
-        Profile::class,
-        Business::class,
-        Account::class,
+        \App\Person\Profile::class,
+        \App\Person\Business::class,
+        \App\Person\Account::class,
     ];
 
     /**
@@ -29,7 +26,7 @@ class Personage
      */
     public function new(array $data)
     {
-        return $this->performResponsibilities(new User, $data);
+        return $this->performResponsibilities(new User(), $data);
     }
 
     /**

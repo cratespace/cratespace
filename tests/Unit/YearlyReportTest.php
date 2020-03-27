@@ -5,10 +5,10 @@ namespace Tests\Unit;
 use Carbon\Carbon;
 use Tests\TestCase;
 use App\Models\Space;
-use App\Reports\GraphReport;
+use App\Reports\YearlyReport;
 use Illuminate\Support\Collection;
 
-class GraphReportTest extends TestCase
+class YearlyReportTest extends TestCase
 {
     /** @test */
     public function it_gives_an_array_of_data_counts_per_month()
@@ -22,12 +22,10 @@ class GraphReportTest extends TestCase
             ]);
         }
 
-        $graph = new GraphReport(new Space);
+        $graph = new YearlyReport(new Space);
         $graph->collectDataof($user->id);
-        $data = $graph->data();
         $graphData = $graph->make();
 
-        $this->assertInstanceOf(Collection::class, $data);
         $this->assertInstanceOf(Collection::class, $graphData);
 
         $months = array_keys($graphData->toArray());

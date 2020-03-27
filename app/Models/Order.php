@@ -16,8 +16,7 @@ class Order extends Model
         Filterable,
         HasUid,
         GeneratesUid,
-        Searchable,
-        Graphable;
+        Searchable;
 
     /**
      * The attributes that are mass assignable.

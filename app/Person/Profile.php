@@ -18,15 +18,13 @@ class Profile implements Responsibility
      */
     public function create(User $person, array $data)
     {
-        $person = $person->create([
+        return $person->create([
             'name' => $data['name'],
             'email' => $data['email'],
             'phone' => $data['phone'],
             'username' => $this->makeUsername($data['name']),
             'password' => Hash::make($data['password']),
         ]);
-
-        return $person;
     }
 
     /**
