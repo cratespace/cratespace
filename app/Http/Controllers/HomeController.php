@@ -3,10 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Models\Order;
+use App\Models\Space;
 use App\Reports\YearlyReport;
+use App\Http\Controllers\Concerns\CountsItems;
 
 class HomeController extends Controller
 {
+    use CountsItems;
+
     /**
      * Show the application dashboard.
      *
@@ -25,6 +29,8 @@ class HomeController extends Controller
 
         return view('businesses.home', [
             'chart' => $graphData,
+            'spaces' => $this->getCountOf(Space::class, Space::whereUserId(user('id'))->get()),
+            'orders' => $this->getCountOf(Order::class, Order::whereUserId(user('id'))->get()),
         ]);
     }
 }

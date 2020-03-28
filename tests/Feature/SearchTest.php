@@ -14,8 +14,8 @@ class SearchTest extends TestCase
     /** @test */
     public function a_user_can_search_spaces()
     {
-        if (! config('scout.algolia.id')) {
-            $this->markTestSkipped("Algolia is not configured.");
+        if (! $this->searchConfigured()) {
+            $this->markTestSkipped("Search is not configured.");
         }
 
         config(['scout.driver' => 'algolia']);
@@ -33,7 +33,7 @@ class SearchTest extends TestCase
         do {
             sleep(.25);
 
-            $results = $this->getJson("/spaces/search?q={$search}")->json()['data'];
+            $results = $this->getJson("/spaces/search?q={$search}")->json();
         } while (empty($results));
 
         $this->assertCount(1, $results);
@@ -44,8 +44,8 @@ class SearchTest extends TestCase
     /** @test */
     public function a_user_can_search_orders()
     {
-        if (! config('scout.algolia.id')) {
-            $this->markTestSkipped("Algolia is not configured.");
+        if (! $this->searchConfigured()) {
+            $this->markTestSkipped("Search is not configured.");
         }
 
         config(['scout.driver' => 'algolia']);
@@ -69,5 +69,17 @@ class SearchTest extends TestCase
         $this->assertCount(1, $results);
 
         Order::all()->unsearchable();
+    }
+
+    /**
+     * Determine if laravel scout search is enabled.
+     *
+     * @return bool
+     */
+    protected function searchConfigured()
+    {
+        return ! config('scout.algolia.id') &&
+            (method_exists(new Space, 'search') &&
+            method_exists(new Order, 'search'));
     }
 }

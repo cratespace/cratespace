@@ -5,17 +5,21 @@ namespace App\Http\Controllers;
 use App\Models\Order;
 use App\Models\Space;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Concerns\CountsItems;
 
 class SearchController extends Controller
 {
+    use CountsItems;
+
     /**
-     * Display a listing of the resource.
+     * Display a listing of spaces search results.
      *
+     * @param \Illuminate\Http\Request
      * @return \Illuminate\Http\Response
      */
-    public function spaces()
+    public function spaces(Request $request)
     {
-        $spaces = Space::search(request('q'))
+        $spaces = Space::search($request->q)
             ->where('user_id', user('id'))
             ->paginate(10);
 
@@ -25,18 +29,22 @@ class SearchController extends Controller
 
         return view('businesses.spaces.index', [
             'spaces' =>  $spaces,
-            'counts' => $this->getSpacesCount()
+            'counts' => $this->getCountOf(
+                Space::class,
+                Space::whereUserId(user('id'))->get()
+            ),
         ]);
     }
 
     /**
-     * Display a listing of the resource.
+     * Display a listing of orders search results.
      *
+     * @param \Illuminate\Http\Request
      * @return \Illuminate\Http\Response
      */
-    public function orders()
+    public function orders(Request $request)
     {
-        $orders = Order::search(request('q'))
+        $orders = Order::search($request->q)
             ->where('user_id', user('id'))
             ->paginate(10);
 
@@ -46,39 +54,10 @@ class SearchController extends Controller
 
         return view('businesses.orders.index', [
             'orders' => $orders,
-            'counts' => $this->getOrdersCount()
+            'counts' => $this->getCountOf(
+                Order::class,
+                Order::whereUserId(user('id'))->get()
+            ),
         ]);
-    }
-
-    protected function getSpacesCount()
-    {
-        $counts = [];
-
-        foreach ([
-            'available' => 'Available',
-            'ordered' => 'Ordered',
-            'completed' => 'Completed',
-            'expired' => 'Expired'
-        ] as $key => $status) {
-            $counts[$key] = user()->spaces()->whereStatus($status)->count();
-        }
-
-        return $counts;
-    }
-
-    protected function getOrdersCount()
-    {
-        $counts = [];
-
-        foreach ([
-            'pending' => 'Pending',
-            'confirmed' => 'Confirmed',
-            'completed' => 'Completed',
-            'canceled' => 'Canceled'
-        ] as $key => $status) {
-            $counts[$key] = user()->orders()->whereStatus($status)->count();
-        }
-
-        return $counts;
     }
 }

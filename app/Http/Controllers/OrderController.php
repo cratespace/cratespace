@@ -6,11 +6,14 @@ use App\Models\Order;
 use App\Filters\OrderFilter;
 use Illuminate\Http\Request;
 use App\Http\Requests\Order as OrderForm;
+use App\Http\Controllers\Concerns\CountsItems;
 use App\Resources\Orders\Manager as OrderManager;
 use App\Http\Requests\OrderUpdate as OrderUpdateForm;
 
 class OrderController extends Controller
 {
+    use CountsItems;
+
     /**
      * Display a listing of the resource.
      *
@@ -23,26 +26,12 @@ class OrderController extends Controller
             return redirect()->route('orders.index', ['status' => 'Pending']);
         }
 
-        return view('businesses.orders.index', $this->getOrders($filters));
-    }
+        $orders = user()->orders();
 
-    protected function getOrders(OrderFilter $filters)
-    {
-        $counts = [];
-
-        foreach ([
-            'pending' => 'Pending',
-            'confirmed' => 'Confirmed',
-            'completed' => 'Completed',
-            'canceled' => 'Canceled'
-        ] as $key => $status) {
-            $counts[$key] = user()->orders()->whereStatus($status)->count();
-        }
-
-        return [
-            'counts' => $counts,
+        return view('businesses.orders.index', [
+            'counts' => $this->getCountOf(Order::class, $orders->get()),
             'orders' => user()->orders()->filter($filters)->paginate(10),
-        ];
+        ]);
     }
 
     /**

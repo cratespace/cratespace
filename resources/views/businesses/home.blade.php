@@ -72,11 +72,11 @@
                     <div class="text-gray-400 font-medium text-sm">Pending Orders</div>
 
                     <div class="flex leading-none items-end">
-                        <div class="text-white text-3xl leading-none">20</div>
+                        <div class="text-white text-3xl leading-none">{{ $orders['pending'] }}</div>
                     </div>
 
                     <div class="mt-2">
-                        <a href="#" class="text-sm text-indigo-500 hover:text-indigo-400">View pending <span>&rarr;</span></a>
+                        <a href="{{ route('orders.index', ['status' => 'Pending']) }}" class="text-sm text-indigo-500 hover:text-indigo-400">View pending <span>&rarr;</span></a>
                     </div>
                 </div>
 
@@ -84,11 +84,11 @@
                     <div class="text-gray-400 font-medium text-sm">Available Spaces</div>
 
                     <div class="flex leading-none items-end">
-                        <div class="text-white text-3xl leading-none">90</div>
+                        <div class="text-white text-3xl leading-none">{{ $spaces['available'] }}</div>
                     </div>
 
                     <div class="mt-2">
-                        <a href="#" class="text-sm text-indigo-500 hover:text-indigo-400">View available <span>&rarr;</span></a>
+                        <a href="{{ route('spaces.index', ['status' => 'Available']) }}" class="text-sm text-indigo-500 hover:text-indigo-400">View available <span>&rarr;</span></a>
                     </div>
                 </div>
             </div>

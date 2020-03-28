@@ -4,13 +4,17 @@ namespace App\Http\Controllers;
 
 use App\Models\Space;
 use App\Filters\SpaceFilter;
+use App\Analytics\SpacesAnalyzer;
 use App\Resources\Spaces\Listings;
 use App\Resources\Listings\SpaceListing;
 use App\Http\Requests\Space as SpaceForm;
+use App\Http\Controllers\Concerns\CountsItems;
 use App\Http\Controllers\Concerns\ManagesListings;
 
 class SpaceController extends Controller
 {
+    use CountsItems;
+
     /**
      * Display a listing of the resource.
      *
@@ -23,26 +27,12 @@ class SpaceController extends Controller
             return redirect()->route('spaces.index', ['status' => 'Available']);
         }
 
+        $spaces = user()->spaces();
+
         return view('businesses.spaces.index', [
-            'spaces' => user()->spaces()->filter($filters)->latest()->paginate(10),
-            'counts' => $this->getSpacesCount()
+            'counts' => $this->getCountOf(Space::class, $spaces->get()),
+            'spaces' => $spaces->filter($filters)->paginate(10),
         ]);
-    }
-
-    protected function getSpacesCount()
-    {
-        $counts = [];
-
-        foreach ([
-            'available' => 'Available',
-            'ordered' => 'Ordered',
-            'completed' => 'Completed',
-            'expired' => 'Expired'
-        ] as $key => $status) {
-            $counts[$key] = user()->spaces()->whereStatus($status)->count();
-        }
-
-        return $counts;
     }
 
     /**

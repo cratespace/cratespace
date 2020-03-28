@@ -15,8 +15,8 @@ class Order extends Model
     use Fillable,
         Filterable,
         HasUid,
-        GeneratesUid,
-        Searchable;
+        // Searchable,
+        GeneratesUid;
 
     /**
      * The attributes that are mass assignable.
