@@ -23,9 +23,26 @@ class OrderController extends Controller
             return redirect()->route('orders.index', ['status' => 'Pending']);
         }
 
-        return view('businesses.orders.index', [
-            'orders' => user()->orders()->filter($filters)->paginate(10)
-        ]);
+        return view('businesses.orders.index', $this->getOrders($filters));
+    }
+
+    protected function getOrders(OrderFilter $filters)
+    {
+        $counts = [];
+
+        foreach ([
+            'pending' => 'Pending',
+            'confirmed' => 'Confirmed',
+            'completed' => 'Completed',
+            'canceled' => 'Canceled'
+        ] as $key => $status) {
+            $counts[$key] = user()->orders()->whereStatus($status)->count();
+        }
+
+        return [
+            'counts' => $counts,
+            'orders' => user()->orders()->filter($filters)->paginate(10),
+        ];
     }
 
     /**

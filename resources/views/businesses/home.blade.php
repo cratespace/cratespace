@@ -5,7 +5,7 @@
         <div class="container">
             <div class="lg:flex lg:items-center lg:justify-between">
                 <div class="mr-4 mb-6 lg:mb-0">
-                    <img class="h-20 w-20 rounded-full" src="{{ user()->photo }}" alt="{{ user()->name }}" />
+                    <img class="h-20 w-20 rounded-full" src="{{ user()->business->photo }}" alt="{{ user()->business->name }}" />
                 </div>
 
                 <div class="flex-1 min-w-0">
@@ -27,17 +27,69 @@
 
                             {{ user()->business->email }}
                         </div>
+
+                        @if (user('email_verified_at'))
+                            <div class="mt-2 flex items-center text-sm text-gray-300 sm:mr-6">
+                                <svg class="flex-shrink-0 mr-2 h-5 w-5 text-green-500" viewBox="0 0 20 20" fill="currentColor">
+                                  <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                                </svg>
+
+                                Verified account
+                            </div>
+                        @endif
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <section class="py-12 bg-gray-900">
+    <section class="py-6 bg-gray-900">
         <div class="container">
             <div class="row">
-                <div class="col-12">
+                <div class="col-lg-4 col-md-6 mb-6 md:mb-0">
+                    <div>
+                        <div class="text-gray-400 font-medium text-sm">Credit</div>
 
+                        <div class="flex leading-none items-end">
+                            <div class="text-white text-3xl leading-none">$56738.87</div>
+
+                            <div class="ml-2 leading-none flex items-center whitespace-no-wrap">
+                                <svg class="flex-shrink-0 h-5 w-5 text-green-500" viewBox="0 0 20 20" fill="currentColor">
+                                    <path fill-rule="evenodd" d="M12 7a1 1 0 110-2h5a1 1 0 011 1v5a1 1 0 11-2 0V8.414l-4.293 4.293a1 1 0 01-1.414 0L8 10.414l-4.293 4.293a1 1 0 01-1.414-1.414l5-5a1 1 0 011.414 0L11 10.586 14.586 7H12z" clip-rule="evenodd"/>
+                                </svg>
+
+                                <span class="text-white ml-1">11% <span class="text-gray-400">since last month</span></span>
+                            </div>
+                        </div>
+
+                        <div class="mt-2">
+                            <a href="#" class="text-sm text-indigo-500 hover:text-indigo-400">View summary <span>&rarr;</span></a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-2 col-md-3 col-6 offset-lg-4">
+                    <div class="text-gray-400 font-medium text-sm">Pending Orders</div>
+
+                    <div class="flex leading-none items-end">
+                        <div class="text-white text-3xl leading-none">20</div>
+                    </div>
+
+                    <div class="mt-2">
+                        <a href="#" class="text-sm text-indigo-500 hover:text-indigo-400">View pending <span>&rarr;</span></a>
+                    </div>
+                </div>
+
+                <div class="col-lg-2 col-md-3 col-6">
+                    <div class="text-gray-400 font-medium text-sm">Available Spaces</div>
+
+                    <div class="flex leading-none items-end">
+                        <div class="text-white text-3xl leading-none">90</div>
+                    </div>
+
+                    <div class="mt-2">
+                        <a href="#" class="text-sm text-indigo-500 hover:text-indigo-400">View available <span>&rarr;</span></a>
+                    </div>
                 </div>
             </div>
         </div>

@@ -32,6 +32,8 @@ class OrderSpaceMaintainer extends Maintainer
     protected function maintainOrderSpaceStates()
     {
         $this->getResource()->map(function ($order) {
+            $order = Order::findOrFail($order->id);
+
             if (! $order->space->departed()) {
                 $this->performStateManagement($order);
             }

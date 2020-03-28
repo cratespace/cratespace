@@ -162,7 +162,7 @@ Route::group([
      * Photo Upload Route...
      */
     Route::post(
-        '/users/photo/{profile?}',
+        '/users/photo/{type?}',
         'PhotoUploadController'
     )->name('users.photo');
 

@@ -2,26 +2,27 @@
 
 namespace App\Maintainers;
 
+use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Model;
 
 abstract class Maintainer
 {
     /**
-     * The resource model.
+     * The name of the resource to be collected.
      *
-     * @var \Illuminate\Database\Eloquent\Model
+     * @var string
      */
-    protected $model;
+    protected $key;
 
     /**
      * Create a new maintainer instance.
      *
-     * @param \Illuminate\Database\Eloquent\Model $model
+     * @param string $key
      * @return void
      */
-    public function __construct(Model $model)
+    public function __construct(string $key)
     {
-        $this->model = $model;
+        $this->key = $key;
     }
 
     /**
@@ -36,6 +37,6 @@ abstract class Maintainer
      */
     public function getResource()
     {
-        return $this->model->all();
+        return DB::table($this->key)->get();
     }
 }

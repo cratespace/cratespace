@@ -20,9 +20,9 @@ class ResourceServiceProvider extends ServiceProvider
      * @var array
      */
     protected $resourceMaintainers = [
-        Space::class => SpacesMaintainer::class,
-        Order::class => OrdersMaintainer::class,
-        Order::class => OrderSpaceMaintainer::class,
+        'spaces' => SpacesMaintainer::class,
+        'orders' => OrdersMaintainer::class,
+        'orders' => OrderSpaceMaintainer::class,
     ];
 
     /**
@@ -51,8 +51,8 @@ class ResourceServiceProvider extends ServiceProvider
      */
     protected function runResourceMaintenance()
     {
-        foreach ($this->resourceMaintainers as $resource => $maintainer) {
-            $this->app->makeWith($maintainer, ['model' => new $resource()])->run();
+        foreach ($this->resourceMaintainers as $resourceKey => $maintainer) {
+            (new $maintainer($resourceKey))->run();
         }
     }
 

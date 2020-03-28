@@ -20,7 +20,7 @@ class SpacesMaintainer extends Maintainer
     protected function updateSpaceStatus()
     {
         $this->getResource()->map(function ($space) {
-            $this->expire($space);
+            $this->expire(Space::findOrfail($space->id));
         });
     }
 

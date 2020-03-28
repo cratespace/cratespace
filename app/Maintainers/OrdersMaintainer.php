@@ -20,7 +20,7 @@ class OrdersMaintainer extends Maintainer
     protected function updateOrderStatus()
     {
         $this->getResource()->map(function ($order) {
-            $this->expire($order);
+            $this->expire(Order::findOrFail($order->id));
         });
     }
 

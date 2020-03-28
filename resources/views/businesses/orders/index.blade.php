@@ -41,20 +41,36 @@
                             <div class="bg-white px-4 sm:px-6 border-b border-gray-300">
                                 <div class="flex justify-between items-center">
                                     <nav class="-mb-px flex">
-                                        <a href="?status=Pending" class="flex {{ request('status') == 'Pending' ? 'border-indigo-500 text-indigo-500' : 'border-transparent text-gray-600 hover:text-gray-700 hover:border-gray-400' }} whitespace-no-wrap py-5 px-1 border-b-2 font-medium text-sm focus:outline-none focus:text-gray-700 focus:border-gray-300 transition ease-in-out duration-150">
-                                            Pending
+                                        <a href="?status=Pending" class="flex items-center {{ request('status') == 'Pending' ? 'border-indigo-500 text-indigo-500' : 'border-transparent text-gray-600 hover:text-gray-700 hover:border-gray-400' }} whitespace-no-wrap py-5 px-1 border-b-2 font-medium text-sm focus:outline-none focus:text-gray-700 focus:border-gray-300 transition ease-in-out duration-150">
+                                            <span>Pending</span>
+
+                                            <span class="ml-2 {{ request('status') == 'Pending' ? 'bg-indigo-200 text-indigo-600' : 'bg-gray-200 text-gray-600' }} inline-block text-xs leading-none px-2 py-1 rounded-full overflow-hidden font-medium">
+                                                {{ $counts['pending'] }}
+                                            </span>
                                         </a>
 
-                                        <a href="?status=Confirmed" class="ml-8 {{ request('status') == 'Confirmed' ? 'border-indigo-500 text-indigo-500' : 'border-transparent text-gray-600 hover:text-gray-700 hover:border-gray-400' }} whitespace-no-wrap py-5 px-1 border-b-2 font-medium text-sm focus:outline-none focus:text-gray-700 focus:border-gray-300 transition ease-in-out duration-150">
-                                            Confirmed
+                                        <a href="?status=Confirmed" class="flex items-center ml-8 {{ request('status') == 'Confirmed' ? 'border-indigo-500 text-indigo-500' : 'border-transparent text-gray-600 hover:text-gray-700 hover:border-gray-400' }} whitespace-no-wrap py-5 px-1 border-b-2 font-medium text-sm focus:outline-none focus:text-gray-700 focus:border-gray-300 transition ease-in-out duration-150">
+                                            <span>Confirmed</span>
+
+                                            <span class="ml-2 {{ request('status') == 'Confirmed' ? 'bg-indigo-200 text-indigo-600' : 'bg-gray-200 text-gray-600' }} inline-block text-xs leading-none px-2 py-1 rounded-full overflow-hidden font-medium">
+                                                {{ $counts['confirmed'] }}
+                                            </span>
                                         </a>
 
-                                        <a href="?status=Completed" class="ml-8 {{ request('status') == 'Completed' ? 'border-indigo-500 text-indigo-500' : 'border-transparent text-gray-600 hover:text-gray-700 hover:border-gray-400' }} whitespace-no-wrap py-5 px-1 border-b-2 font-medium text-sm focus:outline-none focus:text-gray-700 focus:border-gray-300 transition ease-in-out duration-150">
-                                            Completed
+                                        <a href="?status=Completed" class="flex items-center ml-8 {{ request('status') == 'Completed' ? 'border-indigo-500 text-indigo-500' : 'border-transparent text-gray-600 hover:text-gray-700 hover:border-gray-400' }} whitespace-no-wrap py-5 px-1 border-b-2 font-medium text-sm focus:outline-none focus:text-gray-700 focus:border-gray-300 transition ease-in-out duration-150">
+                                            <span>Completed</span>
+
+                                            <span class="ml-2 {{ request('status') == 'Completed' ? 'bg-indigo-200 text-indigo-600' : 'bg-gray-200 text-gray-600' }} inline-block text-xs leading-none px-2 py-1 rounded-full overflow-hidden font-medium">
+                                                {{ $counts['completed'] }}
+                                            </span>
                                         </a>
 
-                                        <a href="?status=Canceled" class="ml-8 {{ request('status') == 'Canceled' ? 'border-indigo-500 text-indigo-500' : 'border-transparent text-gray-600 hover:text-gray-700 hover:border-gray-400' }} whitespace-no-wrap py-5 px-1 border-b-2 font-medium text-sm focus:outline-none focus:text-gray-700 focus:border-gray-300 transition ease-in-out duration-150">
-                                            Canceled
+                                        <a href="?status=Canceled" class="flex items-center ml-8 {{ request('status') == 'Canceled' ? 'border-indigo-500 text-indigo-500' : 'border-transparent text-gray-600 hover:text-gray-700 hover:border-gray-400' }} whitespace-no-wrap py-5 px-1 border-b-2 font-medium text-sm focus:outline-none focus:text-gray-700 focus:border-gray-300 transition ease-in-out duration-150">
+                                            <span>Canceled</span>
+
+                                            <span class="ml-2 {{ request('status') == 'Canceled' ? 'bg-indigo-200 text-indigo-600' : 'bg-gray-200 text-gray-600' }} inline-block text-xs leading-none px-2 py-1 rounded-full overflow-hidden font-medium">
+                                                {{ $counts['canceled'] }}
+                                            </span>
                                         </a>
                                     </nav>
                                 </div>

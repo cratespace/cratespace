@@ -46,7 +46,7 @@
                         <div class="bg-white px-4 py-5 sm:px-6">
                             <div class="row items-center">
                                 <div class="col-md-4 mb-6 flex items-center">
-                                    <image-upload-form image="{{ $user->business->photo }}" route="{{ route('users.photo', ['business' => 1]) }}" label="Logo"></image-upload-form>
+                                    <image-upload-form image="{{ $user->business->photo }}" route="{{ route('users.photo', ['type' => 'business']) }}" label="Logo"></image-upload-form>
                                 </div>
 
                                 <div class="col-md-8 mb-6">
