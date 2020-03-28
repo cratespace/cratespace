@@ -124,6 +124,12 @@ Route::group([
     Route::get('/home', 'HomeController')->name('home');
 
     /**
+     * Spaces Search...
+     */
+    Route::get('/spaces/search', 'SpaceSearchController@index')
+        ->name('spaces.search');
+
+    /**
      * Spaces Routes...
      */
     Route::resource('/spaces', 'SpaceController');
