@@ -77,8 +77,8 @@
                             </div>
 
                             <div class="bg-white px-4 py-5 sm:px-6">
-                                <form action="#" method="GET">
-                                    <label for="search" class="sr-only">Search orders</label>
+                                <form action="{{ route('orders.search') }}" method="GET">
+                                    <label for="q" class="sr-only">Search orders</label>
 
                                     <div class="flex rounded-lg shadow-sm">
                                         <div class="relative flex-grow focus-within:z-10">
@@ -88,7 +88,7 @@
                                                 </svg>
                                             </div>
 
-                                            <input id="search" name="search" type="text" class="form-input bg-white rounded-none block w-full pl-10 pr-3 rounded-l-lg focus:shadow-none transition ease-in-out duration-150" required placeholder="Search by order number...">
+                                            <input id="q" name="q" type="text" class="form-input bg-white rounded-none block w-full pl-10 pr-3 rounded-l-lg focus:shadow-none transition ease-in-out duration-150" required placeholder="Search by order number...">
                                         </div>
 
                                         <button type="submit" class="-ml-px relative flex items-center px-3 py-2 rounded-r-lg border border-gray-300 bg-gray-100 text-gray-800 focus:outline-none focus:shadow-none focus:border-blue-300 focus:z-10 transition ease-in-out duration-150">

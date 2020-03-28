@@ -9,17 +9,17 @@ Route::get('/coming-soon', function () {
     return view('coming-soon');
 })->name('coming_soon');
 
-Route::get('/tests', function () {
-    create(Space::class, [
-        'user_id' => 1
-    ], 100)->each(function ($space) {
-        create(Order::class, [
-            'user_id' => $space->user->id,
-            'space_id' => $space->id,
-            'created_at' => Carbon::now()->subMonths(rand(0, 12))
-        ]);
-    });
-})->name('tests');
+// Route::get('/tests', function () {
+//     create(Space::class, [
+//         'user_id' => 1
+//     ], 100)->each(function ($space) {
+//         create(Order::class, [
+//             'user_id' => $space->user->id,
+//             'space_id' => $space->id,
+//             'created_at' => Carbon::now()->subMonths(rand(0, 12))
+//         ]);
+//     });
+// })->name('tests');
 
 /**
  * Public Routes...
@@ -126,13 +126,19 @@ Route::group([
     /**
      * Spaces Search...
      */
-    Route::get('/spaces/search', 'SpaceSearchController@index')
+    Route::get('/spaces/search', 'SearchController@spaces')
         ->name('spaces.search');
 
     /**
      * Spaces Routes...
      */
     Route::resource('/spaces', 'SpaceController');
+
+    /**
+     * Orders Search...
+     */
+    Route::get('/orders/search', 'SearchController@orders')
+        ->name('orders.search');
 
     /**
      * Orders Routes...
