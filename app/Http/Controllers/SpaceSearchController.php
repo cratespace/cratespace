@@ -18,10 +18,6 @@ class SpaceSearchController extends Controller
             ->where('user_id', user('id'))
             ->paginate(10);
 
-        if (request()->expectsJson()) {
-            return $spaces;
-        }
-
         return view('businesses.spaces.index', [
             'spaces' =>  $spaces,
             'counts' => $this->getSpacesCount()

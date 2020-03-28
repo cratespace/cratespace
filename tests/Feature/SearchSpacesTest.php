@@ -28,11 +28,10 @@ class SearchSpacesTest extends TestCase
         do {
             sleep(.25);
 
-            $results = $this->getJson("/spaces/search?q={$search}")->json()['data'];
+            $results = $this->get("/spaces/search?q={$search}");
         } while (empty($results));
 
-
-        $this->assertCount(1, $results);
+        $results->assertSee($search);
 
         Space::all()->unsearchable();
     }
