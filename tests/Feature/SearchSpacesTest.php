@@ -25,9 +25,14 @@ class SearchSpacesTest extends TestCase
         ], 1);
         create(Space::class, ['user_id' => $user->id], 2);
 
-        $results = $this->getJson("/spaces/search?q={$search}")->json();
+        do {
+            sleep(.25);
 
-        $this->assertCount(1, $results['data']);
+            $results = $this->getJson("/spaces/search?q={$search}")->json()['data'];
+        } while (empty($results));
+
+
+        $this->assertCount(1, $results);
 
         Space::all()->unsearchable();
     }
