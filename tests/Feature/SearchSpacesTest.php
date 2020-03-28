@@ -17,9 +17,9 @@ class SearchSpacesTest extends TestCase
 
         $user = $this->signIn();
 
-        $search = Str::random(5);
+        $search = 'foobar7839376';
 
-        create(Space::class, [
+        $desiredSpace = create(Space::class, [
             'uid' => $search,
             'user_id' => $user->id
         ], 1);
@@ -28,5 +28,7 @@ class SearchSpacesTest extends TestCase
         $results = $this->getJson("/spaces/search?q={$search}")->json();
 
         $this->assertCount(1, $results['data']);
+
+        Space::all()->unsearchable();
     }
 }
