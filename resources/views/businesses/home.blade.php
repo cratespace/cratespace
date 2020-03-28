@@ -94,4 +94,15 @@
             </div>
         </div>
     </section>
+
+    <section class="py-6">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <div class="mb-6 font-semibold text-gray-800 text-xl">Orders This Year</div>
+                    <graph :data="{{ $chart->values() }}"></graph>
+                </div>
+            </div>
+        </div>
+    </section>
 @endsection

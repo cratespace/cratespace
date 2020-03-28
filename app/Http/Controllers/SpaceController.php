@@ -24,8 +24,25 @@ class SpaceController extends Controller
         }
 
         return view('businesses.spaces.index', [
-            'spaces' => user()->spaces()->filter($filters)->latest()->paginate(10)
+            'spaces' => user()->spaces()->filter($filters)->latest()->paginate(10),
+            'counts' => $this->getSpacesCount()
         ]);
+    }
+
+    protected function getSpacesCount()
+    {
+        $counts = [];
+
+        foreach ([
+            'available' => 'Available',
+            'ordered' => 'Ordered',
+            'completed' => 'Completed',
+            'expired' => 'Expired'
+        ] as $key => $status) {
+            $counts[$key] = user()->spaces()->whereStatus($status)->count();
+        }
+
+        return $counts;
     }
 
     /**

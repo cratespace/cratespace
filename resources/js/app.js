@@ -18,6 +18,7 @@ Vue.component('apexchart', VueApexCharts);
 Vue.component("image-upload-form", require("./components/ImageUploadForm.vue").default);
 Vue.component("flash", require("./components/Flash.vue").default);
 Vue.component("order", require("./components/Orders/Order.vue").default);
+Vue.component("graph", require("./components/Graph.vue").default);
 
 // Spaces
 // Vue.component("spaces", require("./components/Spaces/List.vue").default);
