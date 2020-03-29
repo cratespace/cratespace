@@ -14,7 +14,7 @@ class UserPolicy
      *
      * @param  \App\Models\User  $user
      * @param  \App\Models\User  $model
-     * @return mixed
+     * @return bool
      */
     public function manage(User $user, User $model)
     {

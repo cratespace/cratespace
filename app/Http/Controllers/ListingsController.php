@@ -3,43 +3,48 @@
 namespace App\Http\Controllers;
 
 use App\Models\Space;
-use App\Filters\SpaceFilters;
-use App\Resources\Spaces\Listings;
-use App\Resources\Listings\SpaceListing;
-use App\Http\Controllers\Concerns\FiltersFormData;
+use App\Filters\SpaceFilter;
 
 class ListingsController extends Controller
 {
     /**
-     * All available space listings.
+     * All listings available in the customer's country.
      *
-     * @var \Illuminate\Database\Eloquent\Collection
+     * @var \Illuminate\Database\Eloquent\Builder
      */
-    protected $listings;
-
-    /**
-     * Create a new space controller instance.
-     *
-     * @return void
-     */
-    public function __construct(Space $spaces)
-    {
-        $this->listings = app('listings.space');
-    }
+    protected $listing;
 
     /**
      * Show listings page with all available and filtered spaces.
      *
      * @return \Illuminate\Http\Response
      */
-    public function __invoke(SpaceFilters $filters)
+    public function __invoke(SpaceFilter $filters)
     {
-        $spaces = $this->listings->get($filters);
+        $spaces = $this->getSpaces($filters);
 
         return view('listings', [
             'spaces' => $spaces,
-            'filters' => $this->filters($spaces)
+            'filters' => $this->getFilters()
         ]);
+    }
+
+    /**
+     * Get specified spaces.
+     *
+     * @param  \App\Filters\SpaceFilter $filter
+     * @return \Illuminate\Database\Eloquent\Collection
+     */
+    protected function getSpaces(SpaceFilter $filters)
+    {
+        $spaces = Space::list();
+
+        $this->listing = $spaces->get();
+
+        return $spaces->with('user')
+            ->filter($filters)
+            ->latest()
+            ->paginate(10);
     }
 
     /**
@@ -47,7 +52,7 @@ class ListingsController extends Controller
      *
      * @return array
      */
-    public function filters($spaces)
+    public function getFilters()
     {
         $filters = [];
 
@@ -56,7 +61,7 @@ class ListingsController extends Controller
             'destinations' => 'destination'
         ] as $key => $attribute) {
             $filters[$key] = collect(array_unique(
-                $spaces->pluck($attribute)->toArray()
+                $this->listing->pluck($attribute)->toArray()
             ))->sort();
         }
 

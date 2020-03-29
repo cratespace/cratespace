@@ -31,7 +31,7 @@ class SupportArticleController extends Controller
      *
      * @param string $version
      * @param string $article
-     * @return mixed
+     * @return \Illuminate\Http\Response
      */
     public function show($article)
     {

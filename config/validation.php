@@ -31,7 +31,6 @@ return [
         'business' => ['nullable', 'string', 'max:255'],
         'email' => ['required', 'string', 'email', 'max:255'],
         'phone' => ['required'],
-        'space_id' => ['required', 'integer'],
     ],
 
     /**
@@ -65,4 +64,15 @@ return [
         'city' => ['required', 'string'],
         'country' => ['required', 'string'],
     ],
+
+    /**
+     * Registration Inputs Rules
+     */
+    'registration' => [
+        'name' => ['required', 'string', 'max:255'],
+        'business' => ['required', 'string', 'max:255'],
+        'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+        'phone' => ['required', 'integer', 'min:9'],
+        'password' => ['required', 'string', 'min:8', 'confirmed'],
+    ]
 ];

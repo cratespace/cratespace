@@ -3,10 +3,10 @@
 namespace App\Models;
 
 use App\Models\Traits\HasUid;
+use Laravel\Scout\Searchable;
 use App\Models\Traits\Fillable;
 use App\Models\Traits\Graphable;
 use App\Models\Traits\Filterable;
-use App\Models\Traits\Searchable;
 use App\Models\Concerns\GeneratesUid;
 use Illuminate\Database\Eloquent\Model;
 
@@ -15,16 +15,8 @@ class Order extends Model
     use Fillable,
         Filterable,
         HasUid,
-        GeneratesUid,
-        Graphable,
-        Searchable;
-
-    /**
-     * The relations to eager load on every query.
-     *
-     * @var array
-     */
-    protected $with = ['space'];
+        // Searchable,
+        GeneratesUid;
 
     /**
      * The attributes that are mass assignable.
@@ -36,6 +28,30 @@ class Order extends Model
         'total', 'tax', 'service', 'user_id', 'space_id',
         'uid',
     ];
+
+    /**
+     * All processes to perform to create a new order.
+     *
+     * @var array
+     */
+    protected static $processes = [
+        \App\Processes\Orders\Payment::class,
+        \App\Processes\Orders\NewOrder::class,
+    ];
+
+    /**
+     * The accessors to append to the model's array form.
+     *
+     * @var array
+     */
+    protected $appends = ['path'];
+
+    /**
+     * The relations to eager load on every query.
+     *
+     * @var array
+     */
+    protected $with = ['space'];
 
     /**
      * Get the space associated with the order.
@@ -83,5 +99,18 @@ class Order extends Model
     public function path()
     {
         return "/orders/{$this->uid}";
+    }
+
+    /**
+     * Process order.
+     *
+     * @param  array  $data
+     * @return void
+     */
+    public static function process(array $data)
+    {
+        foreach (static::$processes as $process) {
+            (new $process())->perform($data);
+        }
     }
 }

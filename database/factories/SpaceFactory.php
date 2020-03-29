@@ -4,6 +4,7 @@
 
 use App\Models\User;
 use App\Models\Space;
+use App\Models\Account;
 use App\Models\Business;
 use App\Models\Category;
 use Faker\Generator as Faker;
@@ -11,6 +12,7 @@ use Faker\Generator as Faker;
 $factory->define(Space::class, function (Faker $faker) {
     $user = create(User::class);
     create(Business::class, ['user_id' => $user->id]);
+    create(Account::class, ['user_id' => $user->id]);
 
     return [
         'uid' => Str::random(12),

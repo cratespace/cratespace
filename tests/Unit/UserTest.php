@@ -4,6 +4,7 @@ namespace Tests\Unit;
 
 use Tests\TestCase;
 use App\Models\User;
+use App\Models\Account;
 use App\Models\Business;
 use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Collection;
@@ -20,7 +21,6 @@ class UserTest extends TestCase
             'business' => $this->faker->company,
             'password' => 'Lambdaxion568',
             'password_confirmation' => 'Lambdaxion568',
-            'type' => 'business'
         ];
 
         $this->post(route('register'), $user)
@@ -35,6 +35,25 @@ class UserTest extends TestCase
         $user = create(User::class);
 
         $this->assertInstanceOf(Collection::class, $user->spaces);
+    }
+
+    /** @test */
+    public function a_user_has_an_account()
+    {
+        $user = [
+            'name' => $this->faker->firstNameMale . ' ' . $this->faker->lastName,
+            'email' => $this->faker->unique()->safeEmail,
+            'phone' => '7768907658',
+            'business' => $this->faker->company,
+            'password' => 'Lambdaxion568',
+            'password_confirmation' => 'Lambdaxion568',
+            'type' => 'business'
+        ];
+
+        $this->post(route('register'), $user)
+             ->assertRedirect('/home');
+
+        $this->assertInstanceOf(Account::class, user()->account);
     }
 
     /** @test */

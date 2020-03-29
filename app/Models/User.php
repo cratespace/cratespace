@@ -17,7 +17,7 @@ class User extends Authenticatable
      *
      * @var array
      */
-    protected $with = ['business'];
+    protected $with = ['business', 'account'];
 
     /**
      * The attributes that are mass assignable.
@@ -66,6 +66,16 @@ class User extends Authenticatable
     public function business()
     {
         return $this->hasOne(Business::class);
+    }
+
+    /**
+     * Get the user's credit account details.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function account()
+    {
+        return $this->hasOne(Account::class);
     }
 
     /**

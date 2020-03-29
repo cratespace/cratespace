@@ -33,4 +33,80 @@ class BrowseListingsTest extends TestCase
              ->assertDontSee($spaceUS->uid)
              ->assertSee($spaceLanka->uid);
     }
+
+    /** @test */
+    public function customers_can_sort_listings_according_to_origin_place()
+    {
+        $spaceFromColombo = create(Space::class, [
+            'base' => 'Sri Lanka',
+            'origin' => 'Colombo',
+        ]);
+        $spaceFromTrinco = create(Space::class, [
+            'base' => 'Sri Lanka',
+            'origin' => 'Trincomalee',
+        ]);
+        create(Space::class, ['base' => 'Sri Lanka'], 5);
+
+        $this->get('/?origin=Colombo')
+            ->assertSee($spaceFromColombo->uid)
+            ->assertDontSee($spaceFromTrinco->uid);
+    }
+
+    /** @test */
+    public function customers_can_sort_listings_according_to_destination_place()
+    {
+        $spaceToColombo = create(Space::class, [
+            'base' => 'Sri Lanka',
+            'destination' => 'Colombo',
+        ]);
+        $spaceToTrinco = create(Space::class, [
+            'base' => 'Sri Lanka',
+            'destination' => 'Trincomalee',
+        ]);
+        create(Space::class, ['base' => 'Sri Lanka'], 5);
+
+        $this->get('/?destination=Colombo')
+            ->assertSee($spaceToColombo->uid)
+            ->assertDontSee($spaceToTrinco->uid);
+    }
+
+    /** @test */
+    public function customers_can_sort_listings_according_to_departure_date()
+    {
+        $desiredDate = now();
+
+        $desiredSpace = create(Space::class, [
+            'base' => 'Sri Lanka',
+            'departs_at' => $desiredDate,
+        ]);
+        $undesiredSpace = create(Space::class, [
+            'base' => 'Sri Lanka',
+            'departs_at' => now()->addDay(),
+        ]);
+        create(Space::class, ['base' => 'Sri Lanka'], 5);
+
+        $this->get('/?departsAt=' . $desiredDate->format('Y-m-d'))
+            ->assertSee($desiredSpace->uid)
+            ->assertDontSee($undesiredSpace->uid);
+    }
+
+    /** @test */
+    public function customers_can_sort_listings_according_to_arrival_date()
+    {
+        $desiredDate = now();
+
+        $desiredSpace = create(Space::class, [
+            'base' => 'Sri Lanka',
+            'arrives_at' => $desiredDate,
+        ]);
+        $undesiredSpace = create(Space::class, [
+            'base' => 'Sri Lanka',
+            'arrives_at' => now()->addDay(),
+        ]);
+        create(Space::class, ['base' => 'Sri Lanka'], 5);
+
+        $this->get('/?arrivesAt=' . $desiredDate->format('Y-m-d'))
+            ->assertSee($desiredSpace->uid)
+            ->assertDontSee($undesiredSpace->uid);
+    }
 }

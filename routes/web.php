@@ -2,16 +2,12 @@
 
 use Illuminate\Support\Facades\Route;
 
-Route::get('/coming-soon', function () {
-    return view('coming-soon');
-})->name('coming_soon');
-
 /**
  * Public Routes...
  */
 Route::group([
     'middleware' => 'guest'
-], function () {
+], function (): void {
     /**
      * Carrier's Page...
      */
@@ -57,7 +53,7 @@ Route::group([
      */
     Route::group([
         'prefix' => 'checkout'
-    ], function () {
+    ], function (): void {
         /**
          * Checkout Page...
          */
@@ -102,16 +98,35 @@ Auth::routes();
  */
 Route::group([
     'middleware' => ['auth', 'business'],
-], function () {
+], function (): void {
     /**
      * Dashboard...
      */
     Route::get('/home', 'HomeController')->name('home');
 
     /**
+     * Spaces Search...
+     */
+    Route::get('/spaces/search', 'SearchController@spaces')
+        ->name('spaces.search');
+
+    /**
      * Spaces Routes...
      */
     Route::resource('/spaces', 'SpaceController');
+
+    /**
+     * Orders Search...
+     */
+    Route::get('/orders/search', 'SearchController@orders')
+        ->name('orders.search');
+
+    /**
+     * Orders Routes...
+     */
+    Route::resource('/orders', 'OrderController', [
+        'except' => ['store', 'edit', 'create']
+    ]);
 });
 
 /**
@@ -119,12 +134,12 @@ Route::group([
  */
 Route::group([
     'middleware' => 'auth',
-], function () {
+], function (): void {
     /**
      * User Resources Routes...
      */
     Route::resource('/users', 'Auth\ProfileController', [
-        'except' => ['create', 'store', 'edit']
+        'only' => ['update', 'destroy']
     ]);
 
     /**
@@ -148,14 +163,14 @@ Route::group([
      */
     Route::put(
         '/users/{user}/update/notification',
-        'Auth\NotificationController@update'
+        'Auth\NotificationController'
     )->name('users.notifications');
 
     /**
      * Photo Upload Route...
      */
     Route::post(
-        '/users/photo/{profile?}',
+        '/users/photo/{type?}',
         'PhotoUploadController'
     )->name('users.photo');
 
@@ -181,7 +196,7 @@ Route::group([
  */
 Route::group([
     'middleware' => ['auth', 'admin'],
-], function () {
+], function (): void {
     /**
      * Admin Dashboard...
      */

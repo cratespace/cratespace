@@ -45,6 +45,6 @@ class BusinessController extends Controller
     {
         $user->business()->update($request->validated());
 
-        return success(url()->previous());
+        return $this->success(url()->previous());
     }
 }

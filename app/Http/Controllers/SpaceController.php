@@ -3,23 +3,35 @@
 namespace App\Http\Controllers;
 
 use App\Models\Space;
-use App\Filters\SpaceFilters;
+use App\Filters\SpaceFilter;
+use App\Analytics\SpacesAnalyzer;
 use App\Resources\Spaces\Listings;
 use App\Resources\Listings\SpaceListing;
 use App\Http\Requests\Space as SpaceForm;
+use App\Http\Controllers\Concerns\CountsItems;
 use App\Http\Controllers\Concerns\ManagesListings;
 
 class SpaceController extends Controller
 {
+    use CountsItems;
+
     /**
      * Display a listing of the resource.
      *
+     * @param  \App\Filters\SpaceFilter $filters
      * @return \Illuminate\Http\Response
      */
-    public function index(SpaceFilters $filters)
+    public function index(SpaceFilter $filters)
     {
+        if (! request()->has('status')) {
+            return redirect()->route('spaces.index', ['status' => 'Available']);
+        }
+
+        $spaces = user()->spaces();
+
         return view('businesses.spaces.index', [
-            'spaces' => app('listings.space')->get($filters, user())
+            'counts' => $this->getCountOf(Space::class, $spaces->get()),
+            'spaces' => $spaces->filter($filters)->paginate(10),
         ]);
     }
 
@@ -43,7 +55,7 @@ class SpaceController extends Controller
     {
         user()->spaces()->create($request->validated());
 
-        return success(route('spaces.index'));
+        return $this->success(route('spaces.index'));
     }
 
     /**
@@ -83,7 +95,7 @@ class SpaceController extends Controller
     {
         $space->update($request->validated());
 
-        return success(route('spaces.edit', $space), 'updated');
+        return $this->success(route('spaces.edit', $space), 'updated');
     }
 
     /**
@@ -98,6 +110,6 @@ class SpaceController extends Controller
 
         $space->delete();
 
-        return success(route('spaces.index'), 'deleted');
+        return $this->success(route('spaces.index'), 'deleted');
     }
 }

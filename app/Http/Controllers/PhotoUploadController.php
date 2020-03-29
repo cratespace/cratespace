@@ -20,7 +20,7 @@ class PhotoUploadController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function __invoke(ImageForm $request, $business = null)
+    public function __invoke(ImageForm $request, $type = null)
     {
         $data = [
             'photo' => Storage::disk('s3')->url(
@@ -28,7 +28,7 @@ class PhotoUploadController extends Controller
             )
         ];
 
-        if (! is_null($business)) {
+        if ($type === 'business') {
             user()->business()->update($data);
         } else {
             user()->update($data);

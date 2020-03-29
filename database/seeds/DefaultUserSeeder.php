@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\User;
+use App\Models\Account;
 use App\Models\Business;
 use Illuminate\Support\Str;
 use Illuminate\Database\Seeder;
@@ -46,6 +47,11 @@ class DefaultUserSeeder extends Seeder
             'postcode' => $faker->postcode,
             'email' => $faker->email,
             'phone' => $faker->phoneNumber,
+        ]);
+
+        Account::create([
+            'user_id' => $user->id,
+            'credit' => 0
         ]);
     }
 }

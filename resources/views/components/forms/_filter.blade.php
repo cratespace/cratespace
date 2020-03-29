@@ -5,7 +5,7 @@
                 <label class="block">
                     <span class="text-gray-700 text-sm font-semibold">Origin</span>
 
-                    <select name="origin" id="origin" class="form-select mt-1 block w-full">
+                    <select required name="origin" id="origin" class="form-select mt-1 block w-full">
                         <option value="">All cities</option>
 
                         @foreach ($filters['origins'] as $origin)

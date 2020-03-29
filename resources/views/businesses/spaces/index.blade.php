@@ -40,20 +40,36 @@
                             <div class="bg-white px-4 sm:px-6 border-b border-gray-300">
                                 <div class="flex justify-between items-center">
                                     <nav class="-mb-px flex">
-                                        <a href="?status=Available" class="whitespace-no-wrap py-5 px-1 border-b-2 border-transparent font-medium text-sm text-gray-600 hover:text-gray-700 hover:border-gray-400 focus:outline-none focus:text-gray-700 focus:border-gray-300 transition ease-in-out duration-150">
-                                            Available
+                                        <a href="?status=Available" class="flex items-center {{ request('status') == 'Available' ? 'border-indigo-500 text-indigo-500' : 'border-transparent text-gray-600 hover:text-gray-700 hover:border-gray-400' }} whitespace-no-wrap py-5 px-1 border-b-2 font-medium text-sm focus:outline-none focus:text-gray-700 focus:border-gray-300 transition ease-in-out duration-150">
+                                            <span>Available</span>
+
+                                            <span class="ml-2 {{ request('status') == 'Available' ? 'bg-indigo-200 text-indigo-600' : 'bg-gray-200 text-gray-600' }} inline-block text-xs leading-none px-2 py-1 rounded-full overflow-hidden font-medium">
+                                                {{ $counts['available'] }}
+                                            </span>
                                         </a>
 
-                                        <a href="?status=Ordered" class="whitespace-no-wrap ml-8 py-5 px-1 border-b-2 border-transparent font-medium text-sm text-gray-600 hover:text-gray-700 hover:border-gray-400 focus:outline-none focus:text-gray-700 focus:border-gray-300 transition ease-in-out duration-150">
-                                            Ordered
+                                        <a href="?status=Ordered" class="flex items-center ml-8 {{ request('status') == 'Ordered' ? 'border-indigo-500 text-indigo-500' : 'border-transparent text-gray-600 hover:text-gray-700 hover:border-gray-400' }} whitespace-no-wrap py-5 px-1 border-b-2 font-medium text-sm focus:outline-none focus:text-gray-700 focus:border-gray-300 transition ease-in-out duration-150">
+                                            <span>Ordered</span>
+
+                                            <span class="ml-2 {{ request('status') == 'Ordered' ? 'bg-indigo-200 text-indigo-600' : 'bg-gray-200 text-gray-600' }} inline-block text-xs leading-none px-2 py-1 rounded-full overflow-hidden font-medium">
+                                                {{ $counts['ordered'] }}
+                                            </span>
                                         </a>
 
-                                        <a href="?status=Completed" class="whitespace-no-wrap ml-8 py-5 px-1 border-b-2 border-transparent font-medium text-sm text-gray-600 hover:text-gray-700 hover:border-gray-400 focus:outline-none focus:text-gray-700 focus:border-gray-300 transition ease-in-out duration-150">
-                                            Completed
+                                        <a href="?status=Completed" class="flex items-center ml-8 {{ request('status') == 'Completed' ? 'border-indigo-500 text-indigo-500' : 'border-transparent text-gray-600 hover:text-gray-700 hover:border-gray-400' }} whitespace-no-wrap py-5 px-1 border-b-2 font-medium text-sm focus:outline-none focus:text-gray-700 focus:border-gray-300 transition ease-in-out duration-150">
+                                            <span>Completed</span>
+
+                                            <span class="ml-2 {{ request('status') == 'Completed' ? 'bg-indigo-200 text-indigo-600' : 'bg-gray-200 text-gray-600' }} inline-block text-xs leading-none px-2 py-1 rounded-full overflow-hidden font-medium">
+                                                {{ $counts['completed'] }}
+                                            </span>
                                         </a>
 
-                                        <a href="?status=Expired" class="whitespace-no-wrap ml-8 py-5 px-1 border-b-2 border-transparent font-medium text-sm text-gray-600 hover:text-gray-700 hover:border-gray-400 focus:outline-none focus:text-gray-700 focus:border-gray-300 transition ease-in-out duration-150">
-                                            Expired
+                                        <a href="?status=Expired" class="flex items-center ml-8 {{ request('status') == 'Expired' ? 'border-indigo-500 text-indigo-500' : 'border-transparent text-gray-600 hover:text-gray-700 hover:border-gray-400' }} whitespace-no-wrap py-5 px-1 border-b-2 font-medium text-sm focus:outline-none focus:text-gray-700 focus:border-gray-300 transition ease-in-out duration-150">
+                                            <span>Expired</span>
+
+                                            <span class="ml-2 {{ request('status') == 'Expired' ? 'bg-indigo-200 text-indigo-600' : 'bg-gray-200 text-gray-600' }} inline-block text-xs leading-none px-2 py-1 rounded-full overflow-hidden font-medium">
+                                                {{ $counts['expired'] }}
+                                            </span>
                                         </a>
                                     </nav>
 
@@ -78,8 +94,8 @@
                             </div>
 
                             <div class="bg-white px-4 py-5 sm:px-6">
-                                <form action="{{ route('spaces.index', ['type' => request('type')->slug ?? null]) }}" method="GET">
-                                    <label for="search" class="sr-only">Search candidates</label>
+                                <form action="{{ route('spaces.search') }}" method="GET">
+                                    <label for="q" class="sr-only">Search spaces</label>
 
                                     <div class="flex rounded-lg shadow-sm">
                                         <div class="relative flex-grow focus-within:z-10">
@@ -89,15 +105,11 @@
                                                 </svg>
                                             </div>
 
-                                            <input id="search" name="search" type="text" class="form-input bg-white rounded-none block w-full pl-10 pr-3 rounded-l-lg focus:shadow-none transition ease-in-out duration-150" required placeholder="D7TRg">
+                                            <input id="q" name="q" type="text" class="form-input bg-white rounded-none block w-full pl-10 pr-3 rounded-l-lg focus:shadow-none transition ease-in-out duration-150" required placeholder="Search by space ID...">
                                         </div>
 
                                         <button type="submit" class="-ml-px relative flex items-center px-3 py-2 rounded-r-lg border border-gray-300 bg-gray-100 text-gray-800 focus:outline-none focus:shadow-none focus:border-blue-300 focus:z-10 transition ease-in-out duration-150">
-                                            <svg class="h-5 w-5 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
-                                                <path fill-rule="evenodd" d="M3 3a1 1 0 011-1h12a1 1 0 011 1v3a1 1 0 01-.293.707L12 11.414V15a1 1 0 01-.293.707l-2 2A1 1 0 018 17v-5.586L3.293 6.707A1 1 0 013 6V3z" clip-rule="evenodd"></path>
-                                            </svg>
-
-                                            <span class="ml-2">Filter</span>
+                                            Search
                                         </button>
                                     </div>
                                 </form>
@@ -266,9 +278,9 @@
                                                         </button>
 
                                                         <div class="dropdown-menu dropdown-menu-right rounded-lg shadow-lg z-50 mt-3" aria-labelledby="userDropDown">
-                                                            <a href="{{ $space->path() }}" class="dropdown-item block px-4 py-2 text-sm">View</a>
-                                                            <a href="{{ route('spaces.edit', $space) }}" class="dropdown-item block px-4 py-2 text-sm">Edit</a>
-                                                            <a href="#" class="dropdown-item block px-4 py-2 text-sm text-red-500 hover:text-red-500 focus:text-white" data-toggle="modal" data-target="#deleteModal{{ $space->uid }}">Delete</a>
+                                                            <a href="{{ $space->path() }}" class="dropdown-item font-medium block px-4 py-2 text-sm">View</a>
+                                                            <a href="{{ route('spaces.edit', $space) }}" class="dropdown-item font-medium block px-4 py-2 text-sm">Edit</a>
+                                                            <a href="#" class="dropdown-item font-medium block px-4 py-2 text-sm text-red-500 hover:text-red-500 focus:text-white" data-toggle="modal" data-target="#deleteModal{{ $space->uid }}">Delete</a>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -280,7 +292,7 @@
                                     @include('businesses.spaces.components.modals._delete-confirmation', ['space' => $space])
                                 </div>
                             @empty
-                                <div class="bg-white p-3">
+                                <div class="bg-white px-4 py-5 sm:px-6">
                                     <div class="flex items-center">
                                         <svg class="h-5 w-5 mr-1 text-gray-500" viewBox="0 0 20 20" fill="currentColor">
                                           <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/>

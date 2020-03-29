@@ -49,7 +49,7 @@ class CreateSpaceTest extends TestCase
 
         $this->assertDatabaseHas('spaces', ['uid' => $space['uid']]);
 
-        $this->get(route('spaces.index'))->assertSee($space['uid']);
+        $this->get(route('spaces.index', ['status' => 'Available']))->assertSee($space['uid']);
     }
 
     /** @test */
