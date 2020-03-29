@@ -5,6 +5,10 @@ namespace Tests\Feature;
 use Tests\TestCase;
 use App\Models\Order;
 use App\Models\Space;
+use App\Events\OrderPlaced;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Event;
+use App\Mail\OrderPendingConfirmation;
 
 class PlaceOrderTest extends TestCase
 {
@@ -12,6 +16,8 @@ class PlaceOrderTest extends TestCase
     public function a_customer_can_place_an_order_for_a_space()
     {
         $this->withoutExceptionHandling();
+
+        Mail::fake();
 
         $_SERVER['REMOTE_ADDR'] = '66.102.0.0';
 
@@ -33,9 +39,16 @@ class PlaceOrderTest extends TestCase
             'phone' => '776688899'
         ]);
 
-        $this->assertDatabaseHas('orders', ['uid' => Order::first()->uid]);
+        $order = Order::first();
+
+        $this->assertDatabaseHas('orders', ['uid' => $order->uid]);
 
         $this->assertTrue($space->user->account->credit !== 0);
+
+        Mail::assertSent(OrderPendingConfirmation::class, function ($mail) use ($order) {
+            return $mail->hasTo($order->email) &&
+               $mail->hasCc($order->user->business->email);
+        });
 
         $this->assertFalse(cache()->has('space'));
         $this->assertFalse(cache()->has('prices'));

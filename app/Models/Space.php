@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\Traits\HasUid;
+use Laravel\Scout\Searchable;
 use App\Models\Traits\Fillable;
 use App\Models\Traits\Filterable;
 use App\Models\Traits\Presentable;
@@ -13,7 +14,7 @@ class Space extends Model
 {
     use Fillable,
         Filterable,
-        // Searchable,
+        Searchable,
         Presentable,
         HasUid;
 

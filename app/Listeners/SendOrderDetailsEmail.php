@@ -3,21 +3,13 @@
 namespace App\Listeners;
 
 use App\Events\OrderPlaced;
-use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\OrderPendingConfirmation;
 use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Contracts\Queue\ShouldQueue;
 
 class SendOrderDetailsEmail
 {
-    /**
-     * Create the event listener.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        //
-    }
-
     /**
      * Handle the event.
      *
@@ -26,6 +18,8 @@ class SendOrderDetailsEmail
      */
     public function handle(OrderPlaced $event)
     {
-        //
+        Mail::to($event->getOrder()->email)
+            ->cc($event->getOrder()->user->business->email)
+            ->send(new OrderPendingConfirmation($event->getOrder()));
     }
 }

@@ -29,8 +29,8 @@ class Payment implements ProcessorContract
     {
         try {
             $prices = $this->processPayment($data);
-        } catch (InvalidArgumentException $e) {
-            abort(402, $e->getMessage());
+        } catch (InvalidArgumentException $exception) {
+            abort(402, $exception->getMessage());
         }
 
         event(new PaymentProcessingSucceeded(

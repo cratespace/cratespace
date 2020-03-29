@@ -36,19 +36,17 @@ class WeeklyReport extends Report
     protected function groupBy()
     {
         return $this->collection->select([
-                DB::raw('DATE(created_at) AS date'),
-                DB::raw('COUNT(id) AS count'),
-            ])
-            ->whereBetween(
-                'created_at',
-                [
-                    Carbon::now()->subDays(30),
-                    Carbon::now()
-                ]
-            )
-            ->groupBy('date')
-            ->orderBy('date', 'ASC')
-            ->get()
-            ->toArray();
+            DB::raw('DATE(created_at) AS date'),
+            DB::raw('COUNT(id) AS count'),
+        ])->whereBetween(
+            'created_at',
+            [
+                Carbon::now()->subDays(30),
+                Carbon::now()
+            ]
+        )->groupBy('date')
+        ->orderBy('date', 'ASC')
+        ->get()
+        ->toArray();
     }
 }
