@@ -3,16 +3,16 @@
 namespace App\Reports;
 
 use Carbon\Carbon;
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Builder;
 
 abstract class Report
 {
     /**
      * The model to be reported on.
      *
-     * @var \Illuminate\Database\Eloquent\Model
+     * @var \Illuminate\Database\Eloquent\Builder
      */
-    protected $model;
+    protected $collection;
 
     /**
      * Data count per month.
@@ -31,29 +31,49 @@ abstract class Report
     /**
      * Create new report instance.
      *
-     * @param \Illuminate\Database\Eloquent\Model $model
+     * @param \Illuminate\Database\Eloquent\Builder $collection
      */
-    public function __construct(Model $model)
+    public function __construct(Builder $collection)
     {
-        $this->model = $model;
+        $this->collection = $collection;
     }
 
     /**
      * Parse data into yearly report graph.
      *
-     * @param  int|null $userId
+     * @param  int|null $limit
      * @return array
      */
-    abstract public function make();
+    public function make(?int $limit = null)
+    {
+        foreach ($this->groupBy() as $key => $value) {
+            $this->count[(int) $key] = count($value);
+        }
+
+        if (! is_null($limit)) {
+            $this->countFor($limit);
+        }
+
+        return collect($this->graphData);
+    }
 
     /**
-     * Collect model data of given user for graphing.
+     * Group coleted data by month.
      *
-     * @param  int $userId|null
-     * @return \Illuminate\Database\Eloquent\Builder
+     * @return \Illuminate\Support\Collection
      */
-    public function collectDataOf(?int $userId = null)
+    abstract protected function groupBy();
+
+    /**
+     * Count entreis in a month.
+     *
+     * @param int $limit
+     */
+    protected function countFor(int $limit)
     {
-        return $this->model->whereUserId($userId ?? user('id'));
+        for ($i = 1; $i <= $limit; $i++) {
+            $this->graphData[$i] = isset($this->count[$i])
+                ?  $this->count[$i] : 0;
+        }
     }
 }

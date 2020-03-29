@@ -19,7 +19,7 @@
                 <label class="block">
                     <span class="text-gray-700 text-sm font-semibold">Destination</span>
 
-                    <select required name="destination" id="destination" class="form-select mt-1 block w-full">
+                    <select name="destination" id="destination" class="form-select mt-1 block w-full">
                         <option value="">All cities</option>
 
                         @foreach ($filters['destinations'] as $destination)

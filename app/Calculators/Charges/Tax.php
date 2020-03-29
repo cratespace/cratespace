@@ -21,6 +21,10 @@ class Tax implements ChargeContract
      */
     public function getTaxRate()
     {
-        return 0.5;
+        if (config('pricing.rates.tax') !== null) {
+            return config('pricing.rates.tax');
+        }
+
+        return 0;
     }
 }

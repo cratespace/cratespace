@@ -21,6 +21,10 @@ class Service implements ChargeContract
      */
     public function getServiceRate()
     {
-        return 1.0;
+        if (config('pricing.rates.service') !== null) {
+            return config('pricing.rates.service');
+        }
+
+        return 0;
     }
 }

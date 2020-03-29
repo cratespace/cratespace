@@ -109,7 +109,7 @@
 
         <div>
             <div class="text-right">
-                <span class="font-normal leading-none">{{ '$' . $purchase['service'] }}</span>
+                <span class="font-normal leading-none">{{ '$' . $pricing['service'] }}</span>
             </div>
         </div>
     </div>
@@ -123,7 +123,7 @@
 
         <div>
             <div class="text-right">
-                <span class="font-normal leading-none">{{ '$' . $purchase['tax'] }}</span>
+                <span class="font-normal leading-none">{{ '$' . $pricing['tax'] }}</span>
             </div>
         </div>
     </div>
@@ -138,7 +138,7 @@
         <div>
             <div class="text-right">
                 <span class="text-2xl font-normal leading-none">
-                    {{ '$' . $purchase['total'] }}
+                    {{ '$' . $pricing['total'] }}
                 </span>
             </div>
         </div>

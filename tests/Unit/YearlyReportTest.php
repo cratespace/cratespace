@@ -22,11 +22,9 @@ class YearlyReportTest extends TestCase
             ]);
         }
 
-        $graph = new YearlyReport(new Space);
-        $graph->collectDataof($user->id);
-        $graphData = $graph->make();
-
-        $this->assertInstanceOf(Collection::class, $graphData);
+        $space = Space::whereUserId($user->id);
+        $graph = new YearlyReport($space);
+        $graphData = $graph->make(12);
 
         $months = array_keys($graphData->toArray());
 

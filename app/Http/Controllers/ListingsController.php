@@ -8,6 +8,13 @@ use App\Filters\SpaceFilter;
 class ListingsController extends Controller
 {
     /**
+     * All listings available in the customer's country.
+     *
+     * @var \Illuminate\Database\Eloquent\Builder
+     */
+    protected $listing;
+
+    /**
      * Show listings page with all available and filtered spaces.
      *
      * @return \Illuminate\Http\Response
@@ -18,7 +25,7 @@ class ListingsController extends Controller
 
         return view('listings', [
             'spaces' => $spaces,
-            'filters' => $this->filters($spaces)
+            'filters' => $this->getFilters()
         ]);
     }
 
@@ -30,8 +37,11 @@ class ListingsController extends Controller
      */
     protected function getSpaces(SpaceFilter $filters)
     {
-        return Space::list()
-            ->with('user')
+        $spaces = Space::list();
+
+        $this->listing = $spaces->get();
+
+        return $spaces->with('user')
             ->filter($filters)
             ->latest()
             ->paginate(10);
@@ -42,7 +52,7 @@ class ListingsController extends Controller
      *
      * @return array
      */
-    public function filters($spaces)
+    public function getFilters()
     {
         $filters = [];
 
@@ -51,7 +61,7 @@ class ListingsController extends Controller
             'destinations' => 'destination'
         ] as $key => $attribute) {
             $filters[$key] = collect(array_unique(
-                $spaces->pluck($attribute)->toArray()
+                $this->listing->pluck($attribute)->toArray()
             ))->sort();
         }
 

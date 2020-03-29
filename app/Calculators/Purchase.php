@@ -35,7 +35,7 @@ class Purchase implements CalculatorContract
 
         $this->amounts['total'] = array_sum($this->amounts);
 
-        return $this->amounts['total'];
+        return $this;
     }
 
     /**

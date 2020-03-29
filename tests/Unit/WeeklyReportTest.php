@@ -22,11 +22,9 @@ class WeeklyReportTest extends TestCase
             ]);
         }
 
-        $graph = new WeeklyReport(new Space);
-        $graph->collectDataof($user->id);
+        $space = Space::whereUserId($user->id);
+        $graph = new WeeklyReport($space);
         $graphData = $graph->make();
-
-        $this->assertInstanceOf(Collection::class, $graphData);
 
         $days = array_keys($graphData->toArray());
 

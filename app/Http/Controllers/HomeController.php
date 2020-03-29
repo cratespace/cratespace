@@ -18,8 +18,8 @@ class HomeController extends Controller
      */
     public function __invoke()
     {
-        $graph = new WeeklyReport(new Order);
-        $graphData = $graph->make(user('id'));
+        $graph = (new WeeklyReport(Order::whereUserId(user('id'))));
+        $graphData = $graph->make();
 
         if (is_null(user('business')->email)) {
             return redirect()->route('users.edit', [

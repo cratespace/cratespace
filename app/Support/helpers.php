@@ -73,6 +73,9 @@ if (! function_exists('is_active')) {
      */
     function is_active(string $path, string $active = 'active', string $default = '')
     {
-        return call_user_func_array('Request::is', (array) $path) ? $active : $default;
+        return call_user_func_array(
+            'Request::is',
+            (array) $path
+        ) ? $active : $default;
     }
 }

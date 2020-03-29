@@ -14,15 +14,14 @@ class PriceCalculatorTest extends TestCase
         $purchase = new Purchase();
         $space = create(Space::class, ['price' => 10]);
 
-        $this->assertEquals(10.15, $purchase->calculate($space->price));
         $this->assertEquals(
             [
                 "subtotal" => 10,
-                "service" => 0.1,
-                "tax" => 0.05,
-                "total" => 10.15,
+                "service" => 1,
+                "tax" => 0.5,
+                "total" => 11.5,
             ],
-            $purchase->getAmounts()
+            $purchase->calculate($space->price)->getAmounts()
         );
     }
 }

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Space;
+use Facades\App\Calculators\Purchase;
 
 class CheckoutController extends Controller
 {
@@ -21,7 +22,7 @@ class CheckoutController extends Controller
 
         return view('checkout', [
             'space' => $space,
-            'purchase' => app('purchase')->make($space)
+            'pricing' => Purchase::calculate($space->price)->getAmounts()
         ]);
     }
 

@@ -22,11 +22,9 @@ class DailyReportTest extends TestCase
             ]);
         }
 
-        $graph = new DailyReport(new Space);
-        $graph->collectDataof($user->id);
-        $graphData = $graph->make();
-
-        $this->assertInstanceOf(Collection::class, $graphData);
+        $space = Space::whereUserId($user->id);
+        $graph = new DailyReport($space);
+        $graphData = $graph->make(date('t'));
 
         $days = array_keys($graphData->toArray());
 

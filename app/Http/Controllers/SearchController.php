@@ -28,7 +28,7 @@ class SearchController extends Controller
         }
 
         return view('businesses.spaces.index', [
-            'spaces' =>  $spaces,
+            'spaces' => $spaces,
             'counts' => $this->getCountOf(
                 Space::class,
                 Space::whereUserId(user('id'))->get()

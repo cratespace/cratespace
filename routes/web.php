@@ -1,25 +1,6 @@
 <?php
 
-use Carbon\Carbon;
-use App\Models\Order;
-use App\Models\Space;
 use Illuminate\Support\Facades\Route;
-
-Route::get('/coming-soon', function () {
-    return view('coming-soon');
-})->name('coming_soon');
-
-// Route::get('/tests', function () {
-//     create(Space::class, [
-//         'user_id' => 1
-//     ], 100)->each(function ($space) {
-//         create(Order::class, [
-//             'user_id' => $space->user->id,
-//             'space_id' => $space->id,
-//             'created_at' => Carbon::now()->subMonths(rand(0, 12))
-//         ]);
-//     });
-// })->name('tests');
 
 /**
  * Public Routes...
