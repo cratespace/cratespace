@@ -31,7 +31,6 @@ return [
         'business' => ['nullable', 'string', 'max:255'],
         'email' => ['required', 'string', 'email', 'max:255'],
         'phone' => ['required'],
-        'space_id' => ['required', 'integer'],
     ],
 
     /**

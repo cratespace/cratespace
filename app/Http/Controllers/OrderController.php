@@ -42,7 +42,7 @@ class OrderController extends Controller
      */
     public function store(OrderForm $request)
     {
-        (new OrderManager())->process($request->validated());
+        Order::process($request->validated());
 
         return $this->success(route('listings'), 'Order placed successfully.');
     }

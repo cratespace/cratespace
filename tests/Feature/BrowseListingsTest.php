@@ -11,8 +11,6 @@ class BrowseListingsTest extends TestCase
     /** @test */
     public function customers_can_view_all_listings_based_on_their_location()
     {
-        $this->withoutExceptionHandling();
-
         $_SERVER['REMOTE_ADDR'] = '66.102.0.0';
 
         $space = create(Space::class, ['base' => 'United States']);

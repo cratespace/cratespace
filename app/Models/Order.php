@@ -30,6 +30,16 @@ class Order extends Model
     ];
 
     /**
+     * All processes to perform to create a new order.
+     *
+     * @var array
+     */
+    protected static $processes = [
+        \App\Processes\Orders\Payment::class,
+        \App\Processes\Orders\NewOrder::class,
+    ];
+
+    /**
      * The accessors to append to the model's array form.
      *
      * @var array
@@ -89,5 +99,18 @@ class Order extends Model
     public function path()
     {
         return "/orders/{$this->uid}";
+    }
+
+    /**
+     * Process order.
+     *
+     * @param  array  $data
+     * @return void
+     */
+    public static function process(array $data)
+    {
+        foreach (static::$processes as $process) {
+            (new $process())->perform($data);
+        }
     }
 }
