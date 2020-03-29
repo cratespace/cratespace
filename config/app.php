@@ -15,6 +15,8 @@ return [
 
     'name' => env('APP_NAME', 'Cratespace'),
 
+    'title' => env('APP_TITLE', 'Cratespace, Inc.'),
+
     /*
     |--------------------------------------------------------------------------
     | Application Environment
