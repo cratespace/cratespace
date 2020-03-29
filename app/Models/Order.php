@@ -15,7 +15,7 @@ class Order extends Model
     use Fillable,
         Filterable,
         HasUid,
-        Searchable,
+        // Searchable,
         GeneratesUid;
 
     /**
