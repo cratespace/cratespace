@@ -4,7 +4,7 @@
 
 <script>
     export default {
-        props: ['data'],
+        props: ['keys', 'values'],
 
         data() {
             return {
@@ -13,14 +13,14 @@
                         toolbar: {
                             show: false
                         },
-                        id: 'orders-per-year',
+                        id: 'orders-per-week',
                         foreColor: '#718096'
                     },
                     stroke: {
                         width: 1
                     },
                     xaxis: {
-                        categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+                        categories: this.keys
                     },
                     grid: {
                         borderColor: '#F7FAFC'
@@ -60,12 +60,16 @@
                 },
                 series: [{
                     name: 'Orders',
-                    data: this.data
+                    data: this.values
                 }],
                 tooltip: {
                     theme: "dark"
                 },
             }
+        },
+
+        mounted() {
+            console.log(this.keys);
         }
     }
 </script>

@@ -16,7 +16,7 @@ class Space extends Model
     use Fillable,
         Filterable,
         HasUid,
-        // Searchable,
+        Searchable,
         Presentable;
 
     /**

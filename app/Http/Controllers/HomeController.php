@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Order;
 use App\Models\Space;
-use App\Reports\YearlyReport;
+use App\Reports\WeeklyReport;
 use App\Http\Controllers\Concerns\CountsItems;
 
 class HomeController extends Controller
@@ -18,7 +18,7 @@ class HomeController extends Controller
      */
     public function __invoke()
     {
-        $graph = new YearlyReport(new Order);
+        $graph = new WeeklyReport(new Order);
         $graphData = $graph->make(user('id'));
 
         if (is_null(user('business')->email)) {

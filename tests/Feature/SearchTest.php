@@ -33,7 +33,7 @@ class SearchTest extends TestCase
         do {
             sleep(.25);
 
-            $results = $this->getJson("/spaces/search?q={$search}")->json();
+            $results = $this->getJson("/spaces/search?q={$search}")->json()['data'];
         } while (empty($results));
 
         $this->assertCount(1, $results);
@@ -78,7 +78,7 @@ class SearchTest extends TestCase
      */
     protected function searchConfigured()
     {
-        return ! config('scout.algolia.id') &&
+        return ! config('scout.algolia.id') ||
             (method_exists(new Space, 'search') &&
             method_exists(new Order, 'search'));
     }

@@ -22,6 +22,13 @@ abstract class Report
     protected $count = [];
 
     /**
+     * Data to be used in graphing.
+     *
+     * @var array
+     */
+    protected $graphData = [];
+
+    /**
      * Create new report instance.
      *
      * @param \Illuminate\Database\Eloquent\Model $model
