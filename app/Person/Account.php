@@ -20,6 +20,7 @@ class Account implements Responsibility
         AccountModel::create([
             'user_id' => $person->id,
             'bank' => $data['business'],
+            'credit' => 0
         ]);
 
         return $person;

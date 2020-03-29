@@ -3,14 +3,21 @@
 namespace App\Processes\Orders;
 
 use InvalidArgumentException;
-use Facades\App\Calculators\Purchase;
 use App\Events\PaymentProcessingSucceeded;
 use App\Contracts\Process as ProcessorContract;
+use App\Processes\Orders\Concerns\CalculatesPrices;
 use App\Processes\Orders\Concerns\IdentifiesResource;
 
 class Payment implements ProcessorContract
 {
-    use IdentifiesResource;
+    use IdentifiesResource, CalculatesPrices;
+
+    /**
+     * Details of the resource currently being purchased.
+     *
+     * @var \App\Models\Space
+     */
+    protected $details;
 
     /**
      * Process given data and follow relevant procedures.
@@ -26,7 +33,10 @@ class Payment implements ProcessorContract
             abort(402, $e->getMessage());
         }
 
-        event(new PaymentProcessingSucceeded($prices));
+        event(new PaymentProcessingSucceeded(
+            $this->details->user,
+            $prices['credit']
+        ));
     }
 
     /**
@@ -41,10 +51,8 @@ class Payment implements ProcessorContract
             throw new InvalidArgumentException();
         }
 
-        $prices = Purchase::calculate($this->getDetails()->price)->getAmounts();
+        $this->details = $this->getDetails();
 
-        cache()->put('prices', $prices);
-
-        return $prices;
+        return $this->calculate($this->details->price);
     }
 }

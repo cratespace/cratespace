@@ -24,13 +24,13 @@ class EventServiceProvider extends ServiceProvider
             SendEmailVerificationNotification::class,
         ],
 
+        PaymentProcessingSucceeded::class => [
+            UpdateBusinessCredit::class
+        ],
+
         OrderPlaced::class => [
             SendNewOrderPlacedNotification::class,
             SendOrderDetailsEmail::class,
-        ],
-
-        PaymentProcessingSucceeded::class => [
-            UpdateBusinessCredit::class
         ],
     ];
 }

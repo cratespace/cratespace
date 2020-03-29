@@ -6,11 +6,12 @@ use App\Models\Order;
 use App\Events\OrderPlaced;
 use App\Contracts\Process as ProcessContract;
 use App\Exceptions\ResourceNotFoundException;
+use App\Processes\Orders\Concerns\CalculatesPrices;
 use App\Processes\Orders\Concerns\IdentifiesResource;
 
 class NewOrder implements ProcessContract
 {
-    use IdentifiesResource;
+    use IdentifiesResource, CalculatesPrices;
 
     /**
      * Process given data and follow relevant procedures.

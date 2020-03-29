@@ -11,6 +11,8 @@ class PlaceOrderTest extends TestCase
     /** @test */
     public function a_customer_can_place_an_order_for_a_space()
     {
+        $this->withoutExceptionHandling();
+
         $_SERVER['REMOTE_ADDR'] = '66.102.0.0';
 
         $space = create(Space::class, ['base' => 'United States']);
@@ -33,6 +35,9 @@ class PlaceOrderTest extends TestCase
 
         $this->assertDatabaseHas('orders', ['uid' => Order::first()->uid]);
 
+        $this->assertTrue($space->user->account->credit !== 0);
+
         $this->assertFalse(cache()->has('space'));
+        $this->assertFalse(cache()->has('prices'));
     }
 }
