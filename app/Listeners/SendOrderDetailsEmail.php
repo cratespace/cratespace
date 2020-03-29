@@ -15,7 +15,6 @@ class SendOrderDetailsEmail
      */
     public function __construct()
     {
-        //
     }
 
     /**
@@ -26,6 +25,5 @@ class SendOrderDetailsEmail
      */
     public function handle(OrderPlaced $event)
     {
-        //
     }
 }

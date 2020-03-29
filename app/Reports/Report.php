@@ -73,7 +73,7 @@ abstract class Report
     {
         for ($i = 1; $i <= $limit; $i++) {
             $this->graphData[$i] = isset($this->count[$i])
-                ?  $this->count[$i] : 0;
+                ? $this->count[$i] : 0;
         }
     }
 }

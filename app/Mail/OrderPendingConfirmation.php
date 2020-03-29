@@ -18,7 +18,6 @@ class OrderPendingConfirmation extends Mailable
      */
     public function __construct()
     {
-        //
     }
 
     /**

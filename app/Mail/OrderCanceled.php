@@ -18,7 +18,6 @@ class OrderCanceled extends Mailable
      */
     public function __construct()
     {
-        //
     }
 
     /**

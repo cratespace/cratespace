@@ -20,14 +20,14 @@ class PaymentProcessingSucceeded
      *
      * @param \App\Models\User $user
      */
-    public $user;
+    protected $user;
 
     /**
      * The amount credited to the user's business.
      *
      * @var int
      */
-    public $credit;
+    protected $credit;
 
     /**
      * Create a new event instance.
@@ -43,10 +43,14 @@ class PaymentProcessingSucceeded
 
     /**
      * Get the subject of the event.
+     *
+     * @return array
      */
-    public function subject()
+    public function getProperties()
     {
-        $this->user;
-        $this->credit;
+        return [
+            'user' => $this->user,
+            'credit' => $this->user
+        ];
     }
 }

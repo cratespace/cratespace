@@ -21,7 +21,6 @@ class OrderPlaced
      */
     public function __construct()
     {
-        //
     }
 
     /**

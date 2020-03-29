@@ -14,8 +14,8 @@ class UpdateBusinessCredit
      */
     public function handle(PaymentProcessingSucceeded $event)
     {
-        $event->user->account()->update([
-            'credit' => $event->credit
+        $event->getProperties()['user']->account()->update([
+            'credit' => $event->getProperties()['credit']
         ]);
     }
 }
