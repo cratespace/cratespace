@@ -96,7 +96,8 @@ class Space extends Model
      */
     public function scopeList($query)
     {
-        return $query->whereBase(Location::getCountry());
+        return $query->whereBase(Location::getCountry())
+            ->whereStatus('Available');
     }
 
     /**

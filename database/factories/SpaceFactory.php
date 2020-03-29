@@ -11,7 +11,10 @@ use Faker\Generator as Faker;
 
 $factory->define(Space::class, function (Faker $faker) {
     $user = create(User::class);
-    create(Business::class, ['user_id' => $user->id]);
+    create(Business::class, [
+        'user_id' => $user->id,
+        'country' => 'Sri Lanka'
+    ]);
     create(Account::class, ['user_id' => $user->id]);
 
     return [

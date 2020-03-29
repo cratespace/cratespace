@@ -50,7 +50,7 @@ class PaymentProcessingSucceeded
     {
         return [
             'user' => $this->user,
-            'credit' => $this->user
+            'credit' => $this->credit
         ];
     }
 }

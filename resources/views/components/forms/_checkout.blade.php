@@ -1,5 +1,5 @@
 <div>
-    <form id="payment-form" action="#" method="POST">
+    <form id="payment-form" action="{{ route('orders.store') }}" method="POST">
         @csrf
 
         <div class="mb-6">

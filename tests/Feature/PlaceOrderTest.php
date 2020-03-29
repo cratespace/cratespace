@@ -6,19 +6,17 @@ use Tests\TestCase;
 use App\Models\Order;
 use App\Models\Space;
 use App\Events\OrderPlaced;
+use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Event;
 use App\Mail\OrderPendingConfirmation;
+use Illuminate\Database\Eloquent\Model;
 
 class PlaceOrderTest extends TestCase
 {
     /** @test */
     public function a_customer_can_place_an_order_for_a_space()
     {
-        $this->withoutExceptionHandling();
-
-        Mail::fake();
-
         $_SERVER['REMOTE_ADDR'] = '66.102.0.0';
 
         $space = create(Space::class, ['base' => 'United States']);
@@ -35,22 +33,76 @@ class PlaceOrderTest extends TestCase
         $this->post(route('orders.store'), [
             'name' => 'John Doe',
             'email' => 'john.doe@example.com',
-            'business' => 'Example Compny',
+            'business' => 'Example Company',
             'phone' => '776688899'
         ]);
 
         $order = Order::first();
 
         $this->assertDatabaseHas('orders', ['uid' => $order->uid]);
-
         $this->assertTrue($space->user->account->credit !== 0);
+        $this->assertFalse(cache()->has('space'));
+        $this->assertFalse(cache()->has('prices'));
+    }
+
+    /** @test */
+    public function an_event_is_dispatched_when_an_order_is_created()
+    {
+        $initialEvent = Event::getFacadeRoot();
+        Event::fake();
+        Model::setEventDispatcher($initialEvent);
+
+        $_SERVER['REMOTE_ADDR'] = '66.102.0.0';
+
+        $space = create(Space::class, ['base' => 'United States']);
+
+        $this->post(route('checkout.store', $space))
+            ->assertRedirect('/checkout');
+
+        $this->assertTrue(cache()->has('space'));
+
+        $this->post(route('orders.store'), [
+            'name' => 'John Doe',
+            'email' => 'john.doe@example.com',
+            'business' => 'Example Company',
+            'phone' => '776688899'
+        ]);
+
+        $order = Order::first();
+
+        Event::assertDispatched(OrderPlaced::class, function ($e) use ($order) {
+            return $e->getOrder()->id === $order->id;
+        });
+    }
+
+    /** @test */
+    public function a_customer_receives_an_email_on_successful_purchase()
+    {
+        $this->withoutExceptionHandling();
+
+        Mail::fake();
+
+        $_SERVER['REMOTE_ADDR'] = '66.102.0.0';
+
+        $space = create(Space::class, ['base' => 'United States']);
+
+        $this->post(route('checkout.store', $space))
+            ->assertRedirect('/checkout');
+
+        $this->assertTrue(cache()->has('space'));
+
+        $this->post(route('orders.store'), [
+            'name' => 'John Doe',
+            'email' => 'john.doe@example.com',
+            'business' => 'Example Company',
+            'phone' => '776688899'
+        ]);
+
+        $order = Order::first();
 
         Mail::assertSent(OrderPendingConfirmation::class, function ($mail) use ($order) {
             return $mail->hasTo($order->email) &&
                $mail->hasCc($order->user->business->email);
         });
-
-        $this->assertFalse(cache()->has('space'));
-        $this->assertFalse(cache()->has('prices'));
     }
 }
