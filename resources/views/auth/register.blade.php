@@ -93,7 +93,7 @@
                             <div class="col-md-6 mb-6">
                                 @include('components.forms.fields._email')
 
-                                <span class="text-xs text-gray-600">Make sure this is the company email.</span>
+                                <span class="text-xs text-gray-600">Make sure this is the business email.</span>
                             </div>
                         </div>
 

@@ -15,7 +15,7 @@ class Space extends Model
 {
     use Fillable,
         Filterable,
-        // Searchable,
+        Searchable,
         Presentable,
         HasUid;
 
@@ -46,6 +46,16 @@ class Space extends Model
         'weight', 'note', 'price', 'user_id', 'origin', 'destination',
         'status', 'type', 'base',
     ];
+
+    /**
+     * Get the indexable data array for the model.
+     *
+     * @return array
+     */
+    public function toSearchableArray()
+    {
+        return $this->toArray();
+    }
 
     /**
      * Set the space's price in cents.

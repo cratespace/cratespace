@@ -14,11 +14,13 @@ class SearchTest extends TestCase
     /** @test */
     public function a_user_can_search_spaces()
     {
+        $this->withoutExceptionHandling();
+
         if (! $this->searchConfigured()) {
             $this->markTestSkipped("Search is not configured.");
         }
 
-        config(['scout.driver' => 'algolia']);
+        config(['scout.driver' => 'tntsearch']);
 
         $user = $this->signIn();
 
@@ -48,7 +50,7 @@ class SearchTest extends TestCase
             $this->markTestSkipped("Search is not configured.");
         }
 
-        config(['scout.driver' => 'algolia']);
+        config(['scout.driver' => 'tntsearch']);
 
         $user = $this->signIn();
 
@@ -78,8 +80,7 @@ class SearchTest extends TestCase
      */
     protected function searchConfigured()
     {
-        return ! config('scout.algolia.id') ||
-            (method_exists(new Space, 'search') &&
-            method_exists(new Order, 'search'));
+        return method_exists(new Space, 'search') &&
+            method_exists(new Order, 'search');
     }
 }

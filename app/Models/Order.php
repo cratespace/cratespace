@@ -17,7 +17,7 @@ class Order extends Model
     use Fillable,
         Filterable,
         HasUid,
-        // Searchable,
+        Searchable,
         GeneratesUid;
 
     /**
@@ -69,6 +69,16 @@ class Order extends Model
                 $order->notifyStatusUpdate();
             }
         });
+    }
+
+    /**
+     * Get the indexable data array for the model.
+     *
+     * @return array
+     */
+    public function toSearchableArray()
+    {
+        return $this->toArray();
     }
 
     /**

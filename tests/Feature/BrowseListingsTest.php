@@ -86,7 +86,7 @@ class BrowseListingsTest extends TestCase
         ]);
         create(Space::class, ['base' => 'Sri Lanka'], 5);
 
-        $this->get('/?departsAt=' . $desiredDate->format('Y-m-d'))
+        $this->get('/?departs_at=' . $desiredDate->format('Y-m-d'))
             ->assertSee($desiredSpace->uid)
             ->assertDontSee($undesiredSpace->uid);
     }
@@ -106,7 +106,7 @@ class BrowseListingsTest extends TestCase
         ]);
         create(Space::class, ['base' => 'Sri Lanka'], 5);
 
-        $this->get('/?arrivesAt=' . $desiredDate->format('Y-m-d'))
+        $this->get('/?arrives_at=' . $desiredDate->format('Y-m-d'))
             ->assertSee($desiredSpace->uid)
             ->assertDontSee($undesiredSpace->uid);
     }
