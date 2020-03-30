@@ -17,7 +17,7 @@
                 @include('components.forms.fields._business')
 
                 <div role="alert">
-                    <span class="text-xs text-gray-500">If you are an individual, you can leave this field unfilled.</span>
+                    <span class="text-xs text-gray-500">If you are an individual, specify as <span class="font-semibold">Independent</span>.</span>
                 </div>
             </div>
 
