@@ -8,9 +8,11 @@ use App\Models\Space;
 use App\Events\OrderPlaced;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Mail;
+use App\Notifications\NewOrderPlaced;
 use Illuminate\Support\Facades\Event;
 use App\Mail\OrderPendingConfirmation;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Notification;
 
 class PlaceOrderTest extends TestCase
 {
@@ -78,8 +80,6 @@ class PlaceOrderTest extends TestCase
     /** @test */
     public function a_customer_receives_an_email_on_successful_purchase()
     {
-        $this->withoutExceptionHandling();
-
         Mail::fake();
 
         $_SERVER['REMOTE_ADDR'] = '66.102.0.0';
@@ -104,5 +104,37 @@ class PlaceOrderTest extends TestCase
             return $mail->hasTo($order->email) &&
                $mail->hasCc($order->user->business->email);
         });
+    }
+
+    /** @test */
+    public function the_related_business_receives_a_notification_when_an_order_is_placed()
+    {
+        Notification::fake();
+
+        $_SERVER['REMOTE_ADDR'] = '66.102.0.0';
+
+        $space = create(Space::class, ['base' => 'United States']);
+
+        $this->post(route('checkout.store', $space))
+            ->assertRedirect('/checkout');
+
+        $this->assertTrue(cache()->has('space'));
+
+        $this->post(route('orders.store'), [
+            'name' => 'John Doe',
+            'email' => 'john.doe@example.com',
+            'business' => 'Example Company',
+            'phone' => '776688899'
+        ]);
+
+        $order = Order::first();
+
+        Notification::assertSentTo(
+            $order->user,
+            NewOrderPlaced::class,
+            function ($notification, $channels) use ($order) {
+                return $notification->getOrder()->id === $order->id;
+            }
+        );
     }
 }

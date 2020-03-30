@@ -9,14 +9,14 @@ use App\Mail\Traits\SenderDetails;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
-class OrderPendingConfirmation extends Mailable
+class NewOrder extends Mailable
 {
     use Queueable, SerializesModels, SenderDetails;
 
     /**
-     * The order details.
+     * The new order that was placedand is to be notified about.
      *
-     * @var array
+     * @var \App\Models\Order
      */
     protected $order;
 
@@ -38,10 +38,13 @@ class OrderPendingConfirmation extends Mailable
     public function build()
     {
         return $this->from(...$this->getSenderDetails())
-            ->to($this->order->email, $this->order->name)
-            ->subject('Order Pending Confirmation')
+            ->to(
+                $this->order->user->business->email,
+                $this->order->user->business->name
+            )
+            ->subject('New Order Placed')
             ->markdown(
-                'emails.customers.order-pending',
+                'emails.businesses.new-order',
                 ['order' => $this->order]
             );
     }

@@ -50,7 +50,7 @@
         </div>
     </section>
 
-    <section class="py-12">
+    <section class="py-6">
         <div class="container">
             <div class="row">
                 <div class="col-lg-8 col-md-10">
