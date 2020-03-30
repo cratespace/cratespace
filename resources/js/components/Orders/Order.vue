@@ -5,7 +5,7 @@
                 <div class="flex-shrink-0 h-16 w-16">
                     <div class="flex justify-center items-center h-16 w-16 bg-indigo-100 rounded-full">
                         <div class="text-center">
-                            <div class="text-xs font-semibold text-indigo-900">{{ '#' + order.uid }}</div>
+                            <div class="text-xs font-semibold text-indigo-900 uppercase">{{ '#' + order.uid }}</div>
                         </div>
                     </div>
                 </div>
@@ -15,7 +15,7 @@
                     <div class="text-sm leading-5 text-gray-600">{{ order.phone }}</div>
 
                     <div>
-                        <a href="" class="font-semibold text-indigo-500 text-xs">{{ '#' + order.space.uid }}</a>
+                        <a :href="order.path" class="font-semibold text-indigo-500 text-xs uppercase">{{ '#' + order.space.uid }}</a>
                     </div>
                 </div>
             </div>
@@ -77,8 +77,6 @@
 
         created() {
             this.setCurrentStatus();
-
-            console.log(this.statuses);
         },
 
         methods: {

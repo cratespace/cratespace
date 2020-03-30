@@ -12,7 +12,7 @@ trait GeneratesUid
     public static function bootGeneratesUid()
     {
         static::creating(function ($ticket) {
-            $ticket->uid = strtoupper(Str::random(4));
+            $ticket->uid = strtoupper(Str::random(20));
         });
     }
 }

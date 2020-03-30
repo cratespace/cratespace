@@ -159,7 +159,7 @@
                 </label>
 
                 <div class="mt-10">
-                    <button type="submit" class="btn btn-primary w-full">Book Space</button>
+                    <button type="submit" class="btn btn-primary w-full">Complete Order</button>
                 </div>
             </div>
         </div>

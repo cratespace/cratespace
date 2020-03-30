@@ -33,11 +33,12 @@ class PlaceOrderTest extends TestCase
 
         $this->assertTrue(cache()->has('space'));
 
-        $this->post(route('orders.store'), [
+        $response = $this->post(route('orders.store'), [
             'name' => 'John Doe',
             'email' => 'john.doe@example.com',
             'business' => 'Example Company',
-            'phone' => '776688899'
+            'phone' => '776688899',
+            'payment_type' => 'cash'
         ]);
 
         $order = Order::first();
@@ -68,7 +69,8 @@ class PlaceOrderTest extends TestCase
             'name' => 'John Doe',
             'email' => 'john.doe@example.com',
             'business' => 'Example Company',
-            'phone' => '776688899'
+            'phone' => '776688899',
+            'payment_type' => 'cash'
         ]);
 
         $order = Order::first();
@@ -96,7 +98,8 @@ class PlaceOrderTest extends TestCase
             'name' => 'John Doe',
             'email' => 'john.doe@example.com',
             'business' => 'Example Company',
-            'phone' => '776688899'
+            'phone' => '776688899',
+            'payment_type' => 'cash'
         ]);
 
         $order = Order::first();
@@ -125,7 +128,8 @@ class PlaceOrderTest extends TestCase
             'name' => 'John Doe',
             'email' => 'john.doe@example.com',
             'business' => 'Example Company',
-            'phone' => '776688899'
+            'phone' => '776688899',
+            'payment_type' => 'cash'
         ]);
 
         $order = Order::first();

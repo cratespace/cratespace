@@ -9,14 +9,6 @@ use App\Models\Space;
 class ManageSpacesTest extends TestCase
 {
     /** @test */
-    public function a_user_is_redirected_to_available_spaces_route()
-    {
-        $this->signIn();
-
-        $this->get('/spaces')->assertRedirect('/spaces?status=Available');
-    }
-
-    /** @test */
     public function a_user_can_view_a_space()
     {
         $this->signIn();

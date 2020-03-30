@@ -48,7 +48,7 @@
                                     <div class="col-12">
                                         <div class="flex items-center">
                                             <div class="min-w-0 flex-1 flex items-center">
-                                                <div class="min-w-0 flex-1 px-4 md:grid md:grid-cols-2 md:gap-4">
+                                                <div class="min-w-0 flex-1 items-center px-4 md:grid md:grid-cols-2 md:gap-4">
                                                     <div>
                                                         <div class="text-xs leading-5 font-semibold tracking-wider text-gray-500 uppercase">New Order Placed</div>
 
@@ -57,24 +57,8 @@
                                                                 Order no. <span class="font-semibold uppercase text-sm">{{ '#' . $notification->data['order']['uid'] }}</span> placed for space <span class="font-semibold uppercase text-sm">{{ '#' . $notification->data['order']['space_id'] }}</span>
                                                             </div>
 
-                                                            <div class="mt-2 text-sm leading-5 font-medium truncate text-indigo-500">{{ $notification->data['order']['name'] }}</div>
-
-                                                            <div class="flex items-center">
-                                                                <div class="flex items-center text-sm leading-5 text-gray-500">
-                                                                    <svg class="flex-shrink-0 mr-2 h-5 w-5 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
-                                                                        <path fill-rule="evenodd" d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884zM18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z" clip-rule="evenodd"></path>
-                                                                    </svg>
-
-                                                                    <span class="truncate">{{ $notification->data['order']['email'] }}</span>
-                                                                </div>
-
-                                                                <div class="ml-4 flex items-center text-sm leading-5 text-gray-500">
-                                                                    <svg class="flex-shrink-0 mr-2 h-5 w-5 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
-                                                                        <path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z"/>
-                                                                    </svg>
-
-                                                                    <span class="truncate">{{ $notification->data['order']['phone'] }}</span>
-                                                                </div>
+                                                            <div>
+                                                                <a class="text-xs text-indigo-500 hover:border-indigo-400" href="{{ $notification->data['order']['path'] }}">View order <span>&rarr;</span></a>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -83,14 +67,6 @@
                                                         <div>
                                                             <div class="text-sm leading-5 text-gray-900">
                                                                 <time datetime="{{ $notification->created_at->format('Y-m-d') }}">{{ $notification->created_at->format('M j, Y') }}</time>
-                                                            </div>
-
-                                                            <div class="mt-2 flex items-center text-sm leading-5 text-gray-500">
-                                                                <svg class="flex-shrink-0 mr-2 h-5 w-5 text-green-400" fill="currentColor" viewBox="0 0 20 20">
-                                                                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
-                                                                </svg>
-
-                                                                Pending confirmation
                                                             </div>
                                                         </div>
                                                     </div>

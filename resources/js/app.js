@@ -19,6 +19,7 @@ Vue.component("image-upload-form", require("./components/ImageUploadForm.vue").d
 Vue.component("flash", require("./components/Flash.vue").default);
 Vue.component("order", require("./components/Orders/Order.vue").default);
 Vue.component("graph", require("./components/Graph.vue").default);
+Vue.component("order-details", require("./components/OrderDetails.vue").default);
 
 // Spaces
 // Vue.component("spaces", require("./components/Spaces/List.vue").default);

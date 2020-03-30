@@ -122,7 +122,11 @@
                                             <div class="flex justify-between">
                                                 <div>
                                                     <div>
-                                                        <div class="text-sm font-bold text-gray-600 uppercase">{{ '#' . $space->uid }}</div>
+                                                        <a href="{{ $space->path() }}">
+                                                            <div class="text-sm font-bold text-gray-600 uppercase">
+                                                                {{ '#' . $space->uid }}
+                                                            </div>
+                                                        </a>
 
                                                         <div class="text-xs text-indigo-500">{{ $space->type }}</div>
                                                     </div>
