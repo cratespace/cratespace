@@ -1,5 +1,5 @@
 <div>
-    <h3 class="text-xl text-gray-600">Summary</h3>
+    <h3 class="text-xl text-gray-800 font-semibold">Summary</h3>
 </div>
 
 <hr class="mt-6 mb-3">

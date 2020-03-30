@@ -14,14 +14,14 @@ class CheckoutController extends Controller
      */
     public function show()
     {
-        if (! cache()->has('space')) {
-            return redirect()->route('listings');
-        }
+        // if (! cache()->has('space')) {
+        //     return redirect()->route('listings');
+        // }
 
         $space = cache('space');
 
         return view('checkout', [
-            'space' => $space,
+            'space' => $space ?? new Space,
             'pricing' => Purchase::calculate($space->price)->getAmounts()
         ]);
     }

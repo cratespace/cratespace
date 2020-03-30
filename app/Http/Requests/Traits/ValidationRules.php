@@ -3,8 +3,12 @@
 namespace App\Http\Requests\Traits;
 
 use App\Models\User;
+use LVR\CreditCard\CardCvc;
+use LVR\CreditCard\CardNumber;
 use Illuminate\Validation\Rule;
 use App\Rules\CurrentPasswordCheck;
+use LVR\CreditCard\CardExpirationYear;
+use LVR\CreditCard\CardExpirationMonth;
 
 trait ValidationRules
 {
@@ -25,7 +29,30 @@ trait ValidationRules
      */
     protected function order()
     {
+        if (request('payment_type') === 'credit_card') {
+            return array_merge(
+                config('validation.order'),
+                $this->creditcard()
+            );
+        }
+
         return config('validation.order');
+    }
+
+    /**
+     * Get the validation rules that apply to the request.
+     *
+     * @return array
+     */
+    protected function creditcard()
+    {
+        return [
+            'name_on_card' => ['required', 'string', 'max:255'],
+            'card_number' => ['required', new CardNumber],
+            'expiration_year' => ['required', new CardExpirationYear($this->get('expiration_month'))],
+            'expiration_month' => ['required', new CardExpirationMonth($this->get('expiration_year'))],
+            'cvc' => ['required', new CardCvc($this->get('card_number'))]
+        ];
     }
 
     /**
