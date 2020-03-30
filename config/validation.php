@@ -13,7 +13,7 @@ return [
         'width' => ['required', 'integer'],
         'length' => ['required', 'integer'],
         'weight' => ['required', 'integer'],
-        'price' => ['required', 'integer'],
+        'price' => ['required', 'numeric', 'min:1'],
         'origin' => ['required', 'string'],
         'destination' => ['required', 'string'],
         'departs_at' => ['required', 'date'],

@@ -7,8 +7,8 @@ interface Charge
     /**
      * Apply charge to price.
      *
-     * @param  int $price
-     * @return int
+     * @param  float $price
+     * @return float
      */
-    public function apply(int $price);
+    public function apply(float $price);
 }

@@ -24,6 +24,7 @@ class BrowseListingsTest extends TestCase
     public function customers_will_see_listings_of_sri_lanka_if_ip_cannot_be_identified()
     {
         $_SERVER['REMOTE_ADDR'] = null;
+        unset($_SERVER['REMOTE_ADDR']);
 
         $spaceLanka = create(Space::class, ['base' => 'Sri Lanka']);
         $spaceUS = create(Space::class, ['base' => 'United States']);

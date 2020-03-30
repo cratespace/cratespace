@@ -9,7 +9,7 @@ class Subtotal implements ChargeContract
     /**
      * {@inheritdoc}
      */
-    public function apply(int $price)
+    public function apply(float $price)
     {
         return $price;
     }

@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Models\Traits\HasUid;
 use Laravel\Scout\Searchable;
 use App\Models\Traits\Fillable;
+use App\Models\Traits\HasPrice;
 use App\Models\Traits\Filterable;
 use App\Models\Traits\Presentable;
 use Illuminate\Database\Eloquent\Model;
@@ -47,7 +48,7 @@ class Space extends Model
     ];
 
     /**
-     * Set the books's price in cents.
+     * Set the space's price in cents.
      *
      * @param string $value
      * @return string

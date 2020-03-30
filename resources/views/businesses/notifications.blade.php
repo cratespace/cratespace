@@ -104,7 +104,7 @@
 
                                                         <input type="hidden" name="notification" value="{{ $notification->id }}">
 
-                                                        <button type="submit" class="btn btn-secondary">Mark unread</button>
+                                                        <button type="submit" class="btn btn-secondary text-sm">Mark unread</button>
                                                     </form>
                                                 @else
                                                     <form action="{{ route('users.notifications.markread', user()) }}" method="POST">
@@ -112,7 +112,7 @@
 
                                                         <input type="hidden" name="notification" value="{{ $notification->id }}">
 
-                                                        <button type="submit" class="btn btn-secondary">Mark read</button>
+                                                        <button type="submit" class="btn btn-secondary text-sm">Mark read</button>
                                                     </form>
                                                 @endif
                                             </div>

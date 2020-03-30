@@ -35,7 +35,7 @@ class Payment implements ProcessorContract
 
         event(new PaymentProcessingSucceeded(
             $this->details->user,
-            $prices['credit']
+            $prices['subtotal']
         ));
     }
 

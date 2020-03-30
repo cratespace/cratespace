@@ -4,6 +4,8 @@ namespace Tests\Unit;
 
 use Tests\TestCase;
 use App\Models\Order;
+use App\Mail\OrderStatusUpdated;
+use Illuminate\Support\Facades\Mail;
 
 class OrderTest extends TestCase
 {
@@ -20,6 +22,29 @@ class OrderTest extends TestCase
 
         $order->markAs('Canceled');
         $this->assertEquals('Canceled', $order->refresh()->status);
+    }
+
+    /** @test */
+    public function an_email_is_sent_to_the_customer_every_time_its_status_is_updated()
+    {
+        Mail::fake();
+
+        $order = create(Order::class);
+
+        $order->markAs('Confirmed');
+        $this->assertEquals('Confirmed', $order->refresh()->status);
+
+        Mail::assertSent(OrderStatusUpdated::class);
+
+        $order->markAs('Completed');
+        $this->assertEquals('Completed', $order->refresh()->status);
+
+        Mail::assertSent(OrderStatusUpdated::class);
+
+        $order->markAs('Canceled');
+        $this->assertEquals('Canceled', $order->refresh()->status);
+
+        Mail::assertSent(OrderStatusUpdated::class);
     }
 
     /** @test */

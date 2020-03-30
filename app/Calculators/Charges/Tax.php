@@ -9,7 +9,7 @@ class Tax implements ChargeContract
     /**
      * {@inheritdoc}
      */
-    public function apply(int $price)
+    public function apply(float $price)
     {
         return $this->getTaxRate() / 100 * $price;
     }
@@ -17,7 +17,7 @@ class Tax implements ChargeContract
     /**
      * Get applicable tax rate.
      *
-     * @return int
+     * @return float
      */
     public function getTaxRate()
     {

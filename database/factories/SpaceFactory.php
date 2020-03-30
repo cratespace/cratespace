@@ -21,8 +21,8 @@ $factory->define(Space::class, function (Faker $faker) {
         'uid' => Str::random(12),
         'departs_at' => now()->addMonths(rand(1, 500)),
         'arrives_at' => now()->addMonths(rand(1, 1000)),
-        'origin' => $faker->city,
-        'destination' => $faker->city,
+        'origin' => 'Trincomalee',
+        'destination' => 'Colombo',
         'height' => rand(1, 9),
         'width' => rand(1, 9),
         'length' => rand(1, 9),
@@ -31,7 +31,7 @@ $factory->define(Space::class, function (Faker $faker) {
         'note' => $faker->sentence(7),
         'price' => rand(1, 9),
         'type' => $faker->randomElement(['Local', 'International']),
-        'base' => $user->business->country,
+        'base' => 'Sri Lanka',
         'user_id' => $user->id,
     ];
 });
