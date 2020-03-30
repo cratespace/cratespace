@@ -10,6 +10,7 @@ use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Mail;
 use App\Notifications\NewOrderPlaced;
 use Illuminate\Support\Facades\Event;
+use Illuminate\Support\Facades\Queue;
 use App\Mail\OrderPendingConfirmation;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Notification;
