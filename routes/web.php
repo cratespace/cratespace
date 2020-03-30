@@ -4,6 +4,12 @@ declare(strict_types=1);
 
 use Illuminate\Support\Facades\Route;
 
+Route::get('/mail', function () {
+    $order = App\Models\Order::find(1);
+
+    return (new App\Mail\NewOrder($order))->render();
+});
+
 /**
  * Public Routes...
  */
@@ -165,8 +171,40 @@ Route::group([
      */
     Route::put(
         '/users/{user}/update/notification',
-        'Auth\NotificationController'
+        'Auth\NotificationController@update'
     )->name('users.notifications');
+
+    /**
+     * User Notifications Routes.
+     */
+    Route::get(
+        '/users/{user}/notification',
+        'Auth\NotificationController@index'
+    )->name('users.notifications.index');
+
+    /**
+     * User Notifications Status Marked Routes.
+     */
+    Route::post(
+        '/users/{user}/notification/raed',
+        'Auth\NotificationController@markread'
+    )->name('users.notifications.markread');
+
+    /**
+     * User Notifications Status Unmarked Routes.
+     */
+    Route::post(
+        '/users/{user}/notification/unread',
+        'Auth\NotificationController@markunread'
+    )->name('users.notifications.markunread');
+
+    /**
+     * User Notifications Search Routes.
+     */
+    Route::get(
+        '/users/{user}/notification/search',
+        'SearchController@index'
+    )->name('users.notifications.search');
 
     /**
      * Photo Upload Route...

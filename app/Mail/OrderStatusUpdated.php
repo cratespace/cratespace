@@ -9,7 +9,7 @@ use App\Mail\Traits\SenderDetails;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
-class OrderPendingConfirmation extends Mailable
+class OrderStatusUpdated extends Mailable
 {
     use Queueable, SerializesModels, SenderDetails;
 
@@ -39,9 +39,9 @@ class OrderPendingConfirmation extends Mailable
     {
         return $this->from(...$this->getSenderDetails())
             ->to($this->order->email, $this->order->name)
-            ->subject('Order Pending Confirmation')
+            ->subject('Order ' . $this->order->status)
             ->markdown(
-                'emails.customers.order-pending',
+                'emails.customers.order-status',
                 ['order' => $this->order]
             );
     }

@@ -13,13 +13,6 @@ class User extends Authenticatable
     use Notifiable, Fillable, HasPhoto;
 
     /**
-     * The relations to eager load on every query.
-     *
-     * @var array
-     */
-    protected $with = ['business', 'account'];
-
-    /**
      * The attributes that are mass assignable.
      *
      * @var array

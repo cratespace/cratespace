@@ -40,13 +40,13 @@ class DefaultUserSeeder extends Seeder
             'name' => 'Cratespace',
             'slug' => 'cratespace',
             'description' => $faker->sentence(7),
-            'street' => $faker->streetName,
-            'city' => $faker->city,
-            'state' => $faker->state,
-            'country' => $faker->country,
-            'postcode' => $faker->postcode,
-            'email' => $faker->email,
-            'phone' => $faker->phoneNumber,
+            'street' => '22 Auburn Side',
+            'city' => 'Sri Lanka',
+            'state' => 'Western',
+            'country' => 'Sri Lanka',
+            'postcode' => 13500,
+            'email' => 'tjthavarshan@gmail.com',
+            'phone' => '775018794',
         ]);
 
         Account::create([

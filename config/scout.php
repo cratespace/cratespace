@@ -11,11 +11,11 @@ return [
     | using Laravel Scout. This connection is used when syncing all models
     | to the search service. You should adjust this based on your needs.
     |
-    | Supported: "algolia", "null"
+    | Supported: "algolia", "null", "tntsearch"
     |
     */
 
-    'driver' => env('SCOUT_DRIVER', 'algolia'),
+    'driver' => env('SCOUT_DRIVER', 'tntsearch'),
 
     /*
     |--------------------------------------------------------------------------
@@ -86,5 +86,17 @@ return [
     'algolia' => [
         'id' => env('ALGOLIA_APP_ID', '2Y4JDKYU5O'),
         'secret' => env('ALGOLIA_SECRET', '04155f381e433e03f59e30b09d8ff251'),
+    ],
+
+    'tntsearch' => [
+        'storage'  => storage_path(), //place where the index files will be stored
+        'fuzziness' => env('TNTSEARCH_FUZZINESS', false),
+        'fuzzy' => [
+            'prefix_length' => 2,
+            'max_expansions' => 50,
+            'distance' => 2
+        ],
+        'asYouType' => false,
+        'searchBoolean' => env('TNTSEARCH_BOOLEAN', false),
     ],
 ];

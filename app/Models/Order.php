@@ -5,8 +5,10 @@ namespace App\Models;
 use App\Models\Traits\HasUid;
 use Laravel\Scout\Searchable;
 use App\Models\Traits\Fillable;
+use App\Mail\OrderStatusUpdated;
 use App\Models\Traits\Graphable;
 use App\Models\Traits\Filterable;
+use Illuminate\Support\Facades\Mail;
 use App\Models\Concerns\GeneratesUid;
 use Illuminate\Database\Eloquent\Model;
 
@@ -26,7 +28,7 @@ class Order extends Model
     protected $fillable = [
         'name', 'email', 'phone', 'business', 'status',
         'total', 'tax', 'service', 'user_id', 'space_id',
-        'uid',
+        'uid', 'payment_type',
     ];
 
     /**
@@ -52,6 +54,32 @@ class Order extends Model
      * @var array
      */
     protected $with = ['space'];
+
+    /**
+     * Bootstrap the model and its traits.
+     *
+     * @return void
+     */
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::updated(function ($order) {
+            if ($order->status !== 'Pending') {
+                $order->notifyStatusUpdate();
+            }
+        });
+    }
+
+    /**
+     * Get the indexable data array for the model.
+     *
+     * @return array
+     */
+    public function toSearchableArray()
+    {
+        return $this->toArray();
+    }
 
     /**
      * Get the space associated with the order.
@@ -112,5 +140,15 @@ class Order extends Model
         foreach (static::$processes as $process) {
             (new $process())->perform($data);
         }
+    }
+
+    /**
+     * Notify customer of order status update.
+     *
+     * @return \Illuminate\Support\Facades\Mail
+     */
+    public function notifyStatusUpdate()
+    {
+        return Mail::send(new OrderStatusUpdated($this));
     }
 }

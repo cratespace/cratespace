@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Models\Traits\HasUid;
 use Laravel\Scout\Searchable;
 use App\Models\Traits\Fillable;
+use App\Models\Traits\HasPrice;
 use App\Models\Traits\Filterable;
 use App\Models\Traits\Presentable;
 use Illuminate\Database\Eloquent\Model;
@@ -47,7 +48,17 @@ class Space extends Model
     ];
 
     /**
-     * Set the books's price in cents.
+     * Get the indexable data array for the model.
+     *
+     * @return array
+     */
+    public function toSearchableArray()
+    {
+        return $this->toArray();
+    }
+
+    /**
+     * Set the space's price in cents.
      *
      * @param string $value
      * @return string
@@ -96,7 +107,8 @@ class Space extends Model
      */
     public function scopeList($query)
     {
-        return $query->whereBase(Location::getCountry());
+        return $query->whereBase(Location::getCountry())
+            ->whereStatus('Available');
     }
 
     /**

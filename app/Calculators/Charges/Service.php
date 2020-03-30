@@ -9,7 +9,7 @@ class Service implements ChargeContract
     /**
      * {@inheritdoc}
      */
-    public function apply(int $price)
+    public function apply(float $price)
     {
         return $this->getServiceRate() / 100 * $price;
     }
@@ -17,7 +17,7 @@ class Service implements ChargeContract
     /**
      * Get applicable service rate.
      *
-     * @return int
+     * @return float
      */
     public function getServiceRate()
     {

@@ -1,7 +1,9 @@
+@component('mail::message')
 # Order Pending Confirmation
 
-Your payment was accepted and your order is now pending confirmation by the business.
+Hi, {{ $order->name }}<br>
 
-Thanks,<br>
-{{ config('app.title') }}
+The payment for order **{{ '#'. $order->uid }}** has been confirmed! We'll let you know when your order is accepted.<br>
 
+If you have any questions, please [let us know](https://cratespace.biz/support)!
+@endcomponent

@@ -4674,6 +4674,10 @@ span.flatpickr-weekday {
   background-image: url("/img/bg-pattern.svg"), linear-gradient(to right, #f7fafc 0%, white 100%);
 }
 
+.w-72 {
+  width: 20rem !important;
+}
+
 .sr-only{
   position: absolute;
   width: 1px;

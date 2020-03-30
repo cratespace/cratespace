@@ -23,6 +23,7 @@ class CreateOrdersTable extends Migration
             $table->float('total');
             $table->float('tax');
             $table->float('service');
+            $table->string('payment_type')->default('cash');
             $table->string('status')->default('Pending'); // Pending, Completed, Canceled
             $table->foreignId('user_id')
                   ->constrained()

@@ -51,7 +51,7 @@
                         <div class="text-gray-400 font-medium text-sm">Credit</div>
 
                         <div class="flex leading-none items-end">
-                            <div class="text-white text-3xl leading-none">$56738.87</div>
+                            <div class="text-white text-3xl leading-none">{{ '$' . user()->account->credit ?? 0.00 }}</div>
 
                             <div class="ml-2 leading-none flex items-center whitespace-no-wrap">
                                 <svg class="flex-shrink-0 h-5 w-5 text-green-500" viewBox="0 0 20 20" fill="currentColor">

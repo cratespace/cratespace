@@ -33,9 +33,9 @@ class PaymentProcessingSucceeded
      * Create a new event instance.
      *
      * @param \App\Models\User $user
-     * @param int $credit
+     * @param float $credit
      */
-    public function __construct(User $user, int $credit)
+    public function __construct(User $user, float $credit)
     {
         $this->user = $user;
         $this->credit = $credit;
@@ -50,7 +50,7 @@ class PaymentProcessingSucceeded
     {
         return [
             'user' => $this->user,
-            'credit' => $this->user
+            'credit' => $this->credit
         ];
     }
 }

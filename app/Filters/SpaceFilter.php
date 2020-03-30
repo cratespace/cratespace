@@ -14,7 +14,7 @@ class SpaceFilter extends Filter
      */
     protected $filters = [
         'business', 'origin', 'destination', 'type',
-        'departsAt', 'arrivesAt', 'status'
+        'departs_at', 'arrives_at', 'status'
     ];
 
     /**
@@ -58,7 +58,7 @@ class SpaceFilter extends Filter
      * @param  string $date
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    protected function departsAt($date)
+    protected function departs_at($date)
     {
         return $this->builder->whereDate('departs_at', '=', $date);
     }
@@ -69,7 +69,7 @@ class SpaceFilter extends Filter
      * @param  string $date
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    protected function arrivesAt($date)
+    protected function arrives_at($date)
     {
         return $this->builder->whereDate('arrives_at', '=', $date);
     }

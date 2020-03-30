@@ -10,11 +10,8 @@ matrix:
   fast_finish: true
   include:
     - php: 7.2
-    - php: 7.2
-      env: SETUP=lowest
     - php: 7.3
-    - php: 7.3
-      env: SETUP=lowest
+    - php: 7.4
 
 cache:
   directories:
@@ -47,3 +44,4 @@ branches:
   only:
   - staging
   - development
+  - master

@@ -59,7 +59,10 @@ class UserTest extends TestCase
     /** @test */
     public function only_user_of_type_admin_can_access_admin_dashboard()
     {
-        $this->signIn(create(User::class, ['type' => 'business']));
+        $this->withoutExceptionHandling();
+
+        $user = $this->signIn(create(User::class, ['type' => 'business']));
+        create(Account::class, ['user_id' => $user->id]);
 
         $this->get('/home')->assertStatus(200);
 

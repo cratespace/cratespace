@@ -7,18 +7,17 @@ use Facades\App\Calculators\Purchase;
 trait CalculatesPrices
 {
     /**
-     * [calculate description]
-     * @param  [type] $resourcePrice [description]
-     * @return [type]                [description]
+     * Calculates total prices with all relevant charges applied.
+     *
+     * @param  float $resourcePrice
+     * @return array
      */
-    protected function calculate($resourcePrice)
+    protected function calculate(float $resourcePrice)
     {
-        $prices = array_merge(
-            $prices = Purchase::calculate($resourcePrice)->getAmounts(),
-            ['credit' => $prices['subtotal'] + $prices['tax']]
+        cache()->put(
+            'prices',
+            $prices = Purchase::calculate($resourcePrice)->getAmounts()
         );
-
-        cache()->put('prices', $prices);
 
         return $prices;
     }
