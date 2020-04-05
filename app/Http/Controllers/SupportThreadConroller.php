@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Filters\ThreadFilter;
+use App\Models\Channel;
 use App\Models\Thread;
 use Illuminate\Http\Request;
 
@@ -12,10 +14,16 @@ class SupportThreadConroller extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Channel $channel, ThreadFilter $filters)
     {
+        $threads = $this->getThreads($channel, $filters);
+
+        if (request()->wantsJson()) {
+            return $threads;
+        }
+
         return view('support.threads.index', [
-            'threads' => Thread::latest()->paginate(10),
+            'threads' => $threads,
         ]);
     }
 
@@ -48,6 +56,12 @@ class SupportThreadConroller extends Controller
      */
     public function show(string $channel, Thread $thread)
     {
+        if (auth()->check()) {
+            user()->read($thread);
+        }
+
+        $thread->increment('visits');
+
         return view('support.threads.show', compact('thread'));
     }
 
@@ -83,5 +97,24 @@ class SupportThreadConroller extends Controller
      */
     public function destroy(Thread $thread)
     {
+    }
+
+    /**
+     * Fetch all relevant threads.
+     *
+     * @param \App\Models\Channel        $channel
+     * @param \App\Filters\ThreadFilters $filters
+     *
+     * @return \Illuminate\Support\Collection
+     */
+    protected function getThreads(Channel $channel, ThreadFilter $filters)
+    {
+        $threads = Thread::latest()->filter($filters);
+
+        if ($channel->exists) {
+            $threads->where('channel_id', $channel->id);
+        }
+
+        return $threads->paginate(25);
     }
 }

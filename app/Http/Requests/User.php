@@ -2,13 +2,14 @@
 
 namespace App\Http\Requests;
 
-use Illuminate\Foundation\Http\FormRequest;
-use App\Http\Requests\Traits\ValidationRules;
 use App\Http\Requests\Traits\CheckAuthorization;
+use App\Http\Requests\Traits\ValidationRules;
+use Illuminate\Foundation\Http\FormRequest;
 
 class User extends FormRequest
 {
-    use ValidationRules, CheckAuthorization;
+    use ValidationRules;
+    use CheckAuthorization;
 
     /**
      * Determine if the user is authorized to make this request.

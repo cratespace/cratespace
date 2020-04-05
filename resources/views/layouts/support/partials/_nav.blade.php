@@ -15,7 +15,7 @@
                 </li>
 
                 <li class="nav-item ml-0 lg:ml-8">
-                    <a class="nav-link font-medium" href="{{ route('carriers') }}">FAQ</a>
+                    <a class="nav-link font-medium" href="#">FAQ</a>
                 </li>
 
                 @auth

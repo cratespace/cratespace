@@ -92,9 +92,9 @@ if (!function_exists('parse')) {
      *
      * @param string $content
      *
-     * @return \Parsedown
+     * @return string
      */
-    function parse(string $content): \Parsedown
+    function parse(string $content): string
     {
         return app('markdown.parser')->text($content);
     }

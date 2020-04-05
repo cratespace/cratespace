@@ -15,4 +15,14 @@ class Channel extends Model
      * @var array
      */
     protected $guarded = [];
+
+    /**
+     * A channel consists of threads.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function threads()
+    {
+        return $this->hasMany(Thread::class);
+    }
 }

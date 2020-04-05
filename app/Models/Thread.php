@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\Traits\Filterable;
+use App\Models\Traits\Recordable;
 use App\Models\Traits\Sluggable;
 use App\Providers\ThreadReceivedNewReply;
 use Illuminate\Database\Eloquent\Model;
@@ -11,6 +12,7 @@ class Thread extends Model
 {
     use Sluggable;
     use Filterable;
+    use Recordable;
 
     /**
      * The attributes that are mass assignable.
@@ -99,22 +101,9 @@ class Thread extends Model
     {
         $reply = $this->replies()->create($data);
 
-        event(new ThreadReceivedNewReply($reply));
+        // event(new ThreadReceivedNewReply($reply));
 
         return $reply;
-    }
-
-    /**
-     * Apply all relevant thread filters.
-     *
-     * @param \Illuminate\Database\Eloquent\Builder $query
-     * @param \App\Filters\ThreadFilters            $filters
-     *
-     * @return \Illuminate\Database\Eloquent\Builder
-     */
-    public function scopeFilter(Builder $query, ThreadFilters $filters)
-    {
-        return $filters->apply($query);
     }
 
     /**
