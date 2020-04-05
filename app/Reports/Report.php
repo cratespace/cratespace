@@ -2,7 +2,6 @@
 
 namespace App\Reports;
 
-use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 
 abstract class Report
@@ -41,7 +40,8 @@ abstract class Report
     /**
      * Parse data into yearly report graph.
      *
-     * @param  int|null $limit
+     * @param int|null $limit
+     *
      * @return array
      */
     public function make(?int $limit = null)
@@ -50,7 +50,7 @@ abstract class Report
             $this->count[(int) $key] = count($value);
         }
 
-        if (! is_null($limit)) {
+        if (!is_null($limit)) {
             $this->countFor($limit);
         }
 
@@ -71,7 +71,7 @@ abstract class Report
      */
     protected function countFor(int $limit)
     {
-        for ($i = 1; $i <= $limit; $i++) {
+        for ($i = 1; $i <= $limit; ++$i) {
             $this->graphData[$i] = isset($this->count[$i])
                 ? $this->count[$i] : 0;
         }

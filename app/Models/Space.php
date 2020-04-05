@@ -2,22 +2,23 @@
 
 namespace App\Models;
 
-use App\Models\Traits\HasUid;
-use Laravel\Scout\Searchable;
 use App\Models\Traits\Fillable;
-use App\Models\Traits\HasPrice;
 use App\Models\Traits\Filterable;
+use App\Models\Traits\HasStatus;
+use App\Models\Traits\HasUid;
 use App\Models\Traits\Presentable;
-use Illuminate\Database\Eloquent\Model;
 use Facades\App\Http\Services\Ip\Location;
+use Illuminate\Database\Eloquent\Model;
+use Laravel\Scout\Searchable;
 
 class Space extends Model
 {
-    use Fillable,
-        Filterable,
-        Searchable,
-        Presentable,
-        HasUid;
+    use Fillable;
+    use Filterable;
+    use Searchable;
+    use Presentable;
+    use HasUid;
+    use HasStatus;
 
     /**
      * The attributes that should be cast to native types.
@@ -61,6 +62,7 @@ class Space extends Model
      * Set the space's price in cents.
      *
      * @param string $value
+     *
      * @return string
      */
     public function setPriceAttribute($value)
@@ -71,7 +73,8 @@ class Space extends Model
     /**
      * Get the books's price.
      *
-     * @param  string  $value
+     * @param string $value
+     *
      * @return string
      */
     public function getPriceAttribute($value)
@@ -102,7 +105,8 @@ class Space extends Model
     /**
      * Scope a query to only include spaces based in user's country.
      *
-     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     *
      * @return \Illuminate\Database\Eloquent\Builder
      */
     public function scopeList($query)
@@ -129,33 +133,5 @@ class Space extends Model
     public function order()
     {
         return $this->hasOne(Order::class);
-    }
-
-    /**
-     * Determine if the shipment is due and has left.
-     *
-     * @return bool
-     */
-    public function departed()
-    {
-        return $this->departs_at <= now() || $this->status === 'Expired';
-    }
-
-    /**
-     * Determine if the shipment has been ordered.
-     *
-     * @return bool
-     */
-    public function ordered()
-    {
-        return $this->order()->exists() || $this->status === 'Ordered';
-    }
-
-    /**
-     * Mark the space as expired.
-     */
-    public function markAs($status)
-    {
-        $this->update(['status' => $status]);
     }
 }

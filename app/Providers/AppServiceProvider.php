@@ -2,10 +2,7 @@
 
 namespace App\Providers;
 
-use App\Models\Order;
-use App\Models\Space;
-use App\Maintainers\OrdersMaintainer;
-use App\Maintainers\SpacesMaintainer;
+use Carbon\Carbon;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -27,6 +24,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        Carbon::setWeekStartsAt(Carbon::MONDAY);
     }
 
     /**

@@ -2,16 +2,17 @@
 
 namespace App\Mail;
 
+use App\Mail\Traits\SenderDetails;
 use App\Models\Order;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
-use App\Mail\Traits\SenderDetails;
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Contracts\Queue\ShouldQueue;
 
 class NewOrder extends Mailable
 {
-    use Queueable, SerializesModels, SenderDetails;
+    use Queueable;
+    use SerializesModels;
+    use SenderDetails;
 
     /**
      * The new order that was placedand is to be notified about.

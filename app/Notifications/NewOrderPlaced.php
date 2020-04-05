@@ -2,12 +2,10 @@
 
 namespace App\Notifications;
 
-use App\Models\Order;
 use App\Mail\NewOrder;
+use App\Models\Order;
 use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Notification;
-use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Notifications\Messages\MailMessage;
 
 class NewOrderPlaced extends Notification
 {
@@ -33,7 +31,8 @@ class NewOrderPlaced extends Notification
     /**
      * Get the notification's delivery channels.
      *
-     * @param  mixed  $notifiable
+     * @param object $notifiable
+     *
      * @return array
      */
     public function via($notifiable)
@@ -44,7 +43,8 @@ class NewOrderPlaced extends Notification
     /**
      * Get the mail representation of the notification.
      *
-     * @param  mixed  $notifiable
+     * @param object $notifiable
+     *
      * @return \Illuminate\Notifications\Messages\MailMessage
      */
     public function toMail($notifiable)
@@ -55,13 +55,14 @@ class NewOrderPlaced extends Notification
     /**
      * Get the array representation of the notification.
      *
-     * @param  mixed  $notifiable
+     * @param object $notifiable
+     *
      * @return array
      */
     public function toArray($notifiable)
     {
         return [
-            'order' => $this->order
+            'order' => $this->order,
         ];
     }
 

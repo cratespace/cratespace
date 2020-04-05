@@ -10,25 +10,7 @@
 
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav ml-auto">
-                <li class="nav-item ml-0 lg:ml-8">
-                    <a class="nav-link font-medium" href="{{ route('listings') }}">Listings</a>
-                </li>
-
-                <li class="nav-item ml-0 lg:ml-8">
-                    <a class="nav-link font-medium" href="{{ route('carriers') }}">Carriers</a>
-                </li>
-
-                <li class="nav-item ml-0 lg:ml-8">
-                    <a class="nav-link font-medium" href="{{ url('/contact') }}">Contact</a>
-                </li>
-
-                <li class="nav-item ml-0 lg:ml-8">
-                    <a class="nav-link font-medium" href="{{ url('/support') }}">Support</a>
-                </li>
-
-                <li class="nav-item ml-0 lg:ml-8">
-                    <a class="nav-link font-medium" href="{{ route('login') }}">Sign in <span class="ml-1">&rarr;</span></a>
-                </li>
+                @include('layouts.partials.links._public')
             </ul>
         </div>
     </div>

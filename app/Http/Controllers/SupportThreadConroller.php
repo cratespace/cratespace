@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Thread;
 use Illuminate\Http\Request;
 
-class ThreadConroller extends Controller
+class SupportThreadConroller extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,7 +15,7 @@ class ThreadConroller extends Controller
     public function index()
     {
         return view('support.threads.index', [
-            'threads' => Thread::latest()->paginate(10)
+            'threads' => Thread::latest()->paginate(10),
         ]);
     }
 
@@ -26,24 +26,24 @@ class ThreadConroller extends Controller
      */
     public function create()
     {
-        //
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
+     *
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
     {
-        //
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Thread  $thread
+     * @param \App\Models\Thread $thread
+     *
      * @return \Illuminate\Http\Response
      */
     public function show(string $channel, Thread $thread)
@@ -54,34 +54,34 @@ class ThreadConroller extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Thread  $thread
+     * @param \App\Models\Thread $thread
+     *
      * @return \Illuminate\Http\Response
      */
     public function edit(Thread $thread)
     {
-        //
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Thread  $thread
+     * @param \Illuminate\Http\Request $request
+     * @param \App\Models\Thread       $thread
+     *
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, Thread $thread)
     {
-        //
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Thread  $thread
+     * @param \App\Models\Thread $thread
+     *
      * @return \Illuminate\Http\Response
      */
     public function destroy(Thread $thread)
     {
-        //
     }
 }

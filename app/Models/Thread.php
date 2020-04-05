@@ -2,13 +2,15 @@
 
 namespace App\Models;
 
-use App\Models\Traits\Sluggable;
 use App\Models\Traits\Filterable;
+use App\Models\Traits\Sluggable;
+use App\Providers\ThreadReceivedNewReply;
 use Illuminate\Database\Eloquent\Model;
 
 class Thread extends Model
 {
-    use Sluggable, Filterable;
+    use Sluggable;
+    use Filterable;
 
     /**
      * The attributes that are mass assignable.
@@ -17,7 +19,7 @@ class Thread extends Model
      */
     protected $fillable = [
         'title', 'body', 'user_id', 'channel_id', 'slug',
-        'replies_count', 'visits', 'locked', 'pinned'
+        'replies_count', 'visits', 'locked', 'pinned',
     ];
 
     /**
@@ -49,7 +51,7 @@ class Thread extends Model
      */
     public function getPathAttribute()
     {
-        if (! $this->channel) {
+        if (!$this->channel) {
             return '';
         }
 
@@ -89,14 +91,15 @@ class Thread extends Model
     /**
      * Add a reply to the thread.
      *
-     * @param  array $reply
+     * @param array $reply
+     *
      * @return \App\Models\Reply
      */
     public function addReply(array $data)
     {
         $reply = $this->replies()->create($data);
 
-        // event(new ThreadReceivedNewReply($reply));
+        event(new ThreadReceivedNewReply($reply));
 
         return $reply;
     }
@@ -104,8 +107,9 @@ class Thread extends Model
     /**
      * Apply all relevant thread filters.
      *
-     * @param  \Illuminate\Database\Eloquent\Builder $query
-     * @param  \App\Filters\ThreadFilters $filters
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @param \App\Filters\ThreadFilters            $filters
+     *
      * @return \Illuminate\Database\Eloquent\Builder
      */
     public function scopeFilter(Builder $query, ThreadFilters $filters)
@@ -116,7 +120,8 @@ class Thread extends Model
     /**
      * Determine if the thread has been updated since the user last read it.
      *
-     * @param  \App\Models\User $user
+     * @param \App\Models\User $user
+     *
      * @return bool
      */
     public function hasUpdatesFor($user)

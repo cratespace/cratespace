@@ -82,7 +82,7 @@
 
                     <ul class="mt-4">
                         <li class="mb-4">
-                            <a href="{{ route('pricing') }}" class="text-gray-600 hover:text-gray-500">Pricing</a>
+                            <a href="{{ url('/pricing') }}" class="text-gray-600 hover:text-gray-500">Pricing</a>
                         </li>
 
                         <li class="mb-4">
@@ -110,11 +110,11 @@
                         </li>
 
                         <li class="mb-4">
-                            <a href="{{ route('privacy') }}" class="text-gray-600 hover:text-gray-500">Privacy</a>
+                            <a href="{{ url('/privacy') }}" class="text-gray-600 hover:text-gray-500">Privacy</a>
                         </li>
 
                         <li>
-                            <a href="{{ route('privacy') }}" class="text-gray-600 hover:text-gray-500">Terms</a>
+                            <a href="{{ url('/privacy') }}" class="text-gray-600 hover:text-gray-500">Terms</a>
                         </li>
                     </ul>
                 </div>

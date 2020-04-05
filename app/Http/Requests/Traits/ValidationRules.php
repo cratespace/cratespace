@@ -3,12 +3,12 @@
 namespace App\Http\Requests\Traits;
 
 use App\Models\User;
-use LVR\CreditCard\CardCvc;
-use LVR\CreditCard\CardNumber;
-use Illuminate\Validation\Rule;
 use App\Rules\CurrentPasswordCheck;
-use LVR\CreditCard\CardExpirationYear;
+use Illuminate\Validation\Rule;
+use LVR\CreditCard\CardCvc;
 use LVR\CreditCard\CardExpirationMonth;
+use LVR\CreditCard\CardExpirationYear;
+use LVR\CreditCard\CardNumber;
 
 trait ValidationRules
 {
@@ -29,7 +29,7 @@ trait ValidationRules
      */
     protected function order()
     {
-        if (request('payment_type') === 'credit_card') {
+        if ('credit_card' === request('payment_type')) {
             return array_merge(
                 config('validation.order'),
                 $this->creditcard()
@@ -48,10 +48,10 @@ trait ValidationRules
     {
         return [
             'name_on_card' => ['required', 'string', 'max:255'],
-            'card_number' => ['required', new CardNumber],
+            'card_number' => ['required', new CardNumber()],
             'expiration_year' => ['required', new CardExpirationYear($this->get('expiration_month'))],
             'expiration_month' => ['required', new CardExpirationMonth($this->get('expiration_year'))],
-            'cvc' => ['required', new CardCvc($this->get('card_number'))]
+            'cvc' => ['required', new CardCvc($this->get('card_number'))],
         ];
     }
 
@@ -75,10 +75,10 @@ trait ValidationRules
         return [
             'name' => ['required', 'string', 'max:255'],
             'username' => ['required', 'string', 'max:255'],
-            'business' => [! request('business') ? 'nullable' : 'required', 'string', 'max:255'],
+            'business' => [!request('business') ? 'nullable' : 'required', 'string', 'max:255'],
             'email' => [
                 'required', 'string', 'email', 'max:255',
-                Rule::unique((new User())->getTable())->ignore(auth()->id())
+                Rule::unique((new User())->getTable())->ignore(auth()->id()),
             ],
             'phone' => ['nullable', 'integer', 'min:9'],
         ];

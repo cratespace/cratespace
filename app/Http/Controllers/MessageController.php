@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Message;
 use App\Http\Requests\Message as MessageForm;
+use App\Models\Message;
 
 class MessageController extends Controller
 {
@@ -27,7 +27,8 @@ class MessageController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
+     *
      * @return \Illuminate\Http\Response
      */
     public function __invoke(MessageForm $request)

@@ -9,7 +9,7 @@
                 </div>
 
                 <div class="col-lg-5 offset-lg-1 col-md-6 mb-6 md:mb-0">
-                    @include('components.sections._checkout-summary', ['space' => $space])
+                    @include('components.sections.checkout._checkout-summary', ['space' => $space])
                 </div>
             </div>
         </div>
