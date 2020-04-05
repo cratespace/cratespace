@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.app.base')
 
 @section('content')
     <section class="py-6 bg-gray-800">

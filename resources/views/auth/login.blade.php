@@ -1,7 +1,7 @@
-@extends('layouts.auth')
+@extends('layouts.auth.base')
 
 @section('content')
-    <section class="relative bg-gradient min-h-screen py-0 md:py-24 bg-contain bg-no-repeat min-h-screen bg-right-top">
+    <section class="relative bg-auth min-h-screen py-0 md:py-24 bg-contain bg-no-repeat min-h-screen bg-right-top">
         <div class="container">
             <div class="row justify-center">
                 <div class="col-xl-5 col-lg-6 col-md-7">

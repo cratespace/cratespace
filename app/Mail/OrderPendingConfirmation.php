@@ -41,7 +41,7 @@ class OrderPendingConfirmation extends Mailable
             ->to($this->order->email, $this->order->name)
             ->subject('Order Pending Confirmation')
             ->markdown(
-                'emails.customers.order-pending',
+                'components.emails.customers.order-pending',
                 ['order' => $this->order]
             );
     }

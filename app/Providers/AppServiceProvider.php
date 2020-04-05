@@ -17,6 +17,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
+        $this->registerMArkdowParser();
     }
 
     /**
@@ -26,5 +27,15 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+    }
+
+    /**
+     * Register markdown parser.
+     */
+    protected function registerMArkdowParser()
+    {
+        $this->app->bind('markdown.parser', function () {
+            return new \Parsedown();
+        });
     }
 }

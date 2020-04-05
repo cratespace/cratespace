@@ -1,5 +1,5 @@
-<form class="shadow-lg rounded-lg" action="{{ route('listings', ['category' => request('category')->slug ?? null]) }}" method="GET">
-    <div class="bg-white px-4 py-5 sm:px-6 rounded-t-lg">
+<form class="shadow-xl rounded-xl" action="{{ route('listings', ['category' => request('category')->slug ?? null]) }}" method="GET">
+    <div class="bg-white px-4 py-5 sm:px-6 rounded-t-xl">
         <div class="row">
             <div class="col-lg-3 col-md-6 mb-6 lg:mb-0">
                 <label class="block">
@@ -43,7 +43,7 @@
         </div>
     </div>
 
-    <div class="bg-gray-100 px-4 py-5 sm:px-6 rounded-b-lg">
+    <div class="bg-gray-100 px-4 py-5 sm:px-6 rounded-b-xl">
         <div class="row">
             <div class="col-12">
                 <div class="flex items-center justify-between">

@@ -44,7 +44,7 @@ class NewOrder extends Mailable
             )
             ->subject('New Order Placed')
             ->markdown(
-                'emails.businesses.new-order',
+                'components.emails.businesses.new-order',
                 ['order' => $this->order]
             );
     }

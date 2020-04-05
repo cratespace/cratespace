@@ -1,4 +1,4 @@
-@extends('layouts.web')
+@extends('layouts.web.base')
 
 @section('content')
     <section class="py-12">

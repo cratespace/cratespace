@@ -86,15 +86,15 @@
                         </li>
 
                         <li class="mb-4">
-                            <a href="{{ route('support') }}" class="text-gray-600 hover:text-gray-500">Guides</a>
+                            <a href="{{ route('support.threads.index') }}" class="text-gray-600 hover:text-gray-500">Guides</a>
                         </li>
 
                         <li class="mb-4">
-                            <a href="{{ route('support') }}" class="text-gray-600 hover:text-gray-500">FAQ</a>
+                            <a href="{{ route('support.threads.index') }}" class="text-gray-600 hover:text-gray-500">FAQ</a>
                         </li>
 
                         <li class="mb-4">
-                            <a href="{{ route('messages.create', ['support' => 1]) }}" class="text-gray-600 hover:text-gray-500">Help</a>
+                            <a href="{{ route('messages.create') }}" class="text-gray-600 hover:text-gray-500">Help</a>
                         </li>
                     </ul>
                 </div>

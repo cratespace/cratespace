@@ -4,12 +4,6 @@ declare(strict_types=1);
 
 use Illuminate\Support\Facades\Route;
 
-Route::get('/mail', function () {
-    $order = App\Models\Order::find(1);
-
-    return (new App\Mail\NewOrder($order))->render();
-});
-
 /**
  * Public Routes...
  */
@@ -19,16 +13,9 @@ Route::group([
     /**
      * Carrier's Page...
      */
-    Route::get('/carrier', function () {
-        return view('carrier');
-    })->name('carrier');
-
-    /**
-     * Support & FAQ Page...
-     */
-    Route::get('/support', function () {
-        return view('support');
-    })->name('support');
+    Route::get('/carriers', function () {
+        return view('carriers');
+    })->name('carriers');
 
     /**
      * Privacy Policy Page...
@@ -229,6 +216,23 @@ Route::group([
         '/users/{user}/update/business/address',
         'Auth\BusinessController@updateAddress'
     )->name('users.business.address');
+});
+
+/**
+ * Support Routes...
+ */
+Route::group([
+    'prefix' => 'support'
+], function (): void {
+    /**
+     * Support Threads Route...
+     */
+    Route::get('/', 'ThreadConroller@index')->name('support.threads.index');
+
+    /**
+     * Support Thread Route...
+     */
+    Route::get('/threads/{channel}/{thread}', 'ThreadConroller@show')->name('support.threads.show');
 });
 
 /**

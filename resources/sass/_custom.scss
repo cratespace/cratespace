@@ -1,5 +1,30 @@
 @import 'vendor/flatpickr';
 
+* {
+    outline: none;
+}
+
+a {
+    @apply .text-indigo-500;
+    @apply .transition;
+    @apply .duration-150;
+    @apply .ease-in-out;
+
+    &:hover {
+        @apply .text-indigo-400;
+    }
+
+    &:focus {
+        @apply .text-indigo-400;
+    }
+}
+
+.form-input {
+    @apply .transition;
+    @apply .duration-150;
+    @apply .ease-in-out;
+}
+
 .btn {
     @apply .inline-block;
     @apply .px-4;
@@ -52,11 +77,33 @@
 }
 
 .bg-gradient {
+    background: linear-gradient(180deg, rgba(255,255,255,1) 0%, rgba(239,247,247,1) 100%);
+}
+
+.bg-auth {
     background-image: url('/img/bg-pattern.svg'), -moz-linear-gradient(to right, rgba(247,250,252,1) 0%, rgba(255,255,255,1) 100%);
     background-image: url('/img/bg-pattern.svg'), -webkit-linear-gradient(to right, rgba(247,250,252,1) 0%, rgba(255,255,255,1) 100%);
     background-image: url('/img/bg-pattern.svg'), linear-gradient(to right, rgba(247,250,252,1) 0%, rgba(255,255,255,1) 100%);
 }
 
+.bg-header {
+    background: linear-gradient(45deg, rgba(127,156,245,1) 0%, rgba(90,103,216,1) 100%);
+}
+
 .w-72 {
     width: 20rem !important;
+}
+
+.rounded-xl {
+    border-radius: 1.75rem !important;
+}
+
+.rounded-t-xl {
+    border-top-left-radius: 1.75rem !important;
+    border-top-right-radius: 1.75rem !important;
+}
+
+.rounded-b-xl {
+    border-bottom-right-radius: 1.75rem !important;
+    border-bottom-left-radius: 1.75rem !important;
 }

@@ -1,4 +1,4 @@
-@extends('layouts.auth')
+@extends('layouts.auth.base')
 
 @section('content')
 <section class="relative bg-white min-h-screen">

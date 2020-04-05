@@ -41,7 +41,7 @@ class OrderStatusUpdated extends Mailable
             ->to($this->order->email, $this->order->name)
             ->subject('Order ' . $this->order->status)
             ->markdown(
-                'emails.customers.order-status',
+                'components.emails.customers.order-status',
                 ['order' => $this->order]
             );
     }

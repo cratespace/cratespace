@@ -14,6 +14,10 @@ window.flash = function(message, level = 'success') {
     window.events.$emit('flash', { message, level });
 };
 
+// window.addEventListener('contextmenu', function(e) {
+//     e.preventDefault();
+// }, false);
+
 Vue.component('apexchart', VueApexCharts);
 Vue.component("image-upload-form", require("./components/ImageUploadForm.vue").default);
 Vue.component("flash", require("./components/Flash.vue").default);
