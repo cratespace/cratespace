@@ -3,12 +3,20 @@
 namespace App\Http\Controllers;
 
 use App\Filters\ThreadFilter;
+use App\Http\Requests\Thread as ThreadForm;
 use App\Models\Channel;
 use App\Models\Thread;
-use Illuminate\Http\Request;
 
 class SupportThreadConroller extends Controller
 {
+    /**
+     * Create new support threads controller.
+     */
+    public function __construct()
+    {
+        $this->middleware('auth')->only('create', 'store');
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -34,6 +42,13 @@ class SupportThreadConroller extends Controller
      */
     public function create()
     {
+        return view('support.threads.create', [
+            'channels' => Channel::all(),
+            'threads' => Thread::query()
+                ->orderBy('replies_count', 'desc')
+                ->take(5)
+                ->get(),
+        ]);
     }
 
     /**
@@ -43,8 +58,15 @@ class SupportThreadConroller extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(ThreadForm $request)
     {
+        $thread = user()->threads()->create($request->validated());
+
+        if (request()->wantsJson()) {
+            return response($thread, 201);
+        }
+
+        return $this->success($thread->path());
     }
 
     /**
@@ -115,6 +137,6 @@ class SupportThreadConroller extends Controller
             $threads->where('channel_id', $channel->id);
         }
 
-        return $threads->paginate(25);
+        return $threads->paginate(10);
     }
 }

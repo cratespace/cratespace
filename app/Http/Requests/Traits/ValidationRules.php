@@ -117,4 +117,14 @@ trait ValidationRules
     {
         return config('validation.address');
     }
+
+    /**
+     * Get thread input validation rules.
+     *
+     * @return array
+     */
+    protected function thread()
+    {
+        return config('validation.thread');
+    }
 }

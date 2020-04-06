@@ -12,6 +12,18 @@ Route::group([
         ->name('support.threads.index');
 
     /*
+     * Create New Thread Route...
+     */
+    Route::get('/threads/create', 'SupportThreadConroller@create')
+        ->name('support.threads.create');
+
+    /*
+     * Create New Thread Route...
+     */
+    Route::post('/threads', 'SupportThreadConroller@store')
+        ->name('support.threads.store');
+
+    /*
      * Support Threads With Channel Route...
      */
     Route::get('/threads/{channel}', 'SupportThreadConroller@index');

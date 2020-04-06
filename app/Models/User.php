@@ -104,6 +104,16 @@ class User extends Authenticatable
     }
 
     /**
+     * Fetch all threads that were created by the user.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function threads()
+    {
+        return $this->hasMany(Thread::class)->latest();
+    }
+
+    /**
      * Determine if the user is of given type.
      *
      * @param array $types

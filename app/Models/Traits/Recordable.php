@@ -2,8 +2,8 @@
 
 namespace App\Models\Traits;
 
-use ReflectionClass;
 use App\Models\Activity;
+use ReflectionClass;
 
 trait Recordable
 {
@@ -44,13 +44,13 @@ trait Recordable
     /**
      * Record new activity for the model.
      *
-     * @param string $event
+     * @param string     $event
+     * @param mixed|null $userId
      */
     protected function recordActivity($event, $userId = null)
     {
         $this->activity()->create([
             'user_id' => $userId ?? user('id'),
-            'church_id' => church('id'),
             'type' => $this->getActivityType($event),
         ]);
     }
