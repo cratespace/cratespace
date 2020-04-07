@@ -26,6 +26,12 @@ Route::group([
         ->middleware('auth');
 
     /*
+     * Thread Search...
+     */
+    Route::get('/threads/search', 'SearchController@threads')
+        ->name('support.threads.search');
+
+    /*
      * Support Threads With Channel Route...
      */
     Route::get('/threads/{channel}', 'SupportThreadConroller@index');

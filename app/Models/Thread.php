@@ -70,7 +70,11 @@ class Thread extends Model
      */
     public function toSearchableArray()
     {
-        return $this->toArray();
+        return [
+            'id' => $this->id,
+            'title' => $this->title,
+            'body' => $this->body,
+        ];
     }
 
     /**
