@@ -48,7 +48,7 @@ Route::group([
      * User Notifications Status Marked Routes.
      */
     Route::post(
-        '/users/{user}/notification/raed',
+        '/users/{user}/notification/read',
         'Auth\NotificationController@markread'
     )->name('users.notifications.markread');
 

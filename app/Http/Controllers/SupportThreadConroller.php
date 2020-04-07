@@ -106,8 +106,11 @@ class SupportThreadConroller extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Thread $thread)
+    public function update(ThreadForm $request, string $channel, Thread $thread)
     {
+        $thread->update($request->validated());
+
+        return $this->success($thread->fresh()->path());
     }
 
     /**

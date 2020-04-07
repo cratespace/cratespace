@@ -4,10 +4,18 @@ namespace App\Http\Controllers;
 
 use App\Models\Reply;
 use App\Models\Thread;
-use Illuminate\Http\Request;
+use App\Http\Requests\Reply as ReplyForm;
 
 class ReplyController extends Controller
 {
+    /**
+     * Create a new RepliesController instance.
+     */
+    public function __construct()
+    {
+        $this->middleware('auth', ['except' => 'index']);
+    }
+
     /**
      * Fetch all relevant replies.
      *
@@ -20,45 +28,23 @@ class ReplyController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Persist a new reply.
      *
-     * @return \Illuminate\Http\Response
+     * @param string             $channel
+     * @param \App\Models\Thread $thread
+     *
+     * @return \Illuminate\Database\Eloquent\Model
      */
-    public function create()
+    public function store(string $channel, Thread $thread, ReplyForm $request)
     {
-    }
+        if ($thread->locked) {
+            return response('Thread is locked', 422);
+        }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param \Illuminate\Http\Request $request
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param \App\Models\Reply $reply
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Reply $reply)
-    {
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param \App\Models\Reply $reply
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Reply $reply)
-    {
+        return $thread->addReply([
+            'body' => $request->body,
+            'user_id' => user('id'),
+        ])->load('user');
     }
 
     /**
@@ -69,8 +55,11 @@ class ReplyController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Reply $reply)
+    public function update(ReplyForm $request, Reply $reply)
     {
+        $reply->update($request->validated());
+
+        return $this->success($reply->path());
     }
 
     /**
@@ -82,5 +71,10 @@ class ReplyController extends Controller
      */
     public function destroy(Reply $reply)
     {
+        $this->authorize('delete', $reply);
+
+        $reply->delete();
+
+        return back()->with(['message' => 'Your replywas deleted.']);
     }
 }

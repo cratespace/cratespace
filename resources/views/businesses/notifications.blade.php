@@ -54,11 +54,11 @@
 
                                                         <div>
                                                             <div>
-                                                                Order no. <span class="font-semibold uppercase text-sm">{{ '#' . $notification->data['order']['uid'] }}</span> placed for space <span class="font-semibold uppercase text-sm">{{ '#' . $notification->data['order']['space_id'] }}</span>
+                                                                This is a type of notification.
                                                             </div>
 
                                                             <div>
-                                                                <a class="text-xs text-indigo-500 hover:border-indigo-400" href="{{ $notification->data['order']['path'] }}">View order <span>&rarr;</span></a>
+                                                                <a class="text-xs text-indigo-500 hover:border-indigo-400" href="#">View order <span>&rarr;</span></a>
                                                             </div>
                                                         </div>
                                                     </div>

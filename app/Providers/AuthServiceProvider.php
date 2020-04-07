@@ -3,9 +3,11 @@
 namespace App\Providers;
 
 use App\Models\User;
+use App\Models\Reply;
 use App\Models\Space;
 use App\Models\Thread;
 use App\Policies\UserPolicy;
+use App\Policies\ReplyPolicy;
 use App\Policies\SpacePolicy;
 use App\Policies\ThreadPolicy;
 use Illuminate\Support\Facades\Gate;
@@ -22,6 +24,7 @@ class AuthServiceProvider extends ServiceProvider
         User::class => UserPolicy::class,
         Space::class => SpacePolicy::class,
         Thread::class => ThreadPolicy::class,
+        Reply::class => ReplyPolicy::class,
     ];
 
     /**
