@@ -40,7 +40,7 @@ class OrderController extends Controller
     {
         Order::process($request->validated());
 
-        return $this->success(route('listings'), 'Order placed successfully.');
+        return $this->success(route('welcome'), 'Order placed successfully.');
     }
 
     /**

@@ -4725,6 +4725,10 @@ a:focus {
   border-bottom-left-radius: 1.75rem !important;
 }
 
+.stripe-bg {
+  background: linear-gradient(90deg, #777bf8, #68d4f8 200%);
+}
+
 .sr-only{
   position: absolute;
   width: 1px;

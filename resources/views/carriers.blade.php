@@ -2,74 +2,7 @@
 
 @section('main')
     <!-- Content -->
-    <section class="relative bg-gray-800 overflow-hidden">
-        <div class="container">
-            <div class="relative z-10 pb-8 bg-gray-800 sm:pb-16 md:pb-20 lg:max-w-2xl lg:w-full lg:pb-28 xl:pb-32">
-                <div class="pt-6">
-                    <nav class="relative flex items-center justify-between sm:h-10 lg:justify-start">
-                        <div class="flex items-center flex-grow flex-shrink-0 lg:flex-grow-0">
-                            <div class="flex items-center justify-between w-full md:w-auto">
-                                <a href="#">
-                                    <img class="h-8 w-auto sm:h-10" src="{{ asset('img/logo.png') }}" alt="" />
-                                </a>
 
-                                <button class="navbar-toggler inline-flex md:hidden items-center justify-center text-gray-300 hover:text-white focus:outline-none focus:text-gray-400" type="button" data-toggle="collapse" data-target="#navbarToggleExternalContent" aria-controls="navbarToggleExternalContent" aria-expanded="false" aria-label="Toggle navigation">
-                                    <svg class="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
-                                        <path class="inline-flex" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
-                                    </svg>
-                                </button>
-                            </div>
-                        </div>
-
-                        <div class="hidden md:block md:ml-10 md:pr-4">
-                            @include('layouts.partials.nav.links._public')
-                        </div>
-                    </nav>
-
-                    <div class="collapse block md:hidden" id="navbarToggleExternalContent">
-                        <div class="py-5 flex flex-col justify-center border-b border-gray-700">
-                            @include('layouts.partials.nav.links._public')
-                        </div>
-                    </div>
-                </div>
-
-                <div class="mt-10 mx-auto max-w-screen-xl sm:mt-12 md:mt-16 lg:mt-20 xl:mt-32">
-                    <div class="sm:text-center lg:text-left">
-                        <div class="text-4xl tracking-tight font-semibold text-white sm:text-5xl sm:leading-none md:text-6xl">
-                            <div>Best place for</div>
-                            <span class="text-indigo-500">logistics businesses</span>
-                        </div>
-
-                        <p class="mt-3 text-base text-gray-300 sm:mt-5 sm:text-lg sm:max-w-xl sm:mx-auto md:mt-5 md:text-xl lg:mx-0">
-                            We're building solutions to deliver peak efficiency and flexibility in your supply chain, backed by dedicated account managers and 24/7 support.
-                        </p>
-
-                        <div class="mt-5 sm:mt-8 sm:flex sm:justify-center lg:justify-start">
-                            <div class="rounded-lg shadow">
-                                <a href="{{ route('register') }}" class="w-full flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-lg text-white bg-indigo-500 hover:bg-indigo-400 focus:outline-none focus:shadow-outline transition duration-150 ease-in-out md:py-4 md:text-lg md:px-10">
-                                    Get started
-                                </a>
-                            </div>
-
-                            <div class="mt-3 sm:mt-0 sm:ml-3">
-                                <a href="{{ route('messages.create') }}" class="w-full flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-lg text-indigo-500 bg-white hover:text-indigo-500 hover:bg-gray-100 focus:outline-none focus:shadow-outline focus:border-indigo-300 transition duration-150 ease-in-out md:py-4 md:text-lg md:px-10">
-                                    Contact us
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <svg class="hidden lg:block absolute right-0 inset-y-0 h-full w-48 text-gray-800 transform translate-x-1/2" fill="currentColor" viewBox="0 0 100 100" preserveAspectRatio="none">
-                    <polygon points="50,0 100,0 50,100 0,100" />
-                </svg>
-            </div>
-        </div>
-
-        <div class="lg:absolute lg:inset-y-0 lg:right-0 lg:w-1/2">
-            <img class="h-56 w-full object-cover sm:h-72 md:h-96 lg:w-full lg:h-full" src="{{ asset('img/hero.jpg') }}" alt="" />
-        </div>
-    </section>
 
     <section class="relative py-20 bg-gray-100 overflow-hidden">
         <svg class="hidden lg:block absolute right-0 top-0 transform translate-x-1/2 -translate-y-1/4" width="404" height="784" fill="none" viewBox="0 0 404 784">

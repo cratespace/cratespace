@@ -2,11 +2,11 @@
 
 namespace Tests\Feature;
 
-use App\Models\Channel;
+use Tests\TestCase;
+use App\Models\User;
 use App\Models\Reply;
 use App\Models\Thread;
-use App\Models\User;
-use Tests\TestCase;
+use App\Models\Channel;
 
 class ReadThreadsTest extends TestCase
 {
@@ -34,6 +34,8 @@ class ReadThreadsTest extends TestCase
     /** @test */
     public function a_user_can_read_a_single_thread()
     {
+        $this->signIn();
+
         $this->get($this->thread->path())->assertSee($this->thread->title);
     }
 
@@ -84,7 +86,8 @@ class ReadThreadsTest extends TestCase
     /** @test */
     public function a_user_can_filter_threads_by_those_that_are_unanswered()
     {
-        create(Reply::class, ['thread_id' => $this->thread->id]);
+        $thread = create(Thread::class);
+        create(Reply::class, ['thread_id' => $thread->id]);
 
         $response = $this->getJson('/support/threads?unanswered=1')->json();
 
@@ -105,6 +108,8 @@ class ReadThreadsTest extends TestCase
     /** @test */
     public function we_record_a_new_visit_each_time_the_thread_is_read()
     {
+        $this->signIn();
+
         $this->assertSame(0, $this->thread->visits);
 
         $this->call('GET', $this->thread->path());

@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Thread;
+use App\Models\Channel;
 use App\Filters\ThreadFilter;
 use App\Http\Requests\Thread as ThreadForm;
-use App\Models\Channel;
-use App\Models\Thread;
 
 class SupportThreadConroller extends Controller
 {
@@ -14,7 +14,7 @@ class SupportThreadConroller extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth')->only('create', 'store');
+        $this->middleware('auth')->except('index');
     }
 
     /**
@@ -117,8 +117,20 @@ class SupportThreadConroller extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Thread $thread)
+    public function destroy(string $channel, Thread $thread)
     {
+        $this->authorize('delete', $thread);
+
+        $thread->delete();
+
+        if (request()->wantsJson()) {
+            return response([], 204);
+        }
+
+        return $this->success(
+            route('support.threads.index'),
+            'Thread was deleted from the database.'
+        );
     }
 
     /**

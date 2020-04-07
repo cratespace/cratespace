@@ -49,7 +49,7 @@ Route::group([
     /*
      * Listings Page...
      */
-    Route::get('/', 'ListingsController')->name('listings');
+    Route::get('/', 'ListingsController')->name('welcome');
 
     /*
      * Place Order Route...

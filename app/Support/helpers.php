@@ -77,7 +77,7 @@ if (!function_exists('is_active')) {
      *
      * @return bool|string
      */
-    function is_active(string $path, string $active = 'active', string $default = ''): bool
+    function is_active(string $path, string $active = 'active', string $default = ''): string
     {
         return call_user_func_array(
             'Request::is',

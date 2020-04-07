@@ -3,7 +3,7 @@
 @section('content')
     @include('components.sections.contact._header')
 
-    <section class="pt-12 pb-16">
+    <section class="py-16 bg-gray-100">
         <div class="container">
             @include('components.sections.contact._details')
 

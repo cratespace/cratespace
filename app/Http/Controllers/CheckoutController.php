@@ -62,6 +62,6 @@ class CheckoutController extends Controller
     {
         $this->cache->flush();
 
-        return redirect()->route('listings');
+        return redirect()->route('welcome');
     }
 }

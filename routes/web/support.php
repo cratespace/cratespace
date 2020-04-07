@@ -34,6 +34,12 @@ Route::group([
     Route::get('/threads/{channel}/{thread}', 'SupportThreadConroller@show')
         ->name('support.threads.show');
 
+    Route::put('/threads/{channel}/{thread}', 'SupportThreadConroller@update')
+        ->name('support.threads.update');
+
+    Route::delete('/threads/{channel}/{thread}', 'SupportThreadConroller@destroy')
+        ->name('support.threads.destroy');
+
     /*
      * Thread Replies Route...
      */

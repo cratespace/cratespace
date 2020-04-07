@@ -1,5 +1,5 @@
 <div class="row">
-    <div class="col-lg-6">
+    <div class="col-lg-6 mb-10 lg:mb-0">
         <h4 class="text-2xl font-semibold text-gray-800 leading-tight">Locations</h4>
     </div>
 

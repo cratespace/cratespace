@@ -17,7 +17,7 @@ class CheckForPurchase
     public function handle($request, Closure $next)
     {
         if (!cache()->has('space')) {
-            return redirect()->route('listings');
+            return redirect()->route('welcome');
         }
 
         return $next($request);

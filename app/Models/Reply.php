@@ -2,15 +2,18 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use App\Models\Traits\Recordable;
+use App\Models\Traits\Favoritable;
 use Illuminate\Database\Eloquent\Model;
 
 class Reply extends Model
 {
+    use Favoritable;
     use Recordable;
 
     /**
-     * The attributes that aren't mass assignable.
+     * Don't auto-apply mass assignment protection.
      *
      * @var array
      */
@@ -21,7 +24,14 @@ class Reply extends Model
      *
      * @var array
      */
-    protected $with = ['user'];
+    protected $with = ['user', 'favorites'];
+
+    /**
+     * The accessors to append to the model's array form.
+     *
+     * @var array
+     */
+    protected $appends = ['favoritesCount', 'isFavorited', 'isBest'];
 
     /**
      * Boot the reply instance.
@@ -40,13 +50,13 @@ class Reply extends Model
     }
 
     /**
-     * A reply has an owner.
+     * A reply has an user.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function user()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'user_id');
     }
 
     /**
@@ -57,5 +67,71 @@ class Reply extends Model
     public function thread()
     {
         return $this->belongsTo(Thread::class);
+    }
+
+    /**
+     * Determine if the reply was just published a moment ago.
+     *
+     * @return bool
+     */
+    public function wasJustPublished()
+    {
+        return $this->created_at->gt(Carbon::now()->subMinute());
+    }
+
+    /**
+     * Fetch all mentioned users within the reply's body.
+     *
+     * @return array
+     */
+    public function mentionedUsers()
+    {
+        preg_match_all('/@([\w\-]+)/', $this->body, $matches);
+
+        return $matches[1];
+    }
+
+    /**
+     * Determine the path to the reply.
+     *
+     * @return string
+     */
+    public function path()
+    {
+        return $this->thread->path() . "#reply-{$this->id}";
+    }
+
+    /**
+     * Set the body attribute.
+     *
+     * @param string $body
+     */
+    public function setBodyAttribute($body)
+    {
+        $this->attributes['body'] = preg_replace(
+            '/@([\w\-]+)/',
+            '<a href="/users/$1">$0</a>',
+            $body
+        );
+    }
+
+    /**
+     * Determine if the current reply is marked as the best.
+     *
+     * @return bool
+     */
+    public function isBest()
+    {
+        return $this->thread->best_reply_id == $this->id;
+    }
+
+    /**
+     * Determine if the current reply is marked as the best.
+     *
+     * @return bool
+     */
+    public function getIsBestAttribute()
+    {
+        return $this->isBest();
     }
 }

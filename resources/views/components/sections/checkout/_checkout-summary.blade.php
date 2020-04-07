@@ -150,6 +150,6 @@
 
     <div>
         <a href="{{ route('checkout.destroy') }}" class="text-sm text-red-500 hover:text-red-400 mr-4">Cancel</a>
-        <a href="{{ route('listings') }}" class="text-sm text-indigo-500 hover:text-indigo-400 mr-4">Change</a>
+        <a href="{{ route('welcome') }}" class="text-sm text-indigo-500 hover:text-indigo-400 mr-4">Change</a>
     </div>
 </div>

@@ -2,9 +2,11 @@
 
 namespace Tests\Feature;
 
-use App\Models\Channel;
-use App\Models\Thread;
 use Tests\TestCase;
+use App\Models\Reply;
+use App\Models\Thread;
+use App\Models\Channel;
+use App\Models\Activity;
 
 class CreateThreadTest extends TestCase
 {
@@ -62,6 +64,49 @@ class CreateThreadTest extends TestCase
         $thread = create(Thread::class, ['title' => 'Foo Title']);
 
         $this->assertEquals($thread->slug, 'foo-title');
+    }
+
+    /** @test */
+    public function a_thread_with_a_title_that_ends_in_a_number_should_generate_the_proper_slug()
+    {
+        $this->signIn();
+
+        $thread = make(Thread::class, ['title' => 'Some Title 24']);
+
+        $thread = $this->postJson(route('support.threads.store'), $thread->toArray() + ['g-recaptcha-response' => 'token'])->json();
+
+        $this->assertEquals('some-title-24', $thread['slug']);
+    }
+
+    /** @test */
+    public function unauthorized_users_may_not_delete_threads()
+    {
+        $this->withExceptionHandling();
+
+        $thread = create(Thread::class);
+
+        $this->delete($thread->path())->assertRedirect('/login');
+
+        $this->signIn();
+        $this->delete($thread->path())->assertStatus(403);
+    }
+
+    /** @test */
+    public function authorized_users_can_delete_threads()
+    {
+        $user = $this->signIn();
+
+        $thread = create(Thread::class, ['user_id' => $user->id]);
+        $reply = create(Reply::class, ['thread_id' => $thread->id]);
+
+        $response = $this->json('DELETE', $thread->path());
+
+        $response->assertStatus(204);
+
+        $this->assertDatabaseMissing('threads', ['id' => $thread->id]);
+        $this->assertDatabaseMissing('replies', ['id' => $reply->id]);
+
+        $this->assertEquals(0, Activity::count());
     }
 
     /**

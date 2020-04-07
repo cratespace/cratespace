@@ -6,21 +6,21 @@
             <span class="text-3xl text-gray-800">{{ $thread->title }}</span>
         </div>
 
-        <div class="text-sm flex lg:flex-row flex-col lg:items-center">
+        <div class="text-sm flex sm:flex-row flex-col sm:items-center">
             <a class="whitespace-no-wrap" href="{{ route('support.threads.index') }}">
                 <span class="mr-1">&larr;</span>
                 <span>Back to threads</span>
             </a>
 
-            <span class="mx-2 hidden lg:inline">&middot;</span>
+            <span class="mx-2 hidden sm:inline">&middot;</span>
 
             <a class="whitespace-no-wrap" href="#">{{ $thread->user->name }}</a>
 
-            <span class="mx-2 hidden lg:inline">&middot;</span>
+            <span class="mx-2 hidden sm:inline">&middot;</span>
 
             <span class="text-gray-600 whitespace-no-wrap">{{ $thread->created_at->format('M j, Y') }}</span>
 
-            <span class="mx-2 hidden lg:inline">&middot;</span>
+            <span class="mx-2 hidden sm:inline">&middot;</span>
 
             <span class="text-gray-600 flex items-center">
                 <svg class="h-4 w-4 mr-1 text-gray-500" viewBox="0 0 20 20" fill="currentColor">

@@ -2,8 +2,8 @@
 
 namespace App\Models\Traits;
 
-use App\Models\Activity;
 use ReflectionClass;
+use App\Models\Activity;
 
 trait Recordable
 {

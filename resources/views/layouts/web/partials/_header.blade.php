@@ -1,3 +1,3 @@
-<header class="bg-gray-100">
+<header class="bg-transparent">
     @include('layouts.web.partials._nav')
 </header>

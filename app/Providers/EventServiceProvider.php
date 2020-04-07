@@ -3,14 +3,17 @@
 namespace App\Providers;
 
 use App\Events\OrderPlaced;
-use App\Events\PaymentProcessingSucceeded;
-use App\Listeners\SendNewOrderPlacedNotification;
-use App\Listeners\SendOrderDetailsEmail;
-use App\Listeners\UpdateBusinessCredit;
+use App\Listeners\NotifyBusiness;
+use App\Listeners\NotifySubscribers;
+use Illuminate\Support\Facades\Event;
+use App\Events\ThreadReceivedNewReply;
 use Illuminate\Auth\Events\Registered;
+use App\Listeners\NotifyMentionedUsers;
+use App\Listeners\UpdateBusinessCredit;
+use App\Listeners\SendOrderDetailsEmail;
+use App\Events\PaymentProcessingSucceeded;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
-use Illuminate\Support\Facades\Event;
 
 class EventServiceProvider extends ServiceProvider
 {
@@ -29,12 +32,13 @@ class EventServiceProvider extends ServiceProvider
         ],
 
         OrderPlaced::class => [
-            SendNewOrderPlacedNotification::class,
+            NotifyBusiness::class,
             SendOrderDetailsEmail::class,
         ],
 
         ThreadReceivedNewReply::class => [
-            SendReceivedNewReplyNotification::class,
+            NotifyMentionedUsers::class,
+            NotifySubscribers::class,
         ],
     ];
 }

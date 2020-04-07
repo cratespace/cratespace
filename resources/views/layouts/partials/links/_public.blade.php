@@ -1,5 +1,5 @@
 <li class="nav-item ml-0 lg:ml-8 py-2 lg:py-0 mt-6 lg:mt-0">
-    <a class="nav-link font-medium" href="{{ route('listings') }}">Listings</a>
+    <a class="nav-link font-medium" href="{{ route('welcome') }}">Listings</a>
 </li>
 
 <li class="nav-item ml-0 lg:ml-8 py-2 lg:py-0">

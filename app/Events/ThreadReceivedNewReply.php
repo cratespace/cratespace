@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Providers;
+namespace App\Events;
 
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
@@ -15,22 +15,19 @@ class ThreadReceivedNewReply
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
     /**
-     * Create a new event instance.
+     * The reply instance.
      *
-     * @return void
+     * @var \App\Models\Reply
      */
-    public function __construct()
-    {
-        //
-    }
+    public $reply;
 
     /**
-     * Get the channels the event should broadcast on.
+     * Create a new event instance.
      *
-     * @return \Illuminate\Broadcasting\Channel|array
+     * @param $reply
      */
-    public function broadcastOn()
+    public function __construct($reply)
     {
-        return new PrivateChannel('channel-name');
+        $this->reply = $reply;
     }
 }

@@ -2,17 +2,21 @@
 
 namespace App\Models;
 
+use Laravel\Scout\Searchable;
+use App\Models\Traits\Sluggable;
 use App\Models\Traits\Filterable;
 use App\Models\Traits\Recordable;
-use App\Models\Traits\Sluggable;
-use App\Providers\ThreadReceivedNewReply;
+use App\Events\ThreadReceivedNewReply;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Concerns\HandlesSubscriptions;
 
 class Thread extends Model
 {
     use Sluggable;
+    use Searchable;
     use Filterable;
     use Recordable;
+    use HandlesSubscriptions;
 
     /**
      * The attributes that are mass assignable.
@@ -36,7 +40,38 @@ class Thread extends Model
      *
      * @var array
      */
-    protected $appends = ['path'];
+    protected $appends = ['path', 'isSubscribedTo'];
+
+    /**
+     * The attributes that should be cast to native types.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'locked' => 'boolean',
+    ];
+
+    /**
+     * Boot the model.
+     */
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::deleting(function ($thread) {
+            $thread->replies->each->delete();
+        });
+    }
+
+    /**
+     * Get the indexable data array for the model.
+     *
+     * @return array
+     */
+    public function toSearchableArray()
+    {
+        return $this->toArray();
+    }
 
     /**
      * Get a string path for the thread.
@@ -101,7 +136,7 @@ class Thread extends Model
     {
         $reply = $this->replies()->create($data);
 
-        // event(new ThreadReceivedNewReply($reply));
+        event(new ThreadReceivedNewReply($reply));
 
         return $reply;
     }
@@ -113,10 +148,20 @@ class Thread extends Model
      *
      * @return bool
      */
-    public function hasUpdatesFor($user)
+    public function hasUpdatesFor(User $user)
     {
-        return $this->updated_at > cache(
-            $user->visitedThreadCacheKey($this)
-        );
+        $key = $user->visitedThreadCacheKey($this);
+
+        return $this->updated_at > cache($key);
+    }
+
+    /**
+     * Mark the given reply as the best answer.
+     *
+     * @param \App\Models\Reply $reply
+     */
+    public function markBestReply(Reply $reply)
+    {
+        $this->update(['best_reply_id' => $reply->id]);
     }
 }

@@ -1,11 +1,10 @@
 <?php
 
 /** @var \Illuminate\Database\Eloquent\Factory $factory */
-use App\Models\Channel;
-use App\Models\Thread;
 use App\Models\User;
+use App\Models\Thread;
+use App\Models\Channel;
 use Faker\Generator as Faker;
-use Illuminate\Support\Str;
 
 $factory->define(Thread::class, function (Faker $faker) {
     $title = $faker->sentence(4);
@@ -16,7 +15,7 @@ $factory->define(Thread::class, function (Faker $faker) {
         'title' => $title,
         'body' => $faker->paragraph(5),
         'visits' => 0,
-        'slug' => Str::slug($title),
+        'slug' => $title,
         'locked' => false,
         'pinned' => false,
         'replies_count' => 0,
