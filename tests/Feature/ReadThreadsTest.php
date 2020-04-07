@@ -97,6 +97,8 @@ class ReadThreadsTest extends TestCase
     /** @test */
     public function a_user_can_request_all_replies_for_a_given_thread()
     {
+        $this->signIn();
+
         create(Reply::class, ['thread_id' => $this->thread->id], 2);
 
         $response = $this->getJson($this->thread->path() . '/replies');

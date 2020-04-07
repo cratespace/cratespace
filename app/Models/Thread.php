@@ -154,14 +154,4 @@ class Thread extends Model
 
         return $this->updated_at > cache($key);
     }
-
-    /**
-     * Mark the given reply as the best answer.
-     *
-     * @param \App\Models\Reply $reply
-     */
-    public function markBestReply(Reply $reply)
-    {
-        $this->update(['best_reply_id' => $reply->id]);
-    }
 }

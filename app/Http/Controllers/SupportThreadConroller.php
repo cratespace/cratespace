@@ -10,14 +10,6 @@ use App\Http\Requests\Thread as ThreadForm;
 class SupportThreadConroller extends Controller
 {
     /**
-     * Create new support threads controller.
-     */
-    public function __construct()
-    {
-        $this->middleware('auth')->except('index');
-    }
-
-    /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
