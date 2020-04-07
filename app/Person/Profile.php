@@ -39,8 +39,8 @@ class Profile implements Responsibility
 
         $count = User::where('username', 'like', '%'.$firstName.'%')->count();
 
-        if ($count < 0) {
-            return Str::kebab($firstName . $lastName);
+        if ($count !== 0) {
+            return Str::studly($firstName . $lastName);
         }
 
         return $firstName;

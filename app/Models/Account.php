@@ -2,15 +2,14 @@
 
 namespace App\Models;
 
-use App\Models\Traits\HasUid;
 use App\Models\Traits\Fillable;
-use App\Models\Traits\HasPrice;
-use App\Models\Concerns\GeneratesUid;
+use App\Models\Traits\HasUid;
 use Illuminate\Database\Eloquent\Model;
 
 class Account extends Model
 {
-    use Fillable, HasUid;
+    use Fillable;
+    use HasUid;
 
     /**
      * The attributes that are mass assignable.
@@ -25,6 +24,7 @@ class Account extends Model
      * Set the account balance in cents.
      *
      * @param string $value
+     *
      * @return string
      */
     public function setCrediteAttribute($value)
@@ -35,7 +35,8 @@ class Account extends Model
     /**
      * Get the books's price.
      *
-     * @param  string  $value
+     * @param string $value
+     *
      * @return string
      */
     public function getCrediteAttribute($value)

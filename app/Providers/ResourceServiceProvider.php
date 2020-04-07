@@ -2,18 +2,11 @@
 
 namespace App\Providers;
 
-use App\Models\Order;
-use App\Models\Space;
-use App\Listings\OrderListing;
-use App\Listings\SpaceListing;
-use App\Analytics\OrdersAnalyzer;
-use App\Analytics\SpacesAnalyzer;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Auth;
 use App\Maintainers\OrdersMaintainer;
-use App\Maintainers\SpacesMaintainer;
-use Illuminate\Support\ServiceProvider;
 use App\Maintainers\OrderSpaceMaintainer;
+use App\Maintainers\SpacesMaintainer;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\ServiceProvider;
 
 class ResourceServiceProvider extends ServiceProvider
 {
@@ -27,15 +20,6 @@ class ResourceServiceProvider extends ServiceProvider
         'orders' => OrdersMaintainer::class,
         'orders' => OrderSpaceMaintainer::class,
     ];
-
-    /**
-     * Register bindings in the container.
-     *
-     * @return void
-     */
-    public function register()
-    {
-    }
 
     /**
      * Bootstrap any application services.
@@ -64,7 +48,7 @@ class ResourceServiceProvider extends ServiceProvider
      */
     public function appReady()
     {
-        return ! $this->app->runningUnitTests() &&
+        return !$this->app->runningUnitTests() &&
             DB::connection()->getDatabaseName();
     }
 }

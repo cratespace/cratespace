@@ -2,12 +2,11 @@
 
 namespace Tests\Unit;
 
-use Tests\TestCase;
-use App\Models\User;
 use App\Models\Account;
 use App\Models\Business;
-use Illuminate\Support\Str;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Collection;
+use Tests\TestCase;
 
 class UserTest extends TestCase
 {
@@ -47,7 +46,7 @@ class UserTest extends TestCase
             'business' => $this->faker->company,
             'password' => 'Lambdaxion568',
             'password_confirmation' => 'Lambdaxion568',
-            'type' => 'business'
+            'type' => 'business',
         ];
 
         $this->post(route('register'), $user)

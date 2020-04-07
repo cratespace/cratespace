@@ -22,10 +22,6 @@ class OrderController extends Controller
      */
     public function index(OrderFilter $filters)
     {
-        if (! request()->has('status')) {
-            return redirect()->route('orders.index', ['status' => 'Pending']);
-        }
-
         $orders = user()->orders();
 
         return view('businesses.orders.index', [
@@ -44,7 +40,7 @@ class OrderController extends Controller
     {
         Order::process($request->validated());
 
-        return $this->success(route('listings'), 'Order placed successfully.');
+        return $this->success(route('welcome'), 'Order placed successfully.');
     }
 
     /**
@@ -55,7 +51,10 @@ class OrderController extends Controller
      */
     public function show(Order $order)
     {
-        return view('businesses.orders.show', compact('order'));
+        return view('businesses.spaces.show', [
+            'order' => $order,
+            'space' => $order->space,
+        ]);
     }
 
     /**

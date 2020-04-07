@@ -1,5 +1,5 @@
-<form class="shadow-lg rounded-lg" action="{{ route('listings', ['category' => request('category')->slug ?? null]) }}" method="GET">
-    <div class="bg-white px-4 py-5 sm:px-6 rounded-t-lg">
+<form class="shadow-xl rounded-xl" action="{{ route('welcome', ['category' => request('category')->slug ?? null]) }}" method="GET">
+    <div class="bg-white px-4 py-5 sm:px-6 rounded-t-xl">
         <div class="row">
             <div class="col-lg-3 col-md-6 mb-6 lg:mb-0">
                 <label class="block">
@@ -43,7 +43,7 @@
         </div>
     </div>
 
-    <div class="bg-gray-100 px-4 py-5 sm:px-6 rounded-b-lg">
+    <div class="bg-gray-100 px-4 py-5 sm:px-6 rounded-b-xl">
         <div class="row">
             <div class="col-12">
                 <div class="flex items-center justify-between">
@@ -57,17 +57,17 @@
                         </button>
 
                         <div class="dropdown-menu rounded-lg shadow-lg z-50 mt-3" aria-labelledby="categoryDropDown">
-                            <a href="{{ route('listings') }}" class="dropdown-item block px-4 py-2 text-sm">All</a>
+                            <a href="{{ route('welcome') }}" class="dropdown-item block px-4 py-2 text-sm">All</a>
 
                             @foreach (config('shipping.types') as $type)
-                                <a href="{{ route('listings', ['type' => $type]) }}" class="dropdown-item block px-4 py-2 text-sm">{{ $type }}</a>
+                                <a href="{{ route('welcome', ['type' => $type]) }}" class="dropdown-item block px-4 py-2 text-sm">{{ $type }}</a>
                             @endforeach
                         </div>
                     </div>
 
                     <div class="flex items-center">
                         @if (request()->query())
-                            <a class="text-sm btn btn-secondary py-2 px-3" href="{{ route('listings') }}">
+                            <a class="text-sm btn btn-secondary py-2 px-3" href="{{ route('welcome') }}">
                                 <span>Clear filters</span>
                             </a>
                         @endif

@@ -4,7 +4,7 @@ namespace App\Reports;
 
 use Carbon\Carbon;
 
-class DailyReport extends Report
+final class DailyReport extends Report
 {
     /**
      * Group coleted data by month.

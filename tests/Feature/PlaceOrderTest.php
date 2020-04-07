@@ -2,18 +2,16 @@
 
 namespace Tests\Feature;
 
-use Tests\TestCase;
+use App\Events\OrderPlaced;
+use App\Mail\OrderPendingConfirmation;
 use App\Models\Order;
 use App\Models\Space;
-use App\Events\OrderPlaced;
-use Illuminate\Support\Str;
-use Illuminate\Support\Facades\Mail;
 use App\Notifications\NewOrderPlaced;
-use Illuminate\Support\Facades\Event;
-use Illuminate\Support\Facades\Queue;
-use App\Mail\OrderPendingConfirmation;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Event;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Notification;
+use Tests\TestCase;
 
 class PlaceOrderTest extends TestCase
 {
@@ -33,17 +31,18 @@ class PlaceOrderTest extends TestCase
 
         $this->assertTrue(cache()->has('space'));
 
-        $this->post(route('orders.store'), [
+        $response = $this->post(route('orders.store'), [
             'name' => 'John Doe',
             'email' => 'john.doe@example.com',
             'business' => 'Example Company',
-            'phone' => '776688899'
+            'phone' => '776688899',
+            'payment_type' => 'cash',
         ]);
 
         $order = Order::first();
 
         $this->assertDatabaseHas('orders', ['uid' => $order->uid]);
-        $this->assertTrue($space->user->account->credit !== 0);
+        $this->assertTrue(0 !== $space->user->account->credit);
         $this->assertFalse(cache()->has('space'));
         $this->assertFalse(cache()->has('prices'));
     }
@@ -68,7 +67,8 @@ class PlaceOrderTest extends TestCase
             'name' => 'John Doe',
             'email' => 'john.doe@example.com',
             'business' => 'Example Company',
-            'phone' => '776688899'
+            'phone' => '776688899',
+            'payment_type' => 'cash',
         ]);
 
         $order = Order::first();
@@ -96,7 +96,8 @@ class PlaceOrderTest extends TestCase
             'name' => 'John Doe',
             'email' => 'john.doe@example.com',
             'business' => 'Example Company',
-            'phone' => '776688899'
+            'phone' => '776688899',
+            'payment_type' => 'cash',
         ]);
 
         $order = Order::first();
@@ -125,7 +126,8 @@ class PlaceOrderTest extends TestCase
             'name' => 'John Doe',
             'email' => 'john.doe@example.com',
             'business' => 'Example Company',
-            'phone' => '776688899'
+            'phone' => '776688899',
+            'payment_type' => 'cash',
         ]);
 
         $order = Order::first();

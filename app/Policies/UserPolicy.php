@@ -12,8 +12,9 @@ class UserPolicy
     /**
      * Determine whether the user can view the model.
      *
-     * @param  \App\Models\User  $user
-     * @param  \App\Models\User  $model
+     * @param \App\Models\User $user
+     * @param \App\Models\User $model
+     *
      * @return bool
      */
     public function manage(User $user, User $model)

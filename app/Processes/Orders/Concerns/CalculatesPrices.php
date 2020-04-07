@@ -9,15 +9,15 @@ trait CalculatesPrices
     /**
      * Calculates total prices with all relevant charges applied.
      *
-     * @param  float $resourcePrice
+     * @param float $resourcePrice
+     *
      * @return array
      */
     protected function calculate(float $resourcePrice)
     {
-        cache()->put(
-            'prices',
-            $prices = Purchase::calculate($resourcePrice)->getAmounts()
-        );
+        $prices = Purchase::calculate($resourcePrice)->getAmounts();
+
+        cache()->put('prices', $prices);
 
         return $prices;
     }

@@ -5,12 +5,13 @@ namespace App\Reports;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 
-class WeeklyReport extends Report
+final class WeeklyReport extends Report
 {
     /**
      * Parse data into yearly report graph.
      *
-     * @param  int|null $limit
+     * @param int|null $limit
+     *
      * @return array
      */
     public function make(?int $limit = null)
@@ -21,7 +22,7 @@ class WeeklyReport extends Report
             ] = (int) $item['count'];
         }
 
-        if (! is_null($limit)) {
+        if (!is_null($limit)) {
             $this->countFor($limit);
         }
 
@@ -42,7 +43,7 @@ class WeeklyReport extends Report
             'created_at',
             [
                 Carbon::now()->subDays(30),
-                Carbon::now()
+                Carbon::now(),
             ]
         )->groupBy('date')
         ->orderBy('date', 'ASC')

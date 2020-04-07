@@ -78,7 +78,12 @@ class Order extends Model
      */
     public function toSearchableArray()
     {
-        return $this->toArray();
+        return [
+            'uid' => $this->uid,
+            'id' => $this->id,
+            'name' => $this->name,
+            'email' => $this->email
+        ];
     }
 
     /**

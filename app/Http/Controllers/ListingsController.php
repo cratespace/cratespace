@@ -44,7 +44,7 @@ class ListingsController extends Controller
         return $spaces->with('user')
             ->filter($filters)
             ->latest()
-            ->paginate(10);
+            ->paginate(12);
     }
 
     /**

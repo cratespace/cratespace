@@ -23,10 +23,6 @@ class SpaceController extends Controller
      */
     public function index(SpaceFilter $filters)
     {
-        if (! request()->has('status')) {
-            return redirect()->route('spaces.index', ['status' => 'Available']);
-        }
-
         $spaces = user()->spaces();
 
         return view('businesses.spaces.index', [
@@ -68,7 +64,10 @@ class SpaceController extends Controller
     {
         $this->authorize('manage', $space);
 
-        return view('businesses.spaces.show', compact('space'));
+        return view('businesses.spaces.show', [
+            'space' => $space,
+            'order' => $space->order,
+        ]);
     }
 
     /**

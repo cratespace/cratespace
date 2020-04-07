@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.app.base')
 
 @section('content')
     <section class="pt-6 pb-32 bg-gray-800">
@@ -122,7 +122,11 @@
                                             <div class="flex justify-between">
                                                 <div>
                                                     <div>
-                                                        <div class="text-sm font-bold text-gray-600 uppercase">{{ '#' . $space->uid }}</div>
+                                                        <a href="{{ $space->path() }}">
+                                                            <div class="text-sm font-bold text-gray-600 uppercase">
+                                                                {{ '#' . $space->uid }}
+                                                            </div>
+                                                        </a>
 
                                                         <div class="text-xs text-indigo-500">{{ $space->type }}</div>
                                                     </div>

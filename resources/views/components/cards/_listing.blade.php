@@ -1,4 +1,4 @@
-<div class="bg-white rounded-lg shadow hover:shadow-lg px-5 py-4 mb-8 sm:px-6 flex flex-col flex-1">
+<div class="bg-white rounded-lg shadow hover:shadow-lg px-4 py-5 mb-8 sm:px-6 flex flex-col flex-1">
     <div class="flex justify-between">
         <div class="mb-4 mr-3">
             <div class="mb-4 flex items-center">

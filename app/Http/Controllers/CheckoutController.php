@@ -4,9 +4,27 @@ namespace App\Http\Controllers;
 
 use App\Models\Space;
 use Facades\App\Calculators\Purchase;
+use Illuminate\Cache\CacheManager as Cache;
 
 class CheckoutController extends Controller
 {
+    /**
+     * Instance of cache.
+     *
+     * @var \Illuminate\Cache\Cache
+     */
+    protected $cache;
+
+    /**
+     * Create new checkout controller instance.
+     */
+    public function __construct(Cache $cache)
+    {
+        $this->middleware('purchase')->only(['show', 'destroy']);
+
+        $this->cache = $cache;
+    }
+
     /**
      * Show checkout page.
      *
@@ -14,27 +32,23 @@ class CheckoutController extends Controller
      */
     public function show()
     {
-        if (! cache()->has('space')) {
-            return redirect()->route('listings');
-        }
-
-        $space = cache('space');
-
         return view('checkout', [
-            'space' => $space,
-            'pricing' => Purchase::calculate($space->price)->getAmounts()
+            'space' => $this->cache->get('space') ?? new Space(),
+            'pricing' => Purchase::calculate($this->cache->get('space')->price)
+                ->getAmounts(),
         ]);
     }
 
     /**
      * Calculate prices and redirect to checkout page.
      *
-     * @param  \App\Models\Space $space
-     * @return  \Illuminate\Http\Response
+     * @param \App\Models\Space $space
+     *
+     * @return \Illuminate\Http\Response
      */
     public function store(Space $space)
     {
-        cache()->put('space', $space);
+        $this->cache->put('space', $space);
 
         return redirect()->route('checkout');
     }
@@ -46,8 +60,8 @@ class CheckoutController extends Controller
      */
     public function destroy()
     {
-        cache()->flush();
+        $this->cache->flush();
 
-        return redirect()->route('listings');
+        return redirect()->route('welcome');
     }
 }

@@ -1,7 +1,7 @@
 <?php
 
 return [
-    /**
+    /*
      * General Queries Email Address
      */
     'general' => [
@@ -9,11 +9,11 @@ return [
         'address' => 'info@cratespace.biz',
         'reply_to' => [
             'address' => 'info@cratespace.biz',
-            'name' => 'Cratesapce, Inc.'
+            'name' => 'Cratesapce, Inc.',
         ],
     ],
 
-    /**
+    /*
      * Support Email Address
      */
     'support' => [
@@ -21,11 +21,11 @@ return [
         'address' => 'support@cratespace.biz',
         'reply_to' => [
             'address' => 'support@cratespace.biz',
-            'name' => 'Cratesapce Support.'
+            'name' => 'Cratesapce Support.',
         ],
     ],
 
-    /**
+    /*
      * Orders Email Address
      */
     'orders' => [
@@ -33,7 +33,7 @@ return [
         'address' => 'orders@cratespace.biz',
         'reply_to' => [
             'address' => 'orders@cratespace.biz',
-            'name' => 'Cratesapce, Inc.'
+            'name' => 'Cratesapce, Inc.',
         ],
     ],
 ];

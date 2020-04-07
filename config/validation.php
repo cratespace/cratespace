@@ -1,10 +1,10 @@
 <?php
 
 /**
- * All Validation Rules
+ * All Validation Rules.
  */
 return [
-    /**
+    /*
      * Spaces Inputs Rules
      */
     'space' => [
@@ -23,7 +23,7 @@ return [
         'base' => ['required', 'string'],
     ],
 
-    /**
+    /*
      * Order Inputs Rules
      */
     'order' => [
@@ -31,9 +31,10 @@ return [
         'business' => ['nullable', 'string', 'max:255'],
         'email' => ['required', 'string', 'email', 'max:255'],
         'phone' => ['required'],
+        'payment_type' => ['required', 'string'],
     ],
 
-    /**
+    /*
      * Client Message Inputs Rules
      */
     'message' => [
@@ -45,7 +46,7 @@ return [
         'body' => ['required', 'string'],
     ],
 
-    /**
+    /*
      * User Business Inputs Rules
      */
     'business' => [
@@ -55,7 +56,7 @@ return [
         'description' => ['nullable', 'string'],
     ],
 
-    /**
+    /*
      * Address Inputs Rules
      */
     'address' => [
@@ -65,7 +66,7 @@ return [
         'country' => ['required', 'string'],
     ],
 
-    /**
+    /*
      * Registration Inputs Rules
      */
     'registration' => [
@@ -74,5 +75,14 @@ return [
         'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
         'phone' => ['required', 'integer', 'min:9'],
         'password' => ['required', 'string', 'min:8', 'confirmed'],
-    ]
+    ],
+
+    /*
+     * Support Thread Inputs Rules
+     */
+    'thread' => [
+        'title' => ['required', 'string', 'max:255'],
+        'body' => ['required', 'string'],
+        'channel_id' => ['required', 'integer'],
+    ],
 ];

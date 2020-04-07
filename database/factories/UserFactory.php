@@ -1,9 +1,9 @@
 <?php
 
 /** @var \Illuminate\Database\Eloquent\Factory $factory */
-
 use App\Models\User;
 use Faker\Generator as Faker;
+use Illuminate\Support\Str;
 
 $factory->define(User::class, function (Faker $faker) {
     return [
@@ -19,7 +19,7 @@ $factory->define(User::class, function (Faker $faker) {
         'settings' => [
             'notifications_mobile' => 'everything',
             'notifications_email' => [
-                'new-order', 'cancel-order', 'newsletter'
+                'new-order', 'cancel-order', 'newsletter',
             ],
         ],
     ];

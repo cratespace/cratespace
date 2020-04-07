@@ -17,7 +17,7 @@ class CreateUsersTable extends Migration
             $table->id();
             $table->string('name');
             $table->string('username')->uniqeu();
-            $table->string('type')->default('company');
+            $table->string('type')->default('business');
             $table->text('photo')->nullable();
             $table->string('email')->unique();
             $table->string('phone', 50)->nullable();

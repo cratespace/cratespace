@@ -17,7 +17,8 @@ trait CheckAuthorization
     /**
      * Determine if requested resource belongs to the user making the request.
      *
-     * @param  \Illuminate\Database\Eloquent\Model $resource
+     * @param \Illuminate\Database\Eloquent\Model $resource
+     *
      * @return bool
      */
     protected function resourceBelongsToUser($resource)
