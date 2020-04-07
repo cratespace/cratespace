@@ -77,4 +77,26 @@ Route::group([
      * Delete Reply Route...
      */
     Route::delete('/replies/{reply}', 'ReplyController@destroy');
+
+    /*
+     * Subscribe to Thread Route...
+     */
+    Route::post('/threads/{channel}/{thread}/subscriptions', 'SupportThreadSubscriptionsController@store')->middleware('auth');
+
+    /*
+     * Unsubscribe from Thread Route...
+     */
+    Route::delete('/threads/{channel}/{thread}/subscriptions', 'SupportThreadSubscriptionsController@destroy')->middleware('auth');
+
+    /*
+     * Lock Thread Route...
+     */
+    Route::post('/threads/{channel}/{thread}/lock', 'LockedThreadsController@store')
+        ->name('support.threads.lock')->middleware('admin');
+
+    /*
+     * Unlock Thread Route...
+     */
+    Route::delete('/threads/{channel}/{thread}/unlock', 'LockedThreadsController@destroy')
+        ->name('support.threads.unlock')->middleware('admin');
 });
