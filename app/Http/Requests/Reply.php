@@ -18,7 +18,9 @@ class Reply extends FormRequest
      */
     public function authorize()
     {
-        if ($resource = $this->reply) {
+        $resource = $this->reply;
+
+        if ($resource) {
             return $this->resourceBelongsToUser($resource);
         }
 

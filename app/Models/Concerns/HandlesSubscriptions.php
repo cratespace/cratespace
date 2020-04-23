@@ -16,7 +16,7 @@ trait HandlesSubscriptions
     public function subscribe(?int $userId = null)
     {
         $this->subscriptions()->create([
-            'user_id' => $userId ?: user('id'),
+            'user_id' => $userId ?? user('id'),
         ]);
 
         return $this;
@@ -30,7 +30,7 @@ trait HandlesSubscriptions
     public function unsubscribe(?int $userId = null)
     {
         $this->subscriptions()
-            ->where('user_id', $userId ?: auth()->id())
+            ->where('user_id', $userId ?? auth()->id())
             ->delete();
     }
 

@@ -16,7 +16,7 @@ class ThreadPolicy
      * @param \App\Models\User   $user
      * @param \App\Models\Thread $thread
      *
-     * @return mixed
+     * @return bool
      */
     public function view(User $user, Thread $thread)
     {
@@ -29,7 +29,7 @@ class ThreadPolicy
      * @param \App\Models\User   $user
      * @param \App\Models\Thread $thread
      *
-     * @return mixed
+     * @return bool
      */
     public function delete(User $user, Thread $thread)
     {

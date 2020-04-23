@@ -57,7 +57,7 @@ Route::group([
         '/threads/{channel}/{thread}',
         'SupportThreadConroller@destroy'
     )->name('support.threads.destroy')
-    ->middleware('auth');
+        ->middleware('auth');
 
     /*
      * Reply Favorite Route...
@@ -78,7 +78,7 @@ Route::group([
         '/threads/{channel}/{thread}/replies',
         'ReplyController@index'
     )->name('support.threads.replies.index')
-    ->middleware('auth');
+        ->middleware('auth');
 
     /*
      * Create New Thread Reply Route...
@@ -87,7 +87,7 @@ Route::group([
         '/threads/{channel}/{thread}/replies',
         'ReplyController@store'
     )->name('support.threads.replies.store')
-    ->middleware('auth');
+        ->middleware('auth');
 
     /*
      * Update Reply Route...

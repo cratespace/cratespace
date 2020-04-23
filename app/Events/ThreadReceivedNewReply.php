@@ -2,24 +2,22 @@
 
 namespace App\Events;
 
-use Illuminate\Broadcasting\Channel;
-use Illuminate\Broadcasting\InteractsWithSockets;
-use Illuminate\Broadcasting\PresenceChannel;
-use Illuminate\Broadcasting\PrivateChannel;
-use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
-use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Foundation\Events\Dispatchable;
+use Illuminate\Broadcasting\InteractsWithSockets;
 
 class ThreadReceivedNewReply
 {
-    use Dispatchable, InteractsWithSockets, SerializesModels;
+    use Dispatchable;
+    use InteractsWithSockets;
+    use SerializesModels;
 
     /**
      * The reply instance.
      *
      * @var \App\Models\Reply
      */
-    public $reply;
+    protected $reply;
 
     /**
      * Create a new event instance.
@@ -29,5 +27,15 @@ class ThreadReceivedNewReply
     public function __construct($reply)
     {
         $this->reply = $reply;
+    }
+
+    /**
+     * Get reply instance.
+     *
+     * @return \App\Models\Reply
+     */
+    public function getReply()
+    {
+        return $this->reply;
     }
 }

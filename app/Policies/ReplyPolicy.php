@@ -16,7 +16,7 @@ class ReplyPolicy
      * @param \App\Models\User  $user
      * @param \App\Models\Reply $reply
      *
-     * @return mixed
+     * @return bool
      */
     public function update(User $user, Reply $reply)
     {
@@ -29,7 +29,7 @@ class ReplyPolicy
      * @param \App\Models\User  $user
      * @param \App\Models\Reply $reply
      *
-     * @return mixed
+     * @return bool
      */
     public function delete(User $user, Reply $reply)
     {

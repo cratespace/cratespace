@@ -11,7 +11,7 @@ class ThreadFilter extends Filter
      *
      * @var array
      */
-    protected $filters = ['by', 'popular', 'unanswered'];
+    protected $filters = ['author', 'popular', 'unanswered'];
 
     /**
      * Filter the query by a given username.
@@ -20,7 +20,7 @@ class ThreadFilter extends Filter
      *
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    protected function by($username)
+    protected function author($username)
     {
         return $this->builder->where(
             'user_id',

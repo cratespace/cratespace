@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 if (!function_exists('user')) {
     /**
      * Get the authenticated user and/or attributes.
@@ -75,7 +77,7 @@ if (!function_exists('is_active')) {
      * @param string $active
      * @param string $default
      *
-     * @return bool|string
+     * @return string
      */
     function is_active(string $path, string $active = 'active', string $default = ''): string
     {

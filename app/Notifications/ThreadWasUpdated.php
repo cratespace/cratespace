@@ -3,8 +3,6 @@
 namespace App\Notifications;
 
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
 class ThreadWasUpdated extends Notification
@@ -56,7 +54,7 @@ class ThreadWasUpdated extends Notification
     {
         return [
             'message' => $this->reply->user->name . ' replied to ' . $this->thread->title,
-            'link' => $this->reply->path()
+            'link' => $this->reply->path(),
         ];
     }
 }

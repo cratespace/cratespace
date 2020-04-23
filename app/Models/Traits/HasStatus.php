@@ -11,7 +11,7 @@ trait HasStatus
      */
     public function departed()
     {
-        return $this->departs_at <= now() || 'Expired' === $this->status;
+        return $this->departs_at <= now() || $this->status === 'Expired';
     }
 
     /**
@@ -21,7 +21,7 @@ trait HasStatus
      */
     public function ordered()
     {
-        return $this->order()->exists() || 'Ordered' === $this->status;
+        return $this->order()->exists() || $this->status === 'Ordered';
     }
 
     /**
