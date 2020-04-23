@@ -178,7 +178,7 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
         App\Providers\TelescopeServiceProvider::class,
-        App\Providers\ResourceServiceProvider::class,
+        App\Providers\ResourceMaintenanceServiceProvider::class,
     ],
 
     /*
