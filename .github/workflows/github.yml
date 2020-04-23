@@ -30,4 +30,4 @@ jobs:
         APP_ENV: testing
         DB_CONNECTION: sqlite
         DB_DATABASE: database/database.sqlite
-      run: vendor/bin/phpunit
+      run: php artisan test && ./vendor/bin/phpunit
