@@ -13,7 +13,11 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
+<<<<<<< HEAD
         $this->registerMarkdowParser();
+=======
+        $this->registerMArkdowParser();
+>>>>>>> 5c9c75c6692cf9ba03e6ecf90986246ccdc6d951
     }
 
     /**
@@ -28,7 +32,11 @@ class AppServiceProvider extends ServiceProvider
     /**
      * Register markdown parser.
      */
+<<<<<<< HEAD
     protected function registerMarkdowParser()
+=======
+    protected function registerMArkdowParser()
+>>>>>>> 5c9c75c6692cf9ba03e6ecf90986246ccdc6d951
     {
         $this->app->bind('markdown.parser', function () {
             return new \Parsedown();

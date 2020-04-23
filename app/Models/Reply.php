@@ -122,7 +122,11 @@ class Reply extends Model
      */
     public function isBest()
     {
+<<<<<<< HEAD
         return $this->thread->best_reply_id === $this->id;
+=======
+        return $this->thread->best_reply_id == $this->id;
+>>>>>>> 5c9c75c6692cf9ba03e6ecf90986246ccdc6d951
     }
 
     /**

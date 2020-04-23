@@ -6,12 +6,18 @@ use App\Models\Thread;
 use App\Models\Channel;
 use App\Filters\ThreadFilter;
 use App\Http\Requests\Thread as ThreadForm;
+<<<<<<< HEAD
 use App\Http\Controllers\Concerns\RetrivesResource;
 
 class SupportThreadConroller extends Controller
 {
     use RetrivesResource;
 
+=======
+
+class SupportThreadConroller extends Controller
+{
+>>>>>>> 5c9c75c6692cf9ba03e6ecf90986246ccdc6d951
     /**
      * Display a listing of the resource.
      *
@@ -83,6 +89,20 @@ class SupportThreadConroller extends Controller
     }
 
     /**
+<<<<<<< HEAD
+=======
+     * Show the form for editing the specified resource.
+     *
+     * @param \App\Models\Thread $thread
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function edit(Thread $thread)
+    {
+    }
+
+    /**
+>>>>>>> 5c9c75c6692cf9ba03e6ecf90986246ccdc6d951
      * Update the specified resource in storage.
      *
      * @param \Illuminate\Http\Request $request
@@ -119,4 +139,26 @@ class SupportThreadConroller extends Controller
             'Thread was deleted from the database.'
         );
     }
+<<<<<<< HEAD
+=======
+
+    /**
+     * Fetch all relevant threads.
+     *
+     * @param \App\Models\Channel        $channel
+     * @param \App\Filters\ThreadFilters $filters
+     *
+     * @return \Illuminate\Support\Collection
+     */
+    protected function getThreads(Channel $channel, ThreadFilter $filters)
+    {
+        $threads = Thread::latest()->filter($filters);
+
+        if ($channel->exists) {
+            $threads->where('channel_id', $channel->id);
+        }
+
+        return $threads->paginate(10);
+    }
+>>>>>>> 5c9c75c6692cf9ba03e6ecf90986246ccdc6d951
 }
