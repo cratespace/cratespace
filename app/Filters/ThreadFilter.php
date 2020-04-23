@@ -11,11 +11,7 @@ class ThreadFilter extends Filter
      *
      * @var array
      */
-<<<<<<< HEAD
     protected $filters = ['author', 'popular', 'unanswered'];
-=======
-    protected $filters = ['by', 'popular', 'unanswered'];
->>>>>>> 5c9c75c6692cf9ba03e6ecf90986246ccdc6d951
 
     /**
      * Filter the query by a given username.
@@ -24,11 +20,7 @@ class ThreadFilter extends Filter
      *
      * @return \Illuminate\Database\Eloquent\Builder
      */
-<<<<<<< HEAD
     protected function author($username)
-=======
-    protected function by($username)
->>>>>>> 5c9c75c6692cf9ba03e6ecf90986246ccdc6d951
     {
         return $this->builder->where(
             'user_id',

@@ -2,14 +2,14 @@
 
 namespace App\Models;
 
-use App\Models\Traits\Fillable;
-use App\Models\Traits\Filterable;
-use App\Models\Traits\HasStatus;
 use App\Models\Traits\HasUid;
-use App\Models\Traits\Presentable;
-use Facades\App\Http\Services\Ip\Location;
-use Illuminate\Database\Eloquent\Model;
 use Laravel\Scout\Searchable;
+use App\Models\Traits\Fillable;
+use App\Models\Traits\HasStatus;
+use App\Models\Traits\Filterable;
+use App\Models\Traits\Presentable;
+use Illuminate\Database\Eloquent\Model;
+use Facades\App\Http\Services\Ip\Location;
 
 class Space extends Model
 {

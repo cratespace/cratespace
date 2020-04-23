@@ -2,8 +2,8 @@
 
 namespace App\Models;
 
-use App\Models\Traits\Fillable;
 use App\Models\Traits\HasUid;
+use App\Models\Traits\Fillable;
 use Illuminate\Database\Eloquent\Model;
 
 class Account extends Model
