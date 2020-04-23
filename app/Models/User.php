@@ -2,19 +2,11 @@
 
 namespace App\Models;
 
-<<<<<<< HEAD
 use Carbon\Carbon;
 use App\Models\Traits\Fillable;
 use App\Models\Traits\HasPhoto;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-=======
-use App\Models\Traits\Fillable;
-use App\Models\Traits\HasPhoto;
-use Carbon\Carbon;
-use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
->>>>>>> 5c9c75c6692cf9ba03e6ecf90986246ccdc6d951
 
 class User extends Authenticatable
 {

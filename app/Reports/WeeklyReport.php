@@ -46,14 +46,8 @@ final class WeeklyReport extends Report
                 Carbon::now(),
             ]
         )->groupBy('date')
-<<<<<<< HEAD
             ->orderBy('date', 'ASC')
             ->get()
             ->toArray();
-=======
-        ->orderBy('date', 'ASC')
-        ->get()
-        ->toArray();
->>>>>>> 5c9c75c6692cf9ba03e6ecf90986246ccdc6d951
     }
 }

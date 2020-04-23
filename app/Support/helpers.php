@@ -1,10 +1,7 @@
 <?php
 
-<<<<<<< HEAD
 declare(strict_types=1);
 
-=======
->>>>>>> 5c9c75c6692cf9ba03e6ecf90986246ccdc6d951
 if (!function_exists('user')) {
     /**
      * Get the authenticated user and/or attributes.
@@ -80,11 +77,7 @@ if (!function_exists('is_active')) {
      * @param string $active
      * @param string $default
      *
-<<<<<<< HEAD
-     * @return string
-=======
      * @return bool|string
->>>>>>> 5c9c75c6692cf9ba03e6ecf90986246ccdc6d951
      */
     function is_active(string $path, string $active = 'active', string $default = ''): string
     {

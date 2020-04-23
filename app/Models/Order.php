@@ -4,12 +4,7 @@ namespace App\Models;
 
 use App\Models\Traits\HasUid;
 use Laravel\Scout\Searchable;
-use App\Models\Traits\Fillable;
 use App\Mail\OrderStatusUpdated;
-<<<<<<< HEAD
-=======
-use App\Models\Traits\Graphable;
->>>>>>> 5c9c75c6692cf9ba03e6ecf90986246ccdc6d951
 use App\Models\Traits\Filterable;
 use Illuminate\Support\Facades\Mail;
 use App\Models\Concerns\GeneratesUid;
@@ -17,19 +12,10 @@ use Illuminate\Database\Eloquent\Model;
 
 class Order extends Model
 {
-<<<<<<< HEAD
-    use Fillable;
     use Filterable;
     use HasUid;
     use Searchable;
     use GeneratesUid;
-=======
-    use Fillable,
-        Filterable,
-        HasUid,
-        Searchable,
-        GeneratesUid;
->>>>>>> 5c9c75c6692cf9ba03e6ecf90986246ccdc6d951
 
     /**
      * The attributes that are mass assignable.
@@ -93,11 +79,7 @@ class Order extends Model
             'uid' => $this->uid,
             'id' => $this->id,
             'name' => $this->name,
-<<<<<<< HEAD
             'email' => $this->email,
-=======
-            'email' => $this->email
->>>>>>> 5c9c75c6692cf9ba03e6ecf90986246ccdc6d951
         ];
     }
 
@@ -133,13 +115,10 @@ class Order extends Model
 
     /**
      * Mark the space as expired.
-<<<<<<< HEAD
      *
-     * @param mixed $status
-=======
->>>>>>> 5c9c75c6692cf9ba03e6ecf90986246ccdc6d951
+     * @param string $status
      */
-    public function markAs($status)
+    public function markAs(string $status)
     {
         $this->update(['status' => $status]);
     }
@@ -157,12 +136,8 @@ class Order extends Model
     /**
      * Process order.
      *
-<<<<<<< HEAD
      * @param array $data
      *
-=======
-     * @param  array  $data
->>>>>>> 5c9c75c6692cf9ba03e6ecf90986246ccdc6d951
      * @return void
      */
     public static function process(array $data)
