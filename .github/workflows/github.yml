@@ -1,8 +1,8 @@
-name: Laravel
+name: Cratespace
 
 on:
   push:
-    branches: [ master ]
+    branches: [ development ]
   pull_request:
     branches: [ master ]
 
