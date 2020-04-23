@@ -9,14 +9,6 @@ use App\Http\Requests\Reply as ReplyForm;
 class ReplyController extends Controller
 {
     /**
-     * Create a new RepliesController instance.
-     */
-    public function __construct()
-    {
-        $this->middleware('auth', ['except' => 'index']);
-    }
-
-    /**
      * Fetch all relevant replies.
      *
      * @param string             $channel
@@ -75,6 +67,10 @@ class ReplyController extends Controller
 
         $reply->delete();
 
-        return back()->with(['message' => 'Your replywas deleted.']);
+        if (request()->expectsJson()) {
+            return response(['message' => 'Reply deleted.']);
+        }
+
+        return back()->with(['message' => 'Your reply was deleted.']);
     }
 }

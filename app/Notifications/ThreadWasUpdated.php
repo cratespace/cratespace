@@ -3,8 +3,11 @@
 namespace App\Notifications;
 
 use Illuminate\Bus\Queueable;
+<<<<<<< HEAD
+=======
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
+>>>>>>> 5c9c75c6692cf9ba03e6ecf90986246ccdc6d951
 use Illuminate\Notifications\Notification;
 
 class ThreadWasUpdated extends Notification
@@ -56,7 +59,11 @@ class ThreadWasUpdated extends Notification
     {
         return [
             'message' => $this->reply->user->name . ' replied to ' . $this->thread->title,
+<<<<<<< HEAD
+            'link' => $this->reply->path(),
+=======
             'link' => $this->reply->path()
+>>>>>>> 5c9c75c6692cf9ba03e6ecf90986246ccdc6d951
         ];
     }
 }

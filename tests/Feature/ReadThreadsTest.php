@@ -59,7 +59,11 @@ class ReadThreadsTest extends TestCase
         $threadByJohn = create(Thread::class, ['user_id' => auth()->id()]);
         $threadNotByJohn = create(Thread::class);
 
+<<<<<<< HEAD
+        $this->get('/support/threads?author=JohnDoe')
+=======
         $this->get('/support/threads?by=JohnDoe')
+>>>>>>> 5c9c75c6692cf9ba03e6ecf90986246ccdc6d951
                 ->assertSee($threadByJohn->title)
                 ->assertDontSee($threadNotByJohn->title);
     }
@@ -97,6 +101,8 @@ class ReadThreadsTest extends TestCase
     /** @test */
     public function a_user_can_request_all_replies_for_a_given_thread()
     {
+        $this->signIn();
+
         create(Reply::class, ['thread_id' => $this->thread->id], 2);
 
         $response = $this->getJson($this->thread->path() . '/replies');

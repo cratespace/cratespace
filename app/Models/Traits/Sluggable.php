@@ -12,7 +12,11 @@ trait Sluggable
     protected static function bootSluggable()
     {
         static::creating(function ($model) {
+<<<<<<< HEAD
+            $model->slug = $model->title ?? $model->name;
+=======
             $model->slug = $model->title ?: $model->name;
+>>>>>>> 5c9c75c6692cf9ba03e6ecf90986246ccdc6d951
         });
     }
 

@@ -1,6 +1,14 @@
+<<<<<<< HEAD
+@extends('layouts.web.base')
+
+@section('content')
+    @include('components.sections.common._fill')
+
+=======
 @extends('layouts.web')
 
 @section('content')
+>>>>>>> 5c9c75c6692cf9ba03e6ecf90986246ccdc6d951
     <section class="py-12">
         <div class="container">
             <div class="row">
@@ -20,7 +28,11 @@
                     <div class="entry-content">
                         <h2 class="text-2xl font-semibold leading-relaxed mb-6">Who we are</h2>
 
+<<<<<<< HEAD
+                        <p class="text-gray-500 mb-6 leading-relaxed">Our website address is: <a href="{{ url('/') }}">{{ url('/') }}</a></p>
+=======
                         <p class="text-gray-500 mb-6 leading-relaxed">Our website address is: http://wordpress.test.</p>
+>>>>>>> 5c9c75c6692cf9ba03e6ecf90986246ccdc6d951
 
                         <h2 class="text-2xl font-semibold leading-relaxed mb-6">What personal data we collect and why we collect it</h2>
 

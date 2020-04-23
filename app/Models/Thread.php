@@ -70,7 +70,11 @@ class Thread extends Model
      */
     public function toSearchableArray()
     {
-        return $this->toArray();
+        return [
+            'id' => $this->id,
+            'title' => $this->title,
+            'body' => $this->body,
+        ];
     }
 
     /**
@@ -153,15 +157,5 @@ class Thread extends Model
         $key = $user->visitedThreadCacheKey($this);
 
         return $this->updated_at > cache($key);
-    }
-
-    /**
-     * Mark the given reply as the best answer.
-     *
-     * @param \App\Models\Reply $reply
-     */
-    public function markBestReply(Reply $reply)
-    {
-        $this->update(['best_reply_id' => $reply->id]);
     }
 }

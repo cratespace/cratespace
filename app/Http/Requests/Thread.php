@@ -18,7 +18,13 @@ class Thread extends FormRequest
      */
     public function authorize()
     {
+<<<<<<< HEAD
+        $resource = $this->thread;
+
+        if ($resource) {
+=======
         if ($resource = $this->thread) {
+>>>>>>> 5c9c75c6692cf9ba03e6ecf90986246ccdc6d951
             return $this->resourceBelongsToUser($resource);
         }
 

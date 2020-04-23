@@ -16,7 +16,11 @@ class ThreadPolicy
      * @param \App\Models\User   $user
      * @param \App\Models\Thread $thread
      *
+<<<<<<< HEAD
+     * @return bool
+=======
      * @return mixed
+>>>>>>> 5c9c75c6692cf9ba03e6ecf90986246ccdc6d951
      */
     public function view(User $user, Thread $thread)
     {
@@ -29,7 +33,11 @@ class ThreadPolicy
      * @param \App\Models\User   $user
      * @param \App\Models\Thread $thread
      *
+<<<<<<< HEAD
+     * @return bool
+=======
      * @return mixed
+>>>>>>> 5c9c75c6692cf9ba03e6ecf90986246ccdc6d951
      */
     public function delete(User $user, Thread $thread)
     {
