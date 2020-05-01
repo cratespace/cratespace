@@ -2,9 +2,9 @@ name: Cratespace
 
 on:
   push:
-    branches: [ development ]
+    branches: [ developement, master ]
   pull_request:
-    branches: [ development, master ]
+    branches: [ master ]
 
 jobs:
   laravel-tests:
@@ -14,7 +14,7 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Copy .env
-      run: php -r "file_exists('.env') || copy('.env.github', '.env');"
+      run: php -r "file_exists('.env') || copy('.env.example', '.env');"
     - name: Install Dependencies
       run: composer install -q --no-ansi --no-interaction --no-scripts --no-suggest --no-progress --prefer-dist
     - name: Generate key
@@ -25,11 +25,8 @@ jobs:
       run: |
         mkdir -p database
         touch database/database.sqlite
-    - name: Prepare for production
-      run: php artisan optimize && php artisan optimize:clear
     - name: Execute tests (Unit and Feature tests) via PHPUnit
       env:
-        APP_ENV: testing
         DB_CONNECTION: sqlite
         DB_DATABASE: database/database.sqlite
-      run: php artisan test && ./vendor/bin/phpunit
+      run: vendor/bin/phpunit
