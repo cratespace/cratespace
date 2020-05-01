@@ -5,7 +5,7 @@ namespace App\Reports;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 
-final class WeeklyReport extends Report
+class WeeklyReport extends Report
 {
     /**
      * Parse data into yearly report graph.
