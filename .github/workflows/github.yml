@@ -22,7 +22,9 @@ jobs:
     - name: Directory Permissions
       run: chmod -R 777 storage bootstrap/cache
     - name: Create Database
-      run: mkdir -p database && touch database/database.sqlite
+      run: |
+        mkdir -p database
+        touch database/database.sqlite
     - name: Prepare for production
       run: php artisan optimize && php artisan optimize:clear
     - name: Execute tests (Unit and Feature tests) via PHPUnit
