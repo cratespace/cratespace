@@ -2,11 +2,11 @@
 
 namespace App\Providers;
 
-use App\Maintainers\OrdersMaintainer;
-use App\Maintainers\OrderSpaceMaintainer;
-use App\Maintainers\SpacesMaintainer;
 use Illuminate\Support\Facades\DB;
+use App\Maintainers\OrdersMaintainer;
+use App\Maintainers\SpacesMaintainer;
 use Illuminate\Support\ServiceProvider;
+use App\Maintainers\OrderSpaceMaintainer;
 
 class ResourceServiceProvider extends ServiceProvider
 {
@@ -48,7 +48,7 @@ class ResourceServiceProvider extends ServiceProvider
      */
     public function appReady()
     {
-        return !$this->app->runningUnitTests() &&
+        return ! $this->app->runningUnitTests() &&
             DB::connection()->getDatabaseName();
     }
 }
