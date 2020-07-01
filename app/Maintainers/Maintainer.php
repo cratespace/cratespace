@@ -2,6 +2,7 @@
 
 namespace App\Maintainers;
 
+use Exception;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Model;
 
@@ -18,6 +19,7 @@ abstract class Maintainer
      * Create a new maintainer instance.
      *
      * @param string $key
+     *
      * @return void
      */
     public function __construct(string $key)
@@ -37,6 +39,10 @@ abstract class Maintainer
      */
     public function getResource()
     {
-        return DB::table($this->key)->get();
+        try {
+            return DB::table($this->key)->get();
+        } catch (Exception $th) {
+            return collect([]);
+        }
     }
 }

@@ -27,11 +27,11 @@ class SpacesMaintainer extends Maintainer
     /**
      * Set space status as expired if space has departed.
      *
-     * @param  \App\Models\Order  $space
+     * @param \App\Models\Order $space
      */
     protected function expire(Space $space)
     {
-        if (! $space->ordered() && $space->departed()) {
+        if (!$space->ordered() && $space->departed()) {
             $space->markAs('Expired');
         }
     }

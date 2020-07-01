@@ -2,7 +2,7 @@
 
 namespace App\Providers;
 
-use Illuminate\Support\Facades\DB;
+use App\Providers\Traits\AppStatus;
 use App\Maintainers\OrdersMaintainer;
 use App\Maintainers\SpacesMaintainer;
 use Illuminate\Support\ServiceProvider;
@@ -10,6 +10,8 @@ use App\Maintainers\OrderSpaceMaintainer;
 
 class ResourceMaintenanceServiceProvider extends ServiceProvider
 {
+    use AppStatus;
+
     /**
      * Resource maintenance classes.
      *
@@ -28,7 +30,7 @@ class ResourceMaintenanceServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        if ($this->appReady()) {
+        if ($this->hasDatabaseConnection()) {
             $this->runResourceMaintenance();
         }
     }
@@ -41,14 +43,5 @@ class ResourceMaintenanceServiceProvider extends ServiceProvider
         foreach ($this->resourceMaintainers as $resourceKey => $maintainer) {
             (new $maintainer($resourceKey))->run();
         }
-    }
-
-    /**
-     * Determine if the app is ready to run.
-     */
-    public function appReady()
-    {
-        return !$this->app->runningUnitTests() &&
-            DB::connection()->getDatabaseName();
     }
 }

@@ -26,13 +26,13 @@ module.exports = {
         },
         checkbox: {
           backgroundColor: theme('colors.gray.100'),
-          width: theme('spacing.6'),
-          height: theme('spacing.6'),
+          width: theme('spacing.5'),
+          height: theme('spacing.5'),
         },
         radio: {
           backgroundColor: theme('colors.gray.100'),
-          width: theme('spacing.6'),
-          height: theme('spacing.6'),
+          width: theme('spacing.5'),
+          height: theme('spacing.5'),
         },
       },
     }),

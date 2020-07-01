@@ -25,14 +25,15 @@ class ListingsController extends Controller
 
         return view('listings', [
             'spaces' => $spaces,
-            'filters' => $this->getFilters()
+            'filters' => $this->getFilters(),
         ]);
     }
 
     /**
      * Get specified spaces.
      *
-     * @param  \App\Filters\SpaceFilter $filter
+     * @param \App\Filters\SpaceFilter $filter
+     *
      * @return \Illuminate\Database\Eloquent\Collection
      */
     protected function getSpaces(SpaceFilter $filters)
@@ -58,7 +59,7 @@ class ListingsController extends Controller
 
         foreach ([
             'origins' => 'origin',
-            'destinations' => 'destination'
+            'destinations' => 'destination',
         ] as $key => $attribute) {
             $filters[$key] = collect(array_unique(
                 $this->listing->pluck($attribute)->toArray()
