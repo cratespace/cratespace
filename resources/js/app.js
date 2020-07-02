@@ -1,32 +1,31 @@
-require('./bootstrap');
+/**
+ * First we will load all of this project's JavaScript dependencies which
+ * includes Vue and other libraries. It is a great starting point when
+ * building robust, powerful web applications using Vue and Laravel.
+ */
 
-import VueApexCharts from 'vue-apexcharts'
+require('./bootstrap');
 
 window.Vue = require('vue');
 
-Vue.config.productionTip = false;
+/**
+ * The following block of code may be used to automatically register your
+ * Vue components. It will recursively scan this directory for the Vue
+ * components and automatically register them with their "basename".
+ *
+ * Eg. ./components/ExampleComponent.vue -> <example-component></example-component>
+ */
 
-Vue.use(VueApexCharts);
+// const files = require.context('./', true, /\.vue$/i)
+// files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
 
-window.events = new Vue();
+Vue.component('example-component', require('./components/ExampleComponent.vue').default);
 
-window.flash = function(message, level = 'success') {
-    window.events.$emit('flash', { message, level });
-};
-
-// window.addEventListener('contextmenu', function(e) {
-//     e.preventDefault();
-// }, false);
-
-Vue.component('apexchart', VueApexCharts);
-Vue.component("image-upload-form", require("./components/ImageUploadForm.vue").default);
-Vue.component("flash", require("./components/Flash.vue").default);
-Vue.component("order", require("./components/Orders/Order.vue").default);
-Vue.component("graph", require("./components/Graph.vue").default);
-Vue.component("order-details", require("./components/OrderDetails.vue").default);
-
-// Spaces
-// Vue.component("spaces", require("./components/Spaces/List.vue").default);
+/**
+ * Next, we will create a fresh Vue application instance and attach it to
+ * the page. Then, you may begin adding components to this application
+ * or customize the JavaScript scaffolding to fit your unique needs.
+ */
 
 const app = new Vue({
     el: '#app',

@@ -2,35 +2,27 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Order;
-use App\Models\Space;
-use App\Reports\WeeklyReport;
-use App\Http\Controllers\Concerns\CountsItems;
+use Illuminate\Http\Request;
 
 class HomeController extends Controller
 {
-    use CountsItems;
+    /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
 
     /**
      * Show the application dashboard.
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function __invoke()
+    public function index()
     {
-        $graph = (new WeeklyReport(Order::whereUserId(user('id'))));
-        $graphData = $graph->make();
-
-        if (is_null(user('business')->email)) {
-            return redirect()->route('users.edit', [
-                'user' => user(), 'page' => 'business',
-            ]);
-        }
-
-        return view('businesses.home', [
-            'chart' => $graphData,
-            'spaces' => $this->getCountOf(Space::class, Space::whereUserId(user('id'))->get()),
-            'orders' => $this->getCountOf(Order::class, Order::whereUserId(user('id'))->get()),
-        ]);
+        return view('home');
     }
 }

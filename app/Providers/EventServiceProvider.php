@@ -2,18 +2,10 @@
 
 namespace App\Providers;
 
-use App\Events\OrderPlaced;
-use App\Listeners\NotifyBusiness;
-use App\Listeners\NotifySubscribers;
-use Illuminate\Support\Facades\Event;
-use App\Events\ThreadReceivedNewReply;
 use Illuminate\Auth\Events\Registered;
-use App\Listeners\NotifyMentionedUsers;
-use App\Listeners\UpdateBusinessCredit;
-use App\Listeners\SendOrderDetailsEmail;
-use App\Events\PaymentProcessingSucceeded;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
+use Illuminate\Support\Facades\Event;
 
 class EventServiceProvider extends ServiceProvider
 {
@@ -26,19 +18,17 @@ class EventServiceProvider extends ServiceProvider
         Registered::class => [
             SendEmailVerificationNotification::class,
         ],
-
-        PaymentProcessingSucceeded::class => [
-            UpdateBusinessCredit::class,
-        ],
-
-        OrderPlaced::class => [
-            NotifyBusiness::class,
-            SendOrderDetailsEmail::class,
-        ],
-
-        ThreadReceivedNewReply::class => [
-            NotifyMentionedUsers::class,
-            NotifySubscribers::class,
-        ],
     ];
+
+    /**
+     * Register any events for your application.
+     *
+     * @return void
+     */
+    public function boot()
+    {
+        parent::boot();
+
+        //
+    }
 }

@@ -2,16 +2,8 @@
 
 namespace App\Providers;
 
-use App\Models\User;
-use App\Models\Reply;
-use App\Models\Space;
-use App\Models\Thread;
-use App\Policies\UserPolicy;
-use App\Policies\ReplyPolicy;
-use App\Policies\SpacePolicy;
-use App\Policies\ThreadPolicy;
-use Illuminate\Support\Facades\Gate;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
+use Illuminate\Support\Facades\Gate;
 
 class AuthServiceProvider extends ServiceProvider
 {
@@ -21,10 +13,7 @@ class AuthServiceProvider extends ServiceProvider
      * @var array
      */
     protected $policies = [
-        User::class => UserPolicy::class,
-        Space::class => SpacePolicy::class,
-        Thread::class => ThreadPolicy::class,
-        Reply::class => ReplyPolicy::class,
+        // 'App\Model' => 'App\Policies\ModelPolicy',
     ];
 
     /**
@@ -36,8 +25,6 @@ class AuthServiceProvider extends ServiceProvider
     {
         $this->registerPolicies();
 
-        Gate::define('admin', function (User $user) {
-            return $user->isType(['admin']);
-        });
+        //
     }
 }
