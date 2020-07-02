@@ -26,11 +26,10 @@ class DefaultUserSeeder extends Seeder
             'email_verified_at' => now(),
             'password' => Hash::make('alphaxion77'),
             'remember_token' => Str::random(10),
-            'type' => 'business',
             'settings' => [
                 'notifications_mobile' => 'everything',
                 'notifications_email' => [
-                    'new-order', 'cancel-order', 'newsletter'
+                    'new-order', 'cancel-order', 'newsletter',
                 ],
             ],
         ]);
@@ -51,7 +50,7 @@ class DefaultUserSeeder extends Seeder
 
         Account::create([
             'user_id' => $user->id,
-            'credit' => 0
+            'credit' => 0,
         ]);
     }
 }

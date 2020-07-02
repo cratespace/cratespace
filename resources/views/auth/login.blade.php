@@ -35,7 +35,7 @@
                                 @include('components.forms.fields._remember')
 
                                 <div class="text-sm leading-5">
-                                    <a href="{{ route('password.request') }}" class="text-indigo-500 hover:text-indigo-400 focus:outline-none transition ease-in-out duration-150">
+                                    <a href="{{ route('password.request') }}">
                                         Forgot your password?
                                     </a>
                                 </div>
@@ -49,7 +49,7 @@
 
                             <div class="mt-6 text-center">
                                 <span class="text-sm text-gray-600">
-                                    Don't have an account yet? <a class="text-indigo-500 hover:text-indigo-400" href="{{ route('register') }}">Sign up</a>
+                                    Don't have an account yet? <a href="{{ route('register') }}">Sign up</a>
                                 </span>
                             </div>
                         </form>

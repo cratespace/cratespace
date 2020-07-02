@@ -39,7 +39,7 @@
 
                             <div class="mt-6 text-center">
                                 <span class="text-sm text-gray-600">
-                                    Just remembered your password? <a class="text-indigo-500 hover:text-indigo-400" href="{{ route('login') }}">Sign in</a>
+                                    Just remembered your password? <a href="{{ route('login') }}">Sign in</a>
                                 </span>
                             </div>
                         </form>

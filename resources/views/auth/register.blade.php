@@ -12,7 +12,7 @@
 
                     <div class="mb-6 flex">
                         <div class="mr-2 mt-1">
-                            <svg class="h-5 w-5 fill-current text-indigo-500" viewBox="0 0 20 20" fill="currentColor">
+                            <svg class="h-5 w-5 fill-current text-blue-500" viewBox="0 0 20 20" fill="currentColor">
                                 <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
                             </svg>
                         </div>
@@ -26,7 +26,7 @@
 
                     <div class="mb-6 flex">
                         <div class="mr-2 mt-1">
-                            <svg class="h-5 w-5 fill-current text-indigo-500" viewBox="0 0 20 20" fill="currentColor">
+                            <svg class="h-5 w-5 fill-current text-blue-500" viewBox="0 0 20 20" fill="currentColor">
                                 <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
                             </svg>
                         </div>
@@ -40,7 +40,7 @@
 
                     <div class="mb-6 flex">
                         <div class="mr-2 mt-1">
-                            <svg class="h-5 w-5 fill-current text-indigo-500" viewBox="0 0 20 20" fill="currentColor">
+                            <svg class="h-5 w-5 fill-current text-blue-500" viewBox="0 0 20 20" fill="currentColor">
                                 <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
                             </svg>
                         </div>
@@ -68,7 +68,7 @@
                         </h2>
 
                         <p class="text-sm text-gray-600">
-                            Already have an account? <a class="text-indigo-500 hover:text-indigo-400" href="{{ route('login') }}">Sign in</a>
+                            Already have an account? <a href="{{ route('login') }}">Sign in</a>
                         </p>
                     </div>
 
@@ -109,7 +109,7 @@
 
                         <div class="mb-6">
                             <p class="text-xs text-gray-600 max-w-sm">
-                                By clicking Submit, you confirm you have read and agreed to <a class="text-indigo-500 hover:text-indigo-400" href="/privacy">{{ config('app.name') }} General Terms and Conditions and Privacy Policy</a>.
+                                By clicking Submit, you confirm you have read and agreed to <a href="/privacy">{{ config('app.name') }} General Terms and Conditions and Privacy Policy</a>.
                             </p>
                         </div>
 

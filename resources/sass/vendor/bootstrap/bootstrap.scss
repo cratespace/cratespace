@@ -1,18 +1,16 @@
-/**
- * Custom Bootstrap Configuration.
+/*!
+ * Custom Bootstrap Configuration
  */
 
 @import "functions";
 @import "variables";
 @import "mixins";
-@import "grid";
-@import "alert";
-@import "tables";
 @import "transitions";
 @import "navbar";
+@import "grid";
 @import "dropdown";
-@import "pagination";
+@import "progress";
+@import "alert";
 @import "close";
 @import "modal";
-@import "tooltip";
 @import "spinners";

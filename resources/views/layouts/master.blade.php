@@ -12,7 +12,7 @@
     <!-- Styles -->
     @include('layouts.partials._css')
 </head>
-<body class="text-gray-700 antialiased leading-normal font-sans {{ $bgcolor ?? 'bg-white' }} overflow-x-hidden">
+<body class="text-gray-600 antialiased leading-normal font-sans {{ $bgcolor ?? 'bg-white' }} overflow-x-hidden">
     <!-- Main App -->
     <div id="app">
         @yield('main')
