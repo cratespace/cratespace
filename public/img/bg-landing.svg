@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="1978px" height="1080px" viewBox="0 0 1978 1080" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>Group</title>
+    <defs>
+        <linearGradient x1="168.586519%" y1="-50.8345117%" x2="0%" y2="92.4556073%" id="linearGradient-1">
+            <stop stop-color="#0366D6" offset="0%"></stop>
+            <stop stop-color="#C0D9F5" offset="100%"></stop>
+        </linearGradient>
+    </defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Group" transform="translate(-0.000000, 0.000000)">
+            <path d="M1978,0.00023169599 L1978,1080.00023 L805.963,1080 L1095.347,0 L1978,0.00023169599 Z" id="Combined-Shape" fill="url(#linearGradient-1)"></path>
+            <path d="M1097.347,0.00023169599 L807.962,1080.00023 L0,1080.00046 L0,0.00046339198 L1097.347,0.00023169599 Z" id="Combined-Shape" fill="#F7FAFC"></path>
+        </g>
+    </g>
+</svg>

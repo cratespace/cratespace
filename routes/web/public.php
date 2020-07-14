@@ -3,5 +3,7 @@
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    return view('welcome');
+    auth()->logout();
+
+    return view('public.landing.welcome');
 });

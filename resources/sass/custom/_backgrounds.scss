@@ -1,0 +1,17 @@
+.bg-gradient {
+    background: linear-gradient(180deg, rgba(255,255,255,1) 0%, rgba(239,247,247,1) 100%);
+}
+
+.bg-auth {
+    background-image: url('/img/bg-pattern.svg'), -moz-linear-gradient(to right, rgba(247,250,252,1) 0%, rgba(255,255,255,1) 100%);
+    background-image: url('/img/bg-pattern.svg'), -webkit-linear-gradient(to right, rgba(247,250,252,1) 0%, rgba(255,255,255,1) 100%);
+    background-image: url('/img/bg-pattern.svg'), linear-gradient(to right, rgba(247,250,252,1) 0%, rgba(255,255,255,1) 100%);
+}
+
+.bg-header {
+    background: linear-gradient(45deg, rgba(127,156,245,1) 0%, rgba(90,103,216,1) 100%);
+}
+
+.stripe-bg {
+    background: linear-gradient(90deg,#777bf8,#68d4f8 200%);
+}

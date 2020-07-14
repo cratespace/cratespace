@@ -1,5 +1,11 @@
-@extends('layouts.master')
+@extends('layouts.master', ['bgcolor' => 'bg-gray-100'])
 
 @section('body')
-    @yield('content')
+    <!-- Content -->
+    <main role="main">
+        @yield('content')
+    </main>
+
+    <!-- Notification -->
+    <flash data="{{ session('flash') }}"></flash>
 @endsection

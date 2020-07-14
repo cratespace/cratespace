@@ -1,77 +1,127 @@
 @extends('layouts.auth.base')
 
 @section('content')
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-header">{{ __('Register') }}</div>
+<section class="relative bg-white min-h-screen">
+    <div class="row no-gutters">
+        <div class="col-lg-5 hidden lg:block min-h-screen bg-gray-100">
+            <div class="flex flex-col items-end py-12 pr-16">
+                <div>
+                    <a href="{{ url('/') }}" class="block mb-8">
+                        <img class="h-8 w-auto" src="{{ asset('img/logo-dark.png') }}" alt="{{ config('app.name') }}" />
+                    </a>
 
-                <div class="card-body">
-                    <form method="POST" action="{{ route('register') }}">
+                    <div class="mb-4 flex">
+                        <div class="mr-2 mt-1">
+                            <svg class="h-5 w-5 fill-current text-blue-500" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                            </svg>
+                        </div>
+
+                        <div>
+                            <div class="font-semibold">Quick and free sign‑up</div>
+
+                            <p class="w-64 text-sm text-gray-500">Enter your email address to create an account.</p>
+                        </div>
+                    </div>
+
+                    <div class="mb-4 flex">
+                        <div class="mr-2 mt-1">
+                            <svg class="h-5 w-5 fill-current text-blue-500" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                            </svg>
+                        </div>
+
+                        <div>
+                            <div class="font-semibold">Simple data entry</div>
+
+                            <p class="w-64 text-sm text-gray-500">Use Cratespace's dashaboard to upload space information.</p>
+                        </div>
+                    </div>
+
+                    <div class="mb-4 flex">
+                        <div class="mr-2 mt-1">
+                            <svg class="h-5 w-5 fill-current text-blue-500" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                            </svg>
+                        </div>
+
+                        <div>
+                            <div class="font-semibold">Start accepting orders</div>
+
+                            <p class="w-64 text-sm text-gray-500">Job done! Your live in minutes.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-7 min-h-screen border-l border-gray-300">
+            <div class="h-full flex flex-col items-center justify-center p-12 xl:p-0">
+                <div>
+                    <div>
+                        <a href="{{ url('/') }}" class="block lg:hidden mb-2">
+                            <img class="h-8 w-auto" src="{{ asset('img/logo-dark.png') }}" alt="{{ config('app.name') }}" />
+                        </a>
+
+                        <h2 class="mt-2">
+                            Let's get you started
+                        </h2>
+
+                        <h6 class="text-gray-600">
+                            Already have an account? <a href="{{ route('login') }}">Sign in</a>
+                        </h6>
+                    </div>
+
+                    <form class="mt-4" action="{{ route('register') }}" method="POST">
                         @csrf
 
-                        <div class="form-group row">
-                            <label for="name" class="col-md-4 col-form-label text-md-right">{{ __('Name') }}</label>
+                        <input type="hidden" name="type" value="company">
 
-                            <div class="col-md-6">
-                                <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}" required autocomplete="name" autofocus>
+                        <div>
+                            @include('components.forms.fields._name')
+                        </div>
 
-                                @error('name')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
+                        <div class="mt-4">
+                            @include('components.forms.fields._business')
+                        </div>
+
+                        <div class="row mt-4">
+                            <div class="col-md-6 mb-4">
+                                @include('components.forms.fields._phone')
+                            </div>
+
+                            <div class="col-md-6 mb-4">
+                                @include('components.forms.fields._email')
+
+                                <span class="text-xs text-gray-600">Make sure this is the business email.</span>
                             </div>
                         </div>
 
-                        <div class="form-group row">
-                            <label for="email" class="col-md-4 col-form-label text-md-right">{{ __('E-Mail Address') }}</label>
+                        <div class="row">
+                            <div class="col-md-6 mb-4">
+                                @include('components.forms.fields._new-password')
+                            </div>
 
                             <div class="col-md-6">
-                                <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email">
-
-                                @error('email')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
+                                @include('components.forms.fields._confirm-password')
                             </div>
                         </div>
 
-                        <div class="form-group row">
-                            <label for="password" class="col-md-4 col-form-label text-md-right">{{ __('Password') }}</label>
-
-                            <div class="col-md-6">
-                                <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="new-password">
-
-                                @error('password')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
-                            </div>
+                        <div class="mt-4">
+                            <p class="text-xs text-gray-600 max-w-sm">
+                                By clicking Submit, you confirm you have read and agreed to <a href="/terms">{{ config('app.name') }} General Terms and Conditions</a> and <a href="/privacy">Privacy Policy</a>.
+                            </p>
                         </div>
 
-                        <div class="form-group row">
-                            <label for="password-confirm" class="col-md-4 col-form-label text-md-right">{{ __('Confirm Password') }}</label>
-
-                            <div class="col-md-6">
-                                <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required autocomplete="new-password">
-                            </div>
-                        </div>
-
-                        <div class="form-group row mb-0">
-                            <div class="col-md-6 offset-md-4">
-                                <button type="submit" class="btn btn-primary">
-                                    {{ __('Register') }}
-                                </button>
-                            </div>
+                        <div class="mt-6">
+                            <button type="submit" class="btn btn-primary w-full">
+                                Create your {{ config('app.name') }} account <span class="ml-1">&rarr;</span>
+                            </button>
                         </div>
                     </form>
                 </div>
             </div>
         </div>
     </div>
-</div>
+</section>
 @endsection
