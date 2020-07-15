@@ -27,9 +27,9 @@ abstract class TestCase extends BaseTestCase
     {
         $user = $user ?: create(User::class);
 
-        $user->each(function ($user) {
-            create(Business::class, ['user_id' => $user->id]);
-        });
+        // $user->each(function ($user) {
+        //     create(Business::class, ['user_id' => $user->id]);
+        // });
 
         $this->actingAs($user);
 

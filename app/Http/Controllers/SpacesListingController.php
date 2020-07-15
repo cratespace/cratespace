@@ -21,11 +21,11 @@ class SpacesListingController extends Controller
      */
     public function __invoke(SpaceFilter $filters)
     {
-        $spaces = $this->getSpaces($filters);
+        // $spaces = $this->getSpaces($filters);
 
         return view('public.landing.welcome', [
-            'spaces' => $spaces,
-            'filters' => $this->getFilters(),
+            'spaces' => Space::latest()->paginate(request('perPage') ?: 10),
+            // 'filters' => $this->getFilters(),
         ]);
     }
 
@@ -38,7 +38,7 @@ class SpacesListingController extends Controller
      */
     protected function getSpaces(SpaceFilter $filters)
     {
-        $spaces = Space::list();
+        $spaces = [];
 
         $this->listing = $spaces->get();
 

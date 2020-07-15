@@ -2,12 +2,14 @@
 
 namespace App\Models;
 
+use Laravel\Cashier\Billable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class User extends Authenticatable
 {
     use Notifiable;
+    use Billable;
 
     /**
      * The attributes that are mass assignable.
@@ -15,7 +17,8 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'username', 'photo', 'email', 'password',
+        'name', 'email', 'phone', 'password',
+        'username', 'image', 'settings',
     ];
 
     /**
@@ -34,7 +37,18 @@ class User extends Authenticatable
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
+        'settings' => 'array',
     ];
+
+    /**
+     * Get the route key for the model.
+     *
+     * @return string
+     */
+    public function getRouteKeyName()
+    {
+        return 'username';
+    }
 
     /**
      * Get the user's business details.
@@ -44,5 +58,15 @@ class User extends Authenticatable
     public function business()
     {
         return $this->hasOne(Business::class, 'user_id');
+    }
+
+    /**
+     * Get all spaces associated with the user.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function spaces()
+    {
+        return $this->hasMany(Space::class)->latest();
     }
 }

@@ -36,6 +36,16 @@ class Space extends Model
     ];
 
     /**
+     * Get the route key for the model.
+     *
+     * @return string
+     */
+    public function getRouteKeyName()
+    {
+        return 'uid';
+    }
+
+    /**
      * Set the space's price in cents.
      *
      * @param string $value
@@ -56,7 +66,11 @@ class Space extends Model
      */
     public function getPriceAttribute($value)
     {
-        return $value / 100;
+        return numfmt_format_currency(
+            app()->make('currency-formatter'),
+            $value / 100,
+            config('cashier.currency')
+        );
     }
 
     /**
