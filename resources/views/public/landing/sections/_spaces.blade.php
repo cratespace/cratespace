@@ -1,4 +1,4 @@
-<section class="bg-gray-200 py-8">
+<section class="bg-gray-200 pt-8 pb-2">
     <div class="container">
         <div class="row">
             @forelse (range(1, 2) as $element)
@@ -9,7 +9,7 @@
                                 <span class="text-blue-500 font-bold text-sm uppercase">UYH76IA7</span>
 
                                 <div class="text-sm">
-                                    Sunny Super Side Exports
+                                    UPS Supply Chain Solutions
                                 </div>
                             </div>
 
@@ -18,7 +18,7 @@
                             </span>
                         </div>
 
-                        <hr class="my-4">
+                        <hr class="my-6">
 
                         <div class="flex justify-between">
                             <div>
@@ -28,7 +28,7 @@
                                     <div class="text-sm text-gray-700">from <span class="font-medium">Trincomalee</span></div>
                                 </div>
 
-                                <div class="mt-4">
+                                <div class="mt-6">
                                     <div class="text-xs">Arrival</div>
                                     <div class="text-sm text-gray-700 font-medium">Jan 12, 9:00pm</div>
                                     <div class="text-sm text-gray-700">to <span class="font-medium">Colombo</span></div>
@@ -42,14 +42,14 @@
                                     <div class="text-sm">5 x 6 x 2 (ft)</div>
                                 </div>
 
-                                <div class="mt-4">
+                                <div class="mt-6">
                                     <div class="text-blue-500 font-bold">$12</div>
                                 </div>
                             </div>
                         </div>
 
                         <x-slot name="footer">
-                            <a class="btn btn-primary block w-full text-center rounded-none py-2" href="/">Book now <span class="ml-1">&rarr;</span></a>
+                            <a class="btn btn-primary block w-full text-center rounded-none py-1" href="/">Book now <span class="ml-1">&rarr;</span></a>
                         </x-slot>
                     </x-cards._full>
                 </div>
