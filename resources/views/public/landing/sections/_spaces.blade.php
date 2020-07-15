@@ -1,7 +1,7 @@
 <section class="bg-gray-200 py-8">
     <div class="container">
         <div class="row">
-            @forelse (range(1, 100) as $element)
+            @forelse (range(1, 2) as $element)
                 <div class="col-lg-4 col-md-6 flex flex-col mb-8">
                     <x-cards._full hasFooter="true">
                         <div class="flex justify-between items-start">
