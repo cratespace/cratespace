@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\User;
+use App\Models\Business;
 use Illuminate\Support\Str;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
@@ -32,18 +33,18 @@ class DefaultUserSeeder extends Seeder
             ],
         ]);
 
-        // $company = Business::create([
-        //     'user_id' => $user->id,
-        //     'name' => 'Cratespace',
-        //     'slug' => 'cratespace',
-        //     'description' => $faker->sentence(7),
-        //     'street' => '22 Auburn Side',
-        //     'city' => 'Sri Lanka',
-        //     'state' => 'Western',
-        //     'country' => 'Sri Lanka',
-        //     'postcode' => 13500,
-        //     'email' => 'tjthavarshan@gmail.com',
-        //     'phone' => '775018794',
-        // ]);
+        Business::create([
+            'user_id' => $user->id,
+            'name' => 'Cratespace',
+            'slug' => 'cratespace',
+            'description' => $faker->sentence(7),
+            'street' => '22 Auburn Side',
+            'city' => 'Sri Lanka',
+            'state' => 'Western',
+            'country' => 'Sri Lanka',
+            'postcode' => 13500,
+            'email' => 'tjthavarshan@gmail.com',
+            'phone' => '775018794',
+        ]);
     }
 }

@@ -4,68 +4,46 @@ namespace App\Http\Controllers;
 
 use App\Models\Space;
 use App\Filters\SpaceFilter;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class SpacesListingController extends Controller
 {
-    /**
-     * All listings available in the customer's country.
-     *
-     * @var \Illuminate\Database\Eloquent\Builder
-     */
-    protected $listing;
-
     /**
      * Show listings page with all available and filtered spaces.
      *
      * @return \Illuminate\Http\Response
      */
-    public function __invoke(SpaceFilter $filters)
+    public function __invoke(Request $request, SpaceFilter $filters)
     {
-        // $spaces = $this->getSpaces($filters);
-
         return view('public.landing.welcome', [
-            'spaces' => Space::latest()->paginate(request('perPage') ?: 10),
-            // 'filters' => $this->getFilters(),
+            'spaces' => $this->getSpaces($request, $filters),
+            'options' => $this->getPlaces(),
         ]);
     }
 
-    /**
-     * Get specified spaces.
-     *
-     * @param \App\Filters\SpaceFilter $filter
-     *
-     * @return \Illuminate\Database\Eloquent\Collection
-     */
-    protected function getSpaces(SpaceFilter $filters)
+    protected function getSpaces(Request $request, SpaceFilter $filters)
     {
-        $spaces = [];
-
-        $this->listing = $spaces->get();
-
-        return $spaces->with('user')
+        return Space::list()
             ->filter($filters)
-            ->latest()
-            ->paginate(12);
+            ->paginate($request->perPage ?: 12);
     }
 
-    /**
-     * Attributes to filter by.
-     *
-     * @return array
-     */
-    public function getFilters()
+    protected function getPlaces()
     {
-        $filters = [];
+        $places = DB::table('spaces')
+            ->select('origin', 'destination')
+            ->distinct()
+            ->get();
 
-        foreach ([
-            'origins' => 'origin',
-            'destinations' => 'destination',
-        ] as $key => $attribute) {
-            $filters[$key] = collect(array_unique(
-                $this->listing->pluck($attribute)->toArray()
-            ))->sort();
-        }
+        $origins = $places->map(function ($place) {
+            return $place->origin;
+        })->sort();
 
-        return $filters;
+        $destinations = $places->map(function ($place) {
+            return $place->destination;
+        })->sort();
+
+        return compact('origins', 'destinations');
     }
 }

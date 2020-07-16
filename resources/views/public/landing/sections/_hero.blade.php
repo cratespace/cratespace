@@ -25,11 +25,15 @@
             <div class="col-lg-6 flex md:flex-col">
                 <form action="/" method="GET" class="overflow-hidden rounded-lg shadow-2xl w-full">
                     <div class="bg-white px-4 pt-5 pb-8 sm:px-6">
-                        @csrf
-
                         <div>
                             <label class="inline-flex items-center cursor-pointer">
-                                <input type="radio" class="form-radio h-5 w-5" name="type" id="type" value="local" @if (request('type') !== 'international') checked="checked" @endif>
+                                <input type="radio" class="form-radio h-5 w-5" name="type" id="type" value="all" @if (! request()->has('type') || request('type') === 'all') checked="checked" @endif>
+
+                                <span class="ml-2 text-gray-700 text-sm font-semibold">{{ __('All') }}</span>
+                            </label>
+
+                            <label class="inline-flex items-center cursor-pointer ml-6">
+                                <input type="radio" class="form-radio h-5 w-5" name="type" id="type" value="local" @if (request('type') === 'local') checked="checked" @endif>
 
                                 <span class="ml-2 text-gray-700 text-sm font-semibold">{{ __('Local') }}</span>
                             </label>
@@ -43,10 +47,10 @@
 
                         <div class="mt-4">
                             <label class="block relative">
-                                <select required name="origin" id="origin" placeholder="{{ __('Leaving from...') }}" class="form-select mt-1 pl-10 block w-full">
+                                <select name="origin" id="origin" placeholder="{{ __('Leaving from...') }}" class="form-select mt-1 pl-10 block w-full">
                                     <option value="">{{ __('Leaving from...') }}</option>
 
-                                    @foreach ([] as $origin)
+                                    @foreach ($options['origins'] as $origin)
                                         <option @if (request('origin') === $origin) selected @endif value="{{ $origin }}">{{ $origin }}</option>
                                     @endforeach
                                 </select>
@@ -65,10 +69,10 @@
 
                         <div class="mt-4">
                             <label class="relative block">
-                                <select required name="destination" id="destination" placeholder="{{ __('Going to...') }}" class="form-select mt-1 pl-10 block w-full">
+                                <select name="destination" id="destination" placeholder="{{ __('Going to...') }}" class="form-select mt-1 pl-10 block w-full">
                                     <option value="">{{ __('Going to...') }}</option>
 
-                                    @foreach ([] as $destination)
+                                    @foreach ($options['destinations'] as $destination)
                                         <option @if (request('destination') === $destination) selected @endif value="{{ $destination }}">{{ $destination }}</option>
                                     @endforeach
                                 </select>
@@ -88,7 +92,7 @@
                         <div class="row mt-4">
                             <div class="col-md-6 mb-4 md:mb-0">
                                 <label class="relative block">
-                                    <input type="text" name="departs_at" id="departs_at" value="{{ old('departsAt') ?? ($departsAt ?? null) }}" required placeholder="{{ __('Departs') }}" autocomplete="departs_at" class="datepicker form-input block w-full pl-12 mt-1 @error('departsAt') is-invalid @enderror">
+                                    <input type="text" name="departs_at" id="departs_at" value="{{ old('departsAt') ?? ($departsAt ?? null) }}" placeholder="{{ __('Departs') }}" autocomplete="departs_at" class="datepicker form-input block w-full pl-12 mt-1 @error('departsAt') is-invalid @enderror">
 
                                     <div class="absolute inset-y-0 flex items-center px-3">
                                         <x:heroicon-o-calendar class="w-6 h-6 text-gray-400"/>
@@ -104,7 +108,7 @@
 
                             <div class="col-md-6">
                                 <label class="relative block">
-                                    <input type="text" name="arrives_at" id="arrives_at" value="{{ old('arrivesAt') ?? ($arrivesAt ?? null) }}" required placeholder="{{ __('Arrives') }}" autocomplete="arrives_at" class="datepicker form-input block w-full pl-12 mt-1 @error('arrivesAt') is-invalid @enderror">
+                                    <input type="text" name="arrives_at" id="arrives_at" value="{{ old('arrivesAt') ?? ($arrivesAt ?? null) }}" placeholder="{{ __('Arrives') }}" autocomplete="arrives_at" class="datepicker form-input block w-full pl-12 mt-1 @error('arrivesAt') is-invalid @enderror">
 
                                     <div class="absolute inset-y-0 flex items-center px-3">
                                         <x:heroicon-o-calendar class="w-6 h-6 text-gray-400"/>

@@ -12,6 +12,13 @@ class User extends Authenticatable
     use Billable;
 
     /**
+     * The relations to eager load on every query.
+     *
+     * @var array
+     */
+    protected $with = ['business'];
+
+    /**
      * The attributes that are mass assignable.
      *
      * @var array

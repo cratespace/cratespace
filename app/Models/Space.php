@@ -2,11 +2,13 @@
 
 namespace App\Models;
 
+use App\Models\Traits\Filterable;
 use Illuminate\Database\Eloquent\Model;
-use Facades\App\Http\Services\Ip\Location;
 
 class Space extends Model
 {
+    use Filterable;
+
     /**
      * The attributes that should be cast to native types.
      *
@@ -102,8 +104,13 @@ class Space extends Model
      */
     public function scopeList($query)
     {
-        return $query->whereBase(Location::getCountry())
-            ->whereStatus('Available');
+        return $query->addSelect([
+            'business' => Business::select('name')
+                ->whereColumn('user_id', 'user_id')
+                ->take(1),
+            ])
+            ->whereStatus('Available')
+            ->latest();
     }
 
     /**

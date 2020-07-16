@@ -9,7 +9,7 @@
                                 <span class="text-blue-500 font-bold text-sm uppercase">{{ $space->uid }}</span>
 
                                 <div class="text-sm">
-                                    UPS Supply Chain Solutions
+                                    {{ $space->business }}
                                 </div>
                             </div>
 
@@ -65,7 +65,7 @@
 </section>
 
 @if (! $spaces->isEmpty())
-    <section class="py-8 bg-white">
+    <section class="py-8 bg-gray-100">
         <div class="container">
             <div class="row">
                 <div class="col-12">
