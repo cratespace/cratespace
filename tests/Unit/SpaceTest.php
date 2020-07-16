@@ -23,10 +23,22 @@ class SpaceTest extends TestCase
     /** @test */
     public function it_has_a_listing_feature()
     {
-        create(Space::class, [], 100);
+        $spaces = create(Space::class, [], 100);
+        $expiredSpaces = create(Space::class, ['status' => 'Expired'], 2);
 
         $this->assertCount(100, Space::list()->get());
+        $this->assertEquals('Available', Space::list()->first()->status);
         $this->assertInstanceOf(LengthAwarePaginator::class, Space::list()->paginate());
+
+        $spaces = $spaces->merge($expiredSpaces);
+
+        foreach ($spaces as $space) {
+            if ($space->status === 'Available') {
+                $this->assertTrue(Space::list()->get()->contains($space));
+            } else {
+                $this->assertFalse(Space::list()->get()->contains($space));
+            }
+        }
     }
 
     /** @test */
