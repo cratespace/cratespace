@@ -2,8 +2,6 @@
 
 namespace App\Filters;
 
-use App\Models\Business;
-
 class SpaceFilter extends Filter
 {
     /**
@@ -12,23 +10,9 @@ class SpaceFilter extends Filter
      * @var array
      */
     protected $filters = [
-        'business', 'origin', 'destination', 'type',
-        'departs_at', 'arrives_at', 'status',
+        'origin', 'destination', 'type', 'departs_at',
+        'arrives_at', 'status',
     ];
-
-    /**
-     * Filter the query by a given business name.
-     *
-     * @param string $slug
-     *
-     * @return \Illuminate\Database\Eloquent\Builder
-     */
-    protected function business($slug)
-    {
-        $business = Business::whereSlug($slug)->firstOrFail();
-
-        return $this->builder->where('user_id', $business->id);
-    }
 
     /**
      * Filter the query by a given origin destination.
