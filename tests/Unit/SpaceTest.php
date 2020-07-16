@@ -45,4 +45,12 @@ class SpaceTest extends TestCase
 
         $this->assertEquals($volume, $space->present()->volume);
     }
+
+    /** @test */
+    public function it_can_get_price_in_dollars()
+    {
+        $space = create(Space::class, ['price' => 10.67]);
+
+        $this->assertEquals('$ 10.67', $space->price);
+    }
 }
