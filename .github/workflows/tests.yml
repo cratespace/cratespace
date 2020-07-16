@@ -12,9 +12,8 @@ jobs:
     if: "!contains(github.event.head_commit.message, '[ci skip]')"
 
     strategy:
-      fail-fast: true
       matrix:
-        php: [7.4, 7.3, 7.2.9]
+        php: [7.4, 7.3, 7.2]
         laravel: [7.*]
         dependency-version: [prefer-lowest, prefer-stable]
         os: [ubuntu-latest, macos-latest, windows-latest]
@@ -29,10 +28,7 @@ jobs:
 
     steps:
       - name: Checkout
-      - uses: actions/checkout@v2
-
-      - name: Copy .env
-        run: php -r "file_exists('.env') || copy('.env.example', '.env');"
+        uses: actions/checkout@v2
 
       - name: Cache dependencies
         uses: actions/cache@v1
@@ -46,6 +42,10 @@ jobs:
           php-version: ${{ matrix.php }}
           extensions: dom, mbstring, zip
           coverage: none
+
+      - uses: actions/checkout@v2
+      - name: Copy .env
+        run: php -r "file_exists('.env') || copy('.env.example', '.env');"
 
       - name: Install Dependencies
         run: composer install -q --no-ansi --no-interaction --no-scripts --no-suggest --no-progress --prefer-dist
@@ -65,4 +65,5 @@ jobs:
         env:
           DB_CONNECTION: sqlite
           DB_DATABASE: database/database.sqlite
-        run: php artisan test && vendor/bin/phpunit
+
+        run: vendor/bin/phpunit
