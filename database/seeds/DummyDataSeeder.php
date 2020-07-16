@@ -12,6 +12,6 @@ class DummyDataSeeder extends Seeder
      */
     public function run()
     {
-        create(Space::class, ['user_id' => 1], 20);
+        create(Space::class, [], 20);
     }
 }

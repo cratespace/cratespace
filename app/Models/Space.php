@@ -105,7 +105,7 @@ class Space extends Model
     {
         return $query->addSelect([
             'business' => Business::select('name')
-                ->whereColumn('user_id', 'user_id')
+                ->whereColumn('user_id', 'spaces.user_id')
                 ->take(1),
             ])
             ->whereStatus('Available')
