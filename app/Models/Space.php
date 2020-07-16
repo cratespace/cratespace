@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Support\Formatter;
 use App\Models\Traits\Filterable;
 use App\Models\Traits\Presentable;
 use Illuminate\Database\Eloquent\Model;
@@ -70,11 +71,7 @@ class Space extends Model
      */
     public function getPriceAttribute($value)
     {
-        return numfmt_format_currency(
-            app()->make('currency-formatter'),
-            $value / 100,
-            config('cashier.currency')
-        );
+        return Formatter::moneyFormat($value);
     }
 
     /**

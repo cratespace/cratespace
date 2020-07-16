@@ -4,6 +4,7 @@ namespace Tests\Unit;
 
 use Tests\TestCase;
 use App\Models\Space;
+use Illuminate\Support\Str;
 use Illuminate\Pagination\LengthAwarePaginator;
 
 class SpaceTest extends TestCase
@@ -51,6 +52,10 @@ class SpaceTest extends TestCase
     {
         $space = create(Space::class, ['price' => 10.67]);
 
-        $this->assertEquals('$ 10.67', $space->price);
+        $this->assertDataBaseHas('spaces', ['price' => 1067]);
+
+        $this->assertTrue(is_string($space->price));
+        $this->assertTrue(Str::contains($space->price, '$'));
+        $this->assertEquals('$10.67', $space->price);
     }
 }

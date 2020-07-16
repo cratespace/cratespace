@@ -19,7 +19,8 @@
         "laravel/cashier": "^12.1",
         "laravel/framework": "^7.0",
         "laravel/tinker": "^2.0",
-        "laravel/ui": "^2.1"
+        "laravel/ui": "^2.1",
+        "moneyphp/money": "^3.3"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.3",
