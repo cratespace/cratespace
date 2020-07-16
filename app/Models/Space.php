@@ -3,11 +3,13 @@
 namespace App\Models;
 
 use App\Models\Traits\Filterable;
+use App\Models\Traits\Presentable;
 use Illuminate\Database\Eloquent\Model;
 
 class Space extends Model
 {
     use Filterable;
+    use Presentable;
 
     /**
      * The attributes that should be cast to native types.
@@ -92,7 +94,7 @@ class Space extends Model
      */
     public function path(): string
     {
-        return route('spaces.show');
+        return route('spaces.show', $this);
     }
 
     /**

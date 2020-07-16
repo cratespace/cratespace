@@ -6,6 +6,7 @@ use App\Models\Space;
 use App\Filters\SpaceFilter;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
 class SpacesListingController extends Controller
 {
@@ -22,14 +23,25 @@ class SpacesListingController extends Controller
         ]);
     }
 
-    protected function getSpaces(Request $request, SpaceFilter $filters)
+    /**
+     * Get spaces listings.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @param \App\Filters\SpaceFilter $filters
+     *
+     * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
+     */
+    protected function getSpaces(Request $request, SpaceFilter $filters): LengthAwarePaginator
     {
-        return Space::list()
-            ->filter($filters)
-            ->paginate($request->perPage ?: 12);
+        return Space::list()->filter($filters)->paginate($request->perPage ?: 12);
     }
 
-    protected function getPlaces()
+    /**
+     * Get names of origin, destination locations of spaces.
+     *
+     * @return array
+     */
+    protected function getPlaces(): array
     {
         $places = DB::table('spaces')
             ->select('origin', 'destination')
