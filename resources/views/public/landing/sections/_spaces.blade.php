@@ -60,7 +60,7 @@
                         <div class="modal-content rounded-lg overflow-hidden shadow-lg">
                             <div class="modal-body p-0">
                                 <div class="row no-gutters">
-                                    <div class="col-md-6 flex flex-col">
+                                    <div class="col-lg-6 flex flex-col">
                                         <div class="flex flex-col flex-1 justify-between p-6">
                                             <div class="flex justify-between items-start">
                                                 <div class="leading-snug">
@@ -94,7 +94,7 @@
                                         </div>
                                     </div>
 
-                                    <div class="col-md-6 flex flex-col bg-gray-100">
+                                    <div class="col-lg-6 flex flex-col bg-gray-100">
                                         <form action="" method="POST" class="flex flex-col flex-1 justify-between p-6">
                                             <div>
                                                 @csrf
