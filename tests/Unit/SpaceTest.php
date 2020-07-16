@@ -2,6 +2,7 @@
 
 namespace Tests\Unit;
 
+use Carbon\Carbon;
 use Tests\TestCase;
 use App\Models\User;
 use App\Models\Space;
@@ -80,6 +81,15 @@ class SpaceTest extends TestCase
         $this->assertTrue(is_string($space->price));
         $this->assertTrue(Str::contains($space->price, '$'));
         $this->assertEquals('$10.67', $space->price);
+    }
+
+    /** @test */
+    public function it_can_save_departure_and_arrival_date_strings_as_datetime()
+    {
+        $space = create(Space::class);
+
+        $this->assertInstanceOf(Carbon::class, $space->departs_at);
+        $this->assertInstanceOf(Carbon::class, $space->arrives_at);
     }
 
     /** @test */
