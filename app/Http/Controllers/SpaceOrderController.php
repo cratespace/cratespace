@@ -41,7 +41,7 @@ class SpaceOrderController extends Controller
             $request->payment_token
         );
 
-        $order = $space->order()->create($request->except('payment_token'));
+        $order = $space->placeOrder($request->except('payment_token'));
 
         if ($request->wantsJson()) {
             return response(['order' => $order], 201);

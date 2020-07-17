@@ -5,6 +5,7 @@ namespace Tests\Unit;
 use Carbon\Carbon;
 use Tests\TestCase;
 use App\Models\User;
+use App\Models\Order;
 use App\Models\Space;
 use Illuminate\Support\Str;
 use App\Filters\SpaceFilter;
@@ -81,6 +82,17 @@ class SpaceTest extends TestCase
         $this->assertTrue(is_string($space->price));
         $this->assertTrue(Str::contains($space->price, '$'));
         $this->assertEquals('$10.67', $space->price);
+    }
+
+    /** @test */
+    public function it_can_palce_an_order_for_itself()
+    {
+        $space = create(Space::class);
+        $space->placeOrder(['email' => 'john@example.com']);
+
+        $this->assertNotNull($space->order);
+        $this->assertInstanceOf(Order::class, $space->order);
+        $this->assertEquals('john@example.com', $space->order->email);
     }
 
     /** @test */

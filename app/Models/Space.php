@@ -133,6 +133,18 @@ class Space extends Model
     }
 
     /**
+     * Place an order for this space.
+     *
+     * @param array $data
+     *
+     * @return \App\Models\Order
+     */
+    public function placeOrder(array $data): Order
+    {
+        return $this->order()->create($data);
+    }
+
+    /**
      * Get the order the space is associated with.
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasOne

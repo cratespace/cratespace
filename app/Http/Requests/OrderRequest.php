@@ -26,9 +26,6 @@ class OrderRequest extends FormRequest
      */
     public function rules()
     {
-        return [
-            'email' => ['required', 'email', 'string'],
-            'payment_token' => ['required', 'string'],
-        ];
+        return $this->getRules();
     }
 }
