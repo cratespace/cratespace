@@ -11,6 +11,18 @@ use Money\Formatter\IntlMoneyFormatter;
 class Formatter
 {
     /**
+     * Extract integers from the given string.
+     *
+     * @param string $string
+     *
+     * @return int
+     */
+    public static function getIntegerValues(string $string): int
+    {
+        return (int) filter_var($string, FILTER_SANITIZE_NUMBER_INT);
+    }
+
+    /**
      * Format the given amount into a displayable currency.
      *
      * @param float       $amount

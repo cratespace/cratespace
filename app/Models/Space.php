@@ -75,6 +75,16 @@ class Space extends Model
     }
 
     /**
+     * Get price as integer and in cents.
+     *
+     * @return int
+     */
+    public function getPriceInCents(): int
+    {
+        return Formatter::getIntegerValues($this->price);
+    }
+
+    /**
      * Get full path to resource page.
      *
      * @return string
@@ -120,5 +130,15 @@ class Space extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    /**
+     * Get the order the space is associated with.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function order()
+    {
+        return $this->hasOne(Order::class);
     }
 }

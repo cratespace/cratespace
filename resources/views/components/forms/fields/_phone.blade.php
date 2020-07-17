@@ -5,13 +5,13 @@
     </label>
 
     <div class="mt-1 relative rounded-lg shadow-sm">
-        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                <span class="text-gray-500 sm:text-sm">
+        <div class="absolute inset-y-0 left-0 pl-2 flex items-center pointer-events-none">
+                <span class="text-blue-500">
                     +94
                 </span>
             </div>
 
-        <input id="phone" name="phone" type="tel" class="form-input block w-full px-12 @error('phone') placeholder-red-500 border-red-300 bg-red-100 @enderror" required value="{{ old('phone') ?? ($phone ?? null) }}" placeholder="77 777 7777" />
+        <input id="phone" name="phone" type="tel" class="form-input block w-full px-12 @error('phone') placeholder-red-500 border-red-300 bg-red-100 @enderror" required value="{{ old('phone') ?? ($phone ?? null) }}" placeholder="76 589 5534" />
     </div>
 </div>
 
