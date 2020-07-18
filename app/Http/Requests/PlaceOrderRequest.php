@@ -26,6 +26,6 @@ class PlaceOrderRequest extends FormRequest
      */
     public function rules()
     {
-        return $this->getRules();
+        return $this->getRulesFor('order');
     }
 }
