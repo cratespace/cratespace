@@ -5,12 +5,14 @@ namespace App\Models;
 use App\Support\Formatter;
 use App\Models\Traits\Filterable;
 use App\Models\Traits\Presentable;
+use App\Models\Concerns\ManagesStatus;
 use Illuminate\Database\Eloquent\Model;
 
 class Space extends Model
 {
     use Filterable;
     use Presentable;
+    use ManagesStatus;
 
     /**
      * The attributes that should be cast to native types.
@@ -120,18 +122,6 @@ class Space extends Model
             ])
             ->whereStatus('Available')
             ->latest();
-    }
-
-    /**
-     * Mark space as given status.
-     *
-     * @param string $status
-     *
-     * @return bool
-     */
-    public function markAs(string $status): bool
-    {
-        return $this->update(['status' => $status]);
     }
 
     /**

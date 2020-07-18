@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Resources\Maintainers;
+namespace App\Maintainers;
 
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Query\Builder;

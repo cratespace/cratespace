@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Resources\Maintainers;
+namespace App\Maintainers;
 
 use Carbon\Carbon;
 use App\Contracts\Resources\Maintainer as MaintainerContract;

@@ -4,7 +4,7 @@ namespace Tests\Unit\Maintainers;
 
 use Tests\TestCase;
 use App\Models\Space;
-use App\Resources\Maintainers\SpaceMaintainer;
+use App\Maintainers\SpaceMaintainer;
 
 class SpaceMaintainerTest extends TestCase
 {
