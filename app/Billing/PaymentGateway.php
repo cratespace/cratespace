@@ -9,7 +9,7 @@ abstract class PaymentGateway
      *
      * @var int
      */
-    protected int $totalCharges = 0;
+    protected $totalCharges = 0;
 
     /**
      * The amount the customer ought to be charged.
