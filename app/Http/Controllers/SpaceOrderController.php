@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Space;
-use App\Http\Requests\OrderRequest;
+use App\Http\Requests\PlaceOrderRequest;
 use App\Contracts\Billing\PaymentGateway;
 
 class SpaceOrderController extends Controller
@@ -28,12 +28,12 @@ class SpaceOrderController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param \App\Http\Requests\OrderRequest $request
-     * @param \App\Models\Space               $space
+     * @param \App\Http\Requests\PlaceOrderRequest $request
+     * @param \App\Models\Space                    $space
      *
      * @return \Illuminate\Http\Response
      */
-    public function store(OrderRequest $request, Space $space)
+    public function store(PlaceOrderRequest $request, Space $space)
     {
         // For testing purposes
         $this->paymentGateway->charge(
@@ -64,12 +64,12 @@ class SpaceOrderController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param \App\Http\Requests\OrderRequest $request
-     * @param \App\Models\Space               $space
+     * @param \App\Http\Requests\PlaceOrderRequest $request
+     * @param \App\Models\Space                    $space
      *
      * @return \Illuminate\Http\Response
      */
-    public function update(OrderRequest $request, Space $space)
+    public function update(PlaceOrderRequest $request, Space $space)
     {
     }
 

@@ -11,6 +11,7 @@ use Illuminate\Support\Str;
 use App\Filters\SpaceFilter;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class SpaceTest extends TestCase
 {
@@ -96,12 +97,40 @@ class SpaceTest extends TestCase
     }
 
     /** @test */
+    public function it_can_palce_an_order_for_itself_only_if_it_is_available()
+    {
+        $this->expectException(HttpException::class);
+
+        $orderedSpace = create(Space::class, ['status' => 'Ordered']);
+        $orderedSpace->placeOrder(['email' => 'john@example.com']);
+
+        $expiredSpace = create(Space::class, ['status' => 'Expired']);
+        $expiredSpace->placeOrder(['email' => 'john@example.com']);
+    }
+
+    /** @test */
     public function it_can_save_departure_and_arrival_date_strings_as_datetime()
     {
         $space = create(Space::class);
 
         $this->assertInstanceOf(Carbon::class, $space->departs_at);
         $this->assertInstanceOf(Carbon::class, $space->arrives_at);
+    }
+
+    /** @test */
+    public function it_can_be_marked_as_given_status()
+    {
+        $space = create(Space::class);
+
+        $this->assertEquals('Available', $space->status);
+
+        $space->markAs('Ordered');
+
+        $this->assertEquals('Ordered', $space->status);
+
+        $space->markAs('Expired');
+
+        $this->assertEquals('Expired', $space->status);
     }
 
     /** @test */

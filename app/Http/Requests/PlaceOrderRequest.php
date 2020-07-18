@@ -5,7 +5,7 @@ namespace App\Http\Requests;
 use Illuminate\Foundation\Http\FormRequest;
 use App\Http\Requests\Traits\HasValidationRules;
 
-class OrderRequest extends FormRequest
+class PlaceOrderRequest extends FormRequest
 {
     use HasValidationRules;
 
@@ -16,7 +16,7 @@ class OrderRequest extends FormRequest
      */
     public function authorize()
     {
-        return true;
+        return $this->space->status === 'Available';
     }
 
     /**

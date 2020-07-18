@@ -92,6 +92,29 @@ class PurchaseSpaceTest extends TestCase
         $this->assertNull($space->order);
     }
 
+    /** @test */
+    public function cannot_purchase_an_expired_or_orderd_space()
+    {
+        $expiredSpace = create(Space::class, ['status' => 'Expired']);
+        $orderedSpace = create(Space::class, ['status' => 'Ordered']);
+
+        $response = $this->orderSpace($expiredSpace, [
+            'email' => 'john@example.com',
+            'payment_token' => $this->paymentGateway->getValidTestToken(),
+        ]);
+
+        $response->assertStatus(403);
+        $this->assertEquals(0, $this->paymentGateway->totalCharges());
+
+        $response = $this->orderSpace($orderedSpace, [
+            'email' => 'john@example.com',
+            'payment_token' => $this->paymentGateway->getValidTestToken(),
+        ]);
+
+        $response->assertStatus(403);
+        $this->assertEquals(0, $this->paymentGateway->totalCharges());
+    }
+
     /**
      * Fake a json post request to purchase/order a space.
      *

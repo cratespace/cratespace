@@ -123,6 +123,18 @@ class Space extends Model
     }
 
     /**
+     * Mark space as given status.
+     *
+     * @param string $status
+     *
+     * @return bool
+     */
+    public function markAs(string $status): bool
+    {
+        return $this->update(['status' => $status]);
+    }
+
+    /**
      * Get the user the space belongs to.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
@@ -141,7 +153,13 @@ class Space extends Model
      */
     public function placeOrder(array $data): Order
     {
-        return $this->order()->create($data);
+        abort_if($this->status !== 'Available', 403);
+
+        $order = $this->order()->create($data);
+
+        $this->markAs('Ordered');
+
+        return $order;
     }
 
     /**

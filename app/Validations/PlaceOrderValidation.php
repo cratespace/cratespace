@@ -4,7 +4,7 @@ namespace App\Validations;
 
 use App\Contracts\Validations\Validation as ValidationContract;
 
-class OrderValidation extends Validation implements ValidationContract
+class PlaceOrderValidation extends Validation implements ValidationContract
 {
     /**
      * Get relevant resource for currently accessing resource.

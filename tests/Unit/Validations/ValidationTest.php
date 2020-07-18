@@ -3,9 +3,9 @@
 namespace Tests\Unit\Validations;
 
 use Tests\TestCase;
-use App\Validations\OrderValidation;
+use App\Validations\PlaceOrderValidation;
 
-class OrderValidationTest extends TestCase
+class ValidationTest extends TestCase
 {
     /** @test */
     public function it_can_dynamically_get_the_name_of_the_resource_currently_being_accessed()
@@ -17,7 +17,7 @@ class OrderValidationTest extends TestCase
 
         $this->app['config']->set('validation.order', $rules);
 
-        $orderValidator = new OrderValidation($this->app['config']);
+        $orderValidator = new PlaceOrderValidation($this->app['config']);
 
         $this->assertSame($orderValidator->rules(), $rules);
     }
