@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Unit\Validation;
+namespace Tests\Unit\Validations;
 
 use Tests\TestCase;
 use App\Validations\OrderValidation;

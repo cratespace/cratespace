@@ -3,10 +3,21 @@
 namespace App\Billing;
 
 use Illuminate\Support\Str;
+use App\Exceptions\PaymentFailedException;
 use App\Contracts\Billing\PaymentGateway as PaymentGatewayContract;
 
 class FakePaymentGateway extends PaymentGateway implements PaymentGatewayContract
 {
+    /**
+     * Create new instance of fake payment gateway.
+     */
+    public function __construct()
+    {
+        $this->testToken = Str::random(40);
+
+        parent::__construct();
+    }
+
     /**
      * Charge the customer with the given amount.
      *
@@ -17,6 +28,10 @@ class FakePaymentGateway extends PaymentGateway implements PaymentGatewayContrac
      */
     public function charge(int $amount, string $paymentToken): void
     {
+        if ($paymentToken !== $this->getValidTestToken()) {
+            throw new PaymentFailedException();
+        }
+
         $this->charges[] = $amount;
 
         $this->totalCharges = $this->charges->sum();
@@ -29,6 +44,6 @@ class FakePaymentGateway extends PaymentGateway implements PaymentGatewayContrac
      */
     public function getValidTestToken(): string
     {
-        return Str::random(40);
+        return $this->testToken;
     }
 }
