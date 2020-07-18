@@ -93,7 +93,7 @@ class PurchaseSpaceTest extends TestCase
     }
 
     /** @test */
-    public function cannot_purchase_an_expired_or_orderd_space()
+    public function cannot_purchase_an_expired_or_ordered_space()
     {
         $expiredSpace = create(Space::class, ['status' => 'Expired']);
         $orderedSpace = create(Space::class, ['status' => 'Ordered']);
@@ -103,6 +103,9 @@ class PurchaseSpaceTest extends TestCase
             'payment_token' => $this->paymentGateway->getValidTestToken(),
         ]);
 
+        // The request will only be authorized if the space status is
+        // marked as "Available". This is don on the authorization
+        // method of "PlaceOrderRequest::class"
         $response->assertStatus(403);
         $this->assertEquals(0, $this->paymentGateway->totalCharges());
 

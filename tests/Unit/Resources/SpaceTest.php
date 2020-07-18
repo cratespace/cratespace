@@ -86,7 +86,7 @@ class SpaceTest extends TestCase
     }
 
     /** @test */
-    public function it_can_palce_an_order_for_itself()
+    public function it_can_place_an_order_for_itself()
     {
         $space = create(Space::class);
         $space->placeOrder(['email' => 'john@example.com']);
@@ -97,7 +97,7 @@ class SpaceTest extends TestCase
     }
 
     /** @test */
-    public function it_can_palce_an_order_for_itself_only_if_it_is_available()
+    public function it_can_place_an_order_for_itself_only_if_it_is_available()
     {
         $this->expectException(HttpException::class);
 
