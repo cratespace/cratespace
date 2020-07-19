@@ -6,7 +6,7 @@
 
     <div class="mt-1 relative rounded-lg shadow-sm">
         <div class="absolute inset-y-0 left-0 pl-2 flex items-center pointer-events-none">
-                <span class="text-blue-500">
+                <span class="text-gray-500">
                     +94
                 </span>
             </div>

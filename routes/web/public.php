@@ -12,3 +12,9 @@ Route::get('/', 'SpacesListingController');
  */
 Route::post('/spaces/{space}/orders', 'SpaceOrderController@store')
     ->name('spaces.orders');
+
+/*
+ * Checkout Page...
+ */
+Route::get('/spaces/{space}/checkout', 'CheckoutController@show')
+    ->name('checkout');

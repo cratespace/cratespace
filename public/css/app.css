@@ -3698,8 +3698,8 @@ span.flatpickr-weekday {
   background-color: #fff;
   background-color: rgba(255, 255, 255, var(--bg-opacity));
   --text-opacity: 1;
-  color: #2d3748;
-  color: rgba(45, 55, 72, var(--text-opacity));
+  color: #718096;
+  color: rgba(113, 128, 150, var(--text-opacity));
   box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
 }
 
@@ -3711,8 +3711,8 @@ span.flatpickr-weekday {
 
 .btn.btn-secondary:focus {
   --text-opacity: 1;
-  color: #2d3748;
-  color: rgba(45, 55, 72, var(--text-opacity));
+  color: #4a5568;
+  color: rgba(74, 85, 104, var(--text-opacity));
 }
 
 .form-input {
@@ -3818,6 +3818,10 @@ h5 {
 
 h6 {
   font-size: 0.875rem;
+}
+
+.shadow-left {
+  box-shadow: -9px 0px 30px -26px rgba(0, 0, 0, 0.23);
 }
 
 .space-y-0 > :not(template) ~ :not(template){

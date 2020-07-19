@@ -11,10 +11,10 @@ Route::group([
     /*
      * Business Customer Dashboard Route...
      */
-    Route::get('/home', 'Business/HomeController@index')->name('home');
+    Route::get('/home', 'Business\HomeController@index')->name('home');
 
     /*
-     * Space Resource Routes..
+     * Space Resource Routes...
      */
-    Route::resource('/spaces', 'Business/SpaceController');
+    Route::resource('/spaces', 'Business\SpaceController');
 });

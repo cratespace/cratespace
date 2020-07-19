@@ -36,7 +36,7 @@
 
 .btn.btn-secondary {
     @apply .bg-white;
-    @apply .text-gray-800;
+    @apply .text-gray-600;
     @apply .shadow;
 
     &:hover {
@@ -44,6 +44,6 @@
     }
 
     &:focus {
-        @apply .text-gray-800;
+        @apply .text-gray-700;
     }
 }

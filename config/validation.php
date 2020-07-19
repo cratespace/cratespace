@@ -73,13 +73,4 @@ return [
         'phone' => ['required', 'integer', 'min:9'],
         'password' => ['required', 'string', 'min:8', 'confirmed'],
     ],
-
-    /*
-     * Support Thread Inputs Rules
-     */
-    'thread' => [
-        'title' => ['required', 'string', 'max:255'],
-        'body' => ['required', 'string'],
-        'channel_id' => ['required', 'integer'],
-    ],
 ];

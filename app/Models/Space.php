@@ -40,7 +40,7 @@ class Space extends Model implements Statusable
      */
     protected $fillable = [
         'uid', 'departs_at', 'arrives_at', 'height', 'width', 'length',
-        'weight', 'note', 'price', 'user_id', 'origin', 'destination',
+        'weight', 'note', 'price', 'tax', 'user_id', 'origin', 'destination',
         'status', 'type', 'base',
     ];
 
@@ -67,7 +67,7 @@ class Space extends Model implements Statusable
     }
 
     /**
-     * Get the books's price.
+     * Get the space's price.
      *
      * @param string $value
      *
@@ -79,6 +79,40 @@ class Space extends Model implements Statusable
     }
 
     /**
+     * Set the space's price in cents.
+     *
+     * @param string $value
+     *
+     * @return string
+     */
+    public function setTaxAttribute($value)
+    {
+        $this->attributes['tax'] = $value * 100;
+    }
+
+    /**
+     * Get the space's tax amount.
+     *
+     * @param string $value
+     *
+     * @return string
+     */
+    public function getTaxAttribute($value)
+    {
+        return Formatter::moneyFormat($value);
+    }
+
+    /**
+     * Get the name of the business the space is associated with.
+     *
+     * @return string
+     */
+    public function getBusinessNameAttribute()
+    {
+        return Business::whereUserId($this->user_id)->first()->name;
+    }
+
+    /**
      * Get price as integer and in cents.
      *
      * @return int
@@ -86,6 +120,26 @@ class Space extends Model implements Statusable
     public function getPriceInCents(): int
     {
         return Formatter::getIntegerValues($this->price);
+    }
+
+    /**
+     * Get tax as integer and in cents.
+     *
+     * @return int
+     */
+    public function getTaxInCents(): int
+    {
+        return Formatter::getIntegerValues($this->tax);
+    }
+
+    /**
+     * Get full price as integer and in cents.
+     *
+     * @return int
+     */
+    public function getFullPriceInCents(): int
+    {
+        return $this->getPriceInCents() + $this->getTaxInCents();
     }
 
     /**

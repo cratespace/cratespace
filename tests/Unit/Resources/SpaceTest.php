@@ -99,7 +99,12 @@ class SpaceTest extends TestCase
     public function it_can_place_an_order_for_itself()
     {
         $space = create(Space::class);
-        $space->placeOrder(['email' => 'john@example.com']);
+        $space->placeOrder([
+            'name' => 'John Doe',
+            'business' => 'Example, Co.',
+            'phone' => '765487368',
+            'email' => 'john@example.com',
+        ]);
 
         $this->assertNotNull($space->order);
         $this->assertInstanceOf(Order::class, $space->order);

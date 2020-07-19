@@ -30,15 +30,20 @@ class PurchaseSpaceTest extends TestCase
     /** @test */
     public function a_customer_can_purchase_a_space()
     {
+        config()->set('charges.service', 0.5);
+
         $space = create(Space::class, ['price' => 32.50]);
 
         $response = $this->orderSpace($space, [
+            'name' => 'John Doe',
+            'business' => 'Example, Co.',
+            'phone' => '765487368',
             'email' => 'john@example.com',
             'payment_token' => $this->paymentGateway->getValidTestToken(),
         ]);
 
         $response->assertStatus(201);
-        $this->assertEquals(3250, $this->paymentGateway->totalCharges());
+        $this->assertEquals(4875, $this->paymentGateway->totalCharges());
         $this->assertNotNull($space->order);
         $this->assertEquals('john@example.com', $space->order->email);
     }
@@ -46,6 +51,8 @@ class PurchaseSpaceTest extends TestCase
     /** @test */
     public function an_email_is_required_to_purchase_spaces()
     {
+        config()->set('charges.service', 0.5);
+
         $space = create(Space::class, ['price' => 32.50]);
 
         $response = $this->orderSpace($space, [
@@ -62,6 +69,9 @@ class PurchaseSpaceTest extends TestCase
 
         $response = $this->orderSpace($space, [
             'email' => 'not-an-email-address',
+            'name' => 'John Doe',
+            'business' => 'Example, Co.',
+            'phone' => '765487368',
             'payment_token' => $this->paymentGateway->getValidTestToken(),
         ]);
 
@@ -75,6 +85,9 @@ class PurchaseSpaceTest extends TestCase
 
         $response = $this->orderSpace($space, [
             'email' => 'john@example.com',
+            'name' => 'John Doe',
+            'business' => 'Example, Co.',
+            'phone' => '765487368',
         ]);
 
         $this->assertValidationError($response, 'payment_token');
@@ -83,9 +96,13 @@ class PurchaseSpaceTest extends TestCase
     /** @test */
     public function an_order_is_not_created_if_the_payment_failed()
     {
+        config()->set('charges.service', 0.5);
+
         $space = create(Space::class, ['price' => 32.50]);
 
         $response = $this->orderSpace($space, [
+            'name' => 'John Doe',
+            'phone' => '76536849943',
             'email' => 'john@example.com',
             'payment_token' => 'invalid-payment-token',
         ]);
@@ -102,6 +119,9 @@ class PurchaseSpaceTest extends TestCase
 
         $response = $this->orderSpace($expiredSpace, [
             'email' => 'john@example.com',
+            'name' => 'John Doe',
+            'business' => 'Example, Co.',
+            'phone' => '765487368',
             'payment_token' => $this->paymentGateway->getValidTestToken(),
         ]);
 

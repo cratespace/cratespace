@@ -16,7 +16,13 @@ class CreateOrdersTable extends Migration
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
             $table->foreignId('space_id')->constrained();
+            $table->string('name');
             $table->string('email');
+            $table->string('phone', 50);
+            $table->string('business')->nullable();
+            $table->integer('service');
+            $table->integer('price');
+            $table->integer('tax');
             $table->timestamps();
         });
     }

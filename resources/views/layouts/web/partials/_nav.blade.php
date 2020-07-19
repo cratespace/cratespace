@@ -1,4 +1,4 @@
-<nav class="py-4 {{ $bgNav ?? 'bg-white' }}">
+<nav class="py-4 {{ $bgNav ?? 'bg-white' }} border-b border-gray-300">
     <div class="container">
         <div class="flex justify-between items-center">
             <a class="block h-10 w-10" href="/" title="{{ config('app.name') }}">
@@ -26,13 +26,13 @@
 
                 <ul class="flex items-center">
                     <li class="ml-6">
-                        <a class="text-sm font-semibold text-white hover:text-white focus:text-white rounded-full px-4 py-2 bg-blue-100 bg-opacity-25 hover:bg-opacity-50" href="{{ route('login') }}">{{ __('Sign in') }} <span class="ml-1">&rarr;</span></a>
+                        <a class="btn btn-secondary leading-8 px-3 text-sm" href="{{ route('login') }}">{{ __('Sign in') }} <span class="ml-1">&rarr;</span></a>
                     </li>
                 </ul>
             </div>
 
             <div class="dropdown block md:hidden">
-                <a class="bg-blue-100 shadow-none bg-opacity-25 hover:bg-opacity-75 focus:bg-opacity-75 active:bg-opacity-75 px-0 h-10 w-10 flex items-center justify-center rounded-full dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <a class="bg-blue-200 shadow-none px-0 h-10 w-10 flex items-center justify-center rounded-full dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <x:heroicon-o-menu class="w-6 h-6 text-white"/>
                 </a>
 

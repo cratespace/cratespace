@@ -17,6 +17,6 @@ trait HasValidationRules
      */
     protected function getRulesFor(string $key, array $additionalRules = []): array
     {
-        return Config::get("validation.{$key}");
+        return array_merge(Config::get("validation.{$key}"), $additionalRules);
     }
 }

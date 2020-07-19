@@ -1,4 +1,4 @@
-<section class="py-20 bg-gray-100 border-t border-gray-200">
+<section class="py-20 bg-gray-100 border-t border-gray-300">
     <div class="container">
         <div class="row">
             <div class="col-lg-4 mb-10 lg:mb-0">

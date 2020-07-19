@@ -28,6 +28,7 @@ $factory->define(Space::class, function (Faker $faker) {
         'status' => 'Available',
         'note' => $faker->sentence(7),
         'price' => rand(1, 9),
+        'tax' => 0,
         'type' => $faker->randomElement(['Local', 'International']),
         'base' => 'Sri Lanka',
         'user_id' => $user->id,

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Space;
 use App\Http\Requests\PlaceOrderRequest;
 use App\Contracts\Billing\PaymentGateway;
+use App\Exceptions\PaymentFailedException;
 
 class SpaceOrderController extends Controller
 {
@@ -35,13 +36,18 @@ class SpaceOrderController extends Controller
      */
     public function store(PlaceOrderRequest $request, Space $space)
     {
-        // For testing purposes
-        $this->paymentGateway->charge(
-            $space->getPriceInCents(),
-            $request->payment_token
-        );
-
         $order = $space->placeOrder($request->except('payment_token'));
+
+        try {
+            $this->paymentGateway->charge(
+                $order->totalInCents(),
+                $request->payment_token
+            );
+        } catch (PaymentFailedException $e) {
+            $order->cancel();
+
+            throw $e;
+        }
 
         if ($request->wantsJson()) {
             return response(['order' => $order], 201);
