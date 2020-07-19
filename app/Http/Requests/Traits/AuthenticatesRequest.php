@@ -9,7 +9,7 @@ trait AuthenticatesRequest
      *
      * @return bool
      */
-    protected function authenticated()
+    protected function authenticated(): bool
     {
         return auth()->check() && $this->user()->is(user());
     }
@@ -21,8 +21,20 @@ trait AuthenticatesRequest
      *
      * @return bool
      */
-    protected function resourceBelongsToUser($resource)
+    protected function resourceBelongsToUser($resource): bool
     {
         return $this->authenticated() && $this->user()->is($resource->user);
+    }
+
+    /**
+     * Determine if the resource is available to perform an action on.
+     *
+     * @param \Illuminate\Database\Eloquent\Model $resource
+     *
+     * @return bool
+     */
+    protected function resourceIsAvailable($resource): bool
+    {
+        return $resource->isAvailable();
     }
 }

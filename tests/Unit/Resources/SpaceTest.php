@@ -74,6 +74,16 @@ class SpaceTest extends TestCase
     }
 
     /** @test */
+    public function it_can_determine_its_availability()
+    {
+        $availableSpace = create(Space::class);
+        $expiredSpace = create(Space::class, ['departs_at' => Carbon::now()->subMonth()]);
+
+        $this->assertTrue($availableSpace->isAvailable());
+        $this->assertFalse($expiredSpace->isAvailable());
+    }
+
+    /** @test */
     public function it_can_get_price_in_dollars()
     {
         $space = create(Space::class, ['price' => 10.67]);

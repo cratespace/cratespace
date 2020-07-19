@@ -2,13 +2,15 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use App\Support\Formatter;
 use App\Models\Traits\Filterable;
 use App\Models\Traits\Presentable;
+use App\Contracts\Models\Statusable;
 use App\Models\Concerns\ManagesStatus;
 use Illuminate\Database\Eloquent\Model;
 
-class Space extends Model
+class Space extends Model implements Statusable
 {
     use Filterable;
     use Presentable;
@@ -104,6 +106,20 @@ class Space extends Model
     public function path(): string
     {
         return route('spaces.show', $this);
+    }
+
+    /**
+     * Determine if the resource is available to perform an action on.
+     *
+     * @return bool
+     */
+    public function isAvailable(): bool
+    {
+        if ($this->departs_at > Carbon::now()) {
+            return !$this->order()->exists();
+        }
+
+        return false;
     }
 
     /**

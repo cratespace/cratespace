@@ -4,10 +4,12 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 use App\Http\Requests\Traits\HasValidationRules;
+use App\Http\Requests\Traits\AuthenticatesRequest;
 
 class PlaceOrderRequest extends FormRequest
 {
     use HasValidationRules;
+    use AuthenticatesRequest;
 
     /**
      * Determine if the user is authorized to make this request.
@@ -16,7 +18,7 @@ class PlaceOrderRequest extends FormRequest
      */
     public function authorize()
     {
-        return $this->space->status === 'Available';
+        return $this->resourceIsAvailable($this->space);
     }
 
     /**

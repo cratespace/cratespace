@@ -2,7 +2,9 @@
 
 namespace Tests\Feature;
 
+use Carbon\Carbon;
 use Tests\TestCase;
+use App\Models\Order;
 use App\Models\Space;
 use App\Billing\FakePaymentGateway;
 use Illuminate\Testing\TestResponse;
@@ -95,8 +97,8 @@ class PurchaseSpaceTest extends TestCase
     /** @test */
     public function cannot_purchase_an_expired_or_ordered_space()
     {
-        $expiredSpace = create(Space::class, ['status' => 'Expired']);
-        $orderedSpace = create(Space::class, ['status' => 'Ordered']);
+        $expiredSpace = create(Space::class, ['departs_at' => Carbon::now()->subMonth()]);
+        $orderedSpace = create(Order::class)->space;
 
         $response = $this->orderSpace($expiredSpace, [
             'email' => 'john@example.com',
