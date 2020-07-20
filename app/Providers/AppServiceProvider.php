@@ -39,4 +39,18 @@ class AppServiceProvider extends ServiceProvider
             $this->app->register(TelescopeServiceProvider::class);
         }
     }
+
+    /**
+     * Register markdown parser.
+     */
+    public function registerMarkdownParser(): void
+    {
+        $this->app->singleton(Parsedown::class, function () {
+            $parsedown = new \Parsedown();
+
+            $parsedown->setSafeMode(true);
+
+            return $parsedown;
+        });
+    }
 }
