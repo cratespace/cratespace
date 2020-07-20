@@ -43,10 +43,10 @@ class SpaceOrderController extends Controller
                 $order->totalInCents(),
                 $request->payment_token
             );
-        } catch (PaymentFailedException $e) {
+        } catch (PaymentFailedException $exception) {
             $order->cancel();
 
-            throw $e;
+            throw $exception;
         }
 
         if ($request->wantsJson()) {

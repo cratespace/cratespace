@@ -35,6 +35,15 @@ class SpaceTest extends TestCase
     }
 
     /** @test */
+    public function it_can_get_the_name_of_the_business_it_belongs_to()
+    {
+        $space = create(Space::class);
+
+        $this->assertTrue(is_string($space->businessname));
+        $this->assertEquals($space->businessname, $space->user->business->name);
+    }
+
+    /** @test */
     public function it_has_a_listing_feature()
     {
         $spaces = create(Space::class, [], 100);
@@ -78,9 +87,18 @@ class SpaceTest extends TestCase
     {
         $availableSpace = create(Space::class);
         $expiredSpace = create(Space::class, ['departs_at' => Carbon::now()->subMonth()]);
+        $orderedSpace = create(Space::class);
+        $order = $orderedSpace->placeOrder([
+            'name' => 'John Doe',
+            'business' => 'Example, Co.',
+            'phone' => '765487368',
+            'email' => 'john@example.com',
+        ]);
 
         $this->assertTrue($availableSpace->isAvailable());
         $this->assertFalse($expiredSpace->isAvailable());
+        $this->assertTrue($expiredSpace->isExpired());
+        $this->assertFalse($orderedSpace->isAvailable());
     }
 
     /** @test */
@@ -93,6 +111,61 @@ class SpaceTest extends TestCase
         $this->assertTrue(is_string($space->price));
         $this->assertTrue(Str::contains($space->price, '$'));
         $this->assertEquals('$10.67', $space->price);
+    }
+
+    /** @test */
+    public function it_can_get_price_in_cents()
+    {
+        $space = create(Space::class, ['price' => 10.67]);
+
+        $this->assertDataBaseHas('spaces', ['price' => 1067]);
+
+        $this->assertTrue(is_string($space->price));
+        $this->assertTrue(is_integer($space->getPriceInCents()));
+        $this->assertEquals(1067, $space->getPriceInCents());
+    }
+
+    /** @test */
+    public function it_can_get_tax_in_dollars()
+    {
+        $space = create(Space::class, ['tax' => 10.67]);
+
+        $this->assertDataBaseHas('spaces', ['tax' => 1067]);
+
+        $this->assertTrue(is_string($space->tax));
+        $this->assertTrue(Str::contains($space->tax, '$'));
+        $this->assertEquals('$10.67', $space->tax);
+    }
+
+    /** @test */
+    public function it_can_get_tax_in_cents()
+    {
+        $space = create(Space::class, ['tax' => 10.67]);
+
+        $this->assertDataBaseHas('spaces', ['tax' => 1067]);
+
+        $this->assertTrue(is_string($space->tax));
+        $this->assertTrue(is_integer($space->getTaxInCents()));
+        $this->assertEquals(1067, $space->getTaxInCents());
+    }
+
+    /** @test */
+    public function it_can_release_it_self_from_an_order()
+    {
+        $availableSpace = create(Space::class, ['status' => 'Ordered']);
+        $expiredSpace = create(Space::class, [
+            'departs_at' => Carbon::now()->subMonth(),
+            'status' => 'Ordered',
+        ]);
+
+        $this->assertEquals('Ordered', $availableSpace->status);
+        $this->assertEquals('Ordered', $expiredSpace->status);
+
+        $availableSpace->release();
+        $expiredSpace->release();
+
+        $this->assertEquals('Available', $availableSpace->refresh()->status);
+        $this->assertEquals('Expired', $expiredSpace->refresh()->status);
     }
 
     /** @test */
@@ -146,6 +219,28 @@ class SpaceTest extends TestCase
         $space->markAs('Expired');
 
         $this->assertEquals('Expired', $space->status);
+    }
+
+    /** @test */
+    public function it_can_be_released_from_an_order_if_the_order_fails()
+    {
+        $space = create(Space::class);
+
+        $this->assertEquals('Available', $space->status);
+
+        $order = $space->placeOrder([
+            'name' => 'John Doe',
+            'business' => 'Example, Co.',
+            'phone' => '765487368',
+            'email' => 'john@example.com',
+        ]);
+
+        $this->assertEquals('Ordered', $space->status);
+
+        $order->cancel();
+
+        $this->assertNull($space->order);
+        $this->assertTrue($space->isAvailable());
     }
 
     /** @test */

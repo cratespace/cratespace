@@ -74,6 +74,8 @@ class Order extends Model
      */
     public function cancel(): void
     {
+        $this->space->release();
+
         $this->delete();
     }
 }

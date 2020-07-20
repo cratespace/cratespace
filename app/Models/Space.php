@@ -3,11 +3,11 @@
 namespace App\Models;
 
 use Carbon\Carbon;
-use App\Support\Formatter;
 use App\Models\Traits\Filterable;
 use App\Models\Traits\Presentable;
 use App\Contracts\Models\Statusable;
 use App\Models\Concerns\ManagesStatus;
+use App\Models\Concerns\ManagesPricing;
 use Illuminate\Database\Eloquent\Model;
 
 class Space extends Model implements Statusable
@@ -15,6 +15,7 @@ class Space extends Model implements Statusable
     use Filterable;
     use Presentable;
     use ManagesStatus;
+    use ManagesPricing;
 
     /**
      * The attributes that should be cast to native types.
@@ -55,54 +56,6 @@ class Space extends Model implements Statusable
     }
 
     /**
-     * Set the space's price in cents.
-     *
-     * @param string $value
-     *
-     * @return string
-     */
-    public function setPriceAttribute($value)
-    {
-        $this->attributes['price'] = $value * 100;
-    }
-
-    /**
-     * Get the space's price.
-     *
-     * @param string $value
-     *
-     * @return string
-     */
-    public function getPriceAttribute($value)
-    {
-        return Formatter::moneyFormat($value);
-    }
-
-    /**
-     * Set the space's price in cents.
-     *
-     * @param string $value
-     *
-     * @return string
-     */
-    public function setTaxAttribute($value)
-    {
-        $this->attributes['tax'] = $value * 100;
-    }
-
-    /**
-     * Get the space's tax amount.
-     *
-     * @param string $value
-     *
-     * @return string
-     */
-    public function getTaxAttribute($value)
-    {
-        return Formatter::moneyFormat($value);
-    }
-
-    /**
      * Get the name of the business the space is associated with.
      *
      * @return string
@@ -110,36 +63,6 @@ class Space extends Model implements Statusable
     public function getBusinessNameAttribute()
     {
         return Business::whereUserId($this->user_id)->first()->name;
-    }
-
-    /**
-     * Get price as integer and in cents.
-     *
-     * @return int
-     */
-    public function getPriceInCents(): int
-    {
-        return Formatter::getIntegerValues($this->price);
-    }
-
-    /**
-     * Get tax as integer and in cents.
-     *
-     * @return int
-     */
-    public function getTaxInCents(): int
-    {
-        return Formatter::getIntegerValues($this->tax);
-    }
-
-    /**
-     * Get full price as integer and in cents.
-     *
-     * @return int
-     */
-    public function getFullPriceInCents(): int
-    {
-        return $this->getPriceInCents() + $this->getTaxInCents();
     }
 
     /**
@@ -169,11 +92,21 @@ class Space extends Model implements Statusable
      */
     public function isAvailable(): bool
     {
-        if ($this->departs_at > Carbon::now()) {
+        if (!$this->isExpired()) {
             return !$this->order()->exists();
         }
 
         return false;
+    }
+
+    /**
+     * Determine if the space departure date is close or has passwed.
+     *
+     * @return bool
+     */
+    public function isExpired(): bool
+    {
+        return $this->departs_at <= Carbon::now();
     }
 
     /**
@@ -230,5 +163,19 @@ class Space extends Model implements Statusable
     public function order()
     {
         return $this->hasOne(Order::class);
+    }
+
+    /**
+     * Release the space from an order.
+     *
+     * @return bool
+     */
+    public function release(): bool
+    {
+        if (!$this->isExpired()) {
+            return $this->markAs('Available');
+        }
+
+        return $this->markAs('Expired');
     }
 }

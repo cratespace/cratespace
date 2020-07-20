@@ -45,6 +45,8 @@ class PurchaseSpaceTest extends TestCase
         $response->assertStatus(201);
         $this->assertEquals(4875, $this->paymentGateway->totalCharges());
         $this->assertNotNull($space->order);
+        $this->assertFalse($space->isAvailable());
+        $this->assertEquals('Ordered', $space->refresh()->status);
         $this->assertEquals('john@example.com', $space->order->email);
     }
 
