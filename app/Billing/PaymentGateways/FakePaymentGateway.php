@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Billing;
+namespace App\Billing\PaymentGateways;
 
 use Illuminate\Support\Str;
 use App\Exceptions\PaymentFailedException;

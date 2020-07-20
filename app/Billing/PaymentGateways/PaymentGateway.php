@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Billing;
+namespace App\Billing\PaymentGateways;
 
 abstract class PaymentGateway
 {

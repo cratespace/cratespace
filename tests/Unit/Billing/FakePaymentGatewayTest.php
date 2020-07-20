@@ -3,8 +3,8 @@
 namespace Tests\Unit\Billing;
 
 use PHPUnit\Framework\TestCase;
-use App\Billing\FakePaymentGateway;
 use App\Exceptions\PaymentFailedException;
+use App\Billing\PaymentGateways\FakePaymentGateway;
 
 class FakePaymentGatewayTest extends TestCase
 {

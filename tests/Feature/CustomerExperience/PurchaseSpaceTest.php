@@ -6,16 +6,16 @@ use Carbon\Carbon;
 use Tests\TestCase;
 use App\Models\Order;
 use App\Models\Space;
-use App\Billing\FakePaymentGateway;
 use Illuminate\Testing\TestResponse;
 use App\Contracts\Billing\PaymentGateway;
+use App\Billing\PaymentGateways\FakePaymentGateway;
 
 class PurchaseSpaceTest extends TestCase
 {
     /**
      * Instance of fake payment gateway.
      *
-     * @var \App\Billing\FakePaymentGateway
+     * @var \App\Billing\PaymentGateways\FakePaymentGateway
      */
     protected $paymentGateway;
 
