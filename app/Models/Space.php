@@ -3,19 +3,23 @@
 namespace App\Models;
 
 use Carbon\Carbon;
+use App\Support\Formatter;
 use App\Models\Traits\Filterable;
 use App\Models\Traits\Presentable;
+use App\Contracts\Models\Priceable;
 use App\Contracts\Models\Statusable;
 use App\Models\Concerns\ManagesStatus;
 use App\Models\Concerns\ManagesPricing;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Traits\GetsPathToResource;
 
-class Space extends Model implements Statusable
+class Space extends Model implements Statusable, Priceable
 {
     use Filterable;
     use Presentable;
     use ManagesStatus;
     use ManagesPricing;
+    use GetsPathToResource;
 
     /**
      * The attributes that should be cast to native types.
@@ -56,6 +60,22 @@ class Space extends Model implements Statusable
     }
 
     /**
+     * Get charge amount as integer and in cents.
+     *
+     * @param string|int $amount
+     *
+     * @return int
+     */
+    public function getChargeAmountInCents($amount): int
+    {
+        if (is_string($amount)) {
+            return Formatter::getIntegerValues($amount);
+        }
+
+        return $amount * 100;
+    }
+
+    /**
      * Get the name of the business the space is associated with.
      *
      * @return string
@@ -63,26 +83,6 @@ class Space extends Model implements Statusable
     public function getBusinessNameAttribute()
     {
         return Business::whereUserId($this->user_id)->first()->name;
-    }
-
-    /**
-     * Get full path to resource page.
-     *
-     * @return string
-     */
-    public function getPathAttribute()
-    {
-        return $this->path();
-    }
-
-    /**
-     * Get full path to resource page.
-     *
-     * @return string
-     */
-    public function path(): string
-    {
-        return route('spaces.show', $this);
     }
 
     /**
@@ -123,7 +123,8 @@ class Space extends Model implements Statusable
                 ->whereColumn('user_id', 'spaces.user_id')
                 ->take(1),
             ])
-            ->whereStatus('Available')
+            ->whereDate('departs_at', '>', Carbon::now())
+            ->doesntHave('order')
             ->latest();
     }
 

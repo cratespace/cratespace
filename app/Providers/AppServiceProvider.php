@@ -14,6 +14,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
+        $this->registerTelescope();
     }
 
     /**
@@ -24,5 +25,18 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         Paginator::useTailwind();
+    }
+
+    /**
+     * Register telescope services.
+     *
+     * @return void
+     */
+    protected function registerTelescope(): void
+    {
+        if ($this->app->isLocal()) {
+            $this->app->register(\Laravel\Telescope\TelescopeServiceProvider::class);
+            $this->app->register(TelescopeServiceProvider::class);
+        }
     }
 }

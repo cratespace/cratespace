@@ -61,7 +61,7 @@ trait ManagesPricing
      */
     public function getPriceInCents(): int
     {
-        return Formatter::getIntegerValues($this->price);
+        return $this->getChargeAmountInCents($this->price);
     }
 
     /**
@@ -71,7 +71,7 @@ trait ManagesPricing
      */
     public function getTaxInCents(): int
     {
-        return Formatter::getIntegerValues($this->tax);
+        return $this->getChargeAmountInCents($this->tax);
     }
 
     /**

@@ -47,7 +47,9 @@ class SpaceTest extends TestCase
     public function it_has_a_listing_feature()
     {
         $spaces = create(Space::class, [], 100);
-        $expiredSpaces = create(Space::class, ['status' => 'Expired'], 2);
+        $expiredSpaces = create(Space::class, [
+            'departs_at' => Carbon::now()->subMonth(),
+        ], 2);
 
         $this->assertCount(100, Space::list()->get());
         $this->assertEquals('Available', Space::list()->first()->status);
@@ -56,7 +58,7 @@ class SpaceTest extends TestCase
         $spaces = $spaces->merge($expiredSpaces);
 
         foreach ($spaces as $space) {
-            if ($space->status === 'Available') {
+            if ($space->isAvailable()) {
                 $this->assertTrue(Space::list()->get()->contains($space));
             } else {
                 $this->assertFalse(Space::list()->get()->contains($space));

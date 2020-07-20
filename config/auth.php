@@ -112,4 +112,11 @@ return [
     */
 
     'password_timeout' => 10800,
+
+    /*
+     * Email list of user's/developers with administrative privileges.
+     */
+    'admins' => [
+        'tjthavarshan@gmail.com',
+    ],
 ];
