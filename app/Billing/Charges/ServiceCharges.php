@@ -16,7 +16,7 @@ class ServiceCharges implements ChargesContract
      */
     public function apply(int $amount, int $taxAmount = 0): int
     {
-        return ($amount + $taxAmount) * $this->getServiceRate();
+        return $amount * $this->getServiceRate();
     }
 
     /**

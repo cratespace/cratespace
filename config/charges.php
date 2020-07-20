@@ -4,5 +4,5 @@ return [
     /*
      * Service Charge Percentage
      */
-    'service' => 0.5,
+    'service' => 0.15,
 ];

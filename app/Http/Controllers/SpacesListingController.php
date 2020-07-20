@@ -17,6 +17,8 @@ class SpacesListingController extends Controller
      */
     public function __invoke(Request $request, SpaceFilter $filters)
     {
+        cache()->flush();
+
         return view('public.landing.welcome', [
             'spaces' => $this->getSpaces($request, $filters),
             'options' => $this->getPlaces(),

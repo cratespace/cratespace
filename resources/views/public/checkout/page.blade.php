@@ -76,7 +76,7 @@
                                     </div>
 
                                     <div class="text-right">
-                                        <span>{{ $charges['price'] }}</span>
+                                        <span>{{ $charges['subtotal'] }}</span>
                                     </div>
                                 </div>
 
@@ -167,7 +167,7 @@
 
                             <div class="mt-6">
                                 <button type="submit" class="btn btn-primary w-full">
-                                    Pay {{ $space->price }}
+                                    Pay {{ $charges['total'] }}
                                 </button>
                             </div>
                         </form>

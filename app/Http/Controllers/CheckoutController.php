@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Space;
 use App\Support\Formatter;
+use App\Billing\Charges\Calculator as ChargesCalculator;
 
 class CheckoutController extends Controller
 {
@@ -16,7 +17,7 @@ class CheckoutController extends Controller
     {
         return view('public.checkout.page', [
             'space' => $space,
-            'charges' => $this->calculateChrages($space),
+            'charges' => $this->calculateCharges($space),
         ]);
     }
 
@@ -27,17 +28,14 @@ class CheckoutController extends Controller
      *
      * @return array
      */
-    protected function calculateChrages(Space $space): array
+    protected function calculateCharges(Space $space): array
     {
-        $service = ($space->getPriceInCents() + $space->getTaxInCents()) / config('charges.service');
+        $charges = [];
 
-        return [
-            'price' => Formatter::moneyFormat($space->getPriceInCents()),
-            'tax' => Formatter::moneyFormat($space->getTaxInCents()),
-            'service' => Formatter::moneyFormat($service),
-            'total' => Formatter::moneyFormat(
-                $space->getPriceInCents() + $space->getTaxInCents() + $service
-            ),
-        ];
+        foreach ((new ChargesCalculator($space))->calculateCharges() as $name => $amount) {
+            $charges[$name] = Formatter::moneyFormat((int) $amount);
+        }
+
+        return $charges;
     }
 }
