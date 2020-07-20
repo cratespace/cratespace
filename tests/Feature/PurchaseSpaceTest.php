@@ -42,7 +42,14 @@ class PurchaseSpaceTest extends TestCase
             'payment_token' => $this->paymentGateway->getValidTestToken(),
         ]);
 
-        $response->assertStatus(201);
+        $response->assertStatus(201)->assertJson([
+            'order' => [
+                'name' => 'John Doe',
+                'business' => 'Example, Co.',
+                'phone' => '765487368',
+                'email' => 'john@example.com',
+            ],
+        ]);
         $this->assertEquals(4875, $this->paymentGateway->totalCharges());
         $this->assertNotNull($space->order);
         $this->assertFalse($space->isAvailable());

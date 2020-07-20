@@ -32,13 +32,6 @@ class Space extends Model implements Statusable, Priceable
     ];
 
     /**
-     * The accessors to append to the model's array form.
-     *
-     * @var array
-     */
-    protected $appends = ['path'];
-
-    /**
      * The attributes that are mass assignable.
      *
      * @var array
