@@ -11,7 +11,7 @@ class Location
      *
      * @return string
      */
-    public function getCountry()
+    public function getCountry(): string
     {
         return $this->position()->countryName;
     }
@@ -21,7 +21,7 @@ class Location
      *
      * @return string
      */
-    public function position()
+    public function position(): string
     {
         return LocationIdentifier::get($this->getIpRetriever()->get());
     }
@@ -31,7 +31,7 @@ class Location
      *
      * @return \App\Http\Services\Ip\Retriever
      */
-    protected function getIpRetriever()
+    protected function getIpRetriever(): Retriever
     {
         return new Retriever();
     }

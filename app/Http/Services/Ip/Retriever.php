@@ -2,8 +2,6 @@
 
 namespace App\Http\Services\Ip;
 
-use Stevebauman\Location\Facades\Location;
-
 class Retriever
 {
     /**
@@ -14,7 +12,7 @@ class Retriever
     protected $sources = [
         'HTTP_CLIENT_IP',
         'HTTP_X_FORWARDED_FOR',
-        'REMOTE_ADDR'
+        'REMOTE_ADDR',
     ];
 
     /**
@@ -27,7 +25,7 @@ class Retriever
     /**
      * Get client IP address from valid source.
      *
-     * @return string
+     * @return string|null
      */
     public function get()
     {
@@ -35,10 +33,8 @@ class Retriever
             $this->address = $_SERVER[$source] ?? request()->ip();
         }
 
-        if (! (new Validator())->isPrivate($this->address)) {
+        if (!(new Validator())->isPrivate($this->address)) {
             return $this->address;
         }
-
-        return null;
     }
 }
