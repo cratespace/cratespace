@@ -43,12 +43,10 @@ class PurchaseSpaceTest extends TestCase
         ]);
 
         $response->assertStatus(201)->assertJson([
-            'order' => [
-                'name' => 'John Doe',
-                'business' => 'Example, Co.',
-                'phone' => '765487368',
-                'email' => 'john@example.com',
-            ],
+            'name' => 'John Doe',
+            'business' => 'Example, Co.',
+            'phone' => '765487368',
+            'email' => 'john@example.com',
         ]);
         $this->assertEquals(4950, $this->paymentGateway->totalCharges());
         $this->assertNotNull($space->order);

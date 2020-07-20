@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models\Traits;
+namespace App\Models\Concerns;
 
 use ReflectionClass;
 use Illuminate\Support\Str;

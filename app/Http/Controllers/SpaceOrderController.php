@@ -50,43 +50,9 @@ class SpaceOrderController extends Controller
         }
 
         if ($request->wantsJson()) {
-            return response(['order' => $order], 201);
+            return response($order, 201);
         }
 
         return redirect()->route('public.commons.thank-you');
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param \App\Models\Space $space
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Space $space)
-    {
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param \App\Http\Requests\PlaceOrderRequest $request
-     * @param \App\Models\Space                    $space
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function update(PlaceOrderRequest $request, Space $space)
-    {
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param \App\Models\Space $space
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Space $space)
-    {
     }
 }

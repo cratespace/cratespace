@@ -11,7 +11,7 @@ use App\Contracts\Models\Statusable;
 use App\Models\Concerns\ManagesStatus;
 use App\Models\Concerns\ManagesPricing;
 use Illuminate\Database\Eloquent\Model;
-use App\Models\Traits\GetsPathToResource;
+use App\Models\Concerns\GetsPathToResource;
 
 class Space extends Model implements Statusable, Priceable
 {
