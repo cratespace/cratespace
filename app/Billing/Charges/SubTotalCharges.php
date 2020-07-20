@@ -4,7 +4,7 @@ namespace App\Billing\Charges;
 
 use App\Contracts\Billing\Charges as ChargesContract;
 
-class TaxCharges implements ChargesContract
+class SubTotalCharges implements ChargesContract
 {
     /**
      * Apply charge to amount.
@@ -16,6 +16,6 @@ class TaxCharges implements ChargesContract
      */
     public function apply(int $amount, int $taxAmount = 0): int
     {
-        return $taxAmount;
+        return $amount;
     }
 }

@@ -32,7 +32,7 @@ class PurchaseSpaceTest extends TestCase
     {
         config()->set('charges.service', 0.5);
 
-        $space = create(Space::class, ['price' => 32.50]);
+        $space = create(Space::class, ['price' => 32.50, 'tax' => 0.5]);
 
         $response = $this->orderSpace($space, [
             'name' => 'John Doe',
@@ -50,7 +50,7 @@ class PurchaseSpaceTest extends TestCase
                 'email' => 'john@example.com',
             ],
         ]);
-        $this->assertEquals(4875, $this->paymentGateway->totalCharges());
+        $this->assertEquals(4950, $this->paymentGateway->totalCharges());
         $this->assertNotNull($space->order);
         $this->assertFalse($space->isAvailable());
         $this->assertEquals('Ordered', $space->refresh()->status);

@@ -15,6 +15,8 @@ $factory->define(Space::class, function (Faker $faker) {
         'country' => 'Sri Lanka',
     ]);
 
+    $price = rand(1, 9);
+
     return [
         'uid' => Str::random(12),
         'departs_at' => now()->addMonths(rand(1, 500)),
@@ -28,7 +30,7 @@ $factory->define(Space::class, function (Faker $faker) {
         'status' => 'Available',
         'note' => $faker->sentence(7),
         'price' => rand(1, 9),
-        'tax' => 0,
+        'tax' => $price * 0.5, // 50% tax
         'type' => $faker->randomElement(['Local', 'International']),
         'base' => 'Sri Lanka',
         'user_id' => $user->id,
