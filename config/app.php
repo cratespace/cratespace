@@ -83,6 +83,10 @@ return [
 
     'locale' => 'en',
 
+    'currency' => env('APP_CURRENCY', 'usd'),
+
+    'currency_locale' => env('APP_CURRENCY_LOCALE', 'en'),
+
     /*
     |--------------------------------------------------------------------------
     | Application Fallback Locale

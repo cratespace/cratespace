@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests\Traits;
 
-trait AuthenticatesRequest
+trait AuthorizesRequest
 {
     /**
      * Determine if user making request is authenticated.

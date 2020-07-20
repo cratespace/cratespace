@@ -7,13 +7,13 @@ use LVR\CreditCard\CardNumber;
 use LVR\CreditCard\CardExpirationYear;
 use LVR\CreditCard\CardExpirationMonth;
 use Illuminate\Foundation\Http\FormRequest;
+use App\Http\Requests\Traits\AuthorizesRequest;
 use App\Http\Requests\Traits\HasValidationRules;
-use App\Http\Requests\Traits\AuthenticatesRequest;
 
 class PlaceOrderRequest extends FormRequest
 {
     use HasValidationRules;
-    use AuthenticatesRequest;
+    use AuthorizesRequest;
 
     /**
      * Determine if the user is authorized to make this request.

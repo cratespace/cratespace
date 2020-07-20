@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature;
+namespace Tests\Feature\CustomerExperience;
 
 use Carbon\Carbon;
 use Tests\TestCase;

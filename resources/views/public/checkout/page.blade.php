@@ -37,9 +37,9 @@
                                         <div class="ml-1 text-xs">Dimensions</div>
                                     </div>
 
-                                    <div><span class="font-bold text-gray-700">25</span> (cu ft)</div>
+                                    <div><span class="font-bold text-gray-700">{{ $space->present()->volume }}</span> (cu ft)</div>
 
-                                    <div class="text-sm">5 x 6 x 2 (ft)</div>
+                                    <div class="text-sm">{{ $space->height }} x {{ $space->width }} x {{ $space->length }} (ft)</div>
                                 </div>
 
                                 <div class="mt-6">
@@ -76,7 +76,7 @@
                                     </div>
 
                                     <div class="text-right">
-                                        <span>{{ $space->price }}</span>
+                                        <span>{{ $charges['price'] }}</span>
                                     </div>
                                 </div>
 
@@ -86,7 +86,7 @@
                                     </div>
 
                                     <div class="text-right">
-                                        <span>$0.00</span>
+                                        <span>{{ $charges['service'] }}</span>
                                     </div>
                                 </div>
 
@@ -96,7 +96,7 @@
                                     </div>
 
                                     <div class="text-right">
-                                        <span>{{ $space->tax }}</span>
+                                        <span>{{ $charges['tax'] }}</span>
                                     </div>
                                 </div>
 
@@ -106,7 +106,7 @@
                                     </div>
 
                                     <div class="text-right">
-                                        <span class="text-gray-700 text-xl font-bold">$0.00</span>
+                                        <span class="text-gray-700 text-xl font-bold">{{ $charges['total'] }}</span>
                                     </div>
                                 </div>
                             </div>
