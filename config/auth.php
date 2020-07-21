@@ -119,4 +119,10 @@ return [
     'admins' => [
         'tjthavarshan@gmail.com',
     ],
+
+    /*
+     * Responsibilities to perform when creating a new user account.
+     */
+    'responsibilities' => [
+    ],
 ];

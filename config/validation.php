@@ -70,7 +70,7 @@ return [
         'name' => ['required', 'string', 'max:255'],
         'business' => ['required', 'string', 'max:255'],
         'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-        'phone' => ['required', 'integer', 'min:9'],
+        'phone' => ['required', 'string', 'min:9'],
         'password' => ['required', 'string', 'min:8', 'confirmed'],
     ],
 ];

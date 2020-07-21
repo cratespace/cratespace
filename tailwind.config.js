@@ -36,6 +36,19 @@ module.exports = {
         },
       },
     }),
+    typography: theme => ({
+        default: {
+          css: {
+            color: theme('colors.gray.600'),
+            a: {
+              color: '#0366D6',
+              '&:hover': {
+                color: '#035CC1',
+              },
+            },
+          },
+        },
+    }),
     extend: {
         colors: {
           blue: {
@@ -55,5 +68,6 @@ module.exports = {
   variants: {},
   plugins: [
     require('@tailwindcss/custom-forms'),
+    require('@tailwindcss/typography')
   ],
 }
