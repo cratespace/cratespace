@@ -76,7 +76,7 @@
                                     </div>
 
                                     <div class="text-right">
-                                        <span>{{ $charges['subtotal'] }}</span>
+                                        <span>{{ $charges['price'] }}</span>
                                     </div>
                                 </div>
 

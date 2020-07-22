@@ -23,6 +23,7 @@ class CreateOrdersTable extends Migration
             $table->integer('service');
             $table->integer('price');
             $table->integer('tax');
+            $table->integer('total');
             $table->timestamps();
         });
     }

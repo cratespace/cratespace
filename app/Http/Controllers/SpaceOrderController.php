@@ -39,12 +39,9 @@ class SpaceOrderController extends Controller
         $order = $space->placeOrder($request->except('payment_token'));
 
         try {
-            $this->paymentGateway->charge(
-                $order->totalInCents(),
-                $request->payment_token
-            );
+            $this->paymentGateway->charge($order->total, $request->payment_token);
         } catch (PaymentFailedException $exception) {
-            $order->cancel();
+            $order->delete();
 
             throw $exception;
         }

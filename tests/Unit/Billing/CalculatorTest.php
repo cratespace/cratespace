@@ -47,7 +47,7 @@ class CalculatorTest extends TestCase
 
         $this->assertTrue(is_array($charges));
         $this->assertSame($charges, cache('charges'));
-        $this->assertArrayHasKey('subtotal', $charges);
+        $this->assertArrayHasKey('price', $charges);
         $this->assertArrayHasKey('service', $charges);
         $this->assertArrayHasKey('total', $charges);
         $this->assertArrayHasKey('tax', $charges);

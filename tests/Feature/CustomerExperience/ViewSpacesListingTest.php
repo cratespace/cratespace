@@ -4,7 +4,9 @@ namespace Tests\Feature\CustomerExperience;
 
 use Carbon\Carbon;
 use Tests\TestCase;
+use App\Models\Order;
 use App\Models\Space;
+use App\Billing\Charges\Calculator;
 
 class ViewSpacesListingTest extends TestCase
 {
@@ -23,12 +25,9 @@ class ViewSpacesListingTest extends TestCase
     {
         $expiredSpace = create(Space::class, ['departs_at' => Carbon::now()->subMonth()]);
         $orderedSpace = create(Space::class);
-        $orderedSpace->placeOrder([
-            'name' => 'John Doe',
-            'business' => 'Example, Co.',
-            'phone' => '765487368',
-            'email' => 'john@example.com',
-        ]);
+        $chargesCalculator = new Calculator($orderedSpace);
+        $chargesCalculator->calculateCharges();
+        create(Order::class, ['space_id' => $orderedSpace->id]);
         $availableSpace = create(Space::class);
 
         $this->get('/')

@@ -27,7 +27,6 @@ $factory->define(Space::class, function (Faker $faker) {
         'width' => rand(1, 9),
         'length' => rand(1, 9),
         'weight' => rand(1, 9),
-        'status' => 'Available',
         'note' => $faker->sentence(7),
         'price' => rand(1, 9),
         'tax' => $price * 0.5, // 50% tax

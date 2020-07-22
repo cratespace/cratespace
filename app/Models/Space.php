@@ -8,7 +8,6 @@ use App\Models\Traits\Filterable;
 use App\Models\Traits\Presentable;
 use App\Contracts\Models\Priceable;
 use App\Contracts\Models\Statusable;
-use App\Models\Concerns\ManagesStatus;
 use App\Models\Concerns\ManagesPricing;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Concerns\GetsPathToResource;
@@ -17,9 +16,15 @@ class Space extends Model implements Statusable, Priceable
 {
     use Filterable;
     use Presentable;
-    use ManagesStatus;
     use ManagesPricing;
     use GetsPathToResource;
+
+    /**
+     * The accessors to append to the model's array form.
+     *
+     * @var array
+     */
+    protected $appends = ['status'];
 
     /**
      * The attributes that should be cast to native types.
@@ -39,7 +44,7 @@ class Space extends Model implements Statusable, Priceable
     protected $fillable = [
         'uid', 'departs_at', 'arrives_at', 'height', 'width', 'length',
         'weight', 'note', 'price', 'tax', 'user_id', 'origin', 'destination',
-        'status', 'type', 'base',
+        'type', 'base',
     ];
 
     /**
@@ -50,6 +55,31 @@ class Space extends Model implements Statusable, Priceable
     public function getRouteKeyName()
     {
         return 'uid';
+    }
+
+    /**
+     * Determine status of space.
+     *
+     * @return string
+     */
+    public function getStatusAttribute()
+    {
+        switch (true) {
+            case $this->isAvailable():
+                return 'Available';
+
+                break;
+
+            case $this->isExpired():
+                return 'Expired';
+
+                break;
+
+            default:
+                return 'Ordered';
+
+                break;
+        }
     }
 
     /**
@@ -140,11 +170,9 @@ class Space extends Model implements Statusable, Priceable
      */
     public function placeOrder(array $data): Order
     {
-        abort_if($this->status !== 'Available', 403);
+        abort_if(!$this->isAvailable(), 403);
 
         $order = $this->order()->create($data);
-
-        $this->markAs('Ordered');
 
         return $order;
     }
@@ -157,19 +185,5 @@ class Space extends Model implements Statusable, Priceable
     public function order()
     {
         return $this->hasOne(Order::class);
-    }
-
-    /**
-     * Release the space from an order.
-     *
-     * @return bool
-     */
-    public function release(): bool
-    {
-        if (!$this->isExpired()) {
-            return $this->markAs('Available');
-        }
-
-        return $this->markAs('Expired');
     }
 }

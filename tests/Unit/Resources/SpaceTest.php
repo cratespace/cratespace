@@ -8,8 +8,7 @@ use App\Models\User;
 use App\Models\Order;
 use App\Models\Space;
 use Illuminate\Support\Str;
-use App\Filters\SpaceFilter;
-use Illuminate\Http\Request;
+use App\Billing\Charges\Calculator;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 
@@ -90,6 +89,7 @@ class SpaceTest extends TestCase
         $availableSpace = create(Space::class);
         $expiredSpace = create(Space::class, ['departs_at' => Carbon::now()->subMonth()]);
         $orderedSpace = create(Space::class);
+        $this->calculateCharges($orderedSpace);
         $order = $orderedSpace->placeOrder([
             'name' => 'John Doe',
             'business' => 'Example, Co.',
@@ -154,26 +154,22 @@ class SpaceTest extends TestCase
     /** @test */
     public function it_can_release_it_self_from_an_order()
     {
-        $availableSpace = create(Space::class, ['status' => 'Ordered']);
-        $expiredSpace = create(Space::class, [
-            'departs_at' => Carbon::now()->subMonth(),
-            'status' => 'Ordered',
-        ]);
+        $space = create(Space::class);
+        $this->calculateCharges($space);
+        $space->placeOrder(make(Order::class)->toArray());
 
-        $this->assertEquals('Ordered', $availableSpace->status);
-        $this->assertEquals('Ordered', $expiredSpace->status);
+        $this->assertEquals('Ordered', $space->status);
 
-        $availableSpace->release();
-        $expiredSpace->release();
+        $space->order()->delete();
 
-        $this->assertEquals('Available', $availableSpace->refresh()->status);
-        $this->assertEquals('Expired', $expiredSpace->refresh()->status);
+        $this->assertEquals('Available', $space->refresh()->status);
     }
 
     /** @test */
     public function it_can_place_an_order_for_itself()
     {
         $space = create(Space::class);
+        $this->calculateCharges($space);
         $space->placeOrder([
             'name' => 'John Doe',
             'business' => 'Example, Co.',
@@ -191,11 +187,12 @@ class SpaceTest extends TestCase
     {
         $this->expectException(HttpException::class);
 
-        $orderedSpace = create(Space::class, ['status' => 'Ordered']);
-        $orderedSpace->placeOrder(['email' => 'john@example.com']);
+        $orderedSpace = create(Space::class);
+        $this->calculateCharges($orderedSpace);
+        $orderedSpace->placeOrder(make(Order::class)->toArray());
 
-        $expiredSpace = create(Space::class, ['status' => 'Expired']);
-        $expiredSpace->placeOrder(['email' => 'john@example.com']);
+        $expiredSpace = create(Space::class, ['departs_at' => Carbon::now()->subMonth()]);
+        $expiredSpace->placeOrder(make(Order::class)->toArray());
     }
 
     /** @test */
@@ -208,27 +205,13 @@ class SpaceTest extends TestCase
     }
 
     /** @test */
-    public function it_can_be_marked_as_given_status()
-    {
-        $space = create(Space::class);
-
-        $this->assertEquals('Available', $space->status);
-
-        $space->markAs('Ordered');
-
-        $this->assertEquals('Ordered', $space->status);
-
-        $space->markAs('Expired');
-
-        $this->assertEquals('Expired', $space->status);
-    }
-
-    /** @test */
     public function it_can_be_released_from_an_order_if_the_order_fails()
     {
         $space = create(Space::class);
 
         $this->assertEquals('Available', $space->status);
+
+        $this->calculateCharges($space);
 
         $order = $space->placeOrder([
             'name' => 'John Doe',
@@ -239,76 +222,23 @@ class SpaceTest extends TestCase
 
         $this->assertEquals('Ordered', $space->status);
 
-        $order->cancel();
+        $order->delete();
 
         $this->assertNull($space->order);
         $this->assertTrue($space->isAvailable());
     }
 
-    /** @test */
-    public function it_can_be_filtered_by_type()
+    /**
+     * Calculate amount to be charged to customer.
+     *
+     * @param \App\Models\Space $space
+     *
+     * @return void
+     */
+    protected function calculateCharges(Space $space): void
     {
-        $localSpace = create(Space::class, ['type' => 'Local']);
-        $internationalSpace = create(Space::class, ['type' => 'International']);
+        $chargesCalculator = new Calculator($space);
 
-        $requestForLocalSpace = Request::create('/', 'GET', ['type' => 'Local']);
-        $requestForInternationalSpace = Request::create('/', 'GET', ['type' => 'International']);
-
-        $localSpaceFilters = new SpaceFilter($requestForLocalSpace);
-        $internationalSpaceFilters = new SpaceFilter($requestForInternationalSpace);
-
-        $filteredLocalSpace = Space::filter($localSpaceFilters)->first();
-        $filteredInternationalSpace = Space::filter($internationalSpaceFilters)->first();
-
-        $this->assertTrue($localSpace->is($filteredLocalSpace));
-        $this->assertTrue($internationalSpace->is($filteredInternationalSpace));
-    }
-
-    /** @test */
-    public function it_can_be_filtered_by_status()
-    {
-        $availableSpace = create(Space::class, ['status' => 'Available']);
-        $orderedSpace = create(Space::class, ['status' => 'Ordered']);
-
-        $requestForAvailableSpace = Request::create('/', 'GET', ['status' => 'Available']);
-        $requestForOrderedSpace = Request::create('/', 'GET', ['status' => 'Ordered']);
-
-        $availableSpaceFilters = new SpaceFilter($requestForAvailableSpace);
-        $orderedSpaceFilters = new SpaceFilter($requestForOrderedSpace);
-
-        $filteredAvailableSpace = Space::filter($availableSpaceFilters)->first();
-        $filteredOrderedSpace = Space::filter($orderedSpaceFilters)->first();
-
-        $this->assertTrue($availableSpace->is($filteredAvailableSpace));
-        $this->assertTrue($orderedSpace->is($filteredOrderedSpace));
-    }
-
-    /** @test */
-    public function it_can_be_filtered_by_origin_and_detination()
-    {
-        $spaceFromTrinco = create(Space::class, ['origin' => 'Trinco']);
-        $spaceFromColombo = create(Space::class, ['origin' => 'Colombo']);
-        $spaceToTrinco = create(Space::class, ['destination' => 'Trinco']);
-        $spaceToColombo = create(Space::class, ['destination' => 'Colombo']);
-
-        $requestForSpaceFromTrinco = Request::create('/', 'GET', ['origin' => 'Trinco']);
-        $requestForSpaceFromColombo = Request::create('/', 'GET', ['origin' => 'Colombo']);
-        $requestForSpaceToTrinco = Request::create('/', 'GET', ['destination' => 'Trinco']);
-        $requestForSpaceToColombo = Request::create('/', 'GET', ['destination' => 'Colombo']);
-
-        $fromTrincoSpaceFilters = new SpaceFilter($requestForSpaceFromTrinco);
-        $fromColomboSpaceFilters = new SpaceFilter($requestForSpaceFromColombo);
-        $toTrincoSpaceFilters = new SpaceFilter($requestForSpaceToTrinco);
-        $toColomboSpaceFilters = new SpaceFilter($requestForSpaceToColombo);
-
-        $filteredSpaceFromTrinco = Space::filter($fromTrincoSpaceFilters)->first();
-        $filteredSpaceFromColombo = Space::filter($fromColomboSpaceFilters)->first();
-        $filteredSpaceToTrinco = Space::filter($toTrincoSpaceFilters)->first();
-        $filteredSpaceToColombo = Space::filter($toColomboSpaceFilters)->first();
-
-        $this->assertTrue($spaceFromTrinco->is($filteredSpaceFromTrinco));
-        $this->assertTrue($spaceFromColombo->is($filteredSpaceFromColombo));
-        $this->assertTrue($spaceToTrinco->is($filteredSpaceToTrinco));
-        $this->assertTrue($spaceToColombo->is($filteredSpaceToColombo));
+        $chargesCalculator->calculateCharges();
     }
 }

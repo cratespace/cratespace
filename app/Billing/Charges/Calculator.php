@@ -20,7 +20,7 @@ class Calculator
      * @var array
      */
     protected $charges = [
-        'subtotal' => SubTotalCharges::class,
+        'price' => SubTotalCharges::class,
         'service' => ServiceCharges::class,
         'tax' => TaxCharges::class,
     ];

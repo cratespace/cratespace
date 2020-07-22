@@ -10,8 +10,7 @@ class SpaceFilter extends Filter
      * @var array
      */
     protected $filters = [
-        'origin', 'destination', 'type', 'departs_at',
-        'arrives_at', 'status',
+        'origin', 'destination', 'type', 'departs_at', 'arrives_at',
     ];
 
     /**
@@ -60,18 +59,6 @@ class SpaceFilter extends Filter
     protected function arrives_at($date)
     {
         return $this->builder->whereDate('arrives_at', '=', $date);
-    }
-
-    /**
-     * Filter spaces by status.
-     *
-     * @param string $locality
-     *
-     * @return \Illuminate\Database\Eloquent\Builder
-     */
-    protected function status($status)
-    {
-        return $this->builder->whereStatus($status);
     }
 
     /**

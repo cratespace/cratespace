@@ -3,6 +3,7 @@
 namespace App\Models\Concerns;
 
 use App\Models\Order;
+use App\Exceptions\ChargesNotFountException;
 
 trait CalculatesCharges
 {
@@ -17,7 +18,7 @@ trait CalculatesCharges
     }
 
     /**
-     * Caluculate charges to be set.
+     * Calculate charges to be set.
      *
      * @param \App\Models\Order $order
      *
@@ -25,8 +26,22 @@ trait CalculatesCharges
      */
     protected static function calculateCharges(Order $order): void
     {
-        $order->price = $order->space->getPriceInCents();
-        $order->tax = $order->space->getTaxInCents();
-        $order->service = $order->getServiceCharge();
+        foreach (static::getChrages() as $name => $amount) {
+            $order->{$name} = $amount;
+        }
+    }
+
+    /**
+     * Get all pre-calculated charges.
+     *
+     * @return array
+     */
+    protected static function getChrages(): array
+    {
+        if (cache()->has('charges')) {
+            return cache()->get('charges');
+        }
+
+        throw new ChargesNotFountException('Charges have not been calculated');
     }
 }

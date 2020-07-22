@@ -6,6 +6,7 @@ use Carbon\Carbon;
 use Tests\TestCase;
 use App\Models\Order;
 use App\Models\Space;
+use App\Billing\Charges\Calculator;
 use Illuminate\Testing\TestResponse;
 use App\Contracts\Billing\PaymentGateway;
 use App\Billing\PaymentGateways\FakePaymentGateway;
@@ -30,6 +31,8 @@ class PurchaseSpaceTest extends TestCase
     /** @test */
     public function a_customer_can_purchase_a_space()
     {
+        $this->withoutExceptionHandling();
+
         config()->set('charges.service', 0.5);
 
         $space = create(Space::class, ['price' => 32.50, 'tax' => 0.5]);
@@ -48,7 +51,7 @@ class PurchaseSpaceTest extends TestCase
             'phone' => '765487368',
             'email' => 'john@example.com',
         ]);
-        $this->assertEquals(4950, $this->paymentGateway->totalCharges());
+        $this->assertEquals(4925, $this->paymentGateway->totalCharges());
         $this->assertNotNull($space->order);
         $this->assertFalse($space->isAvailable());
         $this->assertEquals('Ordered', $space->refresh()->status);
@@ -122,7 +125,10 @@ class PurchaseSpaceTest extends TestCase
     public function cannot_purchase_an_expired_or_ordered_space()
     {
         $expiredSpace = create(Space::class, ['departs_at' => Carbon::now()->subMonth()]);
-        $orderedSpace = create(Order::class)->space;
+        $orderedSpace = create(Space::class);
+        $chargesCalculator = new Calculator($orderedSpace);
+        $chargesCalculator->calculateCharges();
+        $orderedSpace->placeOrder($this->orderDetails());
 
         $response = $this->orderSpace($expiredSpace, [
             'email' => 'john@example.com',
@@ -157,7 +163,27 @@ class PurchaseSpaceTest extends TestCase
      */
     protected function orderSpace(Space $space, array $parameters = [])
     {
+        $chargesCalculator = new Calculator($space);
+        $chargesCalculator->calculateCharges();
+
         return $this->postJson("/spaces/{$space->uid}/orders", $parameters);
+    }
+
+    /**
+     * Get fake order details.
+     *
+     * @param array $attributes
+     *
+     * @return array
+     */
+    protected function orderDetails(array $attributes = []): array
+    {
+        return [
+            'name' => 'John Doe',
+            'business' => 'Example, Co.',
+            'phone' => '765487368',
+            'email' => 'john@example.com',
+        ];
     }
 
     /**

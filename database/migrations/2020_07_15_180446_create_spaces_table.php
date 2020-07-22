@@ -24,7 +24,6 @@ class CreateSpacesTable extends Migration
             $table->float('width');
             $table->float('length');
             $table->float('weight');
-            $table->string('status')->default('Available'); // Available, Ordered, Expired
             $table->text('note')->nullable();
             $table->integer('price')->default(0);
             $table->integer('tax')->default(0);
