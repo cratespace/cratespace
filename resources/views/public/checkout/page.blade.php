@@ -14,7 +14,7 @@
                             </div>
 
                             <div class="mt-8 leading-snug">
-                                <span class="text-blue-500 font-bold">{{ $space->uid }}</span>
+                                <span class="text-blue-500 font-semibold">{{ $space->uid }}</span>
 
                                 <div>
                                     {{ $space->businessName }}
@@ -37,7 +37,7 @@
                                         <div class="ml-1 text-xs">Dimensions</div>
                                     </div>
 
-                                    <div><span class="font-bold text-gray-700">{{ $space->present()->volume }}</span> (cu ft)</div>
+                                    <div><span class="font-semibold text-gray-700">{{ $space->present()->volume }}</span> (cu ft)</div>
 
                                     <div class="text-sm">{{ $space->height }} x {{ $space->width }} x {{ $space->length }} (ft)</div>
                                 </div>
@@ -70,7 +70,7 @@
                             <hr class="my-6">
 
                             <div>
-                                <div class="flex justify-between itesm-center">
+                                <div class="flex justify-between items-center">
                                     <div class="font-base">
                                         Original price
                                     </div>
@@ -80,7 +80,17 @@
                                     </div>
                                 </div>
 
-                                <div class="mt-2 flex justify-between itesm-center">
+                                <div class="mt-2 flex justify-between items-center">
+                                    <div class="font-base">
+                                        Value Added Tax
+                                    </div>
+
+                                    <div class="text-right">
+                                        <span>{{ $charges['tax'] }}</span>
+                                    </div>
+                                </div>
+
+                                <div class="mt-2 flex justify-between items-center">
                                     <div class="font-base">
                                         Service charges
                                     </div>
@@ -90,23 +100,13 @@
                                     </div>
                                 </div>
 
-                                <div class="mt-2 flex justify-between itesm-center">
-                                    <div class="font-base">
-                                        Tax
-                                    </div>
-
-                                    <div class="text-right">
-                                        <span>{{ $charges['tax'] }}</span>
-                                    </div>
-                                </div>
-
                                 <div class="mt-2 flex justify-between items-baseline">
-                                    <div class="font-bold">
+                                    <div class="font-semibold text-gray-700 text-xl">
                                         Total
                                     </div>
 
                                     <div class="text-right">
-                                        <span class="text-gray-700 text-xl font-bold">{{ $charges['total'] }}</span>
+                                        <span class="text-gray-700 text-xl font-semibold">{{ $charges['total'] }}</span>
                                     </div>
                                 </div>
                             </div>
@@ -122,7 +122,7 @@
                     </div>
                 </div>
 
-                <div class="col-xl-6 col-lg-7 mb-6 xl:mb-0 offset-xl-1">
+                <div class="col-xl-6 col-lg-7 mb-6 bg-gray-200 sm:bg-transparent py-5 sm:py-0 xl:mb-0 offset-xl-1">
                     <x-cards._full>
                         <div>
                             <h4>Pay with card</h4>
@@ -161,7 +161,7 @@
 
                             <div class="mt-4">
                                 <p class="text-xs text-gray-600 max-w-sm">
-                                    By clicking <span class="font-bold">Pay</span>, you confirm you have read and agreed to <a href="/terms">{{ config('app.name') }} General Terms and Conditions</a> and <a href="/privacy">Privacy Policy</a>.
+                                    By clicking <span class="font-semibold">Pay</span>, you confirm you have read and agreed to <a href="/terms">{{ config('app.name') }} General Terms and Conditions</a> and <a href="/privacy">Privacy Policy</a>.
                                 </p>
                             </div>
 

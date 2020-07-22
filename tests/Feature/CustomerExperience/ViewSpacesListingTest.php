@@ -10,6 +10,11 @@ use App\Billing\Charges\Calculator;
 
 class ViewSpacesListingTest extends TestCase
 {
+    protected function tearDown(): void
+    {
+        cache()->flush();
+    }
+
     /** @test */
     public function user_can_view_all_available_spaces_in_listing()
     {

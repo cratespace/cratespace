@@ -28,6 +28,11 @@ class PurchaseSpaceTest extends TestCase
         $this->app->instance(PaymentGateway::class, $this->paymentGateway);
     }
 
+    protected function tearDown(): void
+    {
+        cache()->flush();
+    }
+
     /** @test */
     public function a_customer_can_purchase_a_space()
     {

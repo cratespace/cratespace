@@ -10,6 +10,11 @@ use App\Billing\Charges\Calculator;
 
 class CalculatorTest extends TestCase
 {
+    protected function tearDown(): void
+    {
+        cache()->flush();
+    }
+
     /** @test */
     public function it_only_accepts_resources_that_adhere_to_priceable_interface()
     {

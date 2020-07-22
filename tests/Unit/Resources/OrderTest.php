@@ -9,6 +9,11 @@ use App\Billing\Charges\Calculator;
 
 class OrderTest extends TestCase
 {
+    protected function tearDown(): void
+    {
+        cache()->flush();
+    }
+
     /** @test */
     public function it_can_calculate_total_amount_and_present_in_currency_format()
     {

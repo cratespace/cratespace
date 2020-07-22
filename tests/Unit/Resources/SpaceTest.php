@@ -14,6 +14,11 @@ use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class SpaceTest extends TestCase
 {
+    protected function tearDown(): void
+    {
+        cache()->flush();
+    }
+
     /** @test */
     public function it_belongs_to_a_user()
     {
