@@ -3,8 +3,8 @@
 @section('content')
 <section class="relative bg-white min-h-screen">
     <div class="row no-gutters">
-        <div class="col-lg-5 hidden lg:block min-h-screen bg-gray-100">
-            <div class="flex flex-col items-end py-12 pr-16">
+        <div class="col-lg-5 hidden lg:block min-h-screen bg-auth bg-cover bg-no-repeat bg-right-top">
+            <div class="flex flex-col items-end py-24 pr-16">
                 <div>
                     <a href="{{ url('/') }}" class="block mb-8">
                         <img class="h-8 w-auto" src="{{ asset('img/logo-dark.png') }}" alt="{{ config('app.name') }}" />
@@ -18,9 +18,9 @@
                         </div>
 
                         <div>
-                            <div class="font-semibold">Quick and free sign‑up</div>
+                            <div class="font-semibold text-gray-800">Quick and free sign‑up</div>
 
-                            <p class="w-64 text-sm text-gray-500">Enter your email address to create an account.</p>
+                            <p class="w-64 text-sm">Enter your email address to create an account.</p>
                         </div>
                     </div>
 
@@ -32,9 +32,9 @@
                         </div>
 
                         <div>
-                            <div class="font-semibold">Simple data entry</div>
+                            <div class="font-semibold text-gray-800">Simple data entry</div>
 
-                            <p class="w-64 text-sm text-gray-500">Use Cratespace's dashaboard to upload space information.</p>
+                            <p class="w-64 text-sm">Use Cratespace's dashaboard to upload space information.</p>
                         </div>
                     </div>
 
@@ -46,9 +46,9 @@
                         </div>
 
                         <div>
-                            <div class="font-semibold">Start accepting orders</div>
+                            <div class="font-semibold text-gray-800">Start accepting orders</div>
 
-                            <p class="w-64 text-sm text-gray-500">Job done! Your live in minutes.</p>
+                            <p class="w-64 text-sm">Job done! Your live in minutes.</p>
                         </div>
                     </div>
                 </div>

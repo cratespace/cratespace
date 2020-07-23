@@ -10,14 +10,14 @@ module.exports = {
           }
         },
         textarea: {
-            borderRadius: theme('borderRadius.lg'),
+            borderRadius: theme('borderRadius.md'),
             backgroundColor: theme('colors.gray.100'),
             '&:focus': {
               backgroundColor: theme('colors.white'),
             }
         },
         select: {
-          borderRadius: theme('borderRadius.lg'),
+          borderRadius: theme('borderRadius.md'),
           boxShadow: theme('boxShadow.none'),
           backgroundColor: theme('colors.gray.100'),
           '&:focus': {

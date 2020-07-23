@@ -37,7 +37,7 @@
                                         <div class="ml-1 text-xs">Dimensions</div>
                                     </div>
 
-                                    <div><span class="font-semibold text-gray-700">{{ $space->present()->volume }}</span> (cu ft)</div>
+                                    <div><span class="font-bold text-gray-700">{{ $space->present()->volume }}</span> (cu ft)</div>
 
                                     <div class="text-sm">{{ $space->height }} x {{ $space->width }} x {{ $space->length }} (ft)</div>
                                 </div>
@@ -49,9 +49,9 @@
                                         <div class="ml-1 text-xs">Departure</div>
                                     </div>
 
-                                    <div class="text-gray-700 font-semibold">{{ $space->departs_at->format('M j, g:ia') }}</div>
+                                    <div class="text-gray-700">{{ $space->departs_at->format('M j, g:ia') }}</div>
 
-                                    <div>from <span class="text-gray-700 font-semibold">{{ $space->origin }}</span></div>
+                                    <div>from <span class="text-gray-700">{{ $space->origin }}</span></div>
                                 </div>
 
                                 <div class="mt-6">
@@ -61,18 +61,18 @@
                                         <div class="ml-1 text-xs">Arrival</div>
                                     </div>
 
-                                    <div class="text-gray-700 font-semibold">{{ $space->arrives_at->format('M j, g:ia') }}</div>
+                                    <div class="text-gray-700">{{ $space->arrives_at->format('M j, g:ia') }}</div>
 
-                                    <div>to <span class="text-gray-700 font-semibold">{{ $space->destination }}</span></div>
+                                    <div>to <span class="text-gray-700">{{ $space->destination }}</span></div>
                                 </div>
                             </div>
 
                             <hr class="my-6">
 
                             <div>
-                                <div class="flex justify-between items-center">
+                                <div class="flex justify-between items-baseline">
                                     <div class="font-base">
-                                        Original price
+                                        <span>Original price</span>
                                     </div>
 
                                     <div class="text-right">
@@ -80,9 +80,9 @@
                                     </div>
                                 </div>
 
-                                <div class="mt-2 flex justify-between items-center">
+                                <div class="mt-2 flex justify-between items-baseline">
                                     <div class="font-base">
-                                        Value Added Tax
+                                        <span>Value Added Tax</span>
                                     </div>
 
                                     <div class="text-right">
@@ -90,9 +90,9 @@
                                     </div>
                                 </div>
 
-                                <div class="mt-2 flex justify-between items-center">
+                                <div class="mt-2 flex justify-between items-baseline">
                                     <div class="font-base">
-                                        Service charges
+                                        <span>Service charges</span>
                                     </div>
 
                                     <div class="text-right">
@@ -102,7 +102,7 @@
 
                                 <div class="mt-2 flex justify-between items-baseline">
                                     <div class="font-semibold text-gray-700 text-xl">
-                                        Total
+                                        <span>Total</span>
                                     </div>
 
                                     <div class="text-right">
@@ -114,8 +114,8 @@
                             <hr class="my-6">
 
                             <div>
-                                <a href="{{ url('/') }}" class="btn btn-secondary text-xs leading-8">
-                                    <span class="text-red-500"><span class="mr-1">&larr;</span> Cancel purchase</span>
+                                <a href="{{ url('/') }}" class="text-xs leading-8">
+                                    <span class="text-red-500">Cancel</span>
                                 </a>
                             </div>
                         </div>
