@@ -25,6 +25,8 @@ class NewUserRegistrationTest extends TestCase
             ->assertStatus(302)
             ->assertRedirect('/home');
 
+        $user = User::whereName('John Vox Doe')->first();
+
         $this->assertDatabaseHas('users', [
             'name' => 'John Vox Doe',
             'email' => 'john.vodo@sunnyside.com',
@@ -32,9 +34,6 @@ class NewUserRegistrationTest extends TestCase
         ]);
         $this->assertDatabaseHas('businesses', ['name' => 'Sunny Side Exporters']);
         $this->assertDatabaseHas('accounts', ['credit' => 0]);
-
-        $user = User::whereName('John Vox Doe')->first();
-
         $this->assertEquals($user->business->name, 'Sunny Side Exporters');
         $this->assertInstanceOf(Business::class, $user->business);
         $this->assertEquals($user->account->credit, 0);

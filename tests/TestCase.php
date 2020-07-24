@@ -3,6 +3,7 @@
 namespace Tests;
 
 use App\Models\User;
+use App\Models\Account;
 use App\Models\Business;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -17,22 +18,51 @@ abstract class TestCase extends BaseTestCase
     use WithFaker;
 
     /**
+     * Instance of fake user.
+     *
+     * @var \App\Models\User
+     */
+    protected $user;
+
+    /**
      * Mock authenticated user.
      *
      * @param \App\Models\User $user
      *
      * @return \App\Models\User
      */
-    protected function signIn($user = null)
+    protected function signIn($user = null): User
     {
-        $user = $user ?: create(User::class);
+        $this->user = $user ?: create(User::class);
 
-        // $user->each(function ($user) {
-        //     create(Business::class, ['user_id' => $user->id]);
-        // });
+        $this->createBusiness()
+            ->createFinancialAccount()
+            ->actingAs($this->user);
 
-        $this->actingAs($user);
+        return $this->user;
+    }
 
-        return $user;
+    /**
+     * Create a fake business profile for the user.
+     *
+     * @return \Tests\TestCase
+     */
+    protected function createBusiness(): TestCase
+    {
+        create(Business::class, ['user_id' => $this->user->id]);
+
+        return $this;
+    }
+
+    /**
+     * Create a fake financial account for the user.
+     *
+     * @return \Tests\TestCase
+     */
+    protected function createFinancialAccount(): TestCase
+    {
+        create(Account::class, ['user_id' => $this->user->id]);
+
+        return $this;
     }
 }

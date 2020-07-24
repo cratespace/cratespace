@@ -2,17 +2,24 @@
 
 namespace Tests\Unit\Resources;
 
-use PHPUnit\Framework\TestCase;
+use Tests\TestCase;
+use App\Models\Account;
 
 class AccountTest extends TestCase
 {
-    /**
-     * A basic unit test example.
-     *
-     * @return void
-     */
-    public function testExample()
+    /** @test */
+    public function it_belongs_to_a_user()
     {
-        $this->assertTrue(true);
+        $user = $this->signIn();
+
+        $this->assertInstanceOf(Account::class, $user->account);
+    }
+
+    /** @test */
+    public function it_has_a_default_credit_balance_of_0()
+    {
+        $user = $this->signIn();
+
+        $this->assertEquals(0, $user->account->credit);
     }
 }
