@@ -15,6 +15,7 @@ $factory->define(Order::class, function (Faker $faker) {
         'business' => $faker->company,
         'email' => $faker->email,
         'space_id' => $space->id,
+        'user_id' => 1,
         'phone' => $faker->phoneNumber,
         'price' => $space->getPriceInCents(),
         'tax' => $space->getTaxInCents(),

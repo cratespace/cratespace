@@ -6,6 +6,7 @@ use Carbon\Carbon;
 use Tests\TestCase;
 use App\Models\Space;
 use App\Reports\DailyReport;
+use Illuminate\Support\Facades\DB;
 
 class DailyReportTest extends TestCase
 {
@@ -14,25 +15,25 @@ class DailyReportTest extends TestCase
     {
         $user = $this->signIn();
 
-        for ($i = 0; $i < date('t') + 1; ++$i) {
+        for ($i = 0; $i < 24; ++$i) {
             create(Space::class, [
                 'user_id' => $user->id,
-                'created_at' => Carbon::now()->subDays(rand(0, 50)),
+                'created_at' => Carbon::now()->subHours(rand(0, 24)),
             ]);
         }
 
-        $space = Space::whereUserId($user->id);
-        $graph = new DailyReport($space);
-        $graphData = $graph->make(date('t'));
+        $query = DB::table('spaces')
+            ->select('id', 'created_at')
+            ->where('user_id', $user->id);
 
-        $days = array_keys($graphData->toArray());
+        $graph = new DailyReport($query);
+        $graphData = $graph->make();
 
-        for ($i = 0; $i <= date('t') - 1; ++$i) {
-            $this->assertEquals($i + 1, $days[$i]);
-        }
-
-        foreach ($graphData as $key => $value) {
-            $this->assertTrue(is_int($value));
+        foreach ($graphData as $time => $count) {
+            $this->assertEquals(
+                Space::whereTime('created_at', '=', Carbon::parse($time))->count(),
+                $count
+            );
         }
     }
 }

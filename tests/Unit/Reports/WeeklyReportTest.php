@@ -6,6 +6,7 @@ use Carbon\Carbon;
 use Tests\TestCase;
 use App\Models\Space;
 use App\Reports\WeeklyReport;
+use Illuminate\Support\Facades\DB;
 
 class WeeklyReportTest extends TestCase
 {
@@ -18,18 +19,21 @@ class WeeklyReportTest extends TestCase
             create(Space::class, [
                 'user_id' => $user->id,
                 'created_at' => Carbon::now()->subDays($i),
-            ]);
+            ], rand(1, 12));
         }
 
-        $space = Space::whereUserId($user->id);
-        $graph = new WeeklyReport($space);
+        $query = DB::table('spaces')
+            ->select('id', 'created_at')
+            ->where('user_id', $user->id);
+
+        $graph = new WeeklyReport($query);
         $graphData = $graph->make();
 
-        $days = array_keys($graphData->toArray());
-
-        foreach ($graphData as $key => $value) {
-            $this->assertTrue(is_string($key));
-            $this->assertTrue(is_int($value));
+        foreach ($graphData as $date => $count) {
+            $this->assertEquals(
+                Space::whereDate('created_at', '=', Carbon::parse($date))->count(),
+                $count
+            );
         }
     }
 }
