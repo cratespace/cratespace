@@ -2,12 +2,14 @@
 
 namespace App\Models;
 
+use App\Models\Traits\HasImage;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class User extends Authenticatable
 {
     use Notifiable;
+    use HasImage;
 
     /**
      * The relations to eager load on every query.

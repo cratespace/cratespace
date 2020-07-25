@@ -2,12 +2,14 @@
 
 namespace App\Models;
 
+use App\Models\Traits\HasImage;
 use App\Models\Traits\Sluggable;
 use Illuminate\Database\Eloquent\Model;
 
 class Business extends Model
 {
     use Sluggable;
+    use HasImage;
 
     /**
      * The attributes that are mass assignable.
