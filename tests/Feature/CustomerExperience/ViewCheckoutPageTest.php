@@ -74,4 +74,18 @@ class ViewCheckoutPageTest extends TestCase
             ->assertSee($space->width)
             ->assertSee($space->volume);
     }
+
+    /** @test */
+    public function space_details_are_removed_from_cache_if_checkout_process_is_canceled()
+    {
+        $space = create(Space::class);
+
+        $this->get("/spaces/{$space->uid}/checkout")->assertStatus(200);
+
+        $this->assertTrue(cache()->has('charges'));
+
+        $this->get('/')->assertStatus(200);
+
+        $this->assertTrue(!cache()->has('charges'));
+    }
 }
