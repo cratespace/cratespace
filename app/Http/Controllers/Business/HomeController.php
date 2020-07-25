@@ -2,7 +2,11 @@
 
 namespace App\Http\Controllers\Business;
 
+use App\Models\Order;
+use App\Reports\WeeklyReport;
+use Illuminate\Support\Collection;
 use App\Http\Controllers\Controller;
+use Illuminate\Database\Eloquent\Builder;
 
 class HomeController extends Controller
 {
@@ -13,8 +17,26 @@ class HomeController extends Controller
      */
     public function index()
     {
-        auth()->logout();
+        return view('business.dashboard.home', [
+            'chart' => collect([
+                '1' => 12,
+                '2' => 6,
+                '3' => 8,
+                '4' => 10,
+                '5' => 9,
+                '6' => 2,
+                '7' => 12,
+            ]),
+        ]);
+    }
 
-        return view('business.home');
+    protected function makeReportFor(): Collection
+    {
+        return (new WeeklyReport($this->getBusinessOrders()))->make();
+    }
+
+    protected function getBusinessOrders(): Builder
+    {
+        return Order::whereUserId(user('id'));
     }
 }

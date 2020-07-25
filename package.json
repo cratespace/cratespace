@@ -30,6 +30,8 @@
         "vue-template-compiler": "^2.6.10"
     },
     "dependencies": {
-        "@tailwindcss/typography": "^0.2.0"
+        "@tailwindcss/typography": "^0.2.0",
+        "apexcharts": "^3.19.3",
+        "vue-apexcharts": "^1.6.0"
     }
 }
