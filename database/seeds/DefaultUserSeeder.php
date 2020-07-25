@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\User;
+use App\Models\Account;
 use App\Models\Business;
 use Illuminate\Support\Str;
 use Illuminate\Database\Seeder;
@@ -45,6 +46,11 @@ class DefaultUserSeeder extends Seeder
             'postcode' => 13500,
             'email' => 'tjthavarshan@gmail.com',
             'phone' => '775018794',
+        ]);
+
+        Account::create([
+            'user_id' => $user->id,
+            'credit' => 0,
         ]);
     }
 }
