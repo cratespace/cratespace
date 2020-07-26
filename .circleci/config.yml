@@ -19,11 +19,11 @@ jobs:
       - image: circleci/mysql:8.0.20-ram
         command: mysqld --default-authentication-plugin=mysql_native_password
         environment:
-          MYSQL_USER: forge
-          MYSQL_DATABASE: forge
-          MYSQL_ROOT_PASSWORD: ''
-          MYSQL_PASSWORD: 'forge'
-          MYSQL_ALLOW_EMPTY_PASSWORD: true
+          DB_USER: forge
+          DB_DATABASE: forge
+          DB_ROOT_PASSWORD: ''
+          DB_PASSWORD: 'forge'
+          DB_ALLOW_EMPTY_PASSWORD: true
 
     steps:
       - checkout
