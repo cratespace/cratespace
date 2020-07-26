@@ -2,18 +2,18 @@
 
 namespace Tests;
 
+use App\Models\Role;
 use App\Models\User;
+use App\Models\Ability;
 use App\Models\Account;
 use App\Models\Business;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
 
 abstract class TestCase extends BaseTestCase
 {
     use CreatesApplication;
-    use DatabaseMigrations;
     use RefreshDatabase;
     use WithFaker;
 
@@ -37,6 +37,7 @@ abstract class TestCase extends BaseTestCase
 
         $this->createBusiness()
             ->createFinancialAccount()
+            ->assignRolesAndAbilities()
             ->actingAs($this->user);
 
         return $this->user;
@@ -62,6 +63,30 @@ abstract class TestCase extends BaseTestCase
     protected function createFinancialAccount(): TestCase
     {
         create(Account::class, ['user_id' => $this->user->id]);
+
+        return $this;
+    }
+
+    /**
+     * Create and assign customer role.
+     *
+     * @return \Tests\TestCase
+     */
+    protected function assignRolesAndAbilities()
+    {
+        $customerRole = Role::firstOrCreate([
+            'title' => 'customer',
+            'label' => 'Customer',
+        ]);
+
+        $purchaseSpace = Ability::firstOrCreate([
+            'title' => 'purchase_spaces',
+            'label' => 'Purchase spaces',
+        ]);
+
+        $customerRole->allowTo($purchaseSpace);
+
+        $this->user->assignRole($customerRole);
 
         return $this;
     }
