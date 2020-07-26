@@ -11,6 +11,7 @@ $factory->define(Order::class, function (Faker $faker) {
     $service = $space->getPriceInCents() * config('charges.service');
 
     return [
+        'uid' => $faker->uuid,
         'name' => $faker->name,
         'business' => $faker->company,
         'email' => $faker->email,
