@@ -2,24 +2,25 @@
 
 /** @var \Illuminate\Database\Eloquent\Factory $factory */
 
-use App\Models\User;
 use App\Models\Order;
 use App\Models\Space;
-use Illuminate\Support\Str;
 use Faker\Generator as Faker;
 
 $factory->define(Order::class, function (Faker $faker) {
     $space = create(Space::class);
+    $service = $space->getPriceInCents() * config('charges.service');
 
     return [
+        'uid' => $faker->uuid,
         'name' => $faker->name,
+        'business' => $faker->company,
         'email' => $faker->email,
-        'phone' => $faker->phoneNumber,
         'space_id' => $space->id,
-        'user_id' => $space->user->id,
-        'total' => 11.5,
-        'tax' => 0.5,
-        'service' => 1.0,
-        'status' => 'Pending',
+        'user_id' => 1,
+        'phone' => $faker->phoneNumber,
+        'price' => $space->getPriceInCents(),
+        'tax' => $space->getTaxInCents(),
+        'service' => $service,
+        'total' => $space->getPriceInCents() + $space->getTaxInCents() + $service,
     ];
 });

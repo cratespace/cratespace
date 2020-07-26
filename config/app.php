@@ -14,7 +14,7 @@ return [
 
     'name' => env('APP_NAME', 'Cratespace'),
 
-    'title' => env('APP_TITLE', 'Cratespace, Inc.'),
+    'title' => 'Cratespace | Find the best deals on shipping',
 
     /*
     |--------------------------------------------------------------------------
@@ -68,7 +68,7 @@ return [
     |
     */
 
-    'timezone' => 'Asia/Colombo',
+    'timezone' => 'UTC',
 
     /*
     |--------------------------------------------------------------------------
@@ -82,6 +82,10 @@ return [
     */
 
     'locale' => 'en',
+
+    'currency' => env('APP_CURRENCY', 'usd'),
+
+    'currency_locale' => env('APP_CURRENCY_LOCALE', 'en'),
 
     /*
     |--------------------------------------------------------------------------
@@ -165,9 +169,6 @@ return [
         /*
          * Package Service Providers...
          */
-        Laravel\Scout\ScoutServiceProvider::class,
-        Stevebauman\Location\LocationServiceProvider::class,
-        TeamTNT\Scout\TNTSearchScoutServiceProvider::class,
 
         /*
          * Application Service Providers...
@@ -178,7 +179,7 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
         App\Providers\TelescopeServiceProvider::class,
-        App\Providers\ResourceMaintenanceServiceProvider::class,
+        App\Providers\BillingServiceProvider::class,
     ],
 
     /*

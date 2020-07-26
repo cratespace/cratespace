@@ -1,14 +1,9 @@
-@extends('layouts.master', ['bgcolor' => 'bg-gray-200'])
+@extends('layouts.master', ['bgColor' => 'bg-gray-200'])
 
-@section('main')
-    <!-- Header -->
+@section('body')
     @include('layouts.app.partials._header')
 
-    <!-- Content -->
-    <main role="main">
-        @yield('content')
-    </main>
+    @yield('content')
 
-    <!-- Notification -->
-    <flash message="{{ session('status') }}"></flash>
+    @include('layouts.app.partials._footer')
 @endsection

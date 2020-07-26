@@ -30,7 +30,7 @@
                         palette: 'palette1',
                         monochrome: {
                             enabled: true,
-                            color: '#667EEA',
+                            color: '#0366D6',
                             shadeTo: 'dark',
                             shadeIntensity: 0.65
                         },

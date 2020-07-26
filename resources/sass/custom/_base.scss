@@ -1,0 +1,19 @@
+html,
+body {
+    font-family: 'Inter', sans-serif;
+}
+
+a {
+    @apply .text-blue-500;
+    @apply .transition;
+    @apply .duration-150;
+    @apply .ease-in-out;
+
+    &:hover {
+        @apply .text-blue-600;
+    }
+
+    &:focus {
+        @apply .text-blue-600;
+    }
+}

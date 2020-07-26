@@ -7,18 +7,19 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'Cratespace') }} | Get the maximum out of your freight business</title>
+    <title>{{ $title ?? config('app.title', 'Cratespace') }}</title>
 
     <!-- Styles -->
-    @include('layouts.partials._css')
+    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 </head>
-<body class="text-gray-700 antialiased leading-normal font-sans {{ $bgcolor ?? 'bg-white' }} overflow-x-hidden">
-    <!-- Main App -->
+<body class="antialiased leading-normal font-sans text-gray-600 {{ $bgColor ?? 'bg-white' }} overflow-x-hidden">
     <div id="app">
-        @yield('main')
+        <main role="main">
+            @yield('body')
+        </main>
     </div>
 
     <!-- Scripts -->
-    @include('layouts.partials._js')
+    <script src="{{ asset('js/app.js') }}"></script>
 </body>
 </html>

@@ -1,55 +1,65 @@
-<nav class="navbar navbar-expand-lg navbar-dark py-4">
+<nav class="bg-gray-800">
     <div class="container">
-        <a class="block h-10" href="/">
-            <img class="h-10 w-auto" src="{{ asset('img/logo-light.png') }}" alt="{{ config('app.name') }}">
-        </a>
+        <div class="h-16 flex justify-between items-center border-b border-gray-700">
+            <a class="block flex-shrink-0 h-8 w-8" href="/" title="{{ config('app.name') }}">
+                <img class="h-8 w-8" src="{{ asset('img/logo.png') }}" alt="{{ config('app.name') }}">
+            </a>
 
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
+            <div class="ml-10 flex flex-1 items-center justify-end md:justify-between">
+                <ul class="hidden md:flex items-center">
+                    <li>
+                        <a class="block px-3 py-2 rounded-lg text-sm font-medium text-gray-300 hover:text-white hover:bg-gray-700 hover:bg-opacity-50 focus:text-gray-600 active:text-gray-600" href="/home">{{ __('Dashboard') }}</a>
+                    </li>
 
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav ml-auto items-center">
-                <li class="nav-item ml-0 lg:ml-8">
-                    <a class="nav-link font-medium text-sm" href="{{ route('home') }}">Dashboard</a>
-                </li>
+                    <li class="ml-6">
+                        <a class="block px-3 py-2 rounded-lg text-sm font-medium text-gray-300 hover:text-white hover:bg-gray-700 hover:bg-opacity-50 focus:text-white active:text-white" href="/orders">{{ __('Orders') }}</a>
+                    </li>
 
-                <li class="nav-item ml-0 lg:ml-8">
-                    <a class="nav-link font-medium text-sm" href="{{ route('spaces.index') }}">Spaces</a>
-                </li>
+                    <li class="ml-6">
+                        <a class="block px-3 py-2 rounded-lg text-sm font-medium text-gray-300 hover:text-white hover:bg-gray-700 hover:bg-opacity-50 focus:text-white active:text-white" href="/spaces">{{ __('Spaces') }}</a>
+                    </li>
 
-                <li class="nav-item ml-0 lg:ml-8">
-                    <a class="nav-link font-medium text-sm" href="{{ route('orders.index') }}">Orders</a>
-                </li>
+                    <li class="ml-6">
+                        <a class="block px-3 py-2 rounded-lg text-sm font-medium text-gray-300 hover:text-white hover:bg-gray-700 hover:bg-opacity-50 focus:text-white active:text-white" href="/support">{{ __('Support') }}</a>
+                    </li>
+                </ul>
 
-                <li class="nav-item ml-0 lg:ml-8">
-                    <a class="nav-link font-medium text-sm" href="#">Report</a>
-                </li>
-
-                <li class="nav-item ml-0 lg:ml-8">
-                    <a class="nav-link font-medium text-sm" href="{{ route('support.threads.index') }}">Support</a>
-                </li>
-
-                <li class="dropdown nav-item ml-0 lg:ml-8">
-                    <button class="dropdown-toggle max-w-xs flex items-center text-sm rounded-full text-white focus:outline-none" id="userDropDown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <img class="h-8 w-8 rounded-full" src="{{ user('photo') }}" alt="{{ user('name') }}" />
-                    </button>
-
-                    <div class="dropdown-menu dropdown-menu-right rounded-lg shadow-lg z-50 mt-3" aria-labelledby="userDropDown">
-                        <a href="{{ route('users.edit', ['user' => user(), 'page' => 'account']) }}" class="dropdown-item block px-4 py-2 text-sm">Settings</a>
-                        <a class="dropdown-item block px-4 py-2 text-sm" href="{{ route('logout') }}"
-                            onclick="event.preventDefault();
-                            document.getElementById('logout-form').submit();">
-                            Sign out
+                <ul class="flex items-center">
+                    <li class="dropdown block md:hidden">
+                        <a class="shadow-none px-0 h-8 w-8 flex items-center justify-center rounded-full overflow-hidden dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <x:heroicon-o-menu class="w-6 h-6 text-gray-600"/>
                         </a>
 
-                        <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                            @csrf
-                        </form>
-                    </div>
-                </li>
-            </ul>
+                        <div class="mt-3 dropdown-menu dropdown-menu-right rounded-lg shadow-lg" aria-labelledby="dropdownMenuLink">
+                            <a class="dropdown-item text-sm font-medium text-gray-600 hover:text-gray-700 focus:text-white active:text-white py-2" href="home">{{ __('Dashboard') }}</a>
+
+                            <a class="dropdown-item text-sm font-medium text-gray-600 hover:text-gray-700 focus:text-white active:text-white py-2" href="orders">{{ __('Orders') }}</a>
+
+                            <a class="dropdown-item text-sm font-medium text-gray-600 hover:text-gray-700 focus:text-white active:text-white py-2" href="spaces">{{ __('Spaces') }}</a>
+
+                            <a class="dropdown-item text-sm font-medium text-gray-600 hover:text-gray-700 focus:text-white active:text-white py-2" href="/support">{{ __('Support') }}</a>
+                        </div>
+                    </li>
+
+                    <li class="ml-4 dropdown">
+                        <a class="bg-blue-200 shadow-none px-0 h-8 w-8 flex items-center justify-center rounded-full overflow-hidden dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <img class="h-8 w-8" src="{{ asset('img/person.png') }}">
+                        </a>
+
+                        <div class="mt-3 dropdown-menu dropdown-menu-right rounded-lg shadow-lg" aria-labelledby="dropdownMenuLink">
+                            <a class="dropdown-item text-sm font-medium text-gray-600 hover:text-gray-700 focus:text-white active:text-white py-2" href="{{ route('users.edit', user()) }}">{{ __('Settings') }}</a>
+
+                            <a class="dropdown-item text-sm font-medium text-gray-600 hover:text-gray-700 focus:text-white active:text-white py-2" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                                {{ __('Sign out') }}
+                            </a>
+
+                            <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                                @csrf
+                            </form>
+                        </div>
+                    </li>
+                </ul>
+            </div>
         </div>
     </div>
 </nav>
-

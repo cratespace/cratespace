@@ -2,17 +2,17 @@
 
 namespace App\Models;
 
-use Carbon\Carbon;
-use App\Models\Traits\Fillable;
-use App\Models\Traits\HasPhoto;
+use App\Models\Traits\HasImage;
+use App\Models\Casts\SettingsCast;
 use Illuminate\Notifications\Notifiable;
+use App\Models\Concerns\ManagesRolesAndAbilities;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class User extends Authenticatable
 {
     use Notifiable;
-    use Fillable;
-    use HasPhoto;
+    use HasImage;
+    use ManagesRolesAndAbilities;
 
     /**
      * The attributes that are mass assignable.
@@ -21,7 +21,7 @@ class User extends Authenticatable
      */
     protected $fillable = [
         'name', 'email', 'phone', 'password',
-        'username', 'type', 'photo', 'settings',
+        'username', 'image', 'settings',
     ];
 
     /**
@@ -40,7 +40,7 @@ class User extends Authenticatable
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
-        'settings' => 'array',
+        'settings' => SettingsCast::class,
     ];
 
     /**
@@ -60,17 +60,17 @@ class User extends Authenticatable
      */
     public function business()
     {
-        return $this->hasOne(Business::class);
+        return $this->hasOne(Business::class, 'user_id');
     }
 
     /**
-     * Get the user's credit account details.
+     * Get the user's account details.
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasOne
      */
     public function account()
     {
-        return $this->hasOne(Account::class);
+        return $this->hasOne(Account::class, 'user_id');
     }
 
     /**
@@ -81,72 +81,5 @@ class User extends Authenticatable
     public function spaces()
     {
         return $this->hasMany(Space::class)->latest();
-    }
-
-    /**
-     * Get all orders associated with the user.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
-    public function orders()
-    {
-        return $this->hasMany(Order::class);
-    }
-
-    /**
-     * Get all activity for the user.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
-    public function activity()
-    {
-        return $this->hasMany(Activity::class);
-    }
-
-    /**
-     * Fetch all threads that were created by the user.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
-    public function threads()
-    {
-        return $this->hasMany(Thread::class)->latest();
-    }
-
-    /**
-     * Determine if the user is of given type.
-     *
-     * @param array $types
-     *
-     * @return bool
-     */
-    public function isType(array $types)
-    {
-        return in_array($this->type, $types);
-    }
-
-    /**
-     * Record that the user has read the given thread.
-     *
-     * @param Thread $thread
-     */
-    public function read($thread)
-    {
-        cache()->forever(
-            $this->visitedThreadCacheKey($thread),
-            Carbon::now()
-        );
-    }
-
-    /**
-     * Get the cache key for when a user reads a thread.
-     *
-     * @param Thread $thread
-     *
-     * @return string
-     */
-    public function visitedThreadCacheKey($thread)
-    {
-        return sprintf('users.%s.visits.%s', $this->id, $thread->id);
     }
 }

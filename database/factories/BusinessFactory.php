@@ -2,8 +2,8 @@
 
 /** @var \Illuminate\Database\Eloquent\Factory $factory */
 
-use App\Models\User;
 use App\Models\Business;
+use Illuminate\Support\Str;
 use Faker\Generator as Faker;
 
 $factory->define(Business::class, function (Faker $faker) {

@@ -2,35 +2,21 @@
 
 declare(strict_types=1);
 
+use Illuminate\Support\Facades\Route;
+
+/*
+ * Authenticated Business Customer Routes...
+ */
 Route::group([
-    'middleware' => ['auth', 'business'],
+    'middleware' => 'auth',
 ], function (): void {
     /*
-     * Dashboard...
+     * Business Customer Dashboard Route...
      */
-    Route::get('/home', 'HomeController')->name('home');
+    Route::get('/home', 'Business\HomeController@index')->name('home');
 
     /*
-     * Spaces Search...
+     * Space Resource Routes...
      */
-    Route::get('/spaces/search', 'SearchController@spaces')
-        ->name('spaces.search');
-
-    /*
-     * Spaces Routes...
-     */
-    Route::resource('/spaces', 'SpaceController');
-
-    /*
-     * Orders Search...
-     */
-    Route::get('/orders/search', 'SearchController@orders')
-        ->name('orders.search');
-
-    /*
-     * Orders Routes...
-     */
-    Route::resource('/orders', 'OrderController', [
-        'except' => ['store', 'edit', 'create'],
-    ]);
+    Route::resource('/spaces', 'Business\SpaceController');
 });
