@@ -17,12 +17,18 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 
 window.Vue = require('vue');
 
+window.flash = function(message, level = 'success') {
+    window.events.$emit('flash', { message, level });
+};
+
 Vue.config.productionTip = false;
 
 Vue.use(VueApexCharts);
 
 Vue.component('apexchart', VueApexCharts);
 Vue.component('graph', require('./components/Graph.vue').default);
+Vue.component("image-upload-form", require("./components/ImageUploadForm.vue").default);
+Vue.component("flash", require("./components/Flash.vue").default);
 
 const app = new Vue({
     el: '#app',
@@ -35,3 +41,7 @@ flatpickr('.datepicker', {
     ariaDateFormat: 'Y-m-d',
     enableTime: false
 });
+
+// window.addEventListener('contextmenu', function(e) {
+//     e.preventDefault();
+// }, false);
