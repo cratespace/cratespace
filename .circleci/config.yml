@@ -23,6 +23,7 @@ jobs:
           MYSQL_DATABASE: forge
           MYSQL_ROOT_PASSWORD: ''
           MYSQL_PASSWORD: 'forge'
+          MYSQL_ALLOW_EMPTY_PASSWORD: true
 
     steps:
       - checkout
