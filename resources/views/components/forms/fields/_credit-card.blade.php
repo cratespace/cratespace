@@ -32,10 +32,10 @@
             <label class="block">
                 <span class="text-gray-700 text-sm font-semibold">{{ __('CVV Code') }}</span>
 
-                <input type="tel" name="cvv" id="cvv" class="form-input mt-1 block w-full @error('cvv') placeholder-red-500 border-red-300 bg-red-100 @enderror" inputmode="numeric" pattern="[0-9\s]{3,4}" autocomplete="cvv" maxlength="3" placeholder="000" value="{{ old('cvv') ?? ($cvv ?? null) }}">
+                <input type="tel" name="cvc" id="cvc" class="form-input mt-1 block w-full @error('cvc') placeholder-red-500 border-red-300 bg-red-100 @enderror" inputmode="numeric" pattern="[0-9\s]{3,4}" autocomplete="cvc" maxlength="3" placeholder="000" value="{{ old('cvc') ?? ($cvc ?? null) }}">
             </label>
 
-            @error('cvv')
+            @error('cvc')
                 <div class="mt-2 whitespace-normal" role="alert">
                     <span class="text-xs text-red-500 font-semibold whitespace-normal">{{ $message }}</span>
                 </div>

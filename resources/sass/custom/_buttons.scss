@@ -47,3 +47,19 @@
         @apply .text-gray-700;
     }
 }
+
+.btn.btn-danger {
+    @apply .bg-red-500;
+    @apply .text-white;
+
+    &:hover {
+        @apply .bg-red-600;
+        @apply .text-white;
+    }
+
+    &:focus {
+        @apply .bg-red-600;
+        @apply .text-white;
+    }
+}
+

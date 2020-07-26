@@ -128,10 +128,10 @@
                             <h4>Pay with card</h4>
                         </div>
 
-                        <form>
+                        <form action="{{ route('spaces.orders', $space) }}" method="POST">
                             @csrf
 
-                            <input type="hidden" name="payment_token" value="{{ Str::random(40) }}">
+                            <input type="hidden" name="payment_token" value="{{ $paymentToken }}">
 
                             <div class="row">
                                 <div class="col-md-6 mt-4">

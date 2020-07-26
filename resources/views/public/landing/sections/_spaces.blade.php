@@ -29,7 +29,7 @@
                                         <div class="ml-1 text-xs">Departure</div>
                                     </div>
 
-                                    <div class="text-sm text-gray-700 font-medium">{{ $space->departs_at->format('M j, g:ia') }}</div>
+                                    <div class="text-sm text-gray-700 font-medium">{{ $space->schedule->departsAt }}</div>
 
                                     <div class="text-sm text-gray-700">from <span class="font-medium">{{ $space->origin }}</span></div>
                                 </div>
@@ -41,7 +41,7 @@
                                         <div class="ml-1 text-xs">Arrival</div>
                                     </div>
 
-                                    <div class="text-sm text-gray-700 font-medium">{{ $space->arrives_at->format('M j, g:ia') }}</div>
+                                    <div class="text-sm text-gray-700 font-medium">{{ $space->schedule->arrivesAt }}</div>
 
                                     <div class="text-sm text-gray-700">to <span class="font-medium">{{ $space->destination }}</span></div>
                                 </div>
