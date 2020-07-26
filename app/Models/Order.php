@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Concerns\GeneratesUID;
 use App\Models\Concerns\FindsBusiness;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Concerns\CalculatesCharges;
@@ -10,6 +11,7 @@ class Order extends Model
 {
     use CalculatesCharges;
     use FindsBusiness;
+    use GeneratesUID;
 
     /**
      * The attributes that are mass assignable.
@@ -17,7 +19,7 @@ class Order extends Model
      * @var array
      */
     protected $fillable = [
-        'space_id', 'name', 'email', 'phone', 'business',
+        'uid', 'space_id', 'name', 'email', 'phone', 'business',
         'service', 'price', 'tax', 'total', 'user_id',
     ];
 
