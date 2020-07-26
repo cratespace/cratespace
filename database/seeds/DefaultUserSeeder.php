@@ -1,14 +1,21 @@
 <?php
 
+use App\Models\Role;
 use App\Models\User;
+use App\Models\Ability;
 use App\Models\Account;
 use App\Models\Business;
-use Illuminate\Support\Str;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\Hash;
 
 class DefaultUserSeeder extends Seeder
 {
+    /**
+     * Instance of default user.
+     *
+     * @var \App\Models\User
+     */
+    protected $user;
+
     /**
      * Run the database seeds.
      *
@@ -16,41 +23,97 @@ class DefaultUserSeeder extends Seeder
      */
     public function run()
     {
-        $faker = \Faker\Factory::create();
+        $this->createDefaultUser()
+            ->assignRolesAndAbilities()
+            ->createDummyBusiness()
+            ->createDummyFinanceAccount();
+    }
 
-        $user = User::create([
-            'username' => 'Thavarshan',
-            'name' => 'Thavarshan Thayananthajothy',
-            'email' => 'tjthavarshan@gmail.com',
-            'phone' => '775018795',
-            'email_verified_at' => now(),
-            'password' => Hash::make('alphaxion77'),
-            'remember_token' => Str::random(10),
-            'settings' => [
-                'notifications_mobile' => 'everything',
-                'notifications_email' => [
-                    'new-order', 'cancel-order', 'newsletter',
-                ],
-            ],
-        ]);
+    /**
+     * Create default user account.
+     *
+     * @return \DefaultUserSeeder
+     */
+    protected function createDefaultUser()
+    {
+        $this->user = User::create(config('defaults.user'));
 
-        Business::create([
-            'user_id' => $user->id,
-            'name' => 'Cratespace',
-            'slug' => 'cratespace',
-            'description' => $faker->sentence(7),
-            'street' => '22 Auburn Side',
-            'city' => 'Sri Lanka',
-            'state' => 'Western',
-            'country' => 'Sri Lanka',
-            'postcode' => 13500,
-            'email' => 'tjthavarshan@gmail.com',
-            'phone' => '775018794',
-        ]);
+        return $this;
+    }
 
+    /**
+     * Create dummy business profile for default user.
+     *
+     * @return \DefaultUserSeeder
+     */
+    protected function createDummyBusiness()
+    {
+        Business::create($this->getBusinessDetails());
+
+        return $this;
+    }
+
+    /**
+     * Get dummy business profile information.
+     *
+     * @return array
+     */
+    protected function getBusinessDetails(): array
+    {
+        return array_merge(
+            config('defaults.business'),
+            ['user_id' => $this->user->id]
+        );
+    }
+
+    /**
+     * Create dummy finance account for default user.
+     *
+     * @return \DefaultUserSeeder
+     */
+    protected function createDummyFinanceAccount()
+    {
         Account::create([
-            'user_id' => $user->id,
+            'user_id' => $this->user->id,
             'credit' => 0,
         ]);
+
+        return $this;
+    }
+
+    /**
+     * Assign administrator role and associated abilities to default user.
+     *
+     * @return \DefaultUserSeeder
+     */
+    protected function assignRolesAndAbilities()
+    {
+        [$admin, $doAll] = $this->findOrCreateRoleAndAbility();
+
+        $admin->allowTo($doAll);
+
+        $this->user->assignRole($admin);
+
+        return $this;
+    }
+
+    /**
+     * Determine if required roles and abilities exist, create them otherwise.
+     *
+     * @return array
+     */
+    protected function findOrCreateRoleAndAbility(): array
+    {
+        $admin = Role::firstOrCreate([
+            'title' => 'admin',
+            'label' => 'Administrator',
+        ]);
+
+        $toDoAll = Ability::firstOrCreate([
+            'title' => 'all',
+            'label' => 'All abilities',
+        ]);
+
+        return [$admin, $toDoAll];
     }
 }
