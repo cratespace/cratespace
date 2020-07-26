@@ -15,6 +15,6 @@ class PaymentFailedException extends Exception
      */
     public function render($request)
     {
-        return response([], 422);
+        return response(['message' => $this->getMessage()], 422);
     }
 }
