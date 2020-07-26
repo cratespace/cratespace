@@ -17,6 +17,7 @@ class CreateOrdersTable extends Migration
             $table->id();
             $table->foreignId('space_id')->constrained();
             $table->foreignId('user_id');
+            $table->string('uid')->unique();
             $table->string('name');
             $table->string('email');
             $table->string('phone', 50);
