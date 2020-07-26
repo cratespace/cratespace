@@ -12,7 +12,7 @@ return [
         'username' => ['required', 'string', 'max:255'],
         'business' => ['nullable', 'string', 'max:255'],
         'email' => ['required', 'string', 'email', 'max:255'],
-        'phone' => ['nullable', 'integer', 'min:9'],
+        'phone' => ['required', 'string', 'min:9'],
     ],
 
     /*

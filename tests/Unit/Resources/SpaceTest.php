@@ -9,6 +9,7 @@ use App\Models\Order;
 use App\Models\Space;
 use Illuminate\Support\Str;
 use App\Billing\Charges\Calculator;
+use App\Models\Values\ScheduleValue;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 
@@ -36,6 +37,26 @@ class SpaceTest extends TestCase
         $this->assertNotEquals($space1, $space2);
         $this->assertNotEquals($space1->path, $space2->path);
         $this->assertTrue(is_string($space1->path));
+    }
+
+    /** @test */
+    public function it_has_a_schedule()
+    {
+        $space = create(Space::class);
+
+        $this->assertInstanceOf(ScheduleValue::class, $space->schedule);
+        $this->assertEquals($space->schedule->departsAt, $space->departs_at->format('M j, Y'));
+        $this->assertEquals($space->schedule->arrivesAt, $space->arrives_at->format('M j, Y'));
+    }
+
+    /** @test */
+    public function it_can_determine_its_departure_date()
+    {
+        $space = create(Space::class, [
+            'departs_at' => Carbon::tomorrow(),
+        ]);
+
+        $this->assertTrue($space->schedule->nearingDeparture());
     }
 
     /** @test */

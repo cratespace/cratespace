@@ -24,14 +24,16 @@ class Role extends Model
     }
 
     /**
-     * Allow an ability to the role.
+     * Grant the given ability to the role.
      *
-     * @param \App\Models\Ability $ability
-     *
-     * @return void
+     * @param mixed $ability
      */
-    public function allowTo(Ability $ability): void
+    public function allowTo($ability)
     {
-        $this->abilities()->sync($ability);
+        if (is_string($ability)) {
+            $ability = Ability::whereTitle($ability)->firstOrFail();
+        }
+
+        $this->abilities()->sync($ability, false);
     }
 }

@@ -2,7 +2,6 @@
 
 namespace App\Models\Casts;
 
-use App\Models\Values\SettingsValue;
 use Illuminate\Contracts\Database\Eloquent\CastsAttributes;
 
 class SettingsCast implements CastsAttributes
@@ -19,7 +18,7 @@ class SettingsCast implements CastsAttributes
      */
     public function get($model, string $key, $value, array $attributes)
     {
-        return $this->getValueObject(json_decode($value, true));
+        return json_decode($value, true);
     }
 
     /**
@@ -35,10 +34,5 @@ class SettingsCast implements CastsAttributes
     public function set($model, string $key, $value, array $attributes)
     {
         return json_encode($value);
-    }
-
-    protected function getValueObject(array $value)
-    {
-        return new SettingsValue($value);
     }
 }

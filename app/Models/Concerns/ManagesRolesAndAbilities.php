@@ -32,15 +32,31 @@ trait ManagesRolesAndAbilities
     }
 
     /**
-     * Assign a role to the user.
+     * Assign a new role to the user.
      *
-     * @param \App\Models\Role $role
-     *
-     * @return void
+     * @param mixed $role
      */
-    public function assignRole(Role $role): void
+    public function assignRole($role)
     {
-        $this->roles()->sync($role);
+        if (is_string($role)) {
+            $role = Role::whereTitle($role)->firstOrFail();
+        }
+
+        $this->roles()->sync($role, false);
+    }
+
+    /**
+     * Determine if the user has the given role.
+     *
+     * @param string $title
+     *
+     * @return bool
+     */
+    public function hasRole(string $title): bool
+    {
+        return $this->roles->contains(
+            Role::whereTitle($title)->first()
+        );
     }
 
     /**
