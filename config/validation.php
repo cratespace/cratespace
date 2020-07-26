@@ -5,6 +5,25 @@
  */
 return [
     /*
+     * User Inputs Rules
+     */
+    'user' => [
+        'name' => ['required', 'string', 'max:255'],
+        'username' => ['required', 'string', 'max:255'],
+        'business' => ['nullable', 'string', 'max:255'],
+        'email' => ['required', 'string', 'email', 'max:255'],
+        'phone' => ['nullable', 'integer', 'min:9'],
+    ],
+
+    /*
+     * User Password Reset Inputs Rules
+     */
+    'user-password' => [
+        'password' => ['required', 'string', 'min:8', 'confirmed', 'different:old_password'],
+        'password_confirmation' => ['required', 'string', 'min:8'],
+    ],
+
+    /*
      * Spaces Inputs Rules
      */
     'space' => [
