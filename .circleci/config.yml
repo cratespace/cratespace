@@ -7,7 +7,7 @@ jobs:
   test:
     docker:
       # Specify the version you desire here
-      - image: circleci/php:7.4-node-browsers
+      - image: circleci/php:7.3-stretch
 
       # Specify service dependencies here if necessary
       # CircleCI maintains a library of pre-built images
@@ -70,7 +70,10 @@ jobs:
       - run: php artisan migrate --env=testing --database=mysql --force
 
       # run tests with phpunit or codecept
-      - run: ./vendor/bin/phpunit
+      #- run: ./vendor/bin/phpunit
+      # this example uses codecept but you're not limited to it
+      - run: ./vendor/bin/codecept build
+      - run: ./vendor/bin/codecept run --xml result.xml
       - store_test_results:
           path: tests/_output
       - store_artifacts:
