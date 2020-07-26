@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Business;
 use App\Models\Order;
 use App\Reports\WeeklyReport;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Database\Eloquent\Builder;
 
@@ -17,16 +18,13 @@ class HomeController extends Controller
      */
     public function index()
     {
+        $query = DB::table('spaces')
+            ->where('user_id', user('id'));
+
+        $graph = new WeeklyReport($query);
+
         return view('business.dashboard.home', [
-            'chart' => collect([
-                '1' => 12,
-                '2' => 6,
-                '3' => 8,
-                '4' => 10,
-                '5' => 9,
-                '6' => 2,
-                '7' => 12,
-            ]),
+            'chart' => $graph->make(),
         ]);
     }
 
