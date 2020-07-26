@@ -16,3 +16,8 @@ require 'web/auth.php';
  * Business Customer Routes...
  */
 require 'web/business.php';
+
+/**
+ * User Routes...
+ */
+require 'web/user.php';

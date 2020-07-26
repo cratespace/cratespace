@@ -26,11 +26,11 @@
 
                 <ul class="flex items-center">
                     <li class="ml-6">
-                        <a class="btn btn-secondary leading-8 px-3 text-sm" href="@guest {{ route('login') }} @else {{ route('home') }} @endguest">
+                        <a class="btn btn-secondary px-3 py-0 leading-9 text-sm" href="@guest {{ route('login') }} @else {{ route('home') }} @endguest">
                             @guest()
-                                {{ __('Sign in') }}
+                                <span>{{ __('Sign in') }}</span>
                             @else
-                                {{ __('Dashboard') }}
+                                <span>{{ __('Dashboard') }}</span>
                             @endguest
 
                             <span class="ml-1">&rarr;</span>
