@@ -33,7 +33,7 @@ class WeeklyReport extends Report implements ReportContract
      *
      * @return array
      */
-    protected function getTimeframe(): array
+    public function getTimeframe(): array
     {
         return [$this->getFromDate(), $this->getTillDate()];
     }

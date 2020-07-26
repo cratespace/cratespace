@@ -14,4 +14,11 @@ interface Report
      * @return \Illuminate\Support\Collection
      */
     public function make(?int $limit = null): Collection;
+
+    /**
+     * Get time frame of week days.
+     *
+     * @return array
+     */
+    public function getTimeframe(): array;
 }

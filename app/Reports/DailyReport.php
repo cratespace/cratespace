@@ -33,7 +33,7 @@ class DailyReport extends Report implements ReportContract
      *
      * @return array
      */
-    protected function getTimeframe(): array
+    public function getTimeframe(): array
     {
         return [$this->getFromTime(), $this->getTillTime()];
     }
