@@ -2,62 +2,21 @@
 
 declare(strict_types=1);
 
-Route::group([
-    'middleware' => 'guest',
-], function (): void {
-    /*
-     * Contact Page...
-     */
-    Route::get('/contact', function () {
-        return view('contact');
-    })->name('messages.create');
+use Illuminate\Support\Facades\Route;
 
-    /*
-     * Client Message Route...
-     */
-    Route::post('/contact', 'MessageController')->name('messages.store');
+/*
+ * Landing Page & Spaces Listing Page...
+ */
+Route::get('/', 'SpacesListingController');
 
-    /*
-     * Checkout Routes...
-     */
-    Route::group([
-        'prefix' => 'checkout',
-    ], function (): void {
-        /*
-         * Checkout Page...
-         */
-        Route::get('/', 'CheckoutController@show')->name('checkout');
+/*
+ * Place Order for Space Route...
+ */
+Route::post('/spaces/{space}/orders', 'SpaceOrderController@store')
+    ->name('spaces.orders');
 
-        /*
-         * Checkout Page...
-         */
-        Route::get('/', 'CheckoutController@show')->name('checkout');
-
-        /*
-         * Purchase Route...
-         */
-        Route::post('/{space}', 'CheckoutController@store')
-            ->name('checkout.store');
-
-        /*
-         * Cancel Purchase Route...
-         */
-        Route::get('/destroy', 'CheckoutController@destroy')
-            ->name('checkout.destroy');
-    });
-
-    /*
-     * Listings Page...
-     */
-    Route::get('/', 'ListingsController')->name('welcome');
-
-    /*
-     * Place Order Route...
-     */
-    Route::post('/orders', 'OrderController@store')->name('orders.store');
-
-    /*
-     * Public Pages...
-     */
-    Route::get('/{page}', 'PublicPageController');
-});
+/*
+ * Checkout Page...
+ */
+Route::get('/spaces/{space}/checkout', 'CheckoutController@show')
+    ->name('checkout');

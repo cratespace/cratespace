@@ -2,9 +2,6 @@
 
 namespace App\Filters;
 
-use App\Models\Business;
-use Stevebauman\Location\Facades\Location;
-
 class SpaceFilter extends Filter
 {
     /**
@@ -13,27 +10,14 @@ class SpaceFilter extends Filter
      * @var array
      */
     protected $filters = [
-        'business', 'origin', 'destination', 'type',
-        'departs_at', 'arrives_at', 'status'
+        'origin', 'destination', 'type', 'departs_at', 'arrives_at',
     ];
-
-    /**
-     * Filter the query by a given business name.
-     *
-     * @param  string $slug
-     * @return \Illuminate\Database\Eloquent\Builder
-     */
-    protected function business($slug)
-    {
-        $business = Business::whereSlug($slug)->firstOrFail();
-
-        return $this->builder->where('user_id', $business->id);
-    }
 
     /**
      * Filter the query by a given origin destination.
      *
-     * @param  string $slug
+     * @param string $slug
+     *
      * @return \Illuminate\Database\Eloquent\Builder
      */
     protected function origin($city)
@@ -44,7 +28,8 @@ class SpaceFilter extends Filter
     /**
      * Filter the query by a given arrival destination.
      *
-     * @param  string $slug
+     * @param string $slug
+     *
      * @return \Illuminate\Database\Eloquent\Builder
      */
     protected function destination($city)
@@ -55,7 +40,8 @@ class SpaceFilter extends Filter
     /**
      * Filter according to departure date and time.
      *
-     * @param  string $date
+     * @param string $date
+     *
      * @return \Illuminate\Database\Eloquent\Builder
      */
     protected function departs_at($date)
@@ -66,7 +52,8 @@ class SpaceFilter extends Filter
     /**
      * Filter according to arrival date and time.
      *
-     * @param  string $date
+     * @param string $date
+     *
      * @return \Illuminate\Database\Eloquent\Builder
      */
     protected function arrives_at($date)
@@ -75,28 +62,18 @@ class SpaceFilter extends Filter
     }
 
     /**
-     * Filter spaces by status.
-     *
-     * @param  string $locality
-     * @return \Illuminate\Database\Eloquent\Builder
-     */
-    protected function status($status)
-    {
-        return $this->builder->whereStatus($status);
-    }
-
-    /**
      * Filter spaces by type / locality.
      *
-     * @param  string $locality
+     * @param string $locality
+     *
      * @return \Illuminate\Database\Eloquent\Builder
      */
     protected function type($option)
     {
-        if ($option === 'Local') {
-            return $this->builder->whereType('Local');
+        if ($option == 'all') {
+            return $this->builder;
         }
 
-        return $this->builder->whereType('International');
+        return $this->builder->whereType($option);
     }
 }

@@ -3,65 +3,58 @@
 namespace App\Http\Controllers;
 
 use App\Models\Space;
-use Facades\App\Calculators\Purchase;
-use Illuminate\Cache\CacheManager as Cache;
+use App\Support\Formatter;
+use App\Contracts\Billing\PaymentGateway;
+use App\Billing\Charges\Calculator as ChargesCalculator;
 
 class CheckoutController extends Controller
 {
     /**
-     * Instance of cache.
+     * Instance of payment gateway.
      *
-     * @var \Illuminate\Cache\Cache
+     * @var \App\Billing\FakePaymentGateway
      */
-    protected $cache;
+    protected $paymentGateway;
 
     /**
-     * Create new checkout controller instance.
+     * Create new controller instance.
+     *
+     * @param \App\Contracts\Billing\PaymentGateway $paymentGateway
      */
-    public function __construct(Cache $cache)
+    public function __construct(PaymentGateway $paymentGateway)
     {
-        $this->middleware('purchase')->only(['show', 'destroy']);
-
-        $this->cache = $cache;
+        $this->paymentGateway = $paymentGateway;
     }
 
     /**
      * Show checkout page.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function show()
+    public function show(Space $space)
     {
-        return view('checkout', [
-            'space' => $this->cache->get('space') ?? new Space(),
-            'pricing' => Purchase::calculate($this->cache->get('space')->price)
-                ->getAmounts(),
+        return view('public.checkout.page', [
+            'paymentToken' => $this->paymentGateway->getValidTestToken(),
+            'space' => $space,
+            'charges' => $this->calculateCharges($space),
         ]);
     }
 
     /**
-     * Calculate prices and redirect to checkout page.
+     * Calculate charges of customer purchase.
      *
      * @param \App\Models\Space $space
      *
-     * @return \Illuminate\Http\Response
+     * @return array
      */
-    public function store(Space $space)
+    protected function calculateCharges(Space $space): array
     {
-        $this->cache->put('space', $space);
+        $charges = [];
 
-        return redirect()->route('checkout');
-    }
+        foreach ((new ChargesCalculator($space))->calculateCharges() as $name => $amount) {
+            $charges[$name] = Formatter::moneyFormat((int) $amount);
+        }
 
-    /**
-     * Cancel purchase and redirect to listings.
-     *
-     * @return \Illuminate\Http\RedirectResponse
-     */
-    public function destroy()
-    {
-        $this->cache->flush();
-
-        return redirect()->route('welcome');
+        return $charges;
     }
 }

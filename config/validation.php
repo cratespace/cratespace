@@ -5,6 +5,25 @@
  */
 return [
     /*
+     * User Inputs Rules
+     */
+    'user' => [
+        'name' => ['required', 'string', 'max:255'],
+        'username' => ['required', 'string', 'max:255'],
+        'business' => ['nullable', 'string', 'max:255'],
+        'email' => ['required', 'string', 'email', 'max:255'],
+        'phone' => ['required', 'string', 'min:9'],
+    ],
+
+    /*
+     * User Password Reset Inputs Rules
+     */
+    'user-password' => [
+        'password' => ['required', 'string', 'min:8', 'confirmed', 'different:old_password'],
+        'password_confirmation' => ['required', 'string', 'min:8'],
+    ],
+
+    /*
      * Spaces Inputs Rules
      */
     'space' => [
@@ -27,11 +46,8 @@ return [
      * Order Inputs Rules
      */
     'order' => [
-        'name' => ['required', 'string', 'max:255'],
-        'business' => ['nullable', 'string', 'max:255'],
         'email' => ['required', 'string', 'email', 'max:255'],
-        'phone' => ['required'],
-        'payment_type' => ['required', 'string'],
+        'payment_token' => ['required', 'string'],
     ],
 
     /*
@@ -73,16 +89,7 @@ return [
         'name' => ['required', 'string', 'max:255'],
         'business' => ['required', 'string', 'max:255'],
         'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-        'phone' => ['required', 'integer', 'min:9'],
+        'phone' => ['required', 'string', 'min:9'],
         'password' => ['required', 'string', 'min:8', 'confirmed'],
-    ],
-
-    /*
-     * Support Thread Inputs Rules
-     */
-    'thread' => [
-        'title' => ['required', 'string', 'max:255'],
-        'body' => ['required', 'string'],
-        'channel_id' => ['required', 'integer'],
     ],
 ];

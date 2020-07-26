@@ -9,7 +9,7 @@
                 <span class="text-sm font-semibold">{{ label }}</span>
             </label>
 
-            <label class="btn text-sm bg-gray-200 hover:bg-gray-300 text-gray-800 hover:text-gray-800 cursor-pointer">
+            <label class="btn shadow-none text-sm bg-gray-200 hover:bg-gray-300 text-gray-800 hover:text-gray-800 cursor-pointer">
                 <span>Change</span>
 
                 <input class="hidden" type="file" accept="image/*" @change="onChange">
@@ -50,8 +50,7 @@
 
                 data.append('image', image);
 
-                axios.post(this.route, data)
-                     .then(() => flash('Image uploaded to server.'));;
+                axios.post(this.route, data).then(() => flash('Image uploaded to server.'));
             }
         }
     }

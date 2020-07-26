@@ -1,7 +1,6 @@
 <?php
 
 return [
-
     /*
     |--------------------------------------------------------------------------
     | Authentication Defaults
@@ -114,4 +113,16 @@ return [
 
     'password_timeout' => 10800,
 
+    /*
+     * Email list of user's/developers with administrative privileges.
+     */
+    'admins' => [
+        'tjthavarshan@gmail.com',
+    ],
+
+    /*
+     * Responsibilities to perform when creating a new user account.
+     */
+    'responsibilities' => [
+    ],
 ];

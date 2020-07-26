@@ -5,12 +5,12 @@ namespace App\Presenters;
 class SpacePresenter extends Presenter
 {
     /**
-     * Get indformation of business the space isassociated with.
+     * Calculate and present volume of space.
      *
-     * @return \App\Models\Profile
+     * @return int
      */
-    public function business()
+    public function volume(): int
     {
-        return $this->model->user->business;
+        return $this->model->height * $this->model->width * $this->model->length;
     }
 }

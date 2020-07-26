@@ -3,31 +3,28 @@
 namespace App\Http\Controllers;
 
 use App\Models\Order;
-use App\Filters\OrderFilter;
 use Illuminate\Http\Request;
-use App\Http\Requests\Order as OrderForm;
-use App\Http\Controllers\Concerns\CountsItems;
-use App\Resources\Orders\Manager as OrderManager;
-use App\Http\Requests\OrderUpdate as OrderUpdateForm;
 
 class OrderController extends Controller
 {
-    use CountsItems;
-
     /**
      * Display a listing of the resource.
      *
-     * @param  \App\Filters\OrderFilter $filters
      * @return \Illuminate\Http\Response
      */
-    public function index(OrderFilter $filters)
+    public function index()
     {
-        $orders = user()->orders();
+        //
+    }
 
-        return view('businesses.orders.index', [
-            'counts' => $this->getCountOf(Order::class, $orders->get()),
-            'orders' => user()->orders()->filter($filters)->paginate(10),
-        ]);
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function create()
+    {
+        //
     }
 
     /**
@@ -36,11 +33,9 @@ class OrderController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(OrderForm $request)
+    public function store(Request $request)
     {
-        Order::process($request->validated());
-
-        return $this->success(route('welcome'), 'Order placed successfully.');
+        //
     }
 
     /**
@@ -51,10 +46,18 @@ class OrderController extends Controller
      */
     public function show(Order $order)
     {
-        return view('businesses.spaces.show', [
-            'order' => $order,
-            'space' => $order->space,
-        ]);
+        //
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  \App\Models\Order  $order
+     * @return \Illuminate\Http\Response
+     */
+    public function edit(Order $order)
+    {
+        //
     }
 
     /**
@@ -64,12 +67,19 @@ class OrderController extends Controller
      * @param  \App\Models\Order  $order
      * @return \Illuminate\Http\Response
      */
-    public function update(OrderUpdateForm $request, Order $order)
+    public function update(Request $request, Order $order)
     {
-        $order->markAs($request->status);
+        //
+    }
 
-        return response([
-            'message' => $order->refresh()->status
-        ], 200);
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  \App\Models\Order  $order
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy(Order $order)
+    {
+        //
     }
 }

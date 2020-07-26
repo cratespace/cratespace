@@ -1,0 +1,30 @@
+.form-input {
+    @apply .transition;
+    @apply .duration-150;
+    @apply .ease-in-out;
+
+    &:focus {
+        box-shadow: 0 0 0 3px rgba(3, 102, 214, 0.5);
+        @apply .border-blue-500;
+        @apply .bg-white;
+    }
+}
+
+.form-checkbox,
+.form-radio {
+    @apply .text-blue-500;
+
+    &:focus {
+        box-shadow: 0 0 0 3px rgba(3, 102, 214, 0.5);
+        @apply .border-blue-500;
+        @apply .bg-white;
+    }
+}
+
+.form-select {
+    &:focus {
+        box-shadow: 0 0 0 3px rgba(3, 102, 214, 0.5);
+        @apply .border-blue-500;
+        @apply .bg-white;
+    }
+}

@@ -1,14 +1,9 @@
-@extends('layouts.master')
+@extends('layouts.master', ['bgColor' => 'bg-gray-200'])
 
-@section('main')
-    <!-- Header -->
+@section('body')
     @include('layouts.web.partials._header')
 
-    <!-- Content -->
-    <main>
-        @yield('content')
-    </main>
+    @yield('content')
 
-    <!-- Footer -->
-    @include('layouts.partials._footer')
+    @include('layouts.web.partials._footer')
 @endsection

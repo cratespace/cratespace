@@ -3,51 +3,68 @@
 namespace App\Reports;
 
 use Carbon\Carbon;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
+use App\Contracts\Reports\Report as ReportContract;
 
-class WeeklyReport extends Report
+class WeeklyReport extends Report implements ReportContract
 {
     /**
-     * Parse data into yearly report graph.
+     * Make into report data set.
      *
      * @param int|null $limit
      *
-     * @return array
+     * @return \Illuminate\Support\Collection
      */
-    public function make(?int $limit = null)
+    public function make(?int $limit = null): Collection
     {
-        foreach ($this->groupBy() as $item) {
-            $this->graphData[
-                Carbon::parse($item['date'])->format('D')
-            ] = (int) $item['count'];
-        }
-
-        if (!is_null($limit)) {
-            $this->countFor($limit);
-        }
-
-        return collect($this->graphData);
+        return $this->query
+            ->selectRaw('date(created_at) as date, COUNT(*) as count')
+            ->whereBetween(DB::raw('date(created_at)'), $this->getTimeframe())
+            ->groupBy('date')
+            ->orderBy('date', 'DESC')
+            ->get()
+            ->take($limit)
+            ->pluck('count', 'date');
     }
 
     /**
-     * Group coleted data by month.
+     * Get time frame of week days.
      *
-     * @return \Illuminate\Support\Collection
+     * @return array
      */
-    protected function groupBy()
+    public function getTimeframe(): array
     {
-        return $this->collection->select([
-            DB::raw('DATE(created_at) AS date'),
-            DB::raw('COUNT(id) AS count'),
-        ])->whereBetween(
-            'created_at',
-            [
-                Carbon::now()->subDays(30),
-                Carbon::now(),
-            ]
-        )->groupBy('date')
-            ->orderBy('date', 'ASC')
-            ->get()
-            ->toArray();
+        return [$this->getFromDate(), $this->getTillDate()];
+    }
+
+    /**
+     * Get time frame starting point.
+     *
+     * @return string
+     */
+    protected function getFromDate(): string
+    {
+        return $this->subDay()->startOfWeek()->toDateString();
+    }
+
+    /**
+     * Get time frame ending point.
+     *
+     * @return string
+     */
+    protected function getTillDate(): string
+    {
+        return $this->subDay()->endOfWeek()->toDateString();
+    }
+
+    /**
+     * Subtract a day from current date.
+     *
+     * @return \Carbon\Carbon
+     */
+    protected function subDay(): Carbon
+    {
+        return Carbon::now()->subDay();
     }
 }

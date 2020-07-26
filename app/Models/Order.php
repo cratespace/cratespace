@@ -2,20 +2,16 @@
 
 namespace App\Models;
 
-use App\Models\Traits\HasUid;
-use Laravel\Scout\Searchable;
-use App\Mail\OrderStatusUpdated;
-use App\Models\Traits\Filterable;
-use Illuminate\Support\Facades\Mail;
-use App\Models\Concerns\GeneratesUid;
+use App\Models\Concerns\GeneratesUID;
+use App\Models\Concerns\FindsBusiness;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Concerns\CalculatesCharges;
 
 class Order extends Model
 {
-    use Filterable;
-    use HasUid;
-    use Searchable;
-    use GeneratesUid;
+    use CalculatesCharges;
+    use FindsBusiness;
+    use GeneratesUID;
 
     /**
      * The attributes that are mass assignable.
@@ -23,137 +19,27 @@ class Order extends Model
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'phone', 'business', 'status',
-        'total', 'tax', 'service', 'user_id', 'space_id',
-        'uid', 'payment_type',
+        'uid', 'space_id', 'name', 'email', 'phone', 'business',
+        'service', 'price', 'tax', 'total', 'user_id',
     ];
 
     /**
-     * All processes to perform to create a new order.
-     *
-     * @var array
-     */
-    protected static $processes = [
-        \App\Processes\Orders\Payment::class,
-        \App\Processes\Orders\NewOrder::class,
-    ];
-
-    /**
-     * The accessors to append to the model's array form.
-     *
-     * @var array
-     */
-    protected $appends = ['path'];
-
-    /**
-     * The relations to eager load on every query.
-     *
-     * @var array
-     */
-    protected $with = ['space'];
-
-    /**
-     * Bootstrap the model and its traits.
-     *
-     * @return void
-     */
-    protected static function boot()
-    {
-        parent::boot();
-
-        static::updated(function ($order) {
-            if ($order->status !== 'Pending') {
-                $order->notifyStatusUpdate();
-            }
-        });
-    }
-
-    /**
-     * Get the indexable data array for the model.
-     *
-     * @return array
-     */
-    public function toSearchableArray()
-    {
-        return [
-            'uid' => $this->uid,
-            'id' => $this->id,
-            'name' => $this->name,
-            'email' => $this->email,
-        ];
-    }
-
-    /**
-     * Get the space associated with the order.
+     * Get the space associated with this order.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function space()
     {
-        return $this->belongsTo(Space::class);
+        return $this->belongsTo(Space::class, 'space_id');
     }
 
     /**
-     * Get the space associated with the order.
+     * Get the business user associated with this order.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function user()
     {
-        return $this->belongsTo(User::class);
-    }
-
-    /**
-     * Get full path to resource page.
-     *
-     * @return string
-     */
-    public function getPathAttribute()
-    {
-        return $this->path();
-    }
-
-    /**
-     * Mark the space as expired.
-     *
-     * @param string $status
-     */
-    public function markAs(string $status)
-    {
-        $this->update(['status' => $status]);
-    }
-
-    /**
-     * Get full path to resource page.
-     *
-     * @return string
-     */
-    public function path()
-    {
-        return "/orders/{$this->uid}";
-    }
-
-    /**
-     * Process order.
-     *
-     * @param array $data
-     *
-     * @return void
-     */
-    public static function process(array $data)
-    {
-        foreach (static::$processes as $process) {
-            (new $process())->perform($data);
-        }
-    }
-
-    /**
-     * Notify customer of order status update.
-     *
-     * @return \Illuminate\Support\Facades\Mail
-     */
-    public function notifyStatusUpdate()
-    {
-        return Mail::send(new OrderStatusUpdated($this));
+        return $this->belongsTo(User::class, 'user_id');
     }
 }

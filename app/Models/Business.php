@@ -2,15 +2,14 @@
 
 namespace App\Models;
 
-use Illuminate\Support\Str;
-use App\Models\Traits\Fillable;
-use App\Models\Traits\HasPhoto;
+use App\Models\Traits\HasImage;
 use App\Models\Traits\Sluggable;
 use Illuminate\Database\Eloquent\Model;
 
 class Business extends Model
 {
-    use Fillable, HasPhoto;
+    use Sluggable;
+    use HasImage;
 
     /**
      * The attributes that are mass assignable.
@@ -18,7 +17,7 @@ class Business extends Model
      * @var array
      */
     protected $fillable = [
-        'name', 'slug', 'description', 'photo', 'street', 'email',
+        'name', 'slug', 'description', 'image', 'street', 'email',
         'phone', 'city', 'state', 'country', 'postcode', 'user_id',
     ];
 

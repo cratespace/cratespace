@@ -2,16 +2,18 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\Person\Personage;
+use App\User;
+use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Hash;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
+use App\Http\Controllers\Auth\Concerns\CreatesNewUser;
 
 class RegisterController extends Controller
 {
     use RegistersUsers;
+    use CreatesNewUser;
 
     /**
      * Where to redirect users after registration.
@@ -33,7 +35,8 @@ class RegisterController extends Controller
     /**
      * Get a validator for an incoming registration request.
      *
-     * @param  array  $data
+     * @param array $data
+     *
      * @return \Illuminate\Contracts\Validation\Validator
      */
     protected function validator(array $data)
@@ -44,11 +47,24 @@ class RegisterController extends Controller
     /**
      * Create a new user instance after a valid registration.
      *
-     * @param  array  $data
+     * @param array $data
+     *
      * @return \App\User
      */
     protected function create(array $data)
     {
-        return (new Personage())->new($data);
+        return $this->createNewUser($data);
+    }
+
+    /**
+     * The user has been registered.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @param mixed                    $user
+     *
+     * @return mixed
+     */
+    protected function registered(Request $request, $user)
+    {
     }
 }

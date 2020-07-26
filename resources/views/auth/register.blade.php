@@ -3,50 +3,50 @@
 @section('content')
 <section class="relative bg-white min-h-screen">
     <div class="row no-gutters">
-        <div class="col-lg-5 hidden lg:block min-h-screen bg-gray-100">
-            <div class="flex flex-col items-end py-12 pr-16">
+        <div class="col-lg-5 hidden lg:block min-h-screen bg-auth bg-cover bg-no-repeat bg-right-top">
+            <div class="flex flex-col items-end py-24 pr-16">
                 <div>
                     <a href="{{ url('/') }}" class="block mb-8">
                         <img class="h-8 w-auto" src="{{ asset('img/logo-dark.png') }}" alt="{{ config('app.name') }}" />
                     </a>
 
-                    <div class="mb-6 flex">
+                    <div class="mb-4 flex">
                         <div class="mr-2 mt-1">
-                            <svg class="h-5 w-5 fill-current text-indigo-500" viewBox="0 0 20 20" fill="currentColor">
+                            <svg class="h-5 w-5 fill-current text-blue-500" viewBox="0 0 20 20" fill="currentColor">
                                 <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
                             </svg>
                         </div>
 
                         <div>
-                            <div class="font-semibold">Quick and free sign‑up</div>
+                            <div class="font-semibold text-gray-800">Quick and free sign‑up</div>
 
                             <p class="w-64 text-sm">Enter your email address to create an account.</p>
                         </div>
                     </div>
 
-                    <div class="mb-6 flex">
+                    <div class="mb-4 flex">
                         <div class="mr-2 mt-1">
-                            <svg class="h-5 w-5 fill-current text-indigo-500" viewBox="0 0 20 20" fill="currentColor">
+                            <svg class="h-5 w-5 fill-current text-blue-500" viewBox="0 0 20 20" fill="currentColor">
                                 <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
                             </svg>
                         </div>
 
                         <div>
-                            <div class="font-semibold">Simple data entry</div>
+                            <div class="font-semibold text-gray-800">Simple data entry</div>
 
                             <p class="w-64 text-sm">Use Cratespace's dashaboard to upload space information.</p>
                         </div>
                     </div>
 
-                    <div class="mb-6 flex">
+                    <div class="mb-4 flex">
                         <div class="mr-2 mt-1">
-                            <svg class="h-5 w-5 fill-current text-indigo-500" viewBox="0 0 20 20" fill="currentColor">
+                            <svg class="h-5 w-5 fill-current text-blue-500" viewBox="0 0 20 20" fill="currentColor">
                                 <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
                             </svg>
                         </div>
 
                         <div>
-                            <div class="font-semibold">Start accepting orders</div>
+                            <div class="font-semibold text-gray-800">Start accepting orders</div>
 
                             <p class="w-64 text-sm">Job done! Your live in minutes.</p>
                         </div>
@@ -63,34 +63,34 @@
                             <img class="h-8 w-auto" src="{{ asset('img/logo-dark.png') }}" alt="{{ config('app.name') }}" />
                         </a>
 
-                        <h2 class="mt-2 text-3xl font-semibold text-gray-800">
+                        <h2 class="mt-2">
                             Let's get you started
                         </h2>
 
-                        <p class="text-sm text-gray-600">
-                            Already have an account? <a class="text-indigo-500 hover:text-indigo-400" href="{{ route('login') }}">Sign in</a>
-                        </p>
+                        <h6 class="text-gray-600">
+                            Already have an account? <a href="{{ route('login') }}">Sign in</a>
+                        </h6>
                     </div>
 
-                    <form class="mt-8" action="{{ route('register') }}" method="POST">
+                    <form class="mt-4" action="{{ route('register') }}" method="POST">
                         @csrf
 
                         <input type="hidden" name="type" value="company">
 
-                        <div class="mb-6">
+                        <div>
                             @include('components.forms.fields._name')
                         </div>
 
-                        <div class="mb-6">
+                        <div class="mt-4">
                             @include('components.forms.fields._business')
                         </div>
 
-                        <div class="row">
-                            <div class="col-md-6 mb-6">
+                        <div class="row mt-4">
+                            <div class="col-md-6 mb-4">
                                 @include('components.forms.fields._phone')
                             </div>
 
-                            <div class="col-md-6 mb-6">
+                            <div class="col-md-6 mb-4">
                                 @include('components.forms.fields._email')
 
                                 <span class="text-xs text-gray-600">Make sure this is the business email.</span>
@@ -98,18 +98,18 @@
                         </div>
 
                         <div class="row">
-                            <div class="col-md-6 mb-6">
+                            <div class="col-md-6 mb-4">
                                 @include('components.forms.fields._new-password')
                             </div>
 
-                            <div class="col-md-6 mb-6">
+                            <div class="col-md-6">
                                 @include('components.forms.fields._confirm-password')
                             </div>
                         </div>
 
-                        <div class="mb-6">
+                        <div class="mt-4">
                             <p class="text-xs text-gray-600 max-w-sm">
-                                By clicking Submit, you confirm you have read and agreed to <a class="text-indigo-500 hover:text-indigo-400" href="/privacy">{{ config('app.name') }} General Terms and Conditions and Privacy Policy</a>.
+                                By clicking Submit, you confirm you have read and agreed to <a href="/terms">{{ config('app.name') }} General Terms and Conditions</a> and <a href="/privacy">Privacy Policy</a>.
                             </p>
                         </div>
 

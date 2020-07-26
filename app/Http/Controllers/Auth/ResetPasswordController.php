@@ -2,14 +2,23 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\Models\User;
 use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\ResetsPasswords;
-use App\Http\Requests\UserPassword as UserPasswordForm;
 
 class ResetPasswordController extends Controller
 {
+    /*
+    |--------------------------------------------------------------------------
+    | Password Reset Controller
+    |--------------------------------------------------------------------------
+    |
+    | This controller is responsible for handling password reset requests
+    | and uses a simple trait to include this behavior. You're free to
+    | explore this trait and override any methods you wish to tweak.
+    |
+    */
+
     use ResetsPasswords;
 
     /**
@@ -18,18 +27,4 @@ class ResetPasswordController extends Controller
      * @var string
      */
     protected $redirectTo = RouteServiceProvider::HOME;
-
-    /**
-     * Reset user's password.
-     *
-     * @param  \App\Http\Requests\UserPassword $request
-     * @param  \App\Models\User             $user
-     * @return \Illuminate\Http\Response
-     */
-    public function update(UserPasswordForm $request, User $user)
-    {
-        $this->resetPassword($user, $request->password);
-
-        return $this->success(route('users.edit', compact('user')));
-    }
 }
