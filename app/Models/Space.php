@@ -4,10 +4,13 @@ namespace App\Models;
 
 use Carbon\Carbon;
 use App\Support\Formatter;
+use App\Models\Casts\PriceCast;
 use App\Models\Traits\Filterable;
+use App\Models\Casts\ScheduleCast;
 use App\Models\Traits\Presentable;
 use App\Contracts\Models\Priceable;
 use App\Contracts\Models\Statusable;
+use App\Models\Concerns\GeneratesUID;
 use App\Models\Concerns\ManagesPricing;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Concerns\GetsPathToResource;
@@ -18,6 +21,7 @@ class Space extends Model implements Statusable, Priceable
     use Presentable;
     use ManagesPricing;
     use GetsPathToResource;
+    use GeneratesUID;
 
     /**
      * The accessors to append to the model's array form.
@@ -34,6 +38,8 @@ class Space extends Model implements Statusable, Priceable
     protected $casts = [
         'departs_at' => 'datetime',
         'arrives_at' => 'datetime',
+        'schedule' => ScheduleCast::class,
+        'price' => PriceCast::class,
     ];
 
     /**

@@ -3,20 +3,16 @@
 namespace App\Models;
 
 use App\Models\Traits\HasImage;
+use App\Models\Casts\SettingsCast;
 use Illuminate\Notifications\Notifiable;
+use App\Models\Concerns\ManagesRolesAndAbilities;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class User extends Authenticatable
 {
     use Notifiable;
     use HasImage;
-
-    /**
-     * The relations to eager load on every query.
-     *
-     * @var array
-     */
-    protected $with = ['business', 'account'];
+    use ManagesRolesAndAbilities;
 
     /**
      * The attributes that are mass assignable.
@@ -44,7 +40,7 @@ class User extends Authenticatable
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
-        'settings' => 'array',
+        'settings' => SettingsCast::class,
     ];
 
     /**

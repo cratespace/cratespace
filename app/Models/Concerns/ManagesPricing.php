@@ -13,30 +13,6 @@ trait ManagesPricing
      *
      * @return string
      */
-    public function setPriceAttribute($value)
-    {
-        $this->attributes['price'] = $value * 100;
-    }
-
-    /**
-     * Get the space's price.
-     *
-     * @param string $value
-     *
-     * @return string
-     */
-    public function getPriceAttribute($value)
-    {
-        return Formatter::moneyFormat($value);
-    }
-
-    /**
-     * Set the space's price in cents.
-     *
-     * @param string $value
-     *
-     * @return string
-     */
     public function setTaxAttribute($value)
     {
         $this->attributes['tax'] = $value * 100;
