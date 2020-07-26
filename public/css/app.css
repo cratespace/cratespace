@@ -4948,6 +4948,33 @@ span.flatpickr-weekday {
   color: rgba(74, 85, 104, var(--text-opacity));
 }
 
+.btn.btn-danger {
+  --bg-opacity: 1;
+  background-color: #f56565;
+  background-color: rgba(245, 101, 101, var(--bg-opacity));
+  --text-opacity: 1;
+  color: #fff;
+  color: rgba(255, 255, 255, var(--text-opacity));
+}
+
+.btn.btn-danger:hover {
+  --bg-opacity: 1;
+  background-color: #e53e3e;
+  background-color: rgba(229, 62, 62, var(--bg-opacity));
+  --text-opacity: 1;
+  color: #fff;
+  color: rgba(255, 255, 255, var(--text-opacity));
+}
+
+.btn.btn-danger:focus {
+  --bg-opacity: 1;
+  background-color: #e53e3e;
+  background-color: rgba(229, 62, 62, var(--bg-opacity));
+  --text-opacity: 1;
+  color: #fff;
+  color: rgba(255, 255, 255, var(--text-opacity));
+}
+
 .form-input {
   transition-property: background-color, border-color, color, fill, stroke, opacity, box-shadow, transform;
   transition-duration: 150ms;
