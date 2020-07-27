@@ -6,16 +6,14 @@ use Carbon\Carbon;
 use Tests\TestCase;
 use App\Models\Space;
 use App\Reports\DailyReport;
-use App\Reports\Query\Builder;
+use App\Reports\Generator as ReportGenerator;
 
-class DailyReportTest extends TestCase
+class GeneratorTest extends TestCase
 {
     /** @test */
-    public function it_gives_an_array_of_data_counts_per_day()
+    public function it_can_generate_given_reports()
     {
         $user = $this->signIn();
-        $query = new Builder('spaces');
-        $query->setForAuthurizedOnly();
 
         for ($i = 0; $i < 24; ++$i) {
             create(Space::class, [
@@ -24,8 +22,8 @@ class DailyReportTest extends TestCase
             ]);
         }
 
-        $graph = new DailyReport($query);
-        $graphData = $graph->make();
+        $graph = new ReportGenerator('spaces', true);
+        $graphData = $graph->generate(DailyReport::class);
 
         foreach ($graphData as $time => $count) {
             $this->assertEquals(
