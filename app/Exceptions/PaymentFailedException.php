@@ -2,9 +2,9 @@
 
 namespace App\Exceptions;
 
-use Exception;
+use RuntimeException;
 
-class PaymentFailedException extends Exception
+class PaymentFailedException extends RuntimeException
 {
     /**
      * Render the exception into an HTTP response.

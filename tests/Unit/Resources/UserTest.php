@@ -60,31 +60,17 @@ class UserTest extends TestCase
             'label' => 'Dummy role',
         ]);
 
-        $doDummyThings = Ability::create([
-            'title' => 'do_dummy_things',
-            'label' => 'Do dummy things',
-        ]);
-
-        $doNoneDummyThings = Ability::create([
-            'title' => 'do_none_dummy_things',
-            'label' => 'Do none dummy things',
-        ]);
-
-        $doSeriousThings = Ability::create([
-            'title' => 'do_serious_things',
-            'label' => 'Do serious things',
-        ]);
-
-        $dummyRole->allowTo($doDummyThings);
-        $dummyRole->allowTo($doNoneDummyThings);
-        $dummyRole->allowTo($doSeriousThings);
+        foreach ($this->mockDummyAbilities() as $ability) {
+            $dummyRole->allowTo($ability);
+        }
 
         $user->assignRole($dummyRole);
 
         $this->assertTrue($user->hasRole($dummyRole->title));
-        $this->assertTrue($user->hasAbility($doDummyThings->title));
-        $this->assertTrue($user->hasAbility($doNoneDummyThings->title));
-        $this->assertTrue($user->hasAbility($doSeriousThings->title));
+
+        foreach ($this->mockDummyAbilities() as $ability) {
+            $this->assertTrue($user->hasAbility($ability->title));
+        }
     }
 
     /** @test */
@@ -97,24 +83,9 @@ class UserTest extends TestCase
             'label' => 'Dummy role',
         ]);
 
-        $doDummyThings = Ability::create([
-            'title' => 'do_dummy_things',
-            'label' => 'Do dummy things',
-        ]);
-
-        $doNoneDummyThings = Ability::create([
-            'title' => 'do_none_dummy_things',
-            'label' => 'Do none dummy things',
-        ]);
-
-        $doSeriousThings = Ability::create([
-            'title' => 'do_serious_things',
-            'label' => 'Do serious things',
-        ]);
-
-        $dummyRole->allowTo($doDummyThings);
-        $dummyRole->allowTo($doNoneDummyThings);
-        $dummyRole->allowTo($doSeriousThings);
+        foreach ($this->mockDummyAbilities() as $ability) {
+            $dummyRole->allowTo($ability);
+        }
 
         $user->assignRole($dummyRole);
 
@@ -144,34 +115,30 @@ class UserTest extends TestCase
     }
 
     /** @test */
-    public function a_user_has_a_business()
+    public function a_user_has_an_account()
     {
-        $user = [
-            'name' => $this->faker->firstNameMale . ' ' . $this->faker->lastName,
-            'email' => $this->faker->unique()->safeEmail,
-            'phone' => '7768907658',
-            'business' => $this->faker->company,
-            'password' => 'Lambdaxion568',
-            'password_confirmation' => 'Lambdaxion568',
-        ];
-
-        $this->post(route('register'), $user)->assertRedirect('/home');
+        $this->post(route('register'), $this->getUserDetails())->assertRedirect('/home');
 
         $this->assertInstanceOf(Business::class, user()->business);
+        $this->assertInstanceOf(Account::class, user()->account);
     }
 
     /** @test */
-    public function a_user_has_spaces()
+    public function a_business_user_has_spaces()
     {
         $user = create(User::class);
 
         $this->assertInstanceOf(Collection::class, $user->spaces);
     }
 
-    /** @test */
-    public function a_user_has_an_account()
+    /**
+     * Get fake user details.
+     *
+     * @return array
+     */
+    protected function getUserDetails(): array
     {
-        $userDetails = [
+        return [
             'name' => $this->faker->firstNameMale . ' ' . $this->faker->lastName,
             'email' => $this->faker->unique()->safeEmail,
             'phone' => '7768907658',
@@ -179,9 +146,34 @@ class UserTest extends TestCase
             'password' => 'Lambdaxion568',
             'password_confirmation' => 'Lambdaxion568',
         ];
+    }
 
-        $this->post(route('register'), $userDetails)->assertRedirect('/home');
+    /**
+     * Create mock user abilities.
+     *
+     * @return array
+     */
+    protected function mockDummyAbilities(): array
+    {
+        $doDummyThings = Ability::create([
+            'title' => 'do_dummy_things',
+            'label' => 'Do dummy things',
+        ]);
 
-        $this->assertInstanceOf(Account::class, user()->account);
+        $doNoneDummyThings = Ability::create([
+            'title' => 'do_none_dummy_things',
+            'label' => 'Do none dummy things',
+        ]);
+
+        $doSeriousThings = Ability::create([
+            'title' => 'do_serious_things',
+            'label' => 'Do serious things',
+        ]);
+
+        return [
+            $doDummyThings,
+            $doNoneDummyThings,
+            $doSeriousThings,
+        ];
     }
 }
