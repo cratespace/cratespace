@@ -15,6 +15,13 @@ class FakePaymentGateway extends PaymentGateway implements PaymentGatewayContrac
     public const TEST_CARD_NUMBER = '4242424242424242';
 
     /**
+     * List of fake payment tokens.
+     *
+     * @var \Illuminate\Support\Collection
+     */
+    protected $tokens;
+
+    /**
      * Call back to run as a hook before the first charge.
      *
      * @var \Closure
@@ -26,7 +33,7 @@ class FakePaymentGateway extends PaymentGateway implements PaymentGatewayContrac
      */
     public function __construct()
     {
-        $this->testToken = Str::random(40);
+        $this->tokens = collect();
 
         parent::__construct();
     }
@@ -49,7 +56,7 @@ class FakePaymentGateway extends PaymentGateway implements PaymentGatewayContrac
             call_user_func_array($callback, [$this]);
         }
 
-        if ($paymentToken !== $this->getValidTestToken()) {
+        if (!$this->tokens->has($paymentToken)) {
             throw new PaymentFailedException('Invalid payment token received');
         }
 
@@ -63,9 +70,13 @@ class FakePaymentGateway extends PaymentGateway implements PaymentGatewayContrac
      *
      * @return string
      */
-    public function getValidTestToken(): string
+    public function getValidTestToken($cardNumber = self::TEST_CARD_NUMBER)
     {
-        return $this->testToken;
+        $token = 'fake-tok_' . Str::random(24);
+
+        $this->tokens[$token] = $cardNumber;
+
+        return $token;
     }
 
     /**
