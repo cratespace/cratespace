@@ -123,6 +123,7 @@ class PurchaseSpaceTest extends TestCase
 
         $response->assertStatus(422);
         $this->assertNull($space->order);
+        $this->assertTrue($space->isAvailable());
     }
 
     /** @test */
