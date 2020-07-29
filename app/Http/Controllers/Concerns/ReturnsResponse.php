@@ -12,7 +12,7 @@ trait ReturnsResponse
      *
      * @return \Illuminate\Routing\RedirectResponse
      */
-    protected function success($path, $message = 'Details succssfully saved.')
+    protected function success(string $path, string $message = 'Details succssfully saved.')
     {
         return redirect($path)->with(['status' => $message]);
     }
