@@ -1,9 +1,10 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Business;
 
 use App\Models\Order;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 
 class OrderController extends Controller
 {
@@ -14,7 +15,9 @@ class OrderController extends Controller
      */
     public function index()
     {
-        //
+        return view('business.orders.index', [
+            'orders' => Order::ofBusiness()->paginate(request('perPage') ?? 10),
+        ]);
     }
 
     /**
@@ -24,62 +27,61 @@ class OrderController extends Controller
      */
     public function create()
     {
-        //
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
+     *
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
     {
-        //
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Order  $order
+     * @param \App\Models\Order $order
+     *
      * @return \Illuminate\Http\Response
      */
     public function show(Order $order)
     {
-        //
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Order  $order
+     * @param \App\Models\Order $order
+     *
      * @return \Illuminate\Http\Response
      */
     public function edit(Order $order)
     {
-        //
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Order  $order
+     * @param \Illuminate\Http\Request $request
+     * @param \App\Models\Order        $order
+     *
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, Order $order)
     {
-        //
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Order  $order
+     * @param \App\Models\Order $order
+     *
      * @return \Illuminate\Http\Response
      */
     public function destroy(Order $order)
     {
-        //
     }
 }

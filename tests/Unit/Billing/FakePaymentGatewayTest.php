@@ -32,7 +32,8 @@ class FakePaymentGatewayTest extends TestCase
             $paymentGateway->charge(2500, 'invalid-payment-token');
         } catch (PaymentFailedException $e) {
             // $this->assertEquals(2500, $e->chargedAmount());
-            // $this->assertInstanceOf(PaymentFailedException::class, $e);
+            $this->assertInstanceOf(PaymentFailedException::class, $e);
+
             return $this->assertTrue(true);
         }
 

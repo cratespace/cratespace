@@ -15,14 +15,15 @@ class CreateOrdersTable extends Migration
     {
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('space_id')->constrained();
+            $table->foreignId('space_id')->constrained('spaces');
             $table->foreignId('user_id');
-            $table->string('uid')->unique();
-            $table->string('name');
-            $table->string('email');
-            $table->string('phone', 50);
+            $table->foreignId('status_id')->default(1);
+            $table->string('uid')->unique()->index();
+            $table->string('name')->index();
+            $table->string('email')->index();
+            $table->string('phone', 50)->index();
             $table->string('business')->nullable();
-            $table->integer('service');
+            $table->string('service');
             $table->integer('price');
             $table->integer('tax');
             $table->integer('total');

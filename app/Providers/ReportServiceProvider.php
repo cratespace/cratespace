@@ -22,11 +22,5 @@ class ReportServiceProvider extends ServiceProvider
      */
     protected function registerReportGenerator(): void
     {
-        $this->app->bind(
-            'report.generator',
-            function (string $key, bool $forAuthUser) {
-                return new Generator($key, $forAuthUser);
-            }
-        );
     }
 }

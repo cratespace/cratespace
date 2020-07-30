@@ -24,7 +24,8 @@
         "laravel/ui": "^2.1",
         "league/flysystem-aws-s3-v3": "^1.0",
         "moneyphp/money": "^3.3",
-        "stevebauman/location": "^5.1"
+        "stevebauman/location": "^5.1",
+        "stripe/stripe-php": "^7.45"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.3",
