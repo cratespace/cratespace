@@ -11,7 +11,7 @@ trait FindsBusiness
     {
         // Associate order to the relevant business.
         static::creating(function ($order) {
-            $order->user_id = $order->space->user_id;
+            $order->user_id = $order->user_id ?? $order->space->user_id;
         });
     }
 }

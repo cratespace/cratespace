@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Events\OrderStatusUpdated;
 use App\Models\Traits\Presentable;
 use App\Models\Concerns\GeneratesUID;
 use App\Models\Concerns\FindsBusiness;
@@ -68,20 +69,58 @@ class Order extends Model
                     ->from(function ($query) use ($term) {
                         $query->select('orders.id')
                             ->from('orders')
-                            ->where('orders.uid_normalized', 'like', $term)
-                            ->orWhere('orders.name_normalized', 'like', $term)
-                            ->orWhere('orders.email_normalized', 'like', $term)
-                            ->orWhere('orders.phone_normalized', 'like', $term)
+                            ->where('orders.uid', 'like', $term)
+                            ->orWhere('orders.name', 'like', $term)
+                            ->orWhere('orders.email', 'like', $term)
+                            ->orWhere('orders.phone', 'like', $term)
                             ->union(
                                 $query->newQuery()
                                     ->select('orders.id')
                                     ->from('orders')
                                     ->join('spaces', 'orders.space_id', '=', 'spaces.id')
-                                    ->where('spaces.uid_normalized', 'like', $term)
+                                    ->where('spaces.uid', 'like', $term)
                             );
                     }, 'matches');
             });
         });
+    }
+
+    /**
+     * Get full path to resource page.
+     *
+     * @return string
+     */
+    public function getPathAttribute()
+    {
+        return $this->path();
+    }
+
+    /**
+     * Get full url to order page.
+     *
+     * @return string
+     */
+    public function path(): string
+    {
+        return route('orders.show', $this);
+    }
+
+    /**
+     * Update order status.
+     *
+     * @param \App\Models\Status|string $status
+     *
+     * @return void
+     */
+    public function updateStatus($status): void
+    {
+        if (is_string($status)) {
+            $status = Status::whereTitle($status)->firstOrFail();
+        }
+
+        $this->update(['status_id' => $status->id]);
+
+        event(new OrderStatusUpdated($this));
     }
 
     /**

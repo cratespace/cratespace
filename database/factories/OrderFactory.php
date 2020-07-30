@@ -2,6 +2,7 @@
 
 /** @var \Illuminate\Database\Eloquent\Factory $factory */
 
+use App\Models\User;
 use App\Models\Order;
 use App\Models\Space;
 use Illuminate\Support\Str;
@@ -17,7 +18,7 @@ $factory->define(Order::class, function (Faker $faker) {
         'business' => $faker->company,
         'email' => $faker->email,
         'space_id' => $space->id,
-        'user_id' => 1,
+        'user_id' => create(User::class)->id,
         'status_id' => rand(1, 6),
         'phone' => $faker->phoneNumber,
         'price' => $space->getPriceInCents(),

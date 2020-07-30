@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Business;
 use App\Models\Order;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\UpdateOrderStatusRequest;
 
 class OrderController extends Controller
 {
@@ -18,26 +19,6 @@ class OrderController extends Controller
         return view('business.orders.index', [
             'orders' => Order::ofBusiness()->paginate(request('perPage') ?? 10),
         ]);
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param \Illuminate\Http\Request $request
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
     }
 
     /**
@@ -65,13 +46,20 @@ class OrderController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param \Illuminate\Http\Request $request
-     * @param \App\Models\Order        $order
+     * @param \App\Http\Requests\UpdateOrderStatusRequest $request
+     * @param \App\Models\Order                           $order
      *
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Order $order)
+    public function update(UpdateOrderStatusRequest $request, Order $order)
     {
+        $order->updateStatus($request->status);
+
+        if ($request->wantsJson()) {
+            return response([], 204);
+        }
+
+        return redirect()->back();
     }
 
     /**
