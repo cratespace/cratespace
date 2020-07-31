@@ -4,11 +4,17 @@ namespace App\Reports;
 
 use Carbon\Carbon;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\DB;
 use App\Contracts\Reports\Report as ReportContract;
 
 class WeeklyReport extends Report implements ReportContract
 {
+    /**
+     * Table name to query from.
+     *
+     * @var string
+     */
+    protected $key = 'date';
+
     /**
      * Make into report data set.
      *
@@ -18,14 +24,7 @@ class WeeklyReport extends Report implements ReportContract
      */
     public function make(?int $limit = null): Collection
     {
-        return $this->query
-            ->selectRaw('date(created_at) as date, COUNT(*) as count')
-            ->whereBetween(DB::raw('date(created_at)'), $this->getTimeframe())
-            ->groupBy('date')
-            ->orderBy('date', 'DESC')
-            ->get()
-            ->take($limit)
-            ->pluck('count', 'date');
+        return $this->build()->take($limit);
     }
 
     /**

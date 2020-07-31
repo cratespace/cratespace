@@ -19,21 +19,14 @@ class BillingServiceProvider extends ServiceProvider
     }
 
     /**
-     * Bootstrap services.
-     *
-     * @return void
-     */
-    public function boot()
-    {
-    }
-
-    /**
      * Register default payment gateway.
      *
      * @return void
      */
     protected function registerPaymentGateways(): void
     {
-        $this->app->instance(PaymentGateway::class, new FakePaymentGateway());
+        $fakePaymentGateway = new FakePaymentGateway();
+
+        $this->app->instance(PaymentGateway::class, $fakePaymentGateway);
     }
 }

@@ -50,6 +50,9 @@ class SpaceOrderController extends Controller
             return response($order, 201);
         }
 
-        return $this->success('public.commons.thank-you', 'Order successfully processed.');
+        return $this->success(
+            'public.commons.thank-you',
+            'Order successfully processed.'
+        );
     }
 }

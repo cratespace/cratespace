@@ -4,11 +4,17 @@ namespace App\Reports;
 
 use Carbon\Carbon;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\DB;
 use App\Contracts\Reports\Report as ReportContract;
 
 class DailyReport extends Report implements ReportContract
 {
+    /**
+     * Table name to query from.
+     *
+     * @var string
+     */
+    protected $key = 'time';
+
     /**
      * Make into report data set.
      *
@@ -18,14 +24,7 @@ class DailyReport extends Report implements ReportContract
      */
     public function make(?int $limit = null): Collection
     {
-        return $this->query
-            ->selectRaw('time(created_at) as time, COUNT(*) as count')
-            ->whereBetween(DB::raw('time(created_at)'), $this->getTimeframe())
-            ->groupBy('time')
-            ->orderBy('time', 'DESC')
-            ->get()
-            ->take($limit)
-            ->pluck('count', 'time');
+        return $this->build()->take($limit);
     }
 
     /**

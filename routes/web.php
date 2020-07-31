@@ -2,6 +2,13 @@
 
 declare(strict_types=1);
 
+if (!app()->isProduction()) {
+    /**
+     * Public Routes...
+     */
+    require 'web/tests.php';
+}
+
 /**
  * Public Routes...
  */

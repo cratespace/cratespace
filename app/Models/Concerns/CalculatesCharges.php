@@ -26,6 +26,10 @@ trait CalculatesCharges
      */
     protected static function calculateCharges(Order $order): void
     {
+        if (!is_null($order->total)) {
+            return;
+        }
+
         foreach (static::getChrages() as $name => $amount) {
             $order->{$name} = $amount;
         }

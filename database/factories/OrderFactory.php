@@ -2,8 +2,10 @@
 
 /** @var \Illuminate\Database\Eloquent\Factory $factory */
 
+use App\Models\User;
 use App\Models\Order;
 use App\Models\Space;
+use Illuminate\Support\Str;
 use Faker\Generator as Faker;
 
 $factory->define(Order::class, function (Faker $faker) {
@@ -11,12 +13,13 @@ $factory->define(Order::class, function (Faker $faker) {
     $service = $space->getPriceInCents() * config('charges.service');
 
     return [
-        'uid' => $faker->uuid,
+        'uid' => Str::random(7),
         'name' => $faker->name,
         'business' => $faker->company,
         'email' => $faker->email,
         'space_id' => $space->id,
-        'user_id' => 1,
+        'user_id' => create(User::class)->id,
+        'status' => 'Pending',
         'phone' => $faker->phoneNumber,
         'price' => $space->getPriceInCents(),
         'tax' => $space->getTaxInCents(),

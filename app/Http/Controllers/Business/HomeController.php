@@ -2,12 +2,10 @@
 
 namespace App\Http\Controllers\Business;
 
-use App\Models\Order;
+use Carbon\Carbon;
+use App\Reports\Generator;
 use App\Reports\WeeklyReport;
-use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
-use Illuminate\Database\Eloquent\Builder;
 
 class HomeController extends Controller
 {
@@ -18,23 +16,13 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $query = DB::table('spaces')
-            ->where('user_id', user('id'));
-
-        $graph = new WeeklyReport($query);
+        $generator = new Generator('orders', true);
 
         return view('business.dashboard.home', [
-            'chart' => $graph->make(),
+            'chart' => $generator->generate(WeeklyReport::class)
+                ->keyBy(function ($count, $date) {
+                    return Carbon::parse($date)->format('M j');
+                }),
         ]);
-    }
-
-    protected function makeReportFor(): Collection
-    {
-        return (new WeeklyReport($this->getBusinessOrders()))->make();
-    }
-
-    protected function getBusinessOrders(): Builder
-    {
-        return Order::whereUserId(user('id'));
     }
 }
