@@ -24,6 +24,7 @@
         "laravel/ui": "^2.1",
         "league/flysystem-aws-s3-v3": "^1.0",
         "moneyphp/money": "^3.3",
+        "moontoast/math": "1.2.1",
         "phpseclib/bcmath_compat": "^1.0",
         "stevebauman/location": "^5.1",
         "stripe/stripe-php": "^7.45"
