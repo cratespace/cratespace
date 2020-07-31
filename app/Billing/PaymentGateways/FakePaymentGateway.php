@@ -57,7 +57,7 @@ class FakePaymentGateway extends PaymentGateway implements PaymentGatewayContrac
         }
 
         if (!$this->tokens->has($paymentToken)) {
-            throw new PaymentFailedException('Invalid payment token received');
+            throw new PaymentFailedException('Invalid payment token received', $amount);
         }
 
         $this->charges[] = $amount;

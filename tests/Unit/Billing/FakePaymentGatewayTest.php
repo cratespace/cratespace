@@ -31,10 +31,10 @@ class FakePaymentGatewayTest extends TestCase
             $paymentGateway = new FakePaymentGateway();
             $paymentGateway->charge(2500, 'invalid-payment-token');
         } catch (PaymentFailedException $e) {
-            // $this->assertEquals(2500, $e->chargedAmount());
+            $this->assertEquals(2500, $e->chargedAmount());
             $this->assertInstanceOf(PaymentFailedException::class, $e);
 
-            return $this->assertTrue(true);
+            return;
         }
 
         $this->fail();
