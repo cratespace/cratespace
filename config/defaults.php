@@ -32,4 +32,13 @@ return [
         'email' => 'tjthavarshan@gmail.com',
         'phone' => '775018794',
     ],
+
+    'statuses' => [
+        'Pending',
+        'Approved',
+        'Rejected',
+        'Shipped',
+        'Delivered',
+        'Completed',
+    ],
 ];

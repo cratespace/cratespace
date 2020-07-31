@@ -6,6 +6,7 @@ use Carbon\Carbon;
 use Tests\TestCase;
 use App\Models\Order;
 use App\Models\Space;
+use App\Support\Formatter;
 use App\Billing\Charges\Calculator;
 use Illuminate\Testing\TestResponse;
 use App\Contracts\Billing\PaymentGateway;
@@ -36,8 +37,6 @@ class PurchaseSpaceTest extends TestCase
     /** @test */
     public function a_customer_can_purchase_a_space()
     {
-        $this->withoutExceptionHandling();
-
         config()->set('charges.service', 0.5);
 
         $space = create(Space::class, ['price' => 32.50, 'tax' => 0.5]);
@@ -124,6 +123,7 @@ class PurchaseSpaceTest extends TestCase
 
         $response->assertStatus(422);
         $this->assertNull($space->order);
+        $this->assertTrue($space->isAvailable());
     }
 
     /** @test */
@@ -158,6 +158,39 @@ class PurchaseSpaceTest extends TestCase
         $this->assertEquals(0, $this->paymentGateway->totalCharges());
     }
 
+    /** @test */
+    public function a_customer_cannot_purchase_space_another_customer_is_already_trying_to_purchase()
+    {
+        // $this->withoutExceptionHandling();
+
+        $space = create(Space::class);
+
+        $this->paymentGateway->beforeFirstCharge(function ($paymentGateway) use ($space) {
+            $response = $this->orderSpace($space, $this->orderDetails([
+                'email' => 'john.bernard@example.com',
+                'payment_token' => $this->paymentGateway->getValidTestToken(),
+            ]));
+
+            $response->assertStatus(403);
+            $this->assertFalse(Order::whereEmail('john.bernard@example.com')->exists());
+            $this->assertEquals(0, $this->paymentGateway->totalCharges());
+        });
+
+        $response = $this->orderSpace($space, $this->orderDetails([
+            'email' => 'john.buyan@example.com',
+            'payment_token' => $this->paymentGateway->getValidTestToken(),
+        ]));
+
+        $order = Order::whereEmail('john.buyan@example.com')->first();
+
+        $response->assertStatus(201);
+        $this->assertFalse(is_null($order));
+        $this->assertEquals(
+            Formatter::getIntegerValues($order->total),
+            $this->paymentGateway->totalCharges()
+        );
+    }
+
     /**
      * Fake a json post request to purchase/order a space.
      *
@@ -183,12 +216,12 @@ class PurchaseSpaceTest extends TestCase
      */
     protected function orderDetails(array $attributes = []): array
     {
-        return [
+        return array_merge([
             'name' => 'John Doe',
             'business' => 'Example, Co.',
             'phone' => '765487368',
             'email' => 'john@example.com',
-        ];
+        ], $attributes);
     }
 
     /**

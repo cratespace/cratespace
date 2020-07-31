@@ -30,10 +30,21 @@ class AuthServiceProvider extends ServiceProvider
     {
         $this->registerPolicies();
 
+        $this->bootObservers();
+
         Gate::before(function (User $user, string $ability) {
             if ($user->abilities()->contains($ability)) {
                 return true;
             }
         });
+    }
+
+    /**
+     * Boot all available observers.
+     *
+     * @return void
+     */
+    protected function bootObservers(): void
+    {
     }
 }

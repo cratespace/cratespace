@@ -111,7 +111,10 @@ class Space extends Model implements Statusable, Priceable
      */
     public function getBusinessNameAttribute()
     {
-        return Business::whereUserId($this->user_id)->first()->name;
+        return Business::select('name')
+            ->whereUserId($this->user_id)
+            ->first()
+            ->name;
     }
 
     /**

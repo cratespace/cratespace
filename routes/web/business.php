@@ -16,6 +16,16 @@ Route::group([
     Route::get('/home', 'Business\HomeController@index')->name('home');
 
     /*
+     * Order Resource Routes...
+     */
+    Route::resource('/orders', 'Business\OrderController');
+
+    /*
+     * Search Orders Route...
+     */
+    Route::get('/orders/search', 'Business\OrderController@index');
+
+    /*
      * Space Resource Routes...
      */
     Route::resource('/spaces', 'Business\SpaceController');
