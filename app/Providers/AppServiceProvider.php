@@ -14,7 +14,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->registerTelescope();
+        // $this->registerTelescope();
+        $this->registerMarkdownParser();
     }
 
     /**
