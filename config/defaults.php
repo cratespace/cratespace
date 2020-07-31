@@ -34,11 +34,11 @@ return [
     ],
 
     'statuses' => [
-        'pending' => 'Pending',
-        'approved' => 'Approved',
-        'rejected' => 'Rejected',
-        'shipped' => 'Shipped',
-        'delivered' => 'Delivered',
-        'completed' => 'Completed',
+        'Pending',
+        'Approved',
+        'Rejected',
+        'Shipped',
+        'Delivered',
+        'Completed',
     ],
 ];

@@ -23,27 +23,22 @@ class Order extends Model
      */
     protected $fillable = [
         'uid', 'space_id', 'name', 'email', 'phone', 'business',
-        'service', 'price', 'tax', 'total', 'user_id', 'status_id',
+        'service', 'price', 'tax', 'total', 'user_id', 'status',
     ];
 
     /**
      * Get all orders associated with the currently authenticated business.
      *
+     * @param string|null                        $search
      * @param \Illuminate\Database\Query\Builder $query
      *
      * @return \Illuminate\Database\Query\Builder
      */
-    public function scopeOfBusiness($query)
+    public function scopeForBusiness($query, ?string $search = null)
     {
         $query->with('space')
-            ->addSelect([
-                'status' => Status::select('label')
-                    ->whereColumn('status_id', 'statuses.id')
-                    ->latest()
-                    ->take(1),
-            ])
             ->whereUserId(user('id'))
-            ->search(request('search'))
+            ->search($search)
             ->latest('updated_at');
     }
 
@@ -108,29 +103,15 @@ class Order extends Model
     /**
      * Update order status.
      *
-     * @param \App\Models\Status|string $status
+     * @param string $status
      *
      * @return void
      */
-    public function updateStatus($status): void
+    public function updateStatus(string $status): void
     {
-        if (is_string($status)) {
-            $status = Status::whereTitle($status)->firstOrFail();
-        }
-
-        $this->update(['status_id' => $status->id]);
+        $this->update(['status' => $status]);
 
         event(new OrderStatusUpdated($this));
-    }
-
-    /**
-     * Get the current status of the order.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
-    public function status()
-    {
-        return $this->belongsTo(Status::class, 'status_id');
     }
 
     /**

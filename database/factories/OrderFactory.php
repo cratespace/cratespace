@@ -19,7 +19,7 @@ $factory->define(Order::class, function (Faker $faker) {
         'email' => $faker->email,
         'space_id' => $space->id,
         'user_id' => create(User::class)->id,
-        'status_id' => rand(1, 6),
+        'status' => 'Pending',
         'phone' => $faker->phoneNumber,
         'price' => $space->getPriceInCents(),
         'tax' => $space->getTaxInCents(),

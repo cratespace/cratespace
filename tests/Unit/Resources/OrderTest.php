@@ -5,7 +5,6 @@ namespace Tests\Unit\Resources;
 use Tests\TestCase;
 use App\Models\Order;
 use App\Models\Space;
-use App\Models\Status;
 use App\Events\OrderStatusUpdated;
 use App\Billing\Charges\Calculator;
 use Illuminate\Support\Facades\Event;
@@ -49,43 +48,23 @@ class OrderTest extends TestCase
     }
 
     /** @test */
-    public function it_has_status_marks()
+    public function it_has_default_of_pending_status()
     {
-        $status = Status::create([
-            'title' => 'pending',
-            'label' => 'Pending',
-        ]);
+        $order = create(Order::class);
 
-        $order = create(Order::class, ['status_id' => $status->id]);
-
-        $this->assertInstanceOf(Status::class, $order->status);
+        $this->assertEquals('Pending', $order->status);
     }
 
     /** @test */
     public function it_can_update_status_marks()
     {
-        $statusPending = Status::create([
-            'title' => 'pending',
-            'label' => 'Pending',
-        ]);
+        $order = create(Order::class);
 
-        $statusApproved = Status::create([
-            'title' => 'approved',
-            'label' => 'Approved',
-        ]);
+        $this->assertEquals('Pending', $order->status);
 
-        $statusCompleted = Status::create([
-            'title' => 'completed',
-            'label' => 'Completed',
-        ]);
+        $order->updateStatus('Completed');
 
-        $order = create(Order::class, ['status_id' => $statusPending->id]);
-
-        $this->assertEquals('pending', $order->status->title);
-
-        $order->updateStatus('completed');
-
-        $this->assertEquals('completed', $order->refresh()->status->title);
+        $this->assertEquals('Completed', $order->refresh()->status);
     }
 
     /** @test */
@@ -109,7 +88,7 @@ class OrderTest extends TestCase
         $extrenalOrders = create(Order::class, ['user_id' => 999], 10);
         $businessOrders = create(Order::class, ['user_id' => $user->id], 10);
 
-        $orders = Order::OfBusiness()->get();
+        $orders = Order::ForBusiness()->get();
 
         foreach ($extrenalOrders as $extrenalOrder) {
             $this->assertFalse($orders->contains($extrenalOrder));
@@ -125,27 +104,17 @@ class OrderTest extends TestCase
     {
         Event::fake();
 
-        $statusPending = Status::create([
-            'title' => 'pending',
-            'label' => 'Pending',
-        ]);
+        $order = create(Order::class);
 
-        $statusApproved = Status::create([
-            'title' => 'approved',
-            'label' => 'Approved',
-        ]);
-
-        $order = create(Order::class, ['status_id' => $statusPending->id]);
-
-        $order->updateStatus('approved');
+        $order->updateStatus('Approved');
 
         Event::assertDispatched(function (OrderStatusUpdated $event) use ($order) {
             return $event->getOrder()->id === $order->id &&
                 $event->getOrder()->status === $order->status &&
-                $event->getOrder()->status->title === 'approved';
+                $event->getOrder()->status === 'Approved';
         });
 
-        $this->assertEquals('approved', $order->fresh()->status->title);
+        $this->assertEquals('Approved', $order->fresh()->status);
     }
 
     /**

@@ -14,10 +14,11 @@ class OrderController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         return view('business.orders.index', [
-            'orders' => Order::ofBusiness()->paginate(request('perPage') ?? 10),
+            'orders' => Order::ForBusiness($request->search)
+                ->paginate($request->perPage ?? 10),
         ]);
     }
 

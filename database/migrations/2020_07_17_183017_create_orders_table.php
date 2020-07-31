@@ -17,7 +17,7 @@ class CreateOrdersTable extends Migration
             $table->id();
             $table->foreignId('space_id')->constrained('spaces');
             $table->foreignId('user_id');
-            $table->foreignId('status_id')->default(1);
+            $table->string('status')->default('Pending');
             $table->string('uid')->unique()->index();
             $table->string('name')->index();
             $table->string('email')->index();
