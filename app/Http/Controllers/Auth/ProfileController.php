@@ -19,6 +19,8 @@ class ProfileController extends Controller
     {
         $this->authorize('manage', $user = user());
 
+        $user = $user->load('business');
+
         return view('auth.users.edit', compact('user'));
     }
 

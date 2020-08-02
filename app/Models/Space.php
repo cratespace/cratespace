@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Carbon\Carbon;
+use App\Filters\Filter;
 use App\Support\Formatter;
 use App\Models\Casts\PriceCast;
 use App\Models\Traits\Filterable;
@@ -28,7 +29,7 @@ class Space extends Model implements Statusable, Priceable
      *
      * @var array
      */
-    protected $appends = ['status'];
+    protected $appends = ['path'];
 
     /**
      * The attributes that should be cast to native types.
@@ -81,7 +82,7 @@ class Space extends Model implements Statusable, Priceable
 
                 break;
 
-            default:
+            case $this->hasOrder():
                 return 'Ordered';
 
                 break;
@@ -118,6 +119,67 @@ class Space extends Model implements Statusable, Priceable
     }
 
     /**
+     * Get all spaces associated with the currently authenticated business.
+     *
+     * @param \Illuminate\Database\Query\Builder $query
+     * @param \App\Filters\Filter                $filters
+     * @param string|null                        $search
+     *
+     * @return \Illuminate\Database\Query\Builder
+     */
+    public function scopeOfBusiness($query, Filter $filters, ?string $search = null)
+    {
+        $query->addSelect([
+                'order_id' => Order::select('uid')
+                    ->whereColumn('space_id', 'spaces.id')
+                    ->latest()
+                    ->take(1),
+            ])
+            ->whereUserId(user('id'))
+            ->filter($filters)
+            ->search($search)
+            ->latest('created_at');
+    }
+
+    /**
+     * Search for orders with given like terms.
+     *
+     * @param \Illuminate\Database\Query\Builder $query
+     * @param string|null                        $terms
+     *
+     * @return \Illuminate\Database\Query\Builder
+     */
+    public function scopeSearch($query, ?string $terms = null)
+    {
+        if (is_null($terms)) {
+            return $query;
+        }
+
+        collect(str_getcsv($terms, ' ', '"'))->filter()->each(function ($term) use ($query) {
+            $term = preg_replace('/[^A-Za-z0-9]/', '', $term) . '%';
+
+            $query->whereIn('id', function ($query) use ($term) {
+                $query->select('id')
+                    ->from(function ($query) use ($term) {
+                        $query->select('spaces.id')
+                            ->from('spaces')
+                            ->where('spaces.uid', 'like', $term)
+                            ->orWhere('spaces.origin', 'like', $term)
+                            ->orWhere('spaces.destination', 'like', $term)
+                            ->orWhere('spaces.height', 'like', $term)
+                            ->orWhere('spaces.width', 'like', $term)
+                            ->orWhere('spaces.length', 'like', $term)
+                            ->orWhere('spaces.weight', 'like', $term)
+                            ->orWhere('spaces.type', 'like', $term)
+                            ->orWhere('spaces.price', 'like', $term)
+                            ->orWhere('spaces.departs_at', 'like', $term)
+                            ->orWhere('spaces.arrives_at', 'like', $term);
+                    }, 'matches');
+            });
+        });
+    }
+
+    /**
      * Determine if the resource is available to perform an action on.
      *
      * @return bool
@@ -125,20 +187,46 @@ class Space extends Model implements Statusable, Priceable
     public function isAvailable(): bool
     {
         if (!$this->isExpired()) {
-            return !$this->order()->exists();
+            return !$this->hasOrder();
         }
 
         return false;
     }
 
     /**
-     * Determine if the space departure date is close or has passwed.
+     * Determine if the space is associated with an order.
+     *
+     * @return bool
+     */
+    public function hasOrder(): bool
+    {
+        if (is_null($this->order_id)) {
+            return $this->order()->exists();
+        }
+
+        return $this->order_id ? true : false;
+    }
+
+    /**
+     * Determine if the space departure date is close or has passed.
      *
      * @return bool
      */
     public function isExpired(): bool
     {
         return $this->departs_at <= Carbon::now();
+    }
+
+    public function scopeDeparting($query)
+    {
+        return $query->addSelect([
+            'business' => Business::select('name')
+                ->whereColumn('user_id', 'spaces.user_id')
+                ->latest()
+                ->take(1),
+            ])
+            ->whereDate('departs_at', '=', Carbon::now())
+            ->latest('departs_at');
     }
 
     /**
@@ -153,11 +241,32 @@ class Space extends Model implements Statusable, Priceable
         return $query->addSelect([
             'business' => Business::select('name')
                 ->whereColumn('user_id', 'spaces.user_id')
+                ->latest()
                 ->take(1),
             ])
             ->whereDate('departs_at', '>', Carbon::now())
             ->doesntHave('order')
             ->latest();
+    }
+
+    /**
+     * Get full path to resource page.
+     *
+     * @return string
+     */
+    public function getPathAttribute()
+    {
+        return $this->path();
+    }
+
+    /**
+     * Get full url to order page.
+     *
+     * @return string
+     */
+    public function path(): string
+    {
+        return route('spaces.show', $this);
     }
 
     /**

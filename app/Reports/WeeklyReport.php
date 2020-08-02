@@ -44,7 +44,7 @@ class WeeklyReport extends Report implements ReportContract
      */
     protected function getFromDate(): string
     {
-        return $this->subDay()->startOfWeek()->toDateString();
+        return $this->subDay()->startOfWeek(Carbon::MONDAY)->toDateString();
     }
 
     /**
@@ -54,7 +54,7 @@ class WeeklyReport extends Report implements ReportContract
      */
     protected function getTillDate(): string
     {
-        return $this->subDay()->endOfWeek()->toDateString();
+        return $this->subDay()->endOfWeek(Carbon::SUNDAY)->toDateString();
     }
 
     /**
