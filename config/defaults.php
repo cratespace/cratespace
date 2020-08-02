@@ -25,7 +25,7 @@ return [
         'slug' => 'cratespace',
         'description' => 'Nullam id dolor id nibh ultricies vehicula ut id elit.',
         'street' => '22 Auburn Side',
-        'city' => 'Sri Lanka',
+        'city' => 'Colombo',
         'state' => 'Western',
         'country' => 'Sri Lanka',
         'postcode' => 13500,
