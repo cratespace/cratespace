@@ -5084,6 +5084,10 @@ h6 {
   box-shadow: -9px 0px 30px -26px rgba(0, 0, 0, 0.23);
 }
 
+.w-80 {
+  width: 20rem;
+}
+
 .space-y-0 > :not(template) ~ :not(template){
   --space-y-reverse: 0;
   margin-top: calc(0px * calc(1 - var(--space-y-reverse)));

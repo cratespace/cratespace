@@ -28,7 +28,7 @@
                             <div class="flex items-start justify-between">
                                 <div class="leading-tight">
                                     <div>
-                                        <span class="uppercase tracking-wide text-xs font-normal text-gray-500">Total Orders</span>
+                                        <span class="uppercase tracking-wide text-xs font-normal text-gray-500">Available Spaces</span>
                                     </div>
 
                                     <div class="flex items-baseline">
@@ -48,7 +48,7 @@
                             <div class="flex items-start justify-between">
                                 <div class="leading-tight">
                                     <div>
-                                        <span class="uppercase tracking-wide text-xs font-normal text-gray-500">Total Orders</span>
+                                        <span class="uppercase tracking-wide text-xs font-normal text-gray-500">Customers</span>
                                     </div>
 
                                     <div class="flex items-baseline">

@@ -1,14 +1,10 @@
 @extends('business.layouts.crm', [
-    'pageTitle' => 'Orders',
-    'resourceName' => 'orders',
+    'pageTitle' => 'Spaces',
+    'resourceName' => 'spaces',
     'statuses' => [
-        'Pending',
-        'Approved',
-        'Canceled',
-        'Rejected',
-        'Completed',
-        'Shipped',
-        'Delivered'
+        'Available',
+        'Ordered',
+        'Expired'
     ]
 ])
 
@@ -16,15 +12,11 @@
     <x-tables._normal>
         <x-slot name="head">
             <th class="px-6 py-3 border-b border-gray-200 bg-gray-100 text-left text-xs leading-4 font-medium uppercase tracking-wider">
-                Order/Customer
-            </th>
-
-            <th class="px-6 py-3 border-b border-gray-200 bg-gray-100 text-left text-xs leading-4 font-medium uppercase tracking-wider">
                 Space/Departs
             </th>
 
             <th class="px-6 py-3 border-b border-gray-200 bg-gray-100 text-left text-xs leading-4 font-medium uppercase tracking-wider">
-                Total
+                Price
             </th>
 
             <th class="px-6 py-3 border-b border-gray-200 bg-gray-100 text-left text-xs leading-4 font-medium uppercase tracking-wider">
@@ -32,55 +24,48 @@
             </th>
 
             <th class="px-6 py-3 border-b border-gray-200 bg-gray-100 text-left text-xs leading-4 font-medium uppercase tracking-wider">
-                Placed
+                Departs
+            </th>
+
+            <th class="px-6 py-3 border-b border-gray-200 bg-gray-100 text-left text-xs leading-4 font-medium uppercase tracking-wider">
+                Arrives
             </th>
 
             <th class="px-6 py-3 border-b border-gray-200 bg-gray-100"></th>
         </x-slot>
 
         <x-slot name="body">
-            @forelse ($resource as $order)
+            @forelse ($resource as $space)
                 <tr>
-                    <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
-                        <div class="flex items-center">
-                            <div>
-                                <div class="text-sm leading-5 text-gray-800 font-semibold">
-                                    <a href="#">{{ '#' . $order->uid }}</a>
-                                </div>
-
-                                <div class="mt-1 text-sm leading-5 font-medium text-gray-800">{{ $order->name }}</div>
-
-                                <div class="text-sm leading-5">{{ $order->phone }}</div>
-                            </div>
-                        </div>
-                    </td>
-
                     <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
                         <div class="mt-1">
                             <div class="text-sm leading-5 text-gray-800 font-semibold">
-                                <a href="{{ $order->space->path }}">{{ $order->space->uid }}</a>
+                                <a href="{{ $space->path }}">{{ $space->uid }}</a>
                             </div>
 
-                            <div class="text-xs leading-5">{{ $order->space->departs_at->diffForHumans() }}</div>
-
-                            <div class="text-xs leading-5">{{ $order->space->schedule->departsAt }}</div>
+                            <div class="text-xs leading-5">{{ 'Added ' . $space->created_at->diffForHumans() }}</div>
                         </div>
                     </td>
 
                     <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200 text-sm leading-4">
-                        <div class="font-bold text-gray-800">{{ $order->present()->total }}</div>
+                        <div class="font-bold text-gray-800">{{ $space->price }}</div>
                         <span class="text-xs">USD</span>
                     </td>
 
                     <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
-                        <span class="px-2 inline-flex text-sm leading-5 font-medium rounded-full bg-yellow-100 text-yellow-800">
-                            {{ $order->status }}
+                        <span class="px-2 inline-flex text-sm leading-5 font-medium rounded-full bg-blue-100 text-blue-800">
+                            {{ $space->status }}
                         </span>
                     </td>
 
                     <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200 text-sm leading-5">
-                        <div>{{ $order->created_at->format('M j, Y') }}</div>
-                        <div class="text-xs">{{ $order->created_at->format('g:ia') }}</div>
+                        <div>{{ $space->schedule->departsAt }}</div>
+                        <div class="text-xs">{{ $space->departs_at->diffForHumans() }}</div>
+                    </td>
+
+                    <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200 text-sm leading-5">
+                        <div>{{ $space->schedule->arrivesAt }}</div>
+                        <div class="text-xs">{{ $space->arrives_at->diffForHumans() }}</div>
                     </td>
 
                     <td class="px-6 py-4 whitespace-no-wrap text-right border-b border-gray-200 text-sm leading-5 font-medium">
