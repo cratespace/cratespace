@@ -127,6 +127,7 @@ class SpaceTest extends TestCase
         $this->assertFalse($expiredSpace->isAvailable());
         $this->assertTrue($expiredSpace->isExpired());
         $this->assertFalse($orderedSpace->isAvailable());
+        $this->assertTrue($orderedSpace->hasOrder());
     }
 
     /** @test */

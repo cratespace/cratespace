@@ -5,6 +5,8 @@ namespace Tests\Unit\Resources;
 use Tests\TestCase;
 use App\Models\Order;
 use App\Models\Space;
+use App\Filters\OrderFilter;
+use Illuminate\Http\Request;
 use App\Events\OrderStatusUpdated;
 use App\Billing\Charges\Calculator;
 use Illuminate\Support\Facades\Event;
@@ -88,7 +90,8 @@ class OrderTest extends TestCase
         $extrenalOrders = create(Order::class, ['user_id' => 999], 10);
         $businessOrders = create(Order::class, ['user_id' => $user->id], 10);
 
-        $orders = Order::ForBusiness()->get();
+        $orderFilter = new OrderFilter(Request::create('/', 'GET'));
+        $orders = Order::ForBusiness($orderFilter)->get();
 
         foreach ($extrenalOrders as $extrenalOrder) {
             $this->assertFalse($orders->contains($extrenalOrder));
