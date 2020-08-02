@@ -12,7 +12,7 @@ class FakePaymentGateway extends PaymentGateway implements PaymentGatewayContrac
     /**
      * Test credit card number.
      */
-    public const TEST_CARD_NUMBER = '4242424242424242';
+    public const TEST_CARD_NUMBER = 4242424242424242;
 
     /**
      * List of fake payment tokens.
