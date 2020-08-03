@@ -114,4 +114,21 @@ class StripePaymentGateway extends PaymentGateway implements PaymentGatewayContr
     {
         return new StripeClient($this->apiKey);
     }
+
+    /**
+     * Generate valid stripe token.
+     *
+     * @param array $card
+     *
+     * @return string
+     */
+    public function generateStripeToken(array $card)
+    {
+        $tokenObject = $this->makeStripeClient()->tokens->create(
+            ['card' => $card],
+            ['api_key' => $this->apiKey]
+        );
+
+        return $tokenObject->id;
+    }
 }

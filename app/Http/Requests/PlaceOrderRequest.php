@@ -40,4 +40,19 @@ class PlaceOrderRequest extends FormRequest
             'cvc' => ['required', new CardCvc($this->get('card_number'))],
         ]);
     }
+
+    /**
+     * Get card details provided by request.
+     *
+     * @return array
+     */
+    public function getCardDetails(): array
+    {
+        return [
+            'number' => $this->card_number,
+            'exp_month' => $this->expiration_month,
+            'exp_year' => $this->expiration_year,
+            'cvc' => $this->cvc,
+        ];
+    }
 }

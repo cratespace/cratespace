@@ -38,8 +38,12 @@ class SpaceOrderController extends Controller
     {
         $order = $space->placeOrder($request->except('payment_token'));
 
+        $token = $this->paymentGateway->generateStripeToken(
+            $request->getCardDetails()
+        );
+
         try {
-            $this->paymentGateway->charge($order->total, $request->payment_token);
+            $this->paymentGateway->charge($order->total, $token);
         } catch (PaymentFailedException $exception) {
             $order->delete();
 
@@ -51,7 +55,7 @@ class SpaceOrderController extends Controller
         }
 
         return $this->success(
-            'public.commons.thank-you',
+            route('thank-you'),
             'Order successfully processed.'
         );
     }

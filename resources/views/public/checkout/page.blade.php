@@ -3,12 +3,6 @@
 @section('body')
     <section class="py-16 bg-white lg:bg-transparent">
         <div class="container">
-            <div class="mb-8 row">
-                <div class="col-12">
-                    <span class="px-2 py-1 bg-gray-200 text-gray-800 rounded-lg overflow-hidden font-semibold text-sm">{{ $paymentToken }}</span>
-                </div>
-            </div>
-
             <div class="row">
                 <div class="col-lg-5 mb-6 xl:mb-0 flex items-center">
                     <div class="flex-1">
@@ -136,8 +130,6 @@
 
                         <form action="{{ route('spaces.orders', $space) }}" method="POST">
                             @csrf
-
-                            <input type="hidden" name="payment_token" value="{{ $paymentToken }}">
 
                             <div class="row">
                                 <div class="col-md-6 mt-4">

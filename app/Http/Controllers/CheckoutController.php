@@ -34,7 +34,6 @@ class CheckoutController extends Controller
     public function show(Space $space)
     {
         return view('public.checkout.page', [
-            'paymentToken' => $this->paymentGateway->getValidTestToken(),
             'space' => $space,
             'charges' => $this->calculateCharges($space),
         ]);

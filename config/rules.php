@@ -47,7 +47,7 @@ return [
      */
     'order' => [
         'email' => ['required', 'string', 'email', 'max:255'],
-        'payment_token' => ['required', 'string'],
+        'payment_token' => ['nullable', 'string'],
     ],
 
     /*
