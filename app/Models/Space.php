@@ -3,10 +3,10 @@
 namespace App\Models;
 
 use Carbon\Carbon;
-use App\Filters\Filter;
 use App\Support\Formatter;
 use App\Models\Casts\PriceCast;
 use App\Models\Traits\Filterable;
+use App\Models\Traits\Searchable;
 use App\Models\Casts\ScheduleCast;
 use App\Models\Traits\Presentable;
 use App\Contracts\Models\Priceable;
@@ -23,6 +23,7 @@ class Space extends Model implements Statusable, Priceable
     use ManagesPricing;
     use GetsPathToResource;
     use GeneratesUID;
+    use Searchable;
 
     /**
      * The accessors to append to the model's array form.
@@ -116,67 +117,6 @@ class Space extends Model implements Statusable, Priceable
             ->whereUserId($this->user_id)
             ->first()
             ->name;
-    }
-
-    /**
-     * Get all spaces associated with the currently authenticated business.
-     *
-     * @param \Illuminate\Database\Query\Builder $query
-     * @param \App\Filters\Filter                $filters
-     * @param string|null                        $search
-     *
-     * @return \Illuminate\Database\Query\Builder
-     */
-    public function scopeOfBusiness($query, Filter $filters, ?string $search = null)
-    {
-        $query->addSelect([
-                'order_id' => Order::select('uid')
-                    ->whereColumn('space_id', 'spaces.id')
-                    ->latest()
-                    ->take(1),
-            ])
-            ->whereUserId(user('id'))
-            ->filter($filters)
-            ->search($search)
-            ->latest('created_at');
-    }
-
-    /**
-     * Search for orders with given like terms.
-     *
-     * @param \Illuminate\Database\Query\Builder $query
-     * @param string|null                        $terms
-     *
-     * @return \Illuminate\Database\Query\Builder
-     */
-    public function scopeSearch($query, ?string $terms = null)
-    {
-        if (is_null($terms)) {
-            return $query;
-        }
-
-        collect(str_getcsv($terms, ' ', '"'))->filter()->each(function ($term) use ($query) {
-            $term = preg_replace('/[^A-Za-z0-9]/', '', $term) . '%';
-
-            $query->whereIn('id', function ($query) use ($term) {
-                $query->select('id')
-                    ->from(function ($query) use ($term) {
-                        $query->select('spaces.id')
-                            ->from('spaces')
-                            ->where('spaces.uid', 'like', $term)
-                            ->orWhere('spaces.origin', 'like', $term)
-                            ->orWhere('spaces.destination', 'like', $term)
-                            ->orWhere('spaces.height', 'like', $term)
-                            ->orWhere('spaces.width', 'like', $term)
-                            ->orWhere('spaces.length', 'like', $term)
-                            ->orWhere('spaces.weight', 'like', $term)
-                            ->orWhere('spaces.type', 'like', $term)
-                            ->orWhere('spaces.price', 'like', $term)
-                            ->orWhere('spaces.departs_at', 'like', $term)
-                            ->orWhere('spaces.arrives_at', 'like', $term);
-                    }, 'matches');
-            });
-        });
     }
 
     /**
