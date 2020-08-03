@@ -34,7 +34,7 @@
 
                 <div class="col-lg-8">
                     <form action="{{ route('users.update', $user) }}" method="POST" enctype="multipart/form-data">
-                        <x-cards._full hasFooter="true">
+                        <div>
                             @csrf
 
                             @method('PUT')
@@ -71,12 +71,10 @@
                                 </div>
                             </div>
 
-                            <x-slot name="footer">
-                                <div class="bg-gray-100 px-4 py-3 sm:px-6 flex items-center justify-end">
-                                    <button class="btn btn-primary ml-3" type="submit">Save</button>
-                                </div>
-                            </x-slot>
-                        </x-cards._full>
+                            <div class="mt-6 py-3 flex items-center justify-end">
+                                <button class="btn btn-primary ml-3" type="submit">Save</button>
+                            </div>
+                        </div>
                     </form>
                 </div>
             </div>
@@ -98,7 +96,7 @@
 
                 <div class="col-lg-8">
                     <form action="{{ route('users.update', $user) }}" method="POST" enctype="multipart/form-data">
-                        <x-cards._full hasFooter="true">
+                        <div>
                             @csrf
 
                             @method('PUT')
@@ -131,12 +129,10 @@
                                 @include('components.forms.fields._description', ['description' => $user->business->description])
                             </div>
 
-                            <x-slot name="footer">
-                                <div class="bg-gray-100 px-4 py-3 sm:px-6 flex items-center justify-end">
-                                    <button class="btn btn-primary ml-3" type="submit">Save</button>
-                                </div>
-                            </x-slot>
-                        </x-cards._full>
+                            <div class="mt-6 py-3 flex items-center justify-end">
+                                <button class="btn btn-primary ml-3" type="submit">Save</button>
+                            </div>
+                        </div>
                     </form>
                 </div>
             </div>
@@ -158,7 +154,7 @@
 
                 <div class="col-lg-8">
                     <form action="{{ route('users.update', $user) }}" method="POST" enctype="multipart/form-data">
-                        <x-cards._full hasFooter="true">
+                        <div>
                             @csrf
 
                             @method('PUT')
@@ -187,12 +183,10 @@
                                 </div>
                             </div>
 
-                            <x-slot name="footer">
-                                <div class="bg-gray-100 px-4 py-3 sm:px-6 flex items-center justify-end">
-                                    <button class="btn btn-primary ml-3" type="submit">Save</button>
-                                </div>
-                            </x-slot>
-                        </x-cards._full>
+                            <div class="mt-6 py-3 flex items-center justify-end">
+                                <button class="btn btn-primary ml-3" type="submit">Save</button>
+                            </div>
+                        </div>
                     </form>
                 </div>
             </div>
@@ -214,7 +208,7 @@
 
                 <div class="col-lg-8">
                     <form action="{{ route('users.password', $user) }}" method="POST" enctype="multipart/form-data">
-                        <x-cards._full hasFooter="true">
+                        <div>
                             @csrf
 
                             @method('PUT')
@@ -265,12 +259,10 @@
                                 </div>
                             </div>
 
-                            <x-slot name="footer">
-                                <div class="bg-gray-100 px-4 py-3 sm:px-6 flex items-center justify-end">
-                                    <button class="btn btn-primary ml-3" type="submit">Save</button>
-                                </div>
-                            </x-slot>
-                        </x-cards._full>
+                            <div class="mt-6 py-3 flex items-center justify-end">
+                                <button class="btn btn-primary ml-3" type="submit">Save</button>
+                            </div>
+                        </div>
                     </form>
                 </div>
             </div>
@@ -292,15 +284,13 @@
 
                 <div class="col-lg-8">
                     <form action="{{ route('users.update', $user) }}" method="POST" enctype="multipart/form-data">
-                        <x-cards._full hasFooter="true">
+                        <div>
                             {{--  --}}
 
-                            <x-slot name="footer">
-                                <div class="bg-gray-100 px-4 py-3 sm:px-6 flex items-center justify-end">
-                                    <button class="btn btn-primary ml-3" type="submit">Save</button>
-                                </div>
-                            </x-slot>
-                        </x-cards._full>
+                            <div class="mt-6 py-3 flex items-center justify-end">
+                                <button class="btn btn-primary ml-3" type="submit">Save</button>
+                            </div>
+                        </div>
                     </form>
                 </div>
             </div>
@@ -321,7 +311,7 @@
                 </div>
 
                 <div class="col-lg-8">
-                    <x-cards._full>
+                    <div>
                         <h5 class="text-lg font-medium text-gray-800 mb-3">
                             Delete your account
                         </h5>
@@ -333,7 +323,7 @@
                         <div>
                             <button class="btn bg-red-200 text-red-800" type="button" data-toggle="modal" data-target="#deleteModal{{ $user->username }}">Delete account</button>
                         </div>
-                    </x-cards._full>
+                    </div>
                 </div>
             </div>
         </div>

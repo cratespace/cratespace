@@ -14,8 +14,8 @@
 
 <ul>
     @forelse ($pendingOrders as $order)
-        <li class="mb-3 rounded-lg shadow overflow-hidden">
-            <a href="/" class="block bg-white px-4 py-5 sm:px-6">
+        <li class="mb-3 rounded-lg overflow-hidden">
+            <a href="/" class="block bg-gray-100 px-4 py-5 sm:px-6">
                 <div class="flex items-center justify-between">
                     <div>
                         <div class="text-sm leading-5 text-blue-500 font-semibold">

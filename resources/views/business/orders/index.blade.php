@@ -15,33 +15,33 @@
 @section('crm-content')
     <x-tables._normal>
         <x-slot name="head">
-            <th class="px-6 py-3 border-b border-gray-200 bg-gray-100 text-left text-xs leading-4 font-medium uppercase tracking-wider">
+            <th class="px-6 py-3 border-b border-gray-200 bg-gray-200 text-left text-xs leading-4 font-medium uppercase tracking-wider">
                 Order/Customer
             </th>
 
-            <th class="px-6 py-3 border-b border-gray-200 bg-gray-100 text-left text-xs leading-4 font-medium uppercase tracking-wider">
+            <th class="px-6 py-3 border-b border-gray-200 bg-gray-200 text-left text-xs leading-4 font-medium uppercase tracking-wider">
                 Space/Departs
             </th>
 
-            <th class="px-6 py-3 border-b border-gray-200 bg-gray-100 text-left text-xs leading-4 font-medium uppercase tracking-wider">
+            <th class="px-6 py-3 border-b border-gray-200 bg-gray-200 text-left text-xs leading-4 font-medium uppercase tracking-wider">
                 Total
             </th>
 
-            <th class="px-6 py-3 border-b border-gray-200 bg-gray-100 text-left text-xs leading-4 font-medium uppercase tracking-wider">
+            <th class="px-6 py-3 border-b border-gray-200 bg-gray-200 text-left text-xs leading-4 font-medium uppercase tracking-wider">
                 Status
             </th>
 
-            <th class="px-6 py-3 border-b border-gray-200 bg-gray-100 text-left text-xs leading-4 font-medium uppercase tracking-wider">
+            <th class="px-6 py-3 border-b border-gray-200 bg-gray-200 text-left text-xs leading-4 font-medium uppercase tracking-wider">
                 Placed
             </th>
 
-            <th class="px-6 py-3 border-b border-gray-200 bg-gray-100"></th>
+            <th class="px-6 py-3 border-b border-gray-200 bg-gray-200"></th>
         </x-slot>
 
         <x-slot name="body">
             @forelse ($resource as $order)
                 <tr>
-                    <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
+                    <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200 bg-gray-100">
                         <div class="flex items-center">
                             <div>
                                 <div class="text-sm leading-5 text-gray-800 font-semibold">
@@ -55,7 +55,7 @@
                         </div>
                     </td>
 
-                    <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
+                    <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200 bg-gray-100">
                         <div class="mt-1">
                             <div class="text-sm leading-5 text-gray-800 font-semibold">
                                 <a href="{{ $order->space->path }}">{{ $order->space->uid }}</a>
@@ -67,29 +67,29 @@
                         </div>
                     </td>
 
-                    <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200 text-sm leading-4">
+                    <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200 bg-gray-100 text-sm leading-4">
                         <div class="font-bold text-gray-800">{{ $order->present()->total }}</div>
                         <span class="text-xs">USD</span>
                     </td>
 
-                    <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
+                    <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200 bg-gray-100">
                         <span class="px-2 inline-flex text-sm leading-5 font-medium rounded-full bg-yellow-100 text-yellow-800">
                             {{ $order->status }}
                         </span>
                     </td>
 
-                    <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200 text-sm leading-5">
+                    <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200 bg-gray-100 text-sm leading-5">
                         <div>{{ $order->created_at->format('M j, Y') }}</div>
                         <div class="text-xs">{{ $order->created_at->format('g:ia') }}</div>
                     </td>
 
-                    <td class="px-6 py-4 whitespace-no-wrap text-right border-b border-gray-200 text-sm leading-5 font-medium">
+                    <td class="px-6 py-4 whitespace-no-wrap text-right border-b border-gray-200 bg-gray-100 text-sm leading-5 font-medium">
                         <a href="#">Manage</a>
                     </td>
                 </tr>
             @empty
                 <tr>
-                    <td class="px-6 py-4 whitespace-no-wrap text-left border-b border-gray-200 text-sm leading-5 font-medium">
+                    <td class="px-6 py-4 whitespace-no-wrap text-left border-b border-gray-200 bg-gray-100 text-sm leading-5 font-medium">
                         No results found.
                     </td>
 
