@@ -66,15 +66,17 @@ class FakePaymentGateway extends PaymentGateway implements PaymentGatewayContrac
     }
 
     /**
-     * Generate fake payment token for testing.
+     * Generate payment token.
+     *
+     * @param array $card
      *
      * @return string
      */
-    public function getValidTestToken($cardNumber = self::TEST_CARD_NUMBER)
+    public function generateToken(array $card): string
     {
         $token = 'fake-tok_' . Str::random(24);
 
-        $this->tokens[$token] = $cardNumber;
+        $this->tokens[$token] = $card['card_number'] ?? self::TEST_CARD_NUMBER;
 
         return $token;
     }

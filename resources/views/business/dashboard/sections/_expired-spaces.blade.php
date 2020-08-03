@@ -71,7 +71,7 @@
         </li>
     @empty
         <li class="mb-3">
-            <span class="text-sm text-gray-500 font-medium">No spaces pending</span>
+            <span class="text-sm text-gray-500 font-medium">No spaces departing today</span>
         </li>
     @endforelse
 </ul>

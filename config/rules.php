@@ -46,6 +46,9 @@ return [
      * Order Inputs Rules
      */
     'order' => [
+        'name' => ['required', 'string', 'max:255'],
+        'business' => ['nullable', 'string', 'max:255'],
+        'phone' => ['required', 'integer', 'min:9'],
         'email' => ['required', 'string', 'email', 'max:255'],
         'payment_token' => ['nullable', 'string'],
     ],

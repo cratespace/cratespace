@@ -36,9 +36,9 @@ class SpaceOrderController extends Controller
      */
     public function store(PlaceOrderRequest $request, Space $space)
     {
-        $order = $space->placeOrder($request->except('payment_token'));
+        $order = $space->placeOrder($request->validated());
 
-        $token = $this->paymentGateway->generateStripeToken(
+        $token = $request->payment_token ?? $this->paymentGateway->generateToken(
             $request->getCardDetails()
         );
 

@@ -13,7 +13,7 @@ class FakePaymentGatewayTest extends TestCase
     {
         $paymentGateway = new FakePaymentGateway();
 
-        $paymentGateway->charge(2500, $paymentGateway->getValidTestToken());
+        $paymentGateway->charge(2500, $paymentGateway->generateToken([]));
 
         $this->assertEquals(2500, $paymentGateway->totalCharges());
     }
@@ -47,14 +47,14 @@ class FakePaymentGatewayTest extends TestCase
         $timesCallbackRan = 0;
 
         $paymentGateway->beforeFirstCharge(function ($paymentGateway) use (&$timesCallbackRan) {
-            $paymentGateway->charge(1200, $paymentGateway->getValidTestToken());
+            $paymentGateway->charge(1200, $paymentGateway->generateToken([]));
 
             ++$timesCallbackRan;
 
             $this->assertEquals(1200, $paymentGateway->totalCharges());
         });
 
-        $paymentGateway->charge(1200, $paymentGateway->getValidTestToken());
+        $paymentGateway->charge(1200, $paymentGateway->generateToken([]));
         $this->assertEquals(1, $timesCallbackRan);
         $this->assertEquals(2400, $paymentGateway->totalCharges());
     }

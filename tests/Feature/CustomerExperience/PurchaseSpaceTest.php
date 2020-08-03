@@ -37,16 +37,22 @@ class PurchaseSpaceTest extends TestCase
     /** @test */
     public function a_customer_can_purchase_a_space()
     {
+        $this->withoutExceptionHandling();
+
         config()->set('charges.service', 0.5);
 
         $space = create(Space::class, ['price' => 32.50, 'tax' => 0.5]);
+
+        $card = [
+            'card_number' => $this->paymentGateway::TEST_CARD_NUMBER,
+        ];
 
         $response = $this->orderSpace($space, [
             'name' => 'John Doe',
             'business' => 'Example, Co.',
             'phone' => '765487368',
             'email' => 'john@example.com',
-            'payment_token' => $this->paymentGateway->getValidTestToken(),
+            'payment_token' => $this->paymentGateway->generateToken($card),
         ]);
 
         $response->assertStatus(201)->assertJson([
@@ -70,7 +76,7 @@ class PurchaseSpaceTest extends TestCase
         $space = create(Space::class, ['price' => 32.50]);
 
         $response = $this->orderSpace($space, [
-            'payment_token' => $this->paymentGateway->getValidTestToken(),
+            'payment_token' => $this->paymentGateway->generateToken([]),
         ]);
 
         $this->assertValidationError($response, 'email');
@@ -86,14 +92,14 @@ class PurchaseSpaceTest extends TestCase
             'name' => 'John Doe',
             'business' => 'Example, Co.',
             'phone' => '765487368',
-            'payment_token' => $this->paymentGateway->getValidTestToken(),
+            'payment_token' => $this->paymentGateway->generateToken([]),
         ]);
 
         $this->assertValidationError($response, 'email');
     }
 
     /** @test */
-    public function an_valid_payment_token_is_required_to_purchase_spaces()
+    public function a_valid_payment_token_is_required_to_purchase_spaces()
     {
         $space = create(Space::class, ['price' => 32.50]);
 
@@ -102,6 +108,7 @@ class PurchaseSpaceTest extends TestCase
             'name' => 'John Doe',
             'business' => 'Example, Co.',
             'phone' => '765487368',
+            'payment_token' => 'invalid-payment-token',
         ]);
 
         $this->assertValidationError($response, 'payment_token');
@@ -140,7 +147,7 @@ class PurchaseSpaceTest extends TestCase
             'name' => 'John Doe',
             'business' => 'Example, Co.',
             'phone' => '765487368',
-            'payment_token' => $this->paymentGateway->getValidTestToken(),
+            'payment_token' => $this->paymentGateway->generateToken([]),
         ]);
 
         // The request will only be authorized if the space status is
@@ -151,7 +158,7 @@ class PurchaseSpaceTest extends TestCase
 
         $response = $this->orderSpace($orderedSpace, [
             'email' => 'john@example.com',
-            'payment_token' => $this->paymentGateway->getValidTestToken(),
+            'payment_token' => $this->paymentGateway->generateToken([]),
         ]);
 
         $response->assertStatus(403);
@@ -168,7 +175,7 @@ class PurchaseSpaceTest extends TestCase
         $this->paymentGateway->beforeFirstCharge(function ($paymentGateway) use ($space) {
             $response = $this->orderSpace($space, $this->orderDetails([
                 'email' => 'john.bernard@example.com',
-                'payment_token' => $this->paymentGateway->getValidTestToken(),
+                'payment_token' => $this->paymentGateway->generateToken([]),
             ]));
 
             $response->assertStatus(403);
@@ -177,11 +184,11 @@ class PurchaseSpaceTest extends TestCase
         });
 
         $response = $this->orderSpace($space, $this->orderDetails([
-            'email' => 'john.buyan@example.com',
-            'payment_token' => $this->paymentGateway->getValidTestToken(),
+            'email' => 'john.bunyan@example.com',
+            'payment_token' => $this->paymentGateway->generateToken([]),
         ]));
 
-        $order = Order::whereEmail('john.buyan@example.com')->first();
+        $order = Order::whereEmail('john.bunyan@example.com')->first();
 
         $response->assertStatus(201);
         $this->assertFalse(is_null($order));

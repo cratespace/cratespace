@@ -20,4 +20,13 @@ interface PaymentGateway
      * @return void
      */
     public function charge(int $amount, string $paymentToken): void;
+
+    /**
+     * Generate payment token.
+     *
+     * @param array $card
+     *
+     * @return string
+     */
+    public function generateToken(array $card): string;
 }
