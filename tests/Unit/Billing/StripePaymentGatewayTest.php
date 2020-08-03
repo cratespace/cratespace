@@ -17,13 +17,14 @@ class StripePaymentGatewayTest extends TestCase
 
         $paymentGatewayFirst->charge(2400, $this->generateStripeToken($apiKey));
 
-        $lastChargeId = $paymentGatewayFirst->charges()->last()->id;
+        $firstChargeId = $paymentGatewayFirst->charges()->last()->id;
 
         $paymentGatewayLast = new StripePaymentGateway($apiKey);
 
         $paymentGatewayLast->charge(2500, $this->generateStripeToken($apiKey));
 
-        $this->assertEquals(2500, $paymentGatewayLast->newChargesSince($lastChargeId)->last()->amount);
+        $this->assertCount(1, $paymentGatewayLast->newChargesSince($firstChargeId));
+        $this->assertEquals(2500, $paymentGatewayLast->newChargesSince($firstChargeId)->last()->amount);
     }
 
     /**
