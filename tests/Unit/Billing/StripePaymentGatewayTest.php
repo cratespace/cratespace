@@ -8,23 +8,42 @@ use App\Billing\PaymentGateways\StripePaymentGateway;
 
 class StripePaymentGatewayTest extends TestCase
 {
+    /**
+     * Stripe test secret key.
+     *
+     * @var string
+     */
+    protected $apiKey;
+
+    /**
+     * ID of latest charge made.
+     *
+     * @var string
+     */
+    protected $lastChargeId;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->apiKey = config('services.stripe.secret');
+
+        $paymentGatewayFirst = new StripePaymentGateway($this->apiKey);
+
+        $paymentGatewayFirst->charge(2400, $this->generateStripeToken($this->apiKey));
+
+        $this->lastChargeId = $paymentGatewayFirst->charges()->last()->id;
+    }
+
     /** @test */
     public function charges_with_a_valid_payment_token_are_successful()
     {
-        $apiKey = config('services.stripe.secret');
+        $newPaymentGateway = new StripePaymentGateway($this->apiKey);
 
-        $paymentGatewayFirst = new StripePaymentGateway($apiKey);
+        $newPaymentGateway->charge(2500, $this->generateStripeToken($this->apiKey));
 
-        $paymentGatewayFirst->charge(2400, $this->generateStripeToken($apiKey));
-
-        $firstChargeId = $paymentGatewayFirst->charges()->last()->id;
-
-        $paymentGatewayLast = new StripePaymentGateway($apiKey);
-
-        $paymentGatewayLast->charge(2500, $this->generateStripeToken($apiKey));
-
-        $this->assertCount(1, $paymentGatewayLast->newChargesSince($firstChargeId));
-        $this->assertEquals(2500, $paymentGatewayLast->newChargesSince($firstChargeId)->last()->amount);
+        $this->assertCount(1, $newPaymentGateway->newChargesSince($this->lastChargeId));
+        $this->assertEquals(2500, $newPaymentGateway->newChargesSince($this->lastChargeId)->last()->amount);
     }
 
     /**
