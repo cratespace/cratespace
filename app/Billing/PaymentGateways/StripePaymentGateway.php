@@ -5,6 +5,8 @@ namespace App\Billing\PaymentGateways;
 use Stripe\StripeClient;
 use Stripe\Service\ChargeService;
 use Illuminate\Support\Collection;
+use App\Exceptions\PaymentFailedException;
+use Stripe\Exception\InvalidRequestException;
 use App\Contracts\Billing\PaymentGateway as PaymentGatewayContract;
 
 class StripePaymentGateway extends PaymentGateway implements PaymentGatewayContract
@@ -50,12 +52,16 @@ class StripePaymentGateway extends PaymentGateway implements PaymentGatewayContr
      */
     public function charge(int $amount, string $paymentToken): void
     {
-        $this->charges[] = $this->getStripeCharger()->create([
-            'amount' => $amount,
-            'currency' => config('defaults.finance.currency'),
-            'source' => $paymentToken,
-            'description' => config('defaults.finance.transaction-description'),
-        ]);
+        try {
+            $this->charges[] = $this->getStripeCharger()->create([
+                'amount' => $amount,
+                'currency' => config('defaults.finance.currency'),
+                'source' => $paymentToken,
+                'description' => config('defaults.finance.transaction-description'),
+            ]);
+        } catch (InvalidRequestException $e) {
+            throw new PaymentFailedException($e->getMessage(), $amount);
+        }
     }
 
     /**

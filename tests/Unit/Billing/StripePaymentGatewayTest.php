@@ -4,8 +4,12 @@ namespace Tests\Unit\Billing;
 
 use Tests\TestCase;
 use Stripe\Token as StripeTokenGenerator;
+use App\Exceptions\PaymentFailedException;
 use App\Billing\PaymentGateways\StripePaymentGateway;
 
+/**
+ * @group integration
+ */
 class StripePaymentGatewayTest extends TestCase
 {
     /**
@@ -44,6 +48,23 @@ class StripePaymentGatewayTest extends TestCase
 
         $this->assertCount(1, $newPaymentGateway->newChargesSince($this->lastChargeId));
         $this->assertEquals(2500, $newPaymentGateway->newChargesSince($this->lastChargeId)->last()->amount);
+    }
+
+    /** @test */
+    public function charges_with_an_invalid_payment_token_fail()
+    {
+        try {
+            $paymentGateway = new StripePaymentGateway($this->apiKey);
+            $paymentGateway->charge(2500, 'invalid-payment-token');
+        } catch (PaymentFailedException $e) {
+            $this->assertEquals(2500, $e->chargedAmount());
+            $this->assertInstanceOf(PaymentFailedException::class, $e);
+            $this->assertCount(0, $paymentGateway->newChargesSince($this->lastChargeId));
+
+            return;
+        }
+
+        $this->fail('Charging with an invalid payment token did not throw an PaymentFailedException.');
     }
 
     /**
