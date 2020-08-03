@@ -2,6 +2,8 @@
 
 namespace App\Billing\PaymentGateways;
 
+use Illuminate\Support\Collection;
+
 abstract class PaymentGateway
 {
     /**
@@ -34,5 +36,15 @@ abstract class PaymentGateway
     public function totalCharges(): int
     {
         return $this->totalCharges;
+    }
+
+    /**
+     * Get total amount the customer is charged.
+     *
+     * @return \Illuminate\Support\Collection
+     */
+    public function charges(): Collection
+    {
+        return $this->charges;
     }
 }

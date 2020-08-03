@@ -1,6 +1,12 @@
 <?php
 
 return [
+    'finance' => [
+        'currency' => env('APP_CURRENCY'),
+        'currency_locale' => env('APP_CURRENCY_LOCALE'),
+        'transaction-description' => 'Cratespace test purchase.',
+    ],
+
     /*
      * Default/Admin User Details
      */
