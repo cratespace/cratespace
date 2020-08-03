@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Carbon\Carbon;
+use App\Filters\Filter;
 use App\Support\Formatter;
 use App\Models\Casts\PriceCast;
 use App\Models\Traits\Filterable;
@@ -72,22 +73,16 @@ class Space extends Model implements Statusable, Priceable
      */
     public function getStatusAttribute()
     {
-        switch (true) {
-            case $this->isAvailable():
-                return 'Available';
-
-                break;
-
-            case $this->isExpired():
-                return 'Expired';
-
-                break;
-
-            case $this->hasOrder():
-                return 'Ordered';
-
-                break;
+        if ($this->isAvailable()) {
+            return 'Available';
+        } elseif (
+            $this->hasOrder() ||
+            ($this->isExpired() && $this->hasOrder())
+        ) {
+            return 'Ordered';
         }
+
+        return 'Expired';
     }
 
     /**
@@ -155,6 +150,29 @@ class Space extends Model implements Statusable, Priceable
     public function isExpired(): bool
     {
         return $this->departs_at <= Carbon::now();
+    }
+
+    /**
+     * Get all spaces associated with the currently authenticated business.
+     *
+     * @param \Illuminate\Database\Query\Builder $query
+     * @param \App\Filters\Filter                $filters
+     * @param string|null                        $search
+     *
+     * @return \Illuminate\Database\Query\Builder
+     */
+    public function scopeOfBusiness($query, Filter $filters, ?string $search = null)
+    {
+        $query->addSelect([
+                'order_id' => Order::select('uid')
+                    ->whereColumn('space_id', 'spaces.id')
+                    ->latest()
+                    ->take(1),
+            ])
+            ->whereUserId(user('id'))
+            ->filter($filters)
+            ->search($search)
+            ->latest('created_at');
     }
 
     public function scopeDeparting($query)

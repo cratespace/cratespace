@@ -97,12 +97,16 @@ class SpaceFilter extends Filter
                 break;
 
             case 'Ordered':
-                return $this->builder->whereHas('order');
+                return $this->builder
+                    ->whereDate('departs_at', '>', Carbon::now())
+                    ->whereHas('order');
 
                 break;
 
             case 'Expired':
-                return $this->builder->whereDate('departs_at', '<=', Carbon::now());
+                return $this->builder
+                    ->whereDate('departs_at', '<=', Carbon::now())
+                    ->doesntHave('order');
 
                 break;
         }
