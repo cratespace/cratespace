@@ -67,3 +67,5 @@ jobs:
           DB_DATABASE: database/database.sqlite
 
         run: composer test
+        env:
+          STRIPE_SECRET: ${{ secrets.STRIPE_SECRET }}
