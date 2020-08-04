@@ -5,9 +5,26 @@ namespace Tests\Feature\CustomerExperience;
 use Tests\TestCase;
 use App\Models\Space;
 use App\Support\Formatter;
+use App\Contracts\Billing\PaymentGateway;
+use App\Billing\PaymentGateways\FakePaymentGateway;
 
 class ViewCheckoutPageTest extends TestCase
 {
+    /**
+     * Instance of fake payment gateway.
+     *
+     * @var \App\Billing\PaymentGateways\FakePaymentGateway
+     */
+    protected $paymentGateway;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->paymentGateway = new FakePaymentGateway();
+        $this->app->instance(PaymentGateway::class, $this->paymentGateway);
+    }
+
     /** @test */
     public function a_customer_is_redirected_to_the_checkout_page_when_book_button_is_clicked()
     {
