@@ -67,5 +67,5 @@ jobs:
           DB_DATABASE: database/database.sqlite
           STRIPE_SECRET: ${{ secrets.STRIPE_SECRET }}
 
-        run: composer test --exclude-group integration
+        run: vendor/bin/phpunit --verbose --color=always
 
