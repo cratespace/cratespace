@@ -3,6 +3,7 @@
 namespace App\Billing\PaymentGateways;
 
 use Illuminate\Support\Str;
+use Illuminate\Support\Collection;
 use App\Exceptions\PaymentFailedException;
 use App\Contracts\Billing\PaymentGateway as PaymentGatewayContract;
 
@@ -11,7 +12,7 @@ class FakePaymentGateway extends PaymentGateway implements PaymentGatewayContrac
     /**
      * Test credit card number.
      */
-    public const TEST_CARD_NUMBER = 4242424242424242;
+    public const TEST_CARD_NUMBER = '4242424242424242';
 
     /**
      * List of fake payment tokens.
@@ -19,6 +20,13 @@ class FakePaymentGateway extends PaymentGateway implements PaymentGatewayContrac
      * @var \Illuminate\Support\Collection
      */
     protected $tokens;
+
+    /**
+     * All charge amount received.
+     *
+     * @var \Illuminate\Support\Collection
+     */
+    protected $chargeAmount = [];
 
     /**
      * Create new instance of fake payment gateway.
@@ -46,9 +54,10 @@ class FakePaymentGateway extends PaymentGateway implements PaymentGatewayContrac
             throw new PaymentFailedException('Invalid payment token received', $amount);
         }
 
-        $this->charges[] = $amount;
-
-        $this->totalCharges = $this->charges->sum();
+        $this->charges[] = (object) [
+            'id' => Str::random(40),
+            'amount' => $this->setChargeAmount($amount),
+        ];
     }
 
     /**
@@ -68,12 +77,24 @@ class FakePaymentGateway extends PaymentGateway implements PaymentGatewayContrac
     }
 
     /**
+     * Get all new charges since given charge ID.
+     *
+     * @param string|null $chargeId
+     *
+     * @return \Illuminate\Support\Collection
+     */
+    public function newChargesSince(?string $chargeId = null): Collection
+    {
+        return $this->charges->where('id', $chargeId);
+    }
+
+    /**
      * Get total amount the customer is charged.
      *
      * @return int
      */
     public function totalCharges(): int
     {
-        return $this->totalCharges;
+        return $this->totalCharges = $this->chargeAmount->sum();
     }
 }

@@ -22,6 +22,13 @@ abstract class PaymentGateway
     protected $charges;
 
     /**
+     * All charge amount received.
+     *
+     * @var \Illuminate\Support\Collection
+     */
+    protected $chargeAmount = [];
+
+    /**
      * Call back to run as a hook before the first charge.
      *
      * @var \Closure
@@ -34,6 +41,7 @@ abstract class PaymentGateway
     public function __construct()
     {
         $this->charges = collect();
+        $this->chargeAmount = collect();
     }
 
     /**
@@ -72,5 +80,19 @@ abstract class PaymentGateway
 
             call_user_func_array($callback, [$this]);
         }
+    }
+
+    /**
+     * Set total amount charged to customer.
+     *
+     * @param int $amount
+     *
+     * @return int
+     */
+    protected function setChargeAmount(int $amount): int
+    {
+        $this->chargeAmount[] = $amount;
+
+        return $amount;
     }
 }

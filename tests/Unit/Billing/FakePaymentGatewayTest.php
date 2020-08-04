@@ -2,60 +2,54 @@
 
 namespace Tests\Unit\Billing;
 
-use PHPUnit\Framework\TestCase;
-use App\Exceptions\PaymentFailedException;
+use Tests\TestCase;
 use App\Billing\PaymentGateways\FakePaymentGateway;
 
 class FakePaymentGatewayTest extends TestCase
 {
-    /** @test */
-    public function charges_with_a_valid_payment_token_are_successful()
+    use PaymentGatewayContractTest;
+
+    /**
+     * ID of latest charge made.
+     *
+     * @var string
+     */
+    protected $lastChargeId;
+
+    protected function setUp(): void
     {
-        $paymentGateway = new FakePaymentGateway();
+        parent::setUp();
 
-        $paymentGateway->charge(2500, $paymentGateway->generateToken([]));
-
-        $this->assertEquals(2500, $paymentGateway->totalCharges());
+        $this->performFirstCharge();
     }
 
     /** @test */
-    public function it_has_a_test_card_number()
+    public function charges_with_a_valid_payment_token_are_successful_fake()
     {
-        $this->assertEquals(FakePaymentGateway::TEST_CARD_NUMBER, 4242424242424242);
+        $newPaymentGateway = $this->getPaymentGateway();
+
+        $newPaymentGateway->charge(2500, $newPaymentGateway->generateToken([]));
+
+        $this->assertEquals(2500, $newPaymentGateway->totalCharges());
     }
 
-    /** @test */
-    public function charges_with_an_invalid_payment_token_fail()
+    /**
+     * Get instance of payment gateway.
+     *
+     * @return \App\Contracts\Billing\PaymentGateway
+     */
+    protected function getPaymentGateway()
     {
-        try {
-            $paymentGateway = new FakePaymentGateway();
-            $paymentGateway->charge(2500, 'invalid-payment-token');
-        } catch (PaymentFailedException $e) {
-            $this->assertEquals(2500, $e->chargedAmount());
-            $this->assertInstanceOf(PaymentFailedException::class, $e);
-
-            return;
-        }
-
-        $this->fail();
+        return new FakePaymentGateway();
     }
 
-    /** @test */
-    public function It_can_run_a_hook_before_the_first_charge()
+    /**
+     * Get test credit card details.
+     *
+     * @return array
+     */
+    protected function getCardDetails(): array
     {
-        $paymentGateway = new FakePaymentGateway();
-        $timesCallbackRan = 0;
-
-        $paymentGateway->beforeFirstCharge(function ($paymentGateway) use (&$timesCallbackRan) {
-            $paymentGateway->charge(1200, $paymentGateway->generateToken([]));
-
-            ++$timesCallbackRan;
-
-            $this->assertEquals(1200, $paymentGateway->totalCharges());
-        });
-
-        $paymentGateway->charge(1200, $paymentGateway->generateToken([]));
-        $this->assertEquals(1, $timesCallbackRan);
-        $this->assertEquals(2400, $paymentGateway->totalCharges());
+        return [];
     }
 }

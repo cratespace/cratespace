@@ -4,7 +4,6 @@ namespace Tests\Unit\Billing;
 
 use Tests\TestCase;
 use Stripe\Token as StripeTokenGenerator;
-use App\Exceptions\PaymentFailedException;
 use App\Billing\PaymentGateways\StripePaymentGateway;
 
 /**
@@ -12,6 +11,8 @@ use App\Billing\PaymentGateways\StripePaymentGateway;
  */
 class StripePaymentGatewayTest extends TestCase
 {
+    use PaymentGatewayContractTest;
+
     /**
      * Stripe test secret key.
      *
@@ -32,75 +33,42 @@ class StripePaymentGatewayTest extends TestCase
 
         $this->apiKey = config('services.stripe.secret');
 
-        $paymentGatewayFirst = new StripePaymentGateway($this->apiKey);
-
-        $paymentGatewayFirst->charge(2400, $this->generateStripeToken($this->apiKey));
-
-        $this->lastChargeId = $paymentGatewayFirst->charges()->last()->id;
+        $this->performFirstCharge();
     }
 
     /** @test */
-    public function charges_with_a_valid_payment_token_are_successful()
+    public function charges_with_a_valid_payment_token_are_successful_stripe()
     {
-        $newPaymentGateway = new StripePaymentGateway($this->apiKey);
+        $newPaymentGateway = $this->getPaymentGateway();
 
-        $newPaymentGateway->charge(2500, $this->generateStripeToken($this->apiKey));
+        $newPaymentGateway->charge(2500, $this->generateToken());
 
         $this->assertCount(1, $newPaymentGateway->newChargesSince($this->lastChargeId));
-        $this->assertEquals(2500, $newPaymentGateway->newChargesSince($this->lastChargeId)->last()->amount);
-    }
-
-    /** @test */
-    public function charges_with_an_invalid_payment_token_fail()
-    {
-        try {
-            $paymentGateway = new StripePaymentGateway($this->apiKey);
-            $paymentGateway->charge(2500, 'invalid-payment-token');
-        } catch (PaymentFailedException $e) {
-            $this->assertEquals(2500, $e->chargedAmount());
-            $this->assertInstanceOf(PaymentFailedException::class, $e);
-            $this->assertCount(0, $paymentGateway->newChargesSince($this->lastChargeId));
-
-            return;
-        }
-
-        $this->fail('Charging with an invalid payment token did not throw an PaymentFailedException.');
-    }
-
-    /** @test */
-    public function It_can_run_a_hook_before_the_first_charge()
-    {
-        $paymentGateway = new StripePaymentGateway($this->apiKey);
-        $timesCallbackRan = 0;
-
-        $paymentGateway->beforeFirstCharge(function ($paymentGateway) use (&$timesCallbackRan) {
-            $paymentGateway->charge(1200, $paymentGateway->generateToken($this->getCardDetails()));
-
-            ++$timesCallbackRan;
-
-            $this->assertEquals(1200, $paymentGateway->totalCharges());
-        });
-
-        $paymentGateway->charge(
-            1200,
-            $paymentGateway->generateToken($this->getCardDetails())
-        );
-        $this->assertEquals(1, $timesCallbackRan);
-        $this->assertEquals(2400, $paymentGateway->totalCharges());
+        $this->assertEquals(2500, $newPaymentGateway->totalCharges());
     }
 
     /**
-     * Generate valid stripe token.
+     * Get instance of payment gateway.
      *
-     * @param string $apiKey
+     * @return \App\Contracts\Billing\PaymentGateway
+     */
+    protected function getPaymentGateway()
+    {
+        return new StripePaymentGateway($this->apiKey);
+    }
+
+    /**
+     * Generate valid payment token.
+     *
+     * @param string|null $apiKey
      *
      * @return string
      */
-    protected function generateStripeToken(string $apiKey)
+    protected function generateToken(?string $apiKey = null): string
     {
         $tokenObject = StripeTokenGenerator::create([
             'card' => $this->getCardDetails(),
-        ], ['api_key' => $apiKey]);
+        ], ['api_key' => $apiKey ?? $this->apiKey]);
 
         return $tokenObject->id;
     }

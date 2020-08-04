@@ -31,13 +31,6 @@ class StripePaymentGateway extends PaymentGateway implements PaymentGatewayContr
     protected $apiKey;
 
     /**
-     * All charge amount received.
-     *
-     * @var \Illuminate\Support\Collection
-     */
-    protected $chargeAmount = [];
-
-    /**
      * Create new Stripe payment gateway instance.
      *
      * @param string $apiKey
@@ -45,7 +38,6 @@ class StripePaymentGateway extends PaymentGateway implements PaymentGatewayContr
     public function __construct(string $apiKey)
     {
         $this->apiKey = $apiKey;
-        $this->chargeAmount = collect();
 
         parent::__construct();
     }
@@ -101,20 +93,6 @@ class StripePaymentGateway extends PaymentGateway implements PaymentGatewayContr
     public function newChargesSince(?string $chargeId = null): Collection
     {
         return collect($this->getAllCharges(10, $chargeId));
-    }
-
-    /**
-     * Set total amount charged to customer.
-     *
-     * @param int $amount
-     *
-     * @return int
-     */
-    protected function setChargeAmount(int $amount): int
-    {
-        $this->chargeAmount[] = $amount;
-
-        return $amount;
     }
 
     /**
