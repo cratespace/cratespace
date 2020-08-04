@@ -76,12 +76,12 @@ class StripePaymentGateway extends PaymentGateway implements PaymentGatewayContr
     /**
      * Get latest charge details from stripe.
      *
-     * @param int         $limit
+     * @param int|null    $limit
      * @param string|null $endingBefore
      *
      * @return array
      */
-    public function getAllCharges(int $limit = 10, ?string $endingBefore = null): array
+    public function getCharges(?int $limit = null, ?string $endingBefore = null): array
     {
         $constraints = is_null($endingBefore)
             ? ['limit' => $limit]
@@ -99,7 +99,7 @@ class StripePaymentGateway extends PaymentGateway implements PaymentGatewayContr
      */
     public function newChargesDuring(Closure $callback): Collection
     {
-        $latestCharge = Arr::first($this->getAllCharges(1));
+        $latestCharge = Arr::first($this->getCharges(1));
 
         call_user_func_array($callback, [$this]);
 
@@ -120,7 +120,7 @@ class StripePaymentGateway extends PaymentGateway implements PaymentGatewayContr
      */
     public function newChargesSince(?string $chargeId = null): Collection
     {
-        return collect($this->getAllCharges(10, $chargeId));
+        return collect($this->getCharges(null, $chargeId));
     }
 
     /**
