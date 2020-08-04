@@ -85,7 +85,7 @@ class StripePaymentGateway extends PaymentGateway implements PaymentGatewayContr
 
         call_user_func_array($callback, [$this]);
 
-        return $this->newChargesSince($latestCharge)->map(function ($stripeCharge) {
+        return $this->newChargesSince($latestCharge->id)->map(function ($stripeCharge) {
             return $this->getLocalCharger([
                 'amount' => $stripeCharge['amount'],
                 'card_last_four' => $stripeCharge['source']['last4'],
