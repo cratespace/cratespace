@@ -43,16 +43,14 @@ class PurchaseSpaceTest extends TestCase
 
         $space = create(Space::class, ['price' => 32.50, 'tax' => 0.5]);
 
-        $card = [
-            'card_number' => $this->paymentGateway::TEST_CARD_NUMBER,
-        ];
-
         $response = $this->orderSpace($space, [
             'name' => 'John Doe',
             'business' => 'Example, Co.',
             'phone' => '765487368',
             'email' => 'john@example.com',
-            'payment_token' => $this->paymentGateway->generateToken($card),
+            'payment_token' => $this->paymentGateway->generateToken(
+                ['card_number' => $this->paymentGateway::TEST_CARD_NUMBER]
+            ),
         ]);
 
         $response->assertStatus(201)->assertJson([
@@ -168,8 +166,6 @@ class PurchaseSpaceTest extends TestCase
     /** @test */
     public function a_customer_cannot_purchase_space_another_customer_is_already_trying_to_purchase()
     {
-        // $this->withoutExceptionHandling();
-
         $space = create(Space::class);
 
         $this->paymentGateway->beforeFirstCharge(function ($paymentGateway) use ($space) {

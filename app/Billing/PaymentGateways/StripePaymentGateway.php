@@ -31,6 +31,13 @@ class StripePaymentGateway extends PaymentGateway implements PaymentGatewayContr
     protected $apiKey;
 
     /**
+     * All charge amount received.
+     *
+     * @var \Illuminate\Support\Collection
+     */
+    protected $chargeAmount = [];
+
+    /**
      * Create new Stripe payment gateway instance.
      *
      * @param string $apiKey
@@ -38,6 +45,7 @@ class StripePaymentGateway extends PaymentGateway implements PaymentGatewayContr
     public function __construct(string $apiKey)
     {
         $this->apiKey = $apiKey;
+        $this->chargeAmount = collect();
 
         parent::__construct();
     }
@@ -52,9 +60,11 @@ class StripePaymentGateway extends PaymentGateway implements PaymentGatewayContr
      */
     public function charge(int $amount, string $paymentToken): void
     {
+        $this->runBeforeChargesCallback();
+
         try {
             $this->charges[] = $this->getStripeCharger()->create([
-                'amount' => $amount,
+                'amount' => $this->setChargeAmount($amount),
                 'currency' => config('defaults.finance.currency'),
                 'source' => $paymentToken,
                 'description' => config('defaults.finance.transaction-description'),
@@ -72,11 +82,13 @@ class StripePaymentGateway extends PaymentGateway implements PaymentGatewayContr
      *
      * @return array
      */
-    public function getAllCharges(int $limit = 1, ?string $endingBefore = null): array
+    public function getAllCharges(int $limit = 10, ?string $endingBefore = null): array
     {
-        return array_first($this->getStripeCharger()->all([
-            'limit' => $limit,
-        ])['data']);
+        $constraints = is_null($endingBefore)
+            ? ['limit' => $limit]
+            : ['ending_before' => $endingBefore];
+
+        return $this->getStripeCharger()->all($constraints)['data'];
     }
 
     /**
@@ -88,11 +100,31 @@ class StripePaymentGateway extends PaymentGateway implements PaymentGatewayContr
      */
     public function newChargesSince(?string $chargeId = null): Collection
     {
-        $newCharges = $this->getStripeCharger()->all([
-            'ending_before' => $chargeId,
-        ])['data'];
+        return collect($this->getAllCharges(10, $chargeId));
+    }
 
-        return collect($newCharges);
+    /**
+     * Set total amount charged to customer.
+     *
+     * @param int $amount
+     *
+     * @return int
+     */
+    protected function setChargeAmount(int $amount): int
+    {
+        $this->chargeAmount[] = $amount;
+
+        return $amount;
+    }
+
+    /**
+     * Get total amount the customer is charged.
+     *
+     * @return int
+     */
+    public function totalCharges(): int
+    {
+        return $this->totalCharges = $this->chargeAmount->sum();
     }
 
     /**

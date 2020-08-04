@@ -67,6 +67,28 @@ class StripePaymentGatewayTest extends TestCase
         $this->fail('Charging with an invalid payment token did not throw an PaymentFailedException.');
     }
 
+    /** @test */
+    public function It_can_run_a_hook_before_the_first_charge()
+    {
+        $paymentGateway = new StripePaymentGateway($this->apiKey);
+        $timesCallbackRan = 0;
+
+        $paymentGateway->beforeFirstCharge(function ($paymentGateway) use (&$timesCallbackRan) {
+            $paymentGateway->charge(1200, $paymentGateway->generateToken($this->getCardDetails()));
+
+            ++$timesCallbackRan;
+
+            $this->assertEquals(1200, $paymentGateway->totalCharges());
+        });
+
+        $paymentGateway->charge(
+            1200,
+            $paymentGateway->generateToken($this->getCardDetails())
+        );
+        $this->assertEquals(1, $timesCallbackRan);
+        $this->assertEquals(2400, $paymentGateway->totalCharges());
+    }
+
     /**
      * Generate valid stripe token.
      *
@@ -77,14 +99,24 @@ class StripePaymentGatewayTest extends TestCase
     protected function generateStripeToken(string $apiKey)
     {
         $tokenObject = StripeTokenGenerator::create([
-            'card' => [
-                'number' => '4242424242424242',
-                'exp_month' => 1,
-                'exp_year' => date('Y') + 1,
-                'cvc' => '123',
-            ],
+            'card' => $this->getCardDetails(),
         ], ['api_key' => $apiKey]);
 
         return $tokenObject->id;
+    }
+
+    /**
+     * Get test credit card details.
+     *
+     * @return array
+     */
+    protected function getCardDetails(): array
+    {
+        return [
+            'number' => '4242424242424242',
+            'exp_month' => 1,
+            'exp_year' => date('Y') + 1,
+            'cvc' => '123',
+        ];
     }
 }
