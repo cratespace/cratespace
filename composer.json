@@ -32,7 +32,6 @@
         "fzaninotto/faker": "^1.9.1",
         "mockery/mockery": "^1.3.1",
         "nunomaduro/collision": "^4.1",
-        "nunomaduro/phpinsights": "^1.14",
         "phpunit/phpunit": "^8.5 | ^9.1"
     },
     "config": {
@@ -79,7 +78,7 @@
             "@php artisan key:generate --ansi"
         ],
         "test": [
-            "@php artisan test && vendor/bin/phpunit --color=always"
+            "vendor/bin/phpunit --verbose --color=always"
         ]
     }
 }

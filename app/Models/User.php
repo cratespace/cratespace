@@ -4,15 +4,18 @@ namespace App\Models;
 
 use App\Models\Traits\HasImage;
 use App\Models\Casts\SettingsCast;
+use App\Models\Traits\Presentable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
 use App\Models\Concerns\ManagesRolesAndAbilities;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
-class User extends Authenticatable
+class User extends Authenticatable implements MustVerifyEmail
 {
     use Notifiable;
     use HasImage;
     use ManagesRolesAndAbilities;
+    use Presentable;
 
     /**
      * The attributes that are mass assignable.

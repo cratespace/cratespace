@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Space;
 use App\Support\Formatter;
 use App\Contracts\Billing\PaymentGateway;
-use App\Billing\Charges\Calculator as ChargesCalculator;
+use App\Billing\Calculator as ChargesCalculator;
 
 class CheckoutController extends Controller
 {
@@ -34,7 +34,6 @@ class CheckoutController extends Controller
     public function show(Space $space)
     {
         return view('public.checkout.page', [
-            'paymentToken' => $this->paymentGateway->getValidTestToken(),
             'space' => $space,
             'charges' => $this->calculateCharges($space),
         ]);
@@ -52,7 +51,7 @@ class CheckoutController extends Controller
         $charges = [];
 
         foreach ((new ChargesCalculator($space))->calculateCharges() as $name => $amount) {
-            $charges[$name] = Formatter::moneyFormat((int) $amount);
+            $charges[$name] = Formatter::money((int) $amount);
         }
 
         return $charges;

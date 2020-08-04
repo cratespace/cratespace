@@ -36,10 +36,14 @@ class SpaceOrderController extends Controller
      */
     public function store(PlaceOrderRequest $request, Space $space)
     {
-        $order = $space->placeOrder($request->except('payment_token'));
+        $order = $space->placeOrder($request->validated());
+
+        $token = $request->payment_token ?? $this->paymentGateway->generateToken(
+            $request->getCardDetails()
+        );
 
         try {
-            $this->paymentGateway->charge($order->total, $request->payment_token);
+            $this->paymentGateway->charge($order->total, $token);
         } catch (PaymentFailedException $exception) {
             $order->delete();
 
@@ -51,7 +55,7 @@ class SpaceOrderController extends Controller
         }
 
         return $this->success(
-            'public.commons.thank-you',
+            route('thank-you'),
             'Order successfully processed.'
         );
     }

@@ -13,7 +13,7 @@ jobs:
 
     strategy:
       matrix:
-        php: [7.4, 7.3, 7.2]
+        php: [7.4, 7.3]
         laravel: [7.*]
         dependency-version: [prefer-lowest, prefer-stable]
         os: [ubuntu-latest]
@@ -48,7 +48,7 @@ jobs:
         run: php -r "file_exists('.env') || copy('.env.example', '.env');"
 
       - name: Install Dependencies
-        run: composer install -q --no-ansi --no-interaction --no-scripts --no-suggest --no-progress --prefer-dist
+        run: composer install -n --prefer-dist
 
       - name: Generate key
         run: php artisan key:generate
@@ -65,5 +65,7 @@ jobs:
         env:
           DB_CONNECTION: sqlite
           DB_DATABASE: database/database.sqlite
+          STRIPE_SECRET: ${{ secrets.STRIPE_SECRET }}
 
         run: composer test
+

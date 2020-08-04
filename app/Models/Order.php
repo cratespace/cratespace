@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Filters\Filter;
+use App\Models\Traits\Filterable;
 use App\Events\OrderStatusUpdated;
 use App\Models\Traits\Presentable;
 use App\Models\Concerns\GeneratesUID;
@@ -15,6 +17,7 @@ class Order extends Model
     use FindsBusiness;
     use GeneratesUID;
     use Presentable;
+    use Filterable;
 
     /**
      * The attributes that are mass assignable.
@@ -29,17 +32,37 @@ class Order extends Model
     /**
      * Get all orders associated with the currently authenticated business.
      *
-     * @param string|null                        $search
      * @param \Illuminate\Database\Query\Builder $query
+     * @param \App\Filters\Filter                $filters
+     * @param string|null                        $search
      *
      * @return \Illuminate\Database\Query\Builder
      */
-    public function scopeForBusiness($query, ?string $search = null)
+    public function scopeForBusiness($query, Filter $filters, ?string $search = null)
     {
         $query->with('space')
             ->whereUserId(user('id'))
+            ->filter($filters)
             ->search($search)
             ->latest('updated_at');
+    }
+
+    /**
+     * Get given number of latest pending orders.
+     *
+     * @param \Illuminate\Database\Query\Builder $query
+     * @param string|null                        $search
+     *
+     * @return \Illuminate\Database\Query\Builder
+     */
+    public function scopePending($query, int $limit = 10)
+    {
+        $query->select('id', 'uid', 'name', 'phone', 'status', 'total', 'space_id')
+            ->with(['space' => function ($query) {
+                $query->select('id', 'uid', 'departs_at', 'arrives_at');
+            }])
+            ->whereStatus('Pending')
+            ->latest('created_at');
     }
 
     /**
@@ -52,10 +75,6 @@ class Order extends Model
      */
     public function scopeSearch($query, ?string $terms = null)
     {
-        if (is_null($terms)) {
-            return $query;
-        }
-
         collect(str_getcsv($terms, ' ', '"'))->filter()->each(function ($term) use ($query) {
             $term = preg_replace('/[^A-Za-z0-9]/', '', $term) . '%';
 

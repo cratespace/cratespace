@@ -123,6 +123,5 @@ return [
     /*
      * Responsibilities to perform when creating a new user account.
      */
-    'responsibilities' => [
-    ],
+    'responsibilities' => [],
 ];

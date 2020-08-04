@@ -7,8 +7,8 @@ use Tests\TestCase;
 use App\Models\User;
 use App\Models\Order;
 use App\Models\Space;
+use App\Billing\Calculator;
 use Illuminate\Support\Str;
-use App\Billing\Charges\Calculator;
 use App\Models\Values\ScheduleValue;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Symfony\Component\HttpKernel\Exception\HttpException;
@@ -127,6 +127,7 @@ class SpaceTest extends TestCase
         $this->assertFalse($expiredSpace->isAvailable());
         $this->assertTrue($expiredSpace->isExpired());
         $this->assertFalse($orderedSpace->isAvailable());
+        $this->assertTrue($orderedSpace->hasOrder());
     }
 
     /** @test */

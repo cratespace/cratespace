@@ -20,3 +20,10 @@ Route::post('/spaces/{space}/orders', 'SpaceOrderController@store')
  */
 Route::get('/spaces/{space}/checkout', 'CheckoutController@show')
     ->name('checkout');
+
+/*
+ * Order Completion Confirmation Route...
+ */
+Route::get('/thank-you', function () {
+    return view('public.commons.thank-you');
+})->name('thank-you');

@@ -2,9 +2,9 @@
     <div class="container">
         <div class="row">
             <div class="col-12">
-                <div class="rounded-lg shadow overflow-hidden">
+                <div class="rounded-lg overflow-hidden">
                     <div class="flex flex-col md:flex-row items-center">
-                        <div class="w-full md:flex-1 bg-white px-6 py-5 border-b md:border-r border-gray-300">
+                        <div class="w-full md:flex-1 bg-white pr-6 py-5 border-b md:border-r border-gray-300">
                             <div class="flex items-start justify-between">
                                 <div class="leading-tight">
                                     <div>
@@ -28,7 +28,7 @@
                             <div class="flex items-start justify-between">
                                 <div class="leading-tight">
                                     <div>
-                                        <span class="uppercase tracking-wide text-xs font-normal text-gray-500">Total Orders</span>
+                                        <span class="uppercase tracking-wide text-xs font-normal text-gray-500">Available Spaces</span>
                                     </div>
 
                                     <div class="flex items-baseline">
@@ -44,11 +44,11 @@
                             </div>
                         </div>
 
-                        <div class="w-full md:flex-1 bg-white px-6 py-5 border-b">
+                        <div class="w-full md:flex-1 bg-white pl-6 py-5 border-b">
                             <div class="flex items-start justify-between">
                                 <div class="leading-tight">
                                     <div>
-                                        <span class="uppercase tracking-wide text-xs font-normal text-gray-500">Total Orders</span>
+                                        <span class="uppercase tracking-wide text-xs font-normal text-gray-500">Customers</span>
                                     </div>
 
                                     <div class="flex items-baseline">
@@ -65,7 +65,7 @@
                         </div>
                     </div>
 
-                    <div class="bg-white px-6 py-5">
+                    <div class="py-5">
                         <div>
                             <span class="uppercase tracking-wide text-xs font-normal text-gray-500">Orders This Week</span>
                         </div>

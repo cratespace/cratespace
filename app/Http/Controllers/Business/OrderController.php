@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Business;
 
 use App\Models\Order;
+use App\Filters\OrderFilter;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\UpdateOrderStatusRequest;
@@ -14,10 +15,10 @@ class OrderController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
+    public function index(Request $request, OrderFilter $filters)
     {
         return view('business.orders.index', [
-            'orders' => Order::ForBusiness($request->search)
+            'resource' => Order::ForBusiness($filters, $request->search)
                 ->paginate($request->perPage ?? 10),
         ]);
     }
@@ -31,17 +32,9 @@ class OrderController extends Controller
      */
     public function show(Order $order)
     {
-    }
+        $this->authorize('delete', $order);
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param \App\Models\Order $order
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Order $order)
-    {
+        return view('business.orders.show', compact('order'));
     }
 
     /**
@@ -57,7 +50,7 @@ class OrderController extends Controller
         $order->updateStatus($request->status);
 
         if ($request->wantsJson()) {
-            return response([], 204);
+            return response($order->fresh(), 201);
         }
 
         return redirect()->back();
@@ -72,5 +65,14 @@ class OrderController extends Controller
      */
     public function destroy(Order $order)
     {
+        $this->authorize('delete', $order);
+
+        $order->delete();
+
+        if ($request->wantsJson()) {
+            return response([], 204);
+        }
+
+        return redirect()->route('orders.index');
     }
 }

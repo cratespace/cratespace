@@ -53,7 +53,7 @@ jobs:
       - run: php artisan key:generate
 
       # run tests with phpunit
-      - run: php artisan test && ./vendor/bin/phpunit
+      - run: composer test
       # this example uses codecept but you're not limited to it
       - store_test_results:
           path: tests/_output

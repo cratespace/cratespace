@@ -4,6 +4,22 @@
     <section class="py-8">
         <div class="container">
             <div class="row">
+                <div class="col-12">
+                    <div>
+                        <h3 class="leadin-snug">
+                            Settings
+                        </h3>
+
+                        <div class="flex items-center text-gray-600">
+                            <p class="text-sm">Customize your experience here at {{ config('app.name') }}.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <hr class="my-6">
+
+            <div class="row">
                 <div class="col-lg-4">
                     <div class="mb-6">
                         <h4>
@@ -18,7 +34,7 @@
 
                 <div class="col-lg-8">
                     <form action="{{ route('users.update', $user) }}" method="POST" enctype="multipart/form-data">
-                        <x-cards._full hasFooter="true">
+                        <div>
                             @csrf
 
                             @method('PUT')
@@ -55,12 +71,122 @@
                                 </div>
                             </div>
 
-                            <x-slot name="footer">
-                                <div class="bg-gray-100 px-4 py-3 sm:px-6 flex items-center justify-end">
-                                    <button class="btn btn-primary ml-3" type="submit">Save</button>
+                            <div class="mt-6 py-3 flex items-center justify-end">
+                                <button class="btn btn-primary ml-3" type="submit">Save</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <hr class="my-6">
+
+            <div class="row">
+                <div class="col-lg-4">
+                    <div class="mb-6">
+                        <h4>
+                            Business
+                        </h4>
+
+                        <p class="text-sm max-w-sm">
+                            This information helps customers recognize your business and understand your terms of service. Your support information may be visible in payment statements, invoices, and receipts.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="col-lg-8">
+                    <form action="{{ route('users.update', $user) }}" method="POST" enctype="multipart/form-data">
+                        <div>
+                            @csrf
+
+                            @method('PUT')
+
+                            <div class="row items-center">
+                                <div class="col-md-4 mb-6 flex items-center">
+                                    <image-upload-form image="{{ $user->business->image }}" route="/" label="Logo"></image-upload-form>
                                 </div>
-                            </x-slot>
-                        </x-cards._full>
+
+                                <div class="col-md-8 mb-6">
+                                    @include('components.forms.fields._business', ['business' => $user->business->name])
+
+                                    <span class="text-xs text-gray-600">Your business name may be used on invoices and receipts. Please make sure it's correct.</span>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6 mb-6">
+                                    <div>
+                                        @include('components.forms.fields._phone', ['phone' => $user->business->phone, 'label' => 'Support phone number'])
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6 mb-6">
+                                    @include('components.forms.fields._email', ['email' => $user->business->email, 'label' => 'Support email'])
+                                </div>
+                            </div>
+
+                            <div>
+                                @include('components.forms.fields._description', ['description' => $user->business->description])
+                            </div>
+
+                            <div class="mt-6 py-3 flex items-center justify-end">
+                                <button class="btn btn-primary ml-3" type="submit">Save</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <hr class="my-6">
+
+            <div class="row">
+                <div class="col-lg-4">
+                    <div class="mb-6">
+                        <h4>
+                            Address
+                        </h4>
+
+                        <p class="text-sm max-w-sm">
+                            This address will appear on your invoices. This information will be used to show where your business is based in and where it primarily operates.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="col-lg-8">
+                    <form action="{{ route('users.update', $user) }}" method="POST" enctype="multipart/form-data">
+                        <div>
+                            @csrf
+
+                            @method('PUT')
+
+                            <div class="row">
+                                <div class="col-md-6 mb-6">
+                                    @include('components.forms.fields._country', ['country' => $user->business->country])
+                                </div>
+                            </div>
+
+                            <div class="mb-6">
+                                @include('components.forms.fields._street', ['street' => $user->business->street])
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-4 mb-6 md:mb-0">
+                                    @include('components.forms.fields._city', ['city' => $user->business->city])
+                                </div>
+
+                                <div class="col-md-4 mb-6 md:mb-0">
+                                    @include('components.forms.fields._state', ['state' => $user->business->state])
+                                </div>
+
+                                <div class="col-md-4">
+                                    @include('components.forms.fields._postcode', ['postcode' => $user->business->postcode])
+                                </div>
+                            </div>
+
+                            <div class="mt-6 py-3 flex items-center justify-end">
+                                <button class="btn btn-primary ml-3" type="submit">Save</button>
+                            </div>
+                        </div>
                     </form>
                 </div>
             </div>
@@ -82,7 +208,7 @@
 
                 <div class="col-lg-8">
                     <form action="{{ route('users.password', $user) }}" method="POST" enctype="multipart/form-data">
-                        <x-cards._full hasFooter="true">
+                        <div>
                             @csrf
 
                             @method('PUT')
@@ -133,12 +259,10 @@
                                 </div>
                             </div>
 
-                            <x-slot name="footer">
-                                <div class="bg-gray-100 px-4 py-3 sm:px-6 flex items-center justify-end">
-                                    <button class="btn btn-primary ml-3" type="submit">Save</button>
-                                </div>
-                            </x-slot>
-                        </x-cards._full>
+                            <div class="mt-6 py-3 flex items-center justify-end">
+                                <button class="btn btn-primary ml-3" type="submit">Save</button>
+                            </div>
+                        </div>
                     </form>
                 </div>
             </div>
@@ -160,15 +284,13 @@
 
                 <div class="col-lg-8">
                     <form action="{{ route('users.update', $user) }}" method="POST" enctype="multipart/form-data">
-                        <x-cards._full hasFooter="true">
+                        <div>
                             {{--  --}}
 
-                            <x-slot name="footer">
-                                <div class="bg-gray-100 px-4 py-3 sm:px-6 flex items-center justify-end">
-                                    <button class="btn btn-primary ml-3" type="submit">Save</button>
-                                </div>
-                            </x-slot>
-                        </x-cards._full>
+                            <div class="mt-6 py-3 flex items-center justify-end">
+                                <button class="btn btn-primary ml-3" type="submit">Save</button>
+                            </div>
+                        </div>
                     </form>
                 </div>
             </div>
@@ -189,7 +311,7 @@
                 </div>
 
                 <div class="col-lg-8">
-                    <x-cards._full>
+                    <div>
                         <h5 class="text-lg font-medium text-gray-800 mb-3">
                             Delete your account
                         </h5>
@@ -201,7 +323,7 @@
                         <div>
                             <button class="btn bg-red-200 text-red-800" type="button" data-toggle="modal" data-target="#deleteModal{{ $user->username }}">Delete account</button>
                         </div>
-                    </x-cards._full>
+                    </div>
                 </div>
             </div>
         </div>

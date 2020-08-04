@@ -13,6 +13,6 @@ class OrderPresenter extends Presenter
      */
     public function total(): string
     {
-        return Formatter::moneyFormat($this->model->total);
+        return Formatter::money($this->model->total);
     }
 }

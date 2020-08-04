@@ -6,7 +6,7 @@ use Carbon\Carbon;
 use Tests\TestCase;
 use App\Models\Order;
 use App\Models\Space;
-use App\Billing\Charges\Calculator;
+use App\Billing\Calculator;
 
 class ViewSpacesListingTest extends TestCase
 {

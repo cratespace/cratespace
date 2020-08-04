@@ -2,6 +2,9 @@
 
 namespace App\Filters;
 
+use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Builder;
+
 class SpaceFilter extends Filter
 {
     /**
@@ -10,7 +13,8 @@ class SpaceFilter extends Filter
      * @var array
      */
     protected $filters = [
-        'origin', 'destination', 'type', 'departs_at', 'arrives_at',
+        'origin', 'destination', 'type', 'status',
+        'departs_at', 'arrives_at',
     ];
 
     /**
@@ -20,7 +24,7 @@ class SpaceFilter extends Filter
      *
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    protected function origin($city)
+    protected function origin($city): Builder
     {
         return $this->builder->whereOrigin($city);
     }
@@ -32,7 +36,7 @@ class SpaceFilter extends Filter
      *
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    protected function destination($city)
+    protected function destination($city): Builder
     {
         return $this->builder->whereDestination($city);
     }
@@ -44,7 +48,7 @@ class SpaceFilter extends Filter
      *
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    protected function departs_at($date)
+    protected function departs_at($date): Builder
     {
         return $this->builder->whereDate('departs_at', '=', $date);
     }
@@ -56,7 +60,7 @@ class SpaceFilter extends Filter
      *
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    protected function arrives_at($date)
+    protected function arrives_at($date): Builder
     {
         return $this->builder->whereDate('arrives_at', '=', $date);
     }
@@ -64,16 +68,47 @@ class SpaceFilter extends Filter
     /**
      * Filter spaces by type / locality.
      *
-     * @param string $locality
+     * @param string $option
      *
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    protected function type($option)
+    protected function type($option): Builder
     {
         if ($option == 'all') {
             return $this->builder;
         }
 
         return $this->builder->whereType($option);
+    }
+
+    /**
+     * Filter spaces according to it's availability.
+     *
+     * @param string $status
+     *
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    protected function status(string $status): Builder
+    {
+        switch ($status) {
+            case 'Available':
+                return $this->builder->doesntHave('order');
+
+                break;
+
+            case 'Ordered':
+                return $this->builder
+                    ->whereDate('departs_at', '>', Carbon::now())
+                    ->whereHas('order');
+
+                break;
+
+            case 'Expired':
+                return $this->builder
+                    ->whereDate('departs_at', '<=', Carbon::now())
+                    ->doesntHave('order');
+
+                break;
+        }
     }
 }

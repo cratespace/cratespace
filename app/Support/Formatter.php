@@ -31,16 +31,16 @@ class Formatter
      *
      * @return string
      */
-    public static function moneyFormat(float $amount, ?string $currency = null, ?string $locale = null)
+    public static function money(float $amount, ?string $currency = null, ?string $locale = null)
     {
         $money = new Money($amount, new Currency(strtoupper($currency ?? 'usd')));
 
         $locale = $locale ?? 'en';
 
         $numberFormatter = new NumberFormatter($locale, NumberFormatter::CURRENCY);
-        $moneyFormatter = new IntlMoneyFormatter($numberFormatter, new ISOCurrencies());
+        $moneyter = new IntlMoneyFormatter($numberFormatter, new ISOCurrencies());
 
-        return $moneyFormatter->format($money);
+        return $moneyter->format($money);
     }
 
     /**
@@ -50,7 +50,7 @@ class Formatter
      *
      * @return string
      */
-    public static function parse(string $content): string
+    public static function markdown(string $content): string
     {
         return app()->make(\Parsedown::class)->text($content);
     }

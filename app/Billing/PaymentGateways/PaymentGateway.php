@@ -2,6 +2,10 @@
 
 namespace App\Billing\PaymentGateways;
 
+use Closure;
+use Illuminate\Support\Collection;
+use App\Billing\Charge as LocalCharge;
+
 abstract class PaymentGateway
 {
     /**
@@ -19,20 +23,87 @@ abstract class PaymentGateway
     protected $charges;
 
     /**
+     * All charge amount received.
+     *
+     * @var \Illuminate\Support\Collection
+     */
+    protected $chargeAmount = [];
+
+    /**
+     * Call back to run as a hook before the first charge.
+     *
+     * @var \Closure
+     */
+    protected $beforeFirstChargeCallback;
+
+    /**
      * Create new payment gateway instance.
      */
     public function __construct()
     {
         $this->charges = collect();
+        $this->chargeAmount = collect();
     }
 
     /**
      * Get total amount the customer is charged.
      *
+     * @return \Illuminate\Support\Collection
+     */
+    public function charges(): Collection
+    {
+        return $this->charges;
+    }
+
+    /**
+     * Create stripe charge handler.
+     *
+     * @return \App\Billing\Charge
+     */
+    protected function getLocalCharger(array $data): LocalCharge
+    {
+        return new LocalCharge($data);
+    }
+
+    /**
+     * Set a call back to run as a hook before the first charge.
+     *
+     * @param \Closure $callback
+     *
+     * @return void
+     */
+    public function beforeFirstCharge(Closure $callback): void
+    {
+        $this->beforeFirstChargeCallback = $callback;
+    }
+
+    /**
+     * Determine and run a callback that has been set before original charge should be performed.
+     *
+     * @return void
+     */
+    protected function runBeforeChargesCallback(): void
+    {
+        if ($this->beforeFirstChargeCallback !== null) {
+            $callback = $this->beforeFirstChargeCallback;
+
+            $this->beforeFirstChargeCallback = null;
+
+            call_user_func_array($callback, [$this]);
+        }
+    }
+
+    /**
+     * Set total amount charged to customer.
+     *
+     * @param int $amount
+     *
      * @return int
      */
-    public function totalCharges(): int
+    protected function setChargeAmount(int $amount): int
     {
-        return $this->totalCharges;
+        $this->chargeAmount[] = $amount;
+
+        return $amount;
     }
 }

@@ -16,6 +16,10 @@ trait Filterable
      */
     public function scopeFilter($query, Filter $filters)
     {
+        if (is_null($filters)) {
+            return;
+        }
+
         return $filters->apply($query);
     }
 }

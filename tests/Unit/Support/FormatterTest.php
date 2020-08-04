@@ -20,7 +20,7 @@ class FormatterTest extends TestCase
     {
         $content = file_get_contents(__DIR__ . '/fixtures/stub.md');
 
-        $content = Formatter::parse($content);
+        $content = Formatter::markdown($content);
 
         $expectedMarkdown = "<h1>FooBar Title</h1>\n<p>The most foobary content ever!</p>";
 
