@@ -78,7 +78,7 @@
             "@php artisan key:generate --ansi"
         ],
         "test": [
-            "vendor/bin/phpunit --verbose --color=always"
+            "vendor/bin/phpunit --verbose --color=always --exclude-group integration"
         ]
     }
 }
