@@ -14,12 +14,13 @@ interface PaymentGateway
     /**
      * Charge the customer with the given amount.
      *
-     * @param int    $amount
-     * @param string $paymentToken
+     * @param int         $amount
+     * @param string      $paymentToken
+     * @param string|null $destinationAccountId
      *
      * @return void
      */
-    public function charge(int $amount, string $paymentToken): void;
+    public function charge(int $amount, string $paymentToken, ?string $destinationAccountId = null): void;
 
     /**
      * Generate payment token.

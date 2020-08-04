@@ -5,8 +5,8 @@ namespace Tests\Unit\Billing;
 use Tests\TestCase;
 use ReflectionClass;
 use App\Models\Space;
+use App\Billing\Calculator;
 use App\Contracts\Billing\Charges;
-use App\Billing\Charges\Calculator;
 
 class CalculatorTest extends TestCase
 {

@@ -7,7 +7,7 @@ use Tests\TestCase;
 use App\Models\Order;
 use App\Models\Space;
 use App\Support\Formatter;
-use App\Billing\Charges\Calculator;
+use App\Billing\Calculator;
 use Illuminate\Testing\TestResponse;
 use App\Contracts\Billing\PaymentGateway;
 use App\Billing\PaymentGateways\FakePaymentGateway;

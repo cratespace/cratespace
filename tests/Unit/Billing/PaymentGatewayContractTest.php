@@ -7,17 +7,27 @@ use App\Exceptions\PaymentFailedException;
 trait PaymentGatewayContractTest
 {
     /**
-     * Perform initial charge action.
+     * ID of latest charge made.
      *
-     * @return void
+     * @var string
      */
-    protected function performFirstCharge(): void
+    protected $lastChargeId;
+
+    /** @test */
+    public function charges_with_a_valid_payment_token_are_successful()
     {
-        $paymentGatewayFirst = $this->getPaymentGateway();
+        $paymentGateway = $this->getPaymentGateway();
 
-        $paymentGatewayFirst->charge(2400, $paymentGatewayFirst->generateToken($this->getCardDetails()));
+        $newCharges = $paymentGateway->newChargesDuring(function ($paymentGateway) {
+            $paymentGateway->charge(
+                2500,
+                $paymentGateway->generateToken($this->getCardDetails()),
+                config('services.stripe.client_id')
+            );
+        });
 
-        $this->lastChargeId = $paymentGatewayFirst->charges()->last()->id;
+        $this->assertCount(1, $newCharges);
+        $this->assertEquals(2500, $newCharges->map->amount()->sum());
     }
 
     /** @test */
@@ -34,7 +44,7 @@ trait PaymentGatewayContractTest
     {
         try {
             $paymentGateway = $this->getPaymentGateway();
-            $paymentGateway->charge(2500, 'invalid-payment-token');
+            $paymentGateway->charge(2500, 'invalid-payment-token', config('services.stripe.client_id'));
         } catch (PaymentFailedException $e) {
             $this->assertEquals(2500, $e->chargedAmount());
             $this->assertInstanceOf(PaymentFailedException::class, $e);
@@ -53,7 +63,11 @@ trait PaymentGatewayContractTest
         $timesCallbackRan = 0;
 
         $paymentGateway->beforeFirstCharge(function ($paymentGateway) use (&$timesCallbackRan) {
-            $paymentGateway->charge(1200, $paymentGateway->generateToken($this->getCardDetails()));
+            $paymentGateway->charge(
+                1200,
+                $paymentGateway->generateToken($this->getCardDetails()),
+                config('services.stripe.client_id')
+            );
 
             ++$timesCallbackRan;
 
@@ -62,9 +76,28 @@ trait PaymentGatewayContractTest
 
         $paymentGateway->charge(
             1200,
-            $paymentGateway->generateToken($this->getCardDetails())
+            $paymentGateway->generateToken($this->getCardDetails()),
+            config('services.stripe.client_id')
         );
         $this->assertEquals(1, $timesCallbackRan);
         $this->assertEquals(2400, $paymentGateway->totalCharges());
+    }
+
+    /**
+     * Perform initial charge action.
+     *
+     * @return void
+     */
+    protected function performFirstCharge(): void
+    {
+        $paymentGatewayFirst = $this->getPaymentGateway();
+
+        $paymentGatewayFirst->charge(
+            2400,
+            $paymentGatewayFirst->generateToken($this->getCardDetails()),
+            config('services.stripe.client_id')
+        );
+
+        $this->lastChargeId = $paymentGatewayFirst->charges()->last()->id;
     }
 }

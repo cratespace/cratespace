@@ -3,6 +3,10 @@
 namespace Tests\Unit\Billing;
 
 use Tests\TestCase;
+use ReflectionClass;
+use App\Billing\Charge;
+use Stripe\StripeClient;
+use Stripe\Service\ChargeService;
 use Stripe\Token as StripeTokenGenerator;
 use App\Billing\PaymentGateways\StripePaymentGateway;
 
@@ -20,13 +24,6 @@ class StripePaymentGatewayTest extends TestCase
      */
     protected $apiKey;
 
-    /**
-     * ID of latest charge made.
-     *
-     * @var string
-     */
-    protected $lastChargeId;
-
     protected function setUp(): void
     {
         parent::setUp();
@@ -37,14 +34,45 @@ class StripePaymentGatewayTest extends TestCase
     }
 
     /** @test */
-    public function charges_with_a_valid_payment_token_are_successful_stripe()
+    public function it_can_create_instance_of_stripe_api_client()
     {
-        $newPaymentGateway = $this->getPaymentGateway();
+        $stripePaymentGateway = new StripePaymentGateway($this->apiKey);
 
-        $newPaymentGateway->charge(2500, $this->generateToken());
+        $stripeReflection = new ReflectionClass($stripePaymentGateway);
+        $getStripeProperty = $stripeReflection->getMethod('makeStripeClient');
+        $getStripeProperty->setAccessible(true);
 
-        $this->assertCount(1, $newPaymentGateway->newChargesSince($this->lastChargeId));
-        $this->assertEquals(2500, $newPaymentGateway->totalCharges());
+        $this->assertInstanceOf(StripeClient::class, $getStripeProperty->invoke($stripePaymentGateway));
+    }
+
+    /** @test */
+    public function it_can_create_instance_of_stripe_charger()
+    {
+        $stripePaymentGateway = new StripePaymentGateway($this->apiKey);
+
+        $stripeReflection = new ReflectionClass($stripePaymentGateway);
+        $getStripeProperty = $stripeReflection->getMethod('getStripeCharger');
+        $getStripeProperty->setAccessible(true);
+
+        $this->assertInstanceOf(ChargeService::class, $getStripeProperty->invoke($stripePaymentGateway));
+    }
+
+    /** @test */
+    public function it_can_create_instance_of_local_charger()
+    {
+        $stripePaymentGateway = new StripePaymentGateway($this->apiKey);
+
+        $stripeReflection = new ReflectionClass($stripePaymentGateway);
+        $getStripeProperty = $stripeReflection->getMethod('getLocalCharger');
+        $getStripeProperty->setAccessible(true);
+
+        $this->assertInstanceOf(
+            Charge::class,
+            $getStripeProperty->invokeArgs(
+                $stripePaymentGateway,
+                [$this->getCardDetails()]
+            )
+        );
     }
 
     /**
@@ -64,7 +92,7 @@ class StripePaymentGatewayTest extends TestCase
      *
      * @return string
      */
-    protected function generateToken(?string $apiKey = null): string
+    protected function generateTestStripeToken(?string $apiKey = null): string
     {
         $tokenObject = StripeTokenGenerator::create([
             'card' => $this->getCardDetails(),
@@ -81,7 +109,7 @@ class StripePaymentGatewayTest extends TestCase
     protected function getCardDetails(): array
     {
         return [
-            'number' => '4242424242424242',
+            'number' => $this->getPaymentGateway()::TEST_CARD_NUMBER,
             'exp_month' => 1,
             'exp_year' => date('Y') + 1,
             'cvc' => '123',

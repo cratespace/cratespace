@@ -1,9 +1,12 @@
 <?php
 
-namespace App\Billing\Charges;
+namespace App\Billing;
 
 use App\Contracts\Billing\Charges;
+use App\Billing\Charges\TaxCharges;
 use App\Contracts\Models\Priceable;
+use App\Billing\Charges\ServiceCharges;
+use App\Billing\Charges\SubTotalCharges;
 
 class Calculator
 {

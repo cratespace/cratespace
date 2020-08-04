@@ -4,6 +4,7 @@ namespace App\Billing\PaymentGateways;
 
 use Closure;
 use Illuminate\Support\Collection;
+use App\Billing\Charge as LocalCharge;
 
 abstract class PaymentGateway
 {
@@ -52,6 +53,16 @@ abstract class PaymentGateway
     public function charges(): Collection
     {
         return $this->charges;
+    }
+
+    /**
+     * Create stripe charge handler.
+     *
+     * @return \App\Billing\Charge
+     */
+    protected function getLocalCharger(array $data): LocalCharge
+    {
+        return new LocalCharge($data);
     }
 
     /**

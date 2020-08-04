@@ -2,6 +2,7 @@
 
 namespace App\Billing\PaymentGateways;
 
+use Closure;
 use Illuminate\Support\Str;
 use Illuminate\Support\Collection;
 use App\Exceptions\PaymentFailedException;
@@ -41,12 +42,13 @@ class FakePaymentGateway extends PaymentGateway implements PaymentGatewayContrac
     /**
      * Charge the customer with the given amount.
      *
-     * @param int    $amount
-     * @param string $paymentToken
+     * @param int         $amount
+     * @param string      $paymentToken
+     * @param string|null $destinationAccountId
      *
      * @return void
      */
-    public function charge(int $amount, string $paymentToken): void
+    public function charge(int $amount, string $paymentToken, ?string $destinationAccountId = null): void
     {
         $this->runBeforeChargesCallback();
 
@@ -54,10 +56,11 @@ class FakePaymentGateway extends PaymentGateway implements PaymentGatewayContrac
             throw new PaymentFailedException('Invalid payment token received', $amount);
         }
 
-        $this->charges[] = (object) [
-            'id' => Str::random(40),
+        $this->charges[] = $this->getLocalCharger([
             'amount' => $this->setChargeAmount($amount),
-        ];
+            'card_last_four' => substr($this->tokens[$paymentToken], -4),
+            'destination' => $destinationAccountId,
+        ]);
     }
 
     /**
@@ -74,6 +77,22 @@ class FakePaymentGateway extends PaymentGateway implements PaymentGatewayContrac
         $this->tokens[$token] = $card['card_number'] ?? self::TEST_CARD_NUMBER;
 
         return $token;
+    }
+
+    /**
+     * Get all new charges during given callback.
+     *
+     * @param \Closure $callback
+     *
+     * @return \Illuminate\Support\Collection
+     */
+    public function newChargesDuring(Closure $callback): Collection
+    {
+        $chargesFrom = $this->charges->count();
+
+        call_user_func_array($callback, [$this]);
+
+        return $this->charges->slice($chargesFrom)->reverse()->values();
     }
 
     /**

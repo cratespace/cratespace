@@ -9,28 +9,11 @@ class FakePaymentGatewayTest extends TestCase
 {
     use PaymentGatewayContractTest;
 
-    /**
-     * ID of latest charge made.
-     *
-     * @var string
-     */
-    protected $lastChargeId;
-
     protected function setUp(): void
     {
         parent::setUp();
 
         $this->performFirstCharge();
-    }
-
-    /** @test */
-    public function charges_with_a_valid_payment_token_are_successful_fake()
-    {
-        $newPaymentGateway = $this->getPaymentGateway();
-
-        $newPaymentGateway->charge(2500, $newPaymentGateway->generateToken([]));
-
-        $this->assertEquals(2500, $newPaymentGateway->totalCharges());
     }
 
     /**

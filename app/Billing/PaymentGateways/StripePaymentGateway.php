@@ -2,7 +2,9 @@
 
 namespace App\Billing\PaymentGateways;
 
+use Closure;
 use Stripe\StripeClient;
+use Illuminate\Support\Arr;
 use Stripe\Service\ChargeService;
 use Illuminate\Support\Collection;
 use App\Exceptions\PaymentFailedException;
@@ -45,12 +47,13 @@ class StripePaymentGateway extends PaymentGateway implements PaymentGatewayContr
     /**
      * Charge the customer with the given amount.
      *
-     * @param int    $amount
-     * @param string $paymentToken
+     * @param int         $amount
+     * @param string      $paymentToken
+     * @param string|null $destinationAccountId
      *
      * @return void
      */
-    public function charge(int $amount, string $paymentToken): void
+    public function charge(int $amount, string $paymentToken, ?string $destinationAccountId = null): void
     {
         $this->runBeforeChargesCallback();
 
@@ -60,6 +63,10 @@ class StripePaymentGateway extends PaymentGateway implements PaymentGatewayContr
                 'currency' => config('defaults.finance.currency'),
                 'source' => $paymentToken,
                 'description' => config('defaults.finance.transaction-description'),
+                // 'destination' => [
+                //     'account' => $destinationAccountId,
+                //     'amount' => $amount * .9,
+                // ],
             ]);
         } catch (InvalidRequestException $e) {
             throw new PaymentFailedException($e->getMessage(), $amount);
@@ -81,6 +88,27 @@ class StripePaymentGateway extends PaymentGateway implements PaymentGatewayContr
             : ['ending_before' => $endingBefore];
 
         return $this->getStripeCharger()->all($constraints)['data'];
+    }
+
+    /**
+     * Get all new charges during given callback.
+     *
+     * @param \Closure $callback
+     *
+     * @return \Illuminate\Support\Collection
+     */
+    public function newChargesDuring(Closure $callback): Collection
+    {
+        $latestCharge = Arr::first($this->getAllCharges(1));
+
+        call_user_func_array($callback, [$this]);
+
+        return $this->newChargesSince($latestCharge->id)->map(function ($stripeCharge) {
+            return $this->getLocalCharger([
+                'amount' => $stripeCharge['amount'],
+                'card_last_four' => $stripeCharge['source']['last4'],
+            ]);
+        });
     }
 
     /**
