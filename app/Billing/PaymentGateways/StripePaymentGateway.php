@@ -82,16 +82,32 @@ class StripePaymentGateway extends PaymentGateway implements PaymentGatewayContr
      */
     public function newChargesDuring(Closure $callback): Collection
     {
-        $latestCharge = Arr::first($this->getCharges(1));
+        $latestCharge = $this->lastCharge();
 
         call_user_func_array($callback, [$this]);
 
-        return $this->newChargesSince($latestCharge->id)->map(function ($stripeCharge) {
+        return $this->newChargesSince($latestCharge)->map(function ($stripeCharge) {
             return $this->getLocalCharger([
                 'amount' => $stripeCharge['amount'],
                 'card_last_four' => $stripeCharge['source']['last4'],
             ]);
         });
+    }
+
+    private function lastCharge()
+    {
+        return Arr::first(\Stripe\Charge::all([
+            'limit' => 1,
+        ], ['api_key' => $this->apiKey])['data']);
+    }
+
+    private function newChargesSince($charge = null)
+    {
+        $newCharges = \Stripe\Charge::all([
+            'ending_before' => $charge ? $charge->id : null,
+        ], ['api_key' => $this->apiKey])['data'];
+
+        return collect($newCharges);
     }
 
     /**
@@ -101,10 +117,10 @@ class StripePaymentGateway extends PaymentGateway implements PaymentGatewayContr
      *
      * @return \Illuminate\Support\Collection
      */
-    public function newChargesSince(string $chargeId): Collection
-    {
-        return collect($this->getCharges(null, $chargeId));
-    }
+    // public function newChargesSince(string $chargeId): Collection
+    // {
+    //     return collect($this->getCharges(null, $chargeId));
+    // }
 
     /**
      * Get latest charge details from stripe.
