@@ -78,7 +78,7 @@
             "@php artisan key:generate --ansi"
         ],
         "test": [
-            "@php artisan test integration && vendor/bin/phpunit --color=always integration"
+            "@php artisan test && vendor/bin/phpunit --color=always"
         ]
     }
 }
