@@ -29,8 +29,6 @@ class StripePaymentGatewayTest extends TestCase
         parent::setUp();
 
         $this->apiKey = config('services.stripe.secret');
-
-        $this->performFirstCharge();
     }
 
     /** @test */

@@ -16,6 +16,8 @@ trait PaymentGatewayContractTest
     /** @test */
     public function charges_with_a_valid_payment_token_are_successful()
     {
+        $this->performFirstCharge();
+
         $paymentGateway = $this->getPaymentGateway();
 
         $newCharges = $paymentGateway->newChargesDuring(function ($paymentGateway) {
@@ -42,18 +44,22 @@ trait PaymentGatewayContractTest
     /** @test */
     public function charges_with_an_invalid_payment_token_fail()
     {
-        try {
-            $paymentGateway = $this->getPaymentGateway();
-            $paymentGateway->charge(2500, 'invalid-payment-token', config('services.stripe.client_id'));
-        } catch (PaymentFailedException $e) {
-            $this->assertEquals(2500, $e->chargedAmount());
-            $this->assertInstanceOf(PaymentFailedException::class, $e);
-            $this->assertCount(0, $paymentGateway->newChargesSince($this->lastChargeId));
+        $paymentGateway = $this->getPaymentGateway();
 
-            return;
-        }
+        $newCharges = $paymentGateway->newChargesDuring(function ($paymentGateway) {
+            try {
+                $paymentGateway->charge(2500, 'invalid-payment-token', env('STRIPE_TEST_PROMOTER_ID'));
+            } catch (PaymentFailedException $e) {
+                $this->assertEquals(2500, $e->chargedAmount());
+                $this->assertInstanceOf(PaymentFailedException::class, $e);
 
-        $this->fail('Charging with an invalid payment token did not throw an PaymentFailedException.');
+                return;
+            }
+
+            $this->fail('Charging with an invalid payment token did not throw a PaymentFailedException.');
+        });
+
+        $this->assertCount(0, $newCharges);
     }
 
     /** @test */
