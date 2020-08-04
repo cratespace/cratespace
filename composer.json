@@ -79,7 +79,7 @@
             "@php artisan key:generate --ansi"
         ],
         "test": [
-            "@php artisan test && vendor/bin/phpunit --color=always"
+            "@php artisan test --exclude-group integration && vendor/bin/phpunit --color=always --exclude-group integration"
         ]
     }
 }
