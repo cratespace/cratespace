@@ -4,7 +4,6 @@ namespace App\Billing\PaymentGateways;
 
 use Closure;
 use Stripe\StripeClient;
-use Illuminate\Support\Arr;
 use Stripe\Service\ChargeService;
 use Illuminate\Support\Collection;
 use App\Exceptions\PaymentFailedException;
@@ -82,7 +81,7 @@ class StripePaymentGateway extends PaymentGateway implements PaymentGatewayContr
      */
     public function newChargesDuring(Closure $callback): Collection
     {
-        $latestCharge = $this->lastCharge();
+        $latestCharge = $this->getCharges(1);
 
         call_user_func_array($callback, [$this]);
 
@@ -94,22 +93,6 @@ class StripePaymentGateway extends PaymentGateway implements PaymentGatewayContr
         });
     }
 
-    private function lastCharge()
-    {
-        return Arr::first(\Stripe\Charge::all([
-            'limit' => 1,
-        ], ['api_key' => $this->apiKey])['data']);
-    }
-
-    private function newChargesSince($charge = null)
-    {
-        $newCharges = \Stripe\Charge::all([
-            'ending_before' => $charge ? $charge->id : null,
-        ], ['api_key' => $this->apiKey])['data'];
-
-        return collect($newCharges);
-    }
-
     /**
      * Get all new charges since given charge ID.
      *
@@ -117,10 +100,10 @@ class StripePaymentGateway extends PaymentGateway implements PaymentGatewayContr
      *
      * @return \Illuminate\Support\Collection
      */
-    // public function newChargesSince(string $chargeId): Collection
-    // {
-    //     return collect($this->getCharges(null, $chargeId));
-    // }
+    public function newChargesSince(string $chargeId): Collection
+    {
+        return collect($this->getCharges(null, $chargeId));
+    }
 
     /**
      * Get latest charge details from stripe.
