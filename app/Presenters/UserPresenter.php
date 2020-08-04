@@ -13,6 +13,6 @@ class UserPresenter extends Presenter
      */
     public function creditBalance(): string
     {
-        return Formatter::moneyFormat($this->model->account->credit ?? 0);
+        return Formatter::money($this->model->account->credit ?? 0);
     }
 }

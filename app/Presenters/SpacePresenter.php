@@ -13,13 +13,4 @@ class SpacePresenter extends Presenter
     {
         return $this->model->height * $this->model->width * $this->model->length;
     }
-
-    /**
-     * Calculate and present volume of space.
-     *
-     * @return int
-     */
-    public function status(): int
-    {
-    }
 }

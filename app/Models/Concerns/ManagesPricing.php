@@ -27,7 +27,7 @@ trait ManagesPricing
      */
     public function getTaxAttribute($value)
     {
-        return Formatter::moneyFormat($value);
+        return Formatter::money($value);
     }
 
     /**

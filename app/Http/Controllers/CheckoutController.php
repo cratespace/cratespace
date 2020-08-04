@@ -51,7 +51,7 @@ class CheckoutController extends Controller
         $charges = [];
 
         foreach ((new ChargesCalculator($space))->calculateCharges() as $name => $amount) {
-            $charges[$name] = Formatter::moneyFormat((int) $amount);
+            $charges[$name] = Formatter::money((int) $amount);
         }
 
         return $charges;

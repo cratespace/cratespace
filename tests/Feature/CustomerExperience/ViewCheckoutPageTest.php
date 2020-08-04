@@ -60,7 +60,7 @@ class ViewCheckoutPageTest extends TestCase
         $charges = [];
 
         foreach (cache()->get('charges') as $name => $amount) {
-            $charges[$name] = Formatter::moneyFormat($amount);
+            $charges[$name] = Formatter::money($amount);
         }
 
         $response->assertStatus(200)
