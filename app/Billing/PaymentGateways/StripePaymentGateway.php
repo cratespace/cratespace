@@ -4,6 +4,7 @@ namespace App\Billing\PaymentGateways;
 
 use Closure;
 use Stripe\StripeClient;
+use Illuminate\Support\Arr;
 use Stripe\Service\ChargeService;
 use Illuminate\Support\Collection;
 use App\Exceptions\PaymentFailedException;
@@ -81,11 +82,11 @@ class StripePaymentGateway extends PaymentGateway implements PaymentGatewayContr
      */
     public function newChargesDuring(Closure $callback): Collection
     {
-        $latestCharge = $this->getCharges(1);
+        $latestCharge = Arr::first($this->getCharges(1));
 
         call_user_func_array($callback, [$this]);
 
-        return $this->newChargesSince($latestCharge)->map(function ($stripeCharge) {
+        return $this->newChargesSince($latestCharge->id)->map(function ($stripeCharge) {
             return $this->getLocalCharger([
                 'amount' => $stripeCharge['amount'],
                 'card_last_four' => $stripeCharge['source']['last4'],
