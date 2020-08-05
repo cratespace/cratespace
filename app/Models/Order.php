@@ -3,7 +3,6 @@
 namespace App\Models;
 
 use App\Filters\Filter;
-use Laravel\Scout\Searchable;
 use App\Models\Traits\Filterable;
 use App\Events\OrderStatusUpdated;
 use App\Models\Traits\Presentable;
@@ -13,7 +12,6 @@ class Order extends Model
 {
     use Presentable;
     use Filterable;
-    use Searchable;
 
     /**
      * The attributes that are mass assignable.
@@ -25,20 +23,6 @@ class Order extends Model
         'service', 'price', 'tax', 'total', 'user_id', 'status',
         'confirmation_number',
     ];
-
-    /**
-     * Get the indexable data array for the model.
-     *
-     * @return array
-     */
-    public function toSearchableArray()
-    {
-        $array = $this->toArray();
-
-        // Customize array...
-
-        return $array;
-    }
 
     /**
      * Find an order using given confirmation number.
@@ -65,8 +49,8 @@ class Order extends Model
     {
         $query->with('space')
             ->whereUserId(user('id'))
-            ->search($search)
             ->filter($filters)
+            ->search($search)
             ->latest('updated_at');
     }
 
@@ -87,6 +71,40 @@ class Order extends Model
             }])
             ->whereStatus('Pending')
             ->latest('created_at');
+    }
+
+    /**
+     * Search for orders with given like terms.
+     *
+     * @param \Illuminate\Database\Query\Builder $query
+     * @param string|null                        $terms
+     *
+     * @return \Illuminate\Database\Query\Builder
+     */
+    public function scopeSearch($query, ?string $terms = null)
+    {
+        collect(str_getcsv($terms, ' ', '"'))->filter()->each(function ($term) use ($query) {
+            $term = preg_replace('/[^A-Za-z0-9]/', '', $term) . '%';
+
+            $query->whereIn('id', function ($query) use ($term) {
+                $query->select('id')
+                    ->from(function ($query) use ($term) {
+                        $query->select('orders.id')
+                            ->from('orders')
+                            ->where('orders.confirmation_number', 'like', $term)
+                            ->orWhere('orders.name', 'like', $term)
+                            ->orWhere('orders.email', 'like', $term)
+                            ->orWhere('orders.phone', 'like', $term)
+                            ->union(
+                                $query->newQuery()
+                                    ->select('orders.id')
+                                    ->from('orders')
+                                    ->join('spaces', 'orders.space_id', '=', 'spaces.id')
+                                    ->where('spaces.uid', 'like', $term)
+                            );
+                    }, 'matches');
+            });
+        });
     }
 
     /**

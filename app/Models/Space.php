@@ -5,9 +5,9 @@ namespace App\Models;
 use Carbon\Carbon;
 use App\Filters\Filter;
 use App\Support\Formatter;
-use Laravel\Scout\Searchable;
 use App\Models\Casts\PriceCast;
 use App\Models\Traits\Filterable;
+use App\Models\Traits\Searchable;
 use App\Models\Casts\ScheduleCast;
 use App\Models\Traits\Presentable;
 use App\Contracts\Models\Priceable;
@@ -23,6 +23,13 @@ class Space extends Model implements Statusable, Priceable
     use ManagesPricing;
     use GetsPathToResource;
     use Searchable;
+
+    /**
+     * The accessors to append to the model's array form.
+     *
+     * @var array
+     */
+    protected $appends = ['path'];
 
     /**
      * The attributes that should be cast to native types.
@@ -46,18 +53,6 @@ class Space extends Model implements Statusable, Priceable
         'weight', 'note', 'price', 'tax', 'user_id', 'origin', 'destination',
         'type', 'base',
     ];
-
-    /**
-     * Get the indexable data array for the model.
-     *
-     * @return array
-     */
-    public function toSearchableArray()
-    {
-        $array = $this->toArray();
-
-        return $array;
-    }
 
     /**
      * Get the route key for the model.
@@ -208,6 +203,26 @@ class Space extends Model implements Statusable, Priceable
             ->whereDate('departs_at', '>', Carbon::now())
             ->doesntHave('order')
             ->latest();
+    }
+
+    /**
+     * Get full path to resource page.
+     *
+     * @return string
+     */
+    public function getPathAttribute()
+    {
+        return $this->path();
+    }
+
+    /**
+     * Get full url to order page.
+     *
+     * @return string
+     */
+    public function path(): string
+    {
+        return route('spaces.show', $this);
     }
 
     /**

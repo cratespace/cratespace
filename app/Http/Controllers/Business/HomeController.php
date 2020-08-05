@@ -18,30 +18,15 @@ class HomeController extends Controller
      */
     public function index()
     {
+        $generator = new Generator('orders', true);
+
         return view('business.dashboard.home', [
             'spacesDeparting' => Space::departing()->get(),
             'pendingOrders' => Order::pending()->get(),
-            'chart' => $this->generateReport(),
+            'chart' => $generator->generate(WeeklyReport::class)
+                ->keyBy(function ($count, $date) {
+                    return Carbon::parse($date)->format('M j');
+                }),
         ]);
-    }
-
-    /**
-     * Generate report data.
-     *
-     * @return \Illuminate\Support\Collection
-     */
-    protected function generateReport(): Collection
-    {
-        $generator = new Generator('orders', true);
-
-        $generator->setOptions([
-            'report' => WeeklyReport::class,
-            'limit' => null,
-        ]);
-
-        return $generator->generate()
-            ->keyBy(function ($count, $date) {
-                return Carbon::parse($date)->format('M j');
-            });
     }
 }
