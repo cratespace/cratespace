@@ -12,7 +12,6 @@ use App\Models\Casts\ScheduleCast;
 use App\Models\Traits\Presentable;
 use App\Contracts\Models\Priceable;
 use App\Contracts\Models\Statusable;
-use App\Models\Concerns\GeneratesUID;
 use App\Models\Concerns\ManagesPricing;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Concerns\GetsPathToResource;
@@ -23,7 +22,6 @@ class Space extends Model implements Statusable, Priceable
     use Presentable;
     use ManagesPricing;
     use GetsPathToResource;
-    use GeneratesUID;
     use Searchable;
 
     /**

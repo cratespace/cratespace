@@ -45,7 +45,7 @@
                         <div class="flex items-center">
                             <div>
                                 <div class="text-sm leading-5 text-gray-800 font-semibold">
-                                    <a href="#">{{ '#' . $order->uid }}</a>
+                                    <a href="#">{{ '#' . $order->confirmation_number }}</a>
                                 </div>
 
                                 <div class="mt-1 text-sm leading-5 font-medium text-gray-800">{{ $order->name }}</div>

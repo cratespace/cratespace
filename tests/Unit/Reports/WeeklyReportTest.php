@@ -21,17 +21,19 @@ class WeeklyReportTest extends TestCase
             create(Space::class, [
                 'user_id' => $user->id,
                 'created_at' => Carbon::now()->subDays($i),
-            ], rand(1, 12));
+            ], rand(1, 10));
         }
 
         $graph = new WeeklyReport($query);
         $graphData = $graph->make();
 
-        foreach ($graphData as $date => $count) {
-            $this->assertEquals(
-                Space::whereDate('created_at', '=', Carbon::parse($date))->count(),
-                $count
-            );
-        }
+        $this->assertCount(
+            Carbon::now()->subDay()->startOfWeek(Carbon::MONDAY)->day,
+            $graphData
+        );
+        $this->assertInstanceOf(
+            Carbon::class,
+            Carbon::parse(collect($graphData)->keys()->first())
+        );
     }
 }

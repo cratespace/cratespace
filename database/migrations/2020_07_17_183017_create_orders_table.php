@@ -18,7 +18,6 @@ class CreateOrdersTable extends Migration
             $table->foreignId('space_id')->constrained('spaces');
             $table->foreignId('user_id');
             $table->string('status')->default('Pending');
-            $table->string('uid')->unique()->index();
             $table->string('confirmation_number')
                 ->unique()
                 ->nullable()

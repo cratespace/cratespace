@@ -6,18 +6,10 @@ use App\Filters\Filter;
 use App\Models\Traits\Filterable;
 use App\Events\OrderStatusUpdated;
 use App\Models\Traits\Presentable;
-use App\Models\Concerns\GeneratesUID;
-use App\Models\Concerns\FindsBusiness;
 use Illuminate\Database\Eloquent\Model;
-use App\Models\Concerns\CalculatesCharges;
-use App\Models\Concerns\GeneratesOrderConfirmationNumber;
 
 class Order extends Model
 {
-    use GeneratesOrderConfirmationNumber;
-    use CalculatesCharges;
-    use FindsBusiness;
-    use GeneratesUID;
     use Presentable;
     use Filterable;
 
@@ -27,7 +19,7 @@ class Order extends Model
      * @var array
      */
     protected $fillable = [
-        'uid', 'space_id', 'name', 'email', 'phone', 'business',
+        'space_id', 'name', 'email', 'phone', 'business',
         'service', 'price', 'tax', 'total', 'user_id', 'status',
         'confirmation_number',
     ];
@@ -99,7 +91,7 @@ class Order extends Model
                     ->from(function ($query) use ($term) {
                         $query->select('orders.id')
                             ->from('orders')
-                            ->where('orders.uid', 'like', $term)
+                            ->where('orders.confirmation_number', 'like', $term)
                             ->orWhere('orders.name', 'like', $term)
                             ->orWhere('orders.email', 'like', $term)
                             ->orWhere('orders.phone', 'like', $term)
