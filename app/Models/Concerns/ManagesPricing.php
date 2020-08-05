@@ -7,6 +7,16 @@ use App\Support\Formatter;
 trait ManagesPricing
 {
     /**
+     * Get price format for editing.
+     *
+     * @return int
+     */
+    public function price(): int
+    {
+        return $this->getPriceInCents() / 100;
+    }
+
+    /**
      * Set the space's price in cents.
      *
      * @param string $value

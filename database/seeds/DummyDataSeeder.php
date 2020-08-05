@@ -14,7 +14,7 @@ class DummyDataSeeder extends Seeder
      */
     public function run()
     {
-        create(Space::class, ['user_id' => 1], 20)->each(function ($space) {
+        create(Space::class, ['user_id' => 1], 7)->each(function ($space) {
             $service = $space->getPriceInCents() * config('charges.service');
 
             create(Order::class, [
@@ -26,6 +26,6 @@ class DummyDataSeeder extends Seeder
                 'total' => $space->getPriceInCents() + $space->getTaxInCents() + $service,
                 'created_at' => Carbon::now()->subDays(rand(1, 10)),
             ]);
-        }, 20);
+        });
     }
 }

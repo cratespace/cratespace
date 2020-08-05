@@ -65,7 +65,7 @@ class Order extends Model
     public function scopePending($query, int $limit = 10)
     {
         $query->whereUserId(user('id'))
-            ->select('id', 'uid', 'name', 'phone', 'status', 'total', 'space_id')
+            ->select('id', 'confirmation_number', 'name', 'phone', 'status', 'total', 'space_id')
             ->with(['space' => function ($query) {
                 $query->select('id', 'uid', 'departs_at', 'arrives_at');
             }])

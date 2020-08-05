@@ -35,7 +35,9 @@ class SpaceController extends Controller
      */
     public function create()
     {
-        return view('business.spaces.create');
+        return view('business.spaces.create', [
+            'space' => new Space(),
+        ]);
     }
 
     /**
@@ -81,7 +83,7 @@ class SpaceController extends Controller
     {
         $this->authorize('manage', $space);
 
-        return view('business.spaces.create', compact('space'));
+        return view('business.spaces.edit', compact('space'));
     }
 
     /**
@@ -94,7 +96,7 @@ class SpaceController extends Controller
      */
     public function update(SpaceRequest $request, Space $space)
     {
-        $space->update($reqeust->validated());
+        $space->update($request->validated());
 
         if ($request->wantsJson()) {
             return response($space->fresh(), 201);

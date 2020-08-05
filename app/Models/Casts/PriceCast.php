@@ -19,6 +19,10 @@ class PriceCast implements CastsAttributes
      */
     public function get($model, string $key, $value, array $attributes)
     {
+        if (is_null($value)) {
+            return $value;
+        }
+
         return Formatter::money($value);
     }
 
