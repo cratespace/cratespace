@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Filters\Filter;
 use App\Models\Traits\Filterable;
+use App\Models\Traits\Searchable;
 use App\Events\OrderStatusUpdated;
 use App\Models\Traits\Presentable;
 use Illuminate\Database\Eloquent\Model;
@@ -12,6 +13,7 @@ class Order extends Model
 {
     use Presentable;
     use Filterable;
+    use Searchable;
 
     /**
      * The attributes that are mass assignable.
@@ -22,6 +24,15 @@ class Order extends Model
         'space_id', 'name', 'email', 'phone', 'business',
         'service', 'price', 'tax', 'total', 'user_id', 'status',
         'confirmation_number',
+    ];
+
+    /**
+     * Columns to use during searching for specified resources.
+     *
+     * @var array
+     */
+    protected $searchableColumns = [
+        'confirmation_number', 'name', 'email', 'phone',
     ];
 
     /**
@@ -71,40 +82,6 @@ class Order extends Model
             }])
             ->whereStatus('Pending')
             ->latest('created_at');
-    }
-
-    /**
-     * Search for orders with given like terms.
-     *
-     * @param \Illuminate\Database\Query\Builder $query
-     * @param string|null                        $terms
-     *
-     * @return \Illuminate\Database\Query\Builder
-     */
-    public function scopeSearch($query, ?string $terms = null)
-    {
-        collect(str_getcsv($terms, ' ', '"'))->filter()->each(function ($term) use ($query) {
-            $term = preg_replace('/[^A-Za-z0-9]/', '', $term) . '%';
-
-            $query->whereIn('id', function ($query) use ($term) {
-                $query->select('id')
-                    ->from(function ($query) use ($term) {
-                        $query->select('orders.id')
-                            ->from('orders')
-                            ->where('orders.confirmation_number', 'like', $term)
-                            ->orWhere('orders.name', 'like', $term)
-                            ->orWhere('orders.email', 'like', $term)
-                            ->orWhere('orders.phone', 'like', $term)
-                            ->union(
-                                $query->newQuery()
-                                    ->select('orders.id')
-                                    ->from('orders')
-                                    ->join('spaces', 'orders.space_id', '=', 'spaces.id')
-                                    ->where('spaces.uid', 'like', $term)
-                            );
-                    }, 'matches');
-            });
-        });
     }
 
     /**

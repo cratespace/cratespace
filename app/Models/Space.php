@@ -32,6 +32,16 @@ class Space extends Model implements Statusable, Priceable
     protected $appends = ['path'];
 
     /**
+     * Columns to use during searching for specified resources.
+     *
+     * @var array
+     */
+    protected $searchableColumns = [
+        'uid', 'origin', 'destination', 'height', 'width',
+        'length', 'weight', 'type', 'price', 'departs_at', 'arrives_at',
+    ];
+
+    /**
      * The attributes that should be cast to native types.
      *
      * @var array

@@ -2,8 +2,7 @@
 
 namespace App\Models\Concerns;
 
-use ReflectionClass;
-use Illuminate\Support\Str;
+use App\Support\Model as ModelHelpers;
 
 trait GetsPathToResource
 {
@@ -24,16 +23,8 @@ trait GetsPathToResource
      */
     public function path(string $action = 'show'): string
     {
-        return route("{$this->getResourceName()}.{$action}", $this);
-    }
+        $resourceName = ModelHelpers::getNameInPlural($this);
 
-    /**
-     * Determine the activity type.
-     *
-     * @return string
-     */
-    protected function getResourceName()
-    {
-        return Str::plural(strtolower((new ReflectionClass($this))->getShortName()));
+        return route("{$resourceName}.{$action}", $this);
     }
 }

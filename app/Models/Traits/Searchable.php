@@ -2,6 +2,9 @@
 
 namespace App\Models\Traits;
 
+use App\Support\Model as ModelHelpers;
+use Illuminate\Database\Query\Builder;
+
 trait Searchable
 {
     /**
@@ -18,27 +21,93 @@ trait Searchable
             return $query;
         }
 
-        collect(str_getcsv($terms, ' ', '"'))->filter()->each(function ($term) use ($query) {
-            $term = preg_replace('/[^A-Za-z0-9]/', '', $term) . '%';
+        collect($this->getTerms($terms))->filter()
+            ->each(function ($term) use ($query) {
+                $term = $this->parseTerm($term);
 
-            $query->whereIn('id', function ($query) use ($term) {
-                $query->select('id')
-                    ->from(function ($query) use ($term) {
-                        $query->select('spaces.id')
-                            ->from('spaces')
-                            ->where('spaces.uid', 'like', $term)
-                            ->orWhere('spaces.origin', 'like', $term)
-                            ->orWhere('spaces.destination', 'like', $term)
-                            ->orWhere('spaces.height', 'like', $term)
-                            ->orWhere('spaces.width', 'like', $term)
-                            ->orWhere('spaces.length', 'like', $term)
-                            ->orWhere('spaces.weight', 'like', $term)
-                            ->orWhere('spaces.type', 'like', $term)
-                            ->orWhere('spaces.price', 'like', $term)
-                            ->orWhere('spaces.departs_at', 'like', $term)
-                            ->orWhere('spaces.arrives_at', 'like', $term);
+                $query->whereIn('id', function ($query) use ($term) {
+                    $query->select('id')->from(function ($query) use ($term) {
+                        $query = $this->performSubQuery($query);
+
+                        $this->applyWhereQueries($query, $term);
                     }, 'matches');
+                });
             });
-        });
+    }
+
+    /**
+     * Get list of terms to be searched with.
+     *
+     * @param string $terms
+     *
+     * @return array
+     */
+    protected function getTerms(string $terms): array
+    {
+        return str_getcsv($terms, ' ', '"');
+    }
+
+    /**
+     * Parse given term appropriate for fuzzy searching.
+     *
+     * @param string $term
+     *
+     * @return string
+     */
+    protected function parseTerm(string $term): string
+    {
+        return preg_replace('/[^A-Za-z0-9]/', '', $term) . '%';
+    }
+
+    /**
+     * Perform sub-query on query builder.
+     *
+     * @param \Illuminate\Database\Query\Builder $query
+     *
+     * @return \Illuminate\Database\Query\Builder
+     */
+    protected function performSubQuery(Builder $query): Builder
+    {
+        return $query->select($this->getResourceName() . '.id')
+            ->from($this->getResourceName());
+    }
+
+    /**
+     * Apply "orWhere" clause query.
+     *
+     * @param \Illuminate\Database\Query\Builder $query
+     * @param string                             $term
+     *
+     * @return void
+     */
+    protected function applyWhereQueries(Builder $query, string $term): void
+    {
+        foreach ($this->getSearchableColumns() as $columns) {
+            $query->orWhere("'{$this->getResourceName()}.{$columns}'", 'like', $term);
+        }
+    }
+
+    /**
+     * Get names of columns set to to be searched.
+     *
+     * @return array
+     */
+    protected function getSearchableColumns(): array
+    {
+        if (isset($this->searchableColumns)) {
+            return $this->searchableColumns;
+        }
+
+        return ['name'];
+    }
+
+    /**
+     * Determine the activity type.
+     *
+     * @return string
+     */
+    protected function getResourceName()
+    {
+        return ModelHelpers::getNameInPlural($this);
     }
 }
