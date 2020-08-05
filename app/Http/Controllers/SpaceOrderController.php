@@ -55,7 +55,9 @@ class SpaceOrderController extends Controller
         }
 
         return $this->success(
-            route('thank-you'),
+            route('orders.confirmation', [
+                'confirmationNumber' => $order->confirmation_number,
+            ]),
             'Order successfully processed.'
         );
     }

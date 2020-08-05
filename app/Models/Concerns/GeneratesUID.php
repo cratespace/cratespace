@@ -2,7 +2,7 @@
 
 namespace App\Models\Concerns;
 
-use Illuminate\Support\Str;
+use Facades\App\Support\UidGenerator;
 
 trait GeneratesUID
 {
@@ -12,7 +12,7 @@ trait GeneratesUID
     protected static function bootGeneratesUID()
     {
         static::creating(function ($model) {
-            $model->uid = $model->uid ?? Str::random(7);
+            $model->uid = $model->uid ?? UidGenerator::generate();
         });
     }
 }

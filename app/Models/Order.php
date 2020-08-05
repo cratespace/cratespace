@@ -10,9 +10,11 @@ use App\Models\Concerns\GeneratesUID;
 use App\Models\Concerns\FindsBusiness;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Concerns\CalculatesCharges;
+use App\Models\Concerns\GeneratesOrderConfirmationNumber;
 
 class Order extends Model
 {
+    use GeneratesOrderConfirmationNumber;
     use CalculatesCharges;
     use FindsBusiness;
     use GeneratesUID;
@@ -27,7 +29,20 @@ class Order extends Model
     protected $fillable = [
         'uid', 'space_id', 'name', 'email', 'phone', 'business',
         'service', 'price', 'tax', 'total', 'user_id', 'status',
+        'confirmation_number',
     ];
+
+    /**
+     * Find an order using given confirmation number.
+     *
+     * @param string $confirmationNumber
+     *
+     * @return \App\Models\Order
+     */
+    public static function findByConfirmationNumber($confirmationNumber)
+    {
+        return self::where('confirmation_number', $confirmationNumber)->firstOrFail();
+    }
 
     /**
      * Get all orders associated with the currently authenticated business.
@@ -57,7 +72,8 @@ class Order extends Model
      */
     public function scopePending($query, int $limit = 10)
     {
-        $query->select('id', 'uid', 'name', 'phone', 'status', 'total', 'space_id')
+        $query->whereUserId(user('id'))
+            ->select('id', 'uid', 'name', 'phone', 'status', 'total', 'space_id')
             ->with(['space' => function ($query) {
                 $query->select('id', 'uid', 'departs_at', 'arrives_at');
             }])
@@ -97,6 +113,16 @@ class Order extends Model
                     }, 'matches');
             });
         });
+    }
+
+    /**
+     * Generate unique confirmation number.
+     *
+     * @return string
+     */
+    public function generateConfirmationNumber(): string
+    {
+        return date('YmdHis') . substr(explode(' ', microtime())[0], 2, 6);
     }
 
     /**

@@ -24,6 +24,5 @@ Route::get('/spaces/{space}/checkout', 'CheckoutController@show')
 /*
  * Order Completion Confirmation Route...
  */
-Route::get('/thank-you', function () {
-    return view('public.commons.thank-you');
-})->name('thank-you');
+Route::get('/orders/{confirmationNumber}', 'OrderConfirmationController')
+    ->name('orders.confirmation');

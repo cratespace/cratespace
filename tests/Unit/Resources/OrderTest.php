@@ -10,6 +10,7 @@ use App\Filters\OrderFilter;
 use Illuminate\Http\Request;
 use App\Events\OrderStatusUpdated;
 use Illuminate\Support\Facades\Event;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class OrderTest extends TestCase
 {
@@ -55,6 +56,32 @@ class OrderTest extends TestCase
         $order = create(Order::class);
 
         $this->assertEquals('Pending', $order->status);
+    }
+
+    /** @test */
+    public function it_can_be_found_using_its_confirmation_number()
+    {
+        $order = create(Order::class, [
+            'confirmation_number' => 'ORDERCONFIRMATION1234',
+        ]);
+
+        $foundOrder = Order::findByConfirmationNumber('ORDERCONFIRMATION1234');
+
+        $this->assertEquals($order->id, $foundOrder->id);
+    }
+
+    /** @test */
+    public function it_throws_an_exception_when_retreiving_a_none_existing_order_using_confirmation_number()
+    {
+        try {
+            Order::findByConfirmationNumber('123456789');
+        } catch (ModelNotFoundException $e) {
+            $this->assertTrue(true);
+
+            return;
+        }
+
+        $this->fail('No matching order found.');
     }
 
     /** @test */
