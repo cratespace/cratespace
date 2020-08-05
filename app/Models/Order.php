@@ -3,8 +3,8 @@
 namespace App\Models;
 
 use App\Filters\Filter;
+use Laravel\Scout\Searchable;
 use App\Models\Traits\Filterable;
-use App\Models\Traits\Searchable;
 use App\Events\OrderStatusUpdated;
 use App\Models\Traits\Presentable;
 use Illuminate\Database\Eloquent\Model;
@@ -27,13 +27,18 @@ class Order extends Model
     ];
 
     /**
-     * Columns to use during searching for specified resources.
+     * Get the indexable data array for the model.
      *
-     * @var array
+     * @return array
      */
-    protected $searchableColumns = [
-        'confirmation_number', 'name', 'email', 'phone',
-    ];
+    public function toSearchableArray()
+    {
+        $array = $this->toArray();
+
+        // Customize array...
+
+        return $array;
+    }
 
     /**
      * Find an order using given confirmation number.
@@ -60,8 +65,8 @@ class Order extends Model
     {
         $query->with('space')
             ->whereUserId(user('id'))
-            ->filter($filters)
             ->search($search)
+            ->filter($filters)
             ->latest('updated_at');
     }
 

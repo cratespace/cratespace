@@ -97,19 +97,6 @@ class OrderTest extends TestCase
     }
 
     /** @test */
-    public function it_can_perform_fuzzy_search_on_itself()
-    {
-        create(Order::class, [], 10);
-        $orderByThavarshan = create(Order::class, ['name' => 'Thavarshan']);
-        $orderThatShouldNotBeFound = create(Order::class, ['name' => 'NotFound']);
-
-        $searchResults = Order::search('thav')->get();
-
-        $this->assertTrue($searchResults->contains($orderByThavarshan));
-        $this->assertFalse($searchResults->contains($orderThatShouldNotBeFound));
-    }
-
-    /** @test */
     public function it_can_get_orders_that_belong_to_a_specific_business()
     {
         $user = $this->signIn();
