@@ -19,7 +19,7 @@ class PaymentFailedException extends RuntimeException
      * @param string|null $message
      * @param int         $amount
      */
-    public function __construct(string $message = null, int $amount)
+    public function __construct(?string $message = null, int $amount)
     {
         $this->amount = $amount;
 

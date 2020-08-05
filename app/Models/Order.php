@@ -116,16 +116,6 @@ class Order extends Model
     }
 
     /**
-     * Generate unique confirmation number.
-     *
-     * @return string
-     */
-    public function generateConfirmationNumber(): string
-    {
-        return date('YmdHis') . substr(explode(' ', microtime())[0], 2, 6);
-    }
-
-    /**
      * Get full path to resource page.
      *
      * @return string

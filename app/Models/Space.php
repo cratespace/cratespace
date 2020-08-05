@@ -246,7 +246,7 @@ class Space extends Model implements Statusable, Priceable
      */
     public function placeOrder(array $data): Order
     {
-        abort_if(!$this->isAvailable(), 403);
+        abort_if(!$this->isAvailable(), 422);
 
         $order = $this->order()->create($data);
 
