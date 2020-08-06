@@ -9,22 +9,22 @@ if (!app()->isProduction()) {
     require 'web/tests.php';
 }
 
-/**
+/*
  * Public Routes...
  */
-require 'web/public.php';
+// require 'web/public.php';
 
-/**
+/*
  * Authentication Routes...
  */
-require 'web/auth.php';
+// require 'web/auth.php';
 
-/**
+/*
  * Business Customer Routes...
  */
-require 'web/business.php';
+// require 'web/business.php';
 
-/**
+/*
  * User Routes...
  */
-require 'web/user.php';
+// require 'web/user.php';
