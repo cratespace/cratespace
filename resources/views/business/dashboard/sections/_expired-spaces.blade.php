@@ -30,10 +30,10 @@
                     <div>
                         <div>
                             <div>
-                                <span class="font-bold text-gray-800">{{ $space->present()->volume }}</span> <span class="text-gray-500">(cu ft)</span>
+                                <span class="font-bold text-gray-800">25</span> <span class="text-gray-500">(cu ft)</span>
                             </div>
 
-                            <div class="text-sm text-gray-600">{{ $space->height . ' x ' . $space->width . ' x ' . $space->length }} (ft)</div>
+                            <div class="text-sm text-gray-600">5 x 6 x 2 (ft)</div>
 
                             <div class="mt-2">
                                 <div class="text-gray-800 font-bold">
@@ -47,7 +47,7 @@
                         <div class="flex items-center">
                             <x:heroicon-o-calendar class="w-4 h-4 text-gray-400"/>
 
-                            <div class="ml-1 text-xs text-gray-600">Departure</div>
+                            <div class="ml-1 text-xs">Departure</div>
                         </div>
 
                         <div class="text-sm text-gray-700 font-medium">{{ $space->schedule->departsAt }}</div>
@@ -59,7 +59,7 @@
                         <div class="flex items-center">
                             <x:heroicon-o-calendar class="w-4 h-4 text-gray-400"/>
 
-                            <div class="ml-1 text-xs text-gray-600">Arrival</div>
+                            <div class="ml-1 text-xs">Arrival</div>
                         </div>
 
                         <div class="text-sm text-gray-700 font-medium">{{ $space->schedule->arrivesAt }}</div>

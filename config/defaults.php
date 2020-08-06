@@ -47,11 +47,4 @@ return [
         'Delivered',
         'Completed',
     ],
-
-    'spaces' => [
-        'types' => [
-            'Local',
-            'International',
-        ],
-    ],
 ];

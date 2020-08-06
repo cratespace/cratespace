@@ -14,18 +14,18 @@ class DummyDataSeeder extends Seeder
      */
     public function run()
     {
-        create(Space::class, ['user_id' => 1], 1000)->each(function ($space) {
-            $service = $space->fullPrice() * config('charges.service');
+        create(Space::class, ['user_id' => 1], 20)->each(function ($space) {
+            $service = $space->getPriceInCents() * config('charges.service');
 
             create(Order::class, [
                 'user_id' => 1,
                 'space_id' => $space->id,
-                'price' => $space->price(),
-                'tax' => $space->tax(),
+                'price' => $space->getPriceInCents(),
+                'tax' => $space->getTaxInCents(),
                 'service' => $service,
-                'total' => $space->price() + $space->tax() + $service,
+                'total' => $space->getPriceInCents() + $space->getTaxInCents() + $service,
                 'created_at' => Carbon::now()->subDays(rand(1, 10)),
             ]);
-        });
+        }, 20);
     }
 }

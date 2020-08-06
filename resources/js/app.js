@@ -34,6 +34,14 @@ const app = new Vue({
     el: '#app',
 });
 
+flatpickr('.datepicker', {
+    dateFormat: 'Y-m-d',
+    altInput: true,
+    altFormat: 'j M Y',
+    ariaDateFormat: 'Y-m-d',
+    enableTime: false
+});
+
 // window.addEventListener('contextmenu', function(e) {
 //     e.preventDefault();
 // }, false);

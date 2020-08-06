@@ -68,7 +68,7 @@
                     </td>
 
                     <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200 bg-gray-100 text-sm leading-4">
-                        <div class="font-bold text-gray-800">{{ $order->total }}</div>
+                        <div class="font-bold text-gray-800">{{ $order->present()->total }}</div>
                         <span class="text-xs">USD</span>
                     </td>
 

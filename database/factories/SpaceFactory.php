@@ -2,22 +2,41 @@
 
 /** @var \Illuminate\Database\Eloquent\Factory $factory */
 
+use App\Models\Role;
 use App\Models\User;
 use App\Models\Space;
+use App\Models\Ability;
 use App\Models\Business;
 use Faker\Generator as Faker;
 
 $factory->define(Space::class, function (Faker $faker) {
+    $customer = Role::firstOrCreate([
+        'title' => 'customer',
+        'label' => 'Customer',
+    ]);
+
+    $purchaseSpaces = Ability::firstOrCreate([
+        'title' => 'purchase_spaces',
+        'label' => 'Purchase spaces',
+    ]);
+
+    $customer->allowTo($purchaseSpaces);
+
     $user = create(User::class);
 
-    create(Business::class, ['user_id' => $user->id]);
+    $user->assignRole($customer);
+
+    create(Business::class, [
+        'user_id' => $user->id,
+        'country' => 'Sri Lanka',
+    ]);
 
     $price = rand(1, 9);
 
     return [
         'uid' => Str::random(12),
-        'departs_at' => now()->addMonths(rand(1, 2)),
-        'arrives_at' => now()->addMonths(rand(2, 3)),
+        'departs_at' => now()->addMonths(rand(1, 500)),
+        'arrives_at' => now()->addMonths(rand(1, 1000)),
         'origin' => $faker->city,
         'destination' => $faker->city,
         'height' => rand(1, 9),

@@ -33,7 +33,6 @@ return [
         'length' => ['required', 'integer'],
         'weight' => ['required', 'integer'],
         'price' => ['required', 'numeric', 'min:1'],
-        'tax' => ['required', 'numeric', 'min:1'],
         'origin' => ['required', 'string'],
         'destination' => ['required', 'string'],
         'departs_at' => ['required', 'date'],
