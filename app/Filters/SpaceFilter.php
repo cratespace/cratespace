@@ -50,7 +50,7 @@ class SpaceFilter extends Filter
      */
     protected function departs_at($date): Builder
     {
-        return $this->builder->whereDate('departs_at', '=', $date);
+        return $this->builder->whereDate('departs_at', Carbon::parse($date)->format('Y-m-d'));
     }
 
     /**
@@ -62,7 +62,7 @@ class SpaceFilter extends Filter
      */
     protected function arrives_at($date): Builder
     {
-        return $this->builder->whereDate('arrives_at', '=', $date);
+        return $this->builder->whereDate('arrives_at', Carbon::parse($date)->format('Y-m-d'));
     }
 
     /**

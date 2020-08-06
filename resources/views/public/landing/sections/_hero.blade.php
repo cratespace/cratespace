@@ -47,7 +47,7 @@
 
                         <div class="mt-4">
                             <label class="block relative">
-                                <select name="origin" id="origin" placeholder="{{ __('Leaving from...') }}" class="form-select mt-1 pl-10 block w-full">
+                                <select name="origin" id="origin" placeholder="{{ __('Leaving from...') }}" class="form-select mt-1 pl-10 block w-full bg-gray-200 border-none">
                                     <option value="">{{ __('Leaving from...') }}</option>
 
                                     @foreach ($options['origins'] as $origin)
@@ -69,7 +69,7 @@
 
                         <div class="mt-4">
                             <label class="relative block">
-                                <select name="destination" id="destination" placeholder="{{ __('Going to...') }}" class="form-select mt-1 pl-10 block w-full">
+                                <select name="destination" id="destination" placeholder="{{ __('Going to...') }}" class="form-select mt-1 pl-10 block w-full bg-gray-200 border-none">
                                     <option value="">{{ __('Going to...') }}</option>
 
                                     @foreach ($options['destinations'] as $destination)
@@ -92,14 +92,14 @@
                         <div class="row mt-4">
                             <div class="col-md-6 mb-4 md:mb-0">
                                 <label class="relative block">
-                                    <input type="text" name="departs_at" id="departs_at" value="{{ old('departsAt') ?? ($departsAt ?? null) }}" placeholder="{{ __('Departs') }}" autocomplete="departs_at" class="datepicker form-input block w-full pl-12 mt-1 @error('departsAt') is-invalid @enderror">
+                                    <input type="text" name="departs_at" id="departs_at" value="{{ request('departs_at') }}" placeholder="{{ _('Departs') }}" autocomplete="departs_at" class="datetime form-input block w-full pl-12 mt-1 bg-gray-200 border-none @error('departs_at') is-invalid @enderror">
 
                                     <div class="absolute inset-y-0 flex items-center px-3">
                                         <x:heroicon-o-calendar class="w-6 h-6 text-gray-400"/>
                                     </div>
                                 </label>
 
-                                @error('departsAt')
+                                @error('departs_at')
                                     <span class="text-sm block mt-2 text-red-500" role="alert">
                                         {{ $message }}
                                     </span>
@@ -108,14 +108,14 @@
 
                             <div class="col-md-6">
                                 <label class="relative block">
-                                    <input type="text" name="arrives_at" id="arrives_at" value="{{ old('arrivesAt') ?? ($arrivesAt ?? null) }}" placeholder="{{ __('Arrives') }}" autocomplete="arrives_at" class="datepicker form-input block w-full pl-12 mt-1 @error('arrivesAt') is-invalid @enderror">
+                                    <input type="text" name="arrives_at" id="arrives_at" value="{{ request('arrives_at') }}" placeholder="{{ _('Arrives') }}" autocomplete="arrives_at" class="datetime form-input block w-full pl-12 mt-1 bg-gray-200 border-none @error('arrives_at') is-invalid @enderror">
 
                                     <div class="absolute inset-y-0 flex items-center px-3">
                                         <x:heroicon-o-calendar class="w-6 h-6 text-gray-400"/>
                                     </div>
                                 </label>
 
-                                @error('arrivesAt')
+                                @error('arrives_at')
                                     <span class="text-sm block mt-2 text-red-500" role="alert">
                                         {{ $message }}
                                     </span>
@@ -132,3 +132,18 @@
         </div>
     </div>
 </section>
+
+@push('scripts')
+    <script>
+        $(document).ready(function () {
+            $('.datetime').flatpickr({
+                dateFormat: 'Y-m-d',
+                altInput: true,
+                altFormat: 'j M Y',
+                ariaDateFormat: 'Y-m-d',
+                enableTime: false,
+                minDate: Date.now()
+            });
+        });
+    </script>
+@endpush

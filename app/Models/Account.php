@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\Models\Casts\PriceCast;
+use App\Models\Casts\MoneyCast;
 use Illuminate\Database\Eloquent\Model;
 
 class Account extends Model
@@ -23,7 +23,7 @@ class Account extends Model
      * @var array
      */
     protected $casts = [
-        'credit' => PriceCast::class,
+        'credit' => MoneyCast::class,
     ];
 
     /**

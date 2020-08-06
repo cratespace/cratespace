@@ -40,7 +40,7 @@ class SpaceOrderController extends Controller
 
         try {
             $this->paymentGateway->charge(
-                $order->total,
+                $order->getTotalInCents(),
                 $this->generateToken($request)
             );
         } catch (PaymentFailedException $exception) {

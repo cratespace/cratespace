@@ -10,7 +10,6 @@ use App\Models\Space;
 use App\Billing\Calculator;
 use Illuminate\Support\Str;
 use App\Models\Values\ScheduleValue;
-use Illuminate\Pagination\LengthAwarePaginator;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class SpaceTest extends TestCase
@@ -64,39 +63,8 @@ class SpaceTest extends TestCase
     {
         $space = create(Space::class);
 
-        $this->assertTrue(is_string($space->businessname));
-        $this->assertEquals($space->businessname, $space->user->business->name);
-    }
-
-    /** @test */
-    public function it_has_a_listing_feature()
-    {
-        $spaces = create(Space::class, [], 100);
-        $expiredSpaces = create(Space::class, [
-            'departs_at' => Carbon::now()->subMonth(),
-        ], 2);
-
-        $this->assertCount(100, Space::list()->get());
-        $this->assertEquals('Available', Space::list()->first()->status);
-        $this->assertInstanceOf(LengthAwarePaginator::class, Space::list()->paginate());
-
-        $spaces = $spaces->merge($expiredSpaces);
-
-        foreach ($spaces as $space) {
-            if ($space->isAvailable()) {
-                $this->assertTrue(Space::list()->get()->contains($space));
-            } else {
-                $this->assertFalse(Space::list()->get()->contains($space));
-            }
-        }
-    }
-
-    /** @test */
-    public function listing_feature_can_get_business_name_but_only_the_name()
-    {
-        $space = create(Space::class);
-
-        $this->assertEquals($space->user->business->name, Space::list()->first()->business);
+        $this->assertTrue(is_string($space->businessName));
+        $this->assertEquals($space->businessName, $space->user->business->name);
     }
 
     /** @test */

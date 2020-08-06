@@ -3,13 +3,15 @@
 namespace App\Models;
 
 use App\Filters\Filter;
-use App\Models\Casts\PriceCast;
+use App\Support\Formatter;
+use App\Models\Casts\MoneyCast;
 use App\Models\Traits\Filterable;
 use App\Events\OrderStatusUpdated;
 use App\Models\Traits\Presentable;
+use App\Contracts\Models\Priceable;
 use Illuminate\Database\Eloquent\Model;
 
-class Order extends Model
+class Order extends Model implements Priceable
 {
     use Presentable;
     use Filterable;
@@ -31,11 +33,42 @@ class Order extends Model
      * @var array
      */
     protected $casts = [
-        'total' => PriceCast::class,
-        'service' => PriceCast::class,
-        'price' => PriceCast::class,
-        'tax' => PriceCast::class,
+        'total' => MoneyCast::class,
+        'service' => MoneyCast::class,
+        'price' => MoneyCast::class,
+        'tax' => MoneyCast::class,
     ];
+
+    /**
+     * Get all amounts to be calculated as charges.
+     *
+     * @return array
+     */
+    public function getPriceableAmounts(): array
+    {
+        return [
+            $this->total,
+            $this->service,
+            $this->price,
+            $this->tax,
+        ];
+    }
+
+    /**
+     * Get charge amount as integer and in cents.
+     *
+     * @param string|int $amount
+     *
+     * @return int
+     */
+    public function getChargeAmountInCents($amount): int
+    {
+        if (is_string($amount)) {
+            return Formatter::integerValue($amount);
+        }
+
+        return $amount * 100;
+    }
 
     /**
      * Find an order using given confirmation number.

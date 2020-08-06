@@ -17,7 +17,7 @@ class Formatter
      *
      * @return int
      */
-    public static function getIntegerValues(string $string): int
+    public static function integerValue(string $string): int
     {
         return (int) filter_var($string, FILTER_SANITIZE_NUMBER_INT);
     }

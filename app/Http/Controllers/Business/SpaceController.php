@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Business;
 use App\Models\Space;
 use App\Filters\SpaceFilter;
 use Illuminate\Http\Request;
+use App\Models\Queries\SpaceQuery;
 use App\Http\Requests\SpaceRequest;
 use App\Http\Controllers\Controller;
 
@@ -23,7 +24,7 @@ class SpaceController extends Controller
         $this->authorize('manage', new Space());
 
         return view('business.spaces.index', [
-            'resource' => Space::ofBusiness($filters, $request->search)
+            'resource' => SpaceQuery::ofBusiness($filters, $request->search)
                 ->paginate($request->perPage ?? 10),
         ]);
     }

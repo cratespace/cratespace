@@ -1,4 +1,4 @@
-@extends('layouts.web.base', ['bgColor' => 'bg-gray-200'])
+@extends('layouts.web.base', ['bgColor' => 'bg-gray-100'])
 
 @section('content')
     @include('public.landing.sections._hero')

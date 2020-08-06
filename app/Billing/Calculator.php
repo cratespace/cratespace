@@ -18,7 +18,7 @@ class Calculator
     protected $resource;
 
     /**
-     * List of all chrages to be applied to final amount.
+     * List of all charges to be applied to final amount.
      *
      * @var array
      */
@@ -74,7 +74,7 @@ class Calculator
      */
     protected function getPriceableAmounts(): array
     {
-        return [$this->getPriceAmount(), $this->getTaxAmount()];
+        return $this->getResource()->getPriceableAmounts();
     }
 
     /**
@@ -84,7 +84,9 @@ class Calculator
      */
     protected function getPriceAmount(): int
     {
-        return $this->getChargeAmountInCents($this->getResource()->price());
+        return $this->getChargeAmountInCents(
+            $this->getResource()->price
+        );
     }
 
     /**
@@ -94,7 +96,9 @@ class Calculator
      */
     protected function getTaxAmount(): int
     {
-        return $this->getChargeAmountInCents($this->getResource()->tax());
+        return $this->getChargeAmountInCents(
+            $this->getResource()->tax
+        );
     }
 
     /**

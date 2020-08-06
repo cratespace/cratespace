@@ -1,4 +1,4 @@
-@extends('layouts.master', ['bgColor' => 'bg-gray-200'])
+@extends('layouts.master', ['bgColor' => 'bg-gray-100'])
 
 @section('body')
     @include('layouts.web.partials._header')

@@ -36,7 +36,7 @@ class NewUserRegistrationTest extends TestCase
         $this->assertDatabaseHas('accounts', ['credit' => 0]);
         $this->assertEquals($user->business->name, 'Sunny Side Exporters');
         $this->assertInstanceOf(Business::class, $user->business);
-        $this->assertEquals($user->account->credit, 0);
+        $this->assertEquals($user->account->credit, '$0.00');
         $this->assertInstanceOf(Account::class, $user->account);
     }
 }

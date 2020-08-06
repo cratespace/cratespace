@@ -3,16 +3,14 @@
 namespace App\Models;
 
 use Carbon\Carbon;
-use App\Filters\Filter;
 use App\Support\Formatter;
-use App\Models\Casts\PriceCast;
+use App\Models\Casts\MoneyCast;
 use App\Models\Traits\Filterable;
 use App\Models\Traits\Searchable;
 use App\Models\Casts\ScheduleCast;
 use App\Models\Traits\Presentable;
 use App\Contracts\Models\Priceable;
 use App\Contracts\Models\Statusable;
-use App\Models\Concerns\ManagesPricing;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Concerns\GetsPathToResource;
 
@@ -20,7 +18,6 @@ class Space extends Model implements Statusable, Priceable
 {
     use Filterable;
     use Presentable;
-    use ManagesPricing;
     use GetsPathToResource;
     use Searchable;
 
@@ -40,8 +37,8 @@ class Space extends Model implements Statusable, Priceable
         'departs_at' => 'datetime',
         'arrives_at' => 'datetime',
         'schedule' => ScheduleCast::class,
-        'price' => PriceCast::class,
-        'tax' => PriceCast::class,
+        'price' => MoneyCast::class,
+        'tax' => MoneyCast::class,
     ];
 
     /**
@@ -54,6 +51,35 @@ class Space extends Model implements Statusable, Priceable
         'weight', 'note', 'price', 'tax', 'user_id', 'origin', 'destination',
         'type', 'base',
     ];
+
+    /**
+     * Get all amounts to be calculated as charges.
+     *
+     * @return array
+     */
+    public function getPriceableAmounts(): array
+    {
+        return [
+            $this->price,
+            $this->tax,
+        ];
+    }
+
+    /**
+     * Get charge amount as integer and in cents.
+     *
+     * @param string|int $amount
+     *
+     * @return int
+     */
+    public function getChargeAmountInCents($amount): int
+    {
+        if (is_string($amount)) {
+            return Formatter::integerValue($amount);
+        }
+
+        return $amount * 100;
+    }
 
     /**
      * Get the route key for the model.
@@ -82,22 +108,6 @@ class Space extends Model implements Statusable, Priceable
         }
 
         return 'Expired';
-    }
-
-    /**
-     * Get charge amount as integer and in cents.
-     *
-     * @param string|int $amount
-     *
-     * @return int
-     */
-    public function getChargeAmountInCents($amount): int
-    {
-        if (is_string($amount)) {
-            return Formatter::getIntegerValues($amount);
-        }
-
-        return $amount * 100;
     }
 
     /**
@@ -149,61 +159,6 @@ class Space extends Model implements Statusable, Priceable
     public function isExpired(): bool
     {
         return $this->departs_at <= Carbon::now();
-    }
-
-    /**
-     * Get all spaces associated with the currently authenticated business.
-     *
-     * @param \Illuminate\Database\Query\Builder $query
-     * @param \App\Filters\Filter                $filters
-     * @param string|null                        $search
-     *
-     * @return \Illuminate\Database\Query\Builder
-     */
-    public function scopeOfBusiness($query, Filter $filters, ?string $search = null)
-    {
-        $query->addSelect([
-                'order_id' => Order::select('uid')
-                    ->whereColumn('space_id', 'spaces.id')
-                    ->latest()
-                    ->take(1),
-            ])
-            ->whereUserId(user('id'))
-            ->filter($filters)
-            ->search($search)
-            ->latest('created_at');
-    }
-
-    public function scopeDeparting($query)
-    {
-        return $query->addSelect([
-            'business' => Business::select('name')
-                ->whereColumn('user_id', 'spaces.user_id')
-                ->latest()
-                ->take(1),
-            ])
-            ->whereBetween('departs_at', [Carbon::now(), Carbon::now()->endOfDay()])
-            ->latest('departs_at');
-    }
-
-    /**
-     * Scope a query to only include spaces based in user's country.
-     *
-     * @param \Illuminate\Database\Eloquent\Builder $query
-     *
-     * @return \Illuminate\Database\Eloquent\Builder
-     */
-    public function scopeList($query)
-    {
-        return $query->addSelect([
-            'business' => Business::select('name')
-                ->whereColumn('user_id', 'spaces.user_id')
-                ->latest()
-                ->take(1),
-            ])
-            ->whereDate('departs_at', '>', Carbon::now())
-            ->doesntHave('order')
-            ->latest();
     }
 
     /**

@@ -20,6 +20,6 @@ class AccountTest extends TestCase
     {
         $user = $this->signIn();
 
-        $this->assertEquals(0, $user->account->credit);
+        $this->assertEquals('$0.00', $user->account->credit);
     }
 }

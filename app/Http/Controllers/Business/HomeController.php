@@ -4,9 +4,9 @@ namespace App\Http\Controllers\Business;
 
 use Carbon\Carbon;
 use App\Models\Order;
-use App\Models\Space;
 use App\Reports\Generator;
 use App\Reports\WeeklyReport;
+use App\Models\Queries\SpaceQuery;
 use Illuminate\Support\Collection;
 use App\Http\Controllers\Controller;
 
@@ -21,7 +21,7 @@ class HomeController extends Controller
     {
         return view('business.dashboard.home', [
             'user' => $this->getAuthUserDetails(),
-            'spacesDeparting' => Space::departing()->get(),
+            'spacesDeparting' => SpaceQuery::departing()->get(),
             'pendingOrders' => Order::pending()->get(),
             'chart' => $this->generateReport(),
         ]);

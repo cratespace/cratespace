@@ -1,4 +1,4 @@
-<section class="bg-gray-200 pt-8 pb-2">
+<section class="bg-gray-100 pt-8 pb-2">
     <div class="container">
         <div class="row">
             @forelse ($spaces as $space)
@@ -55,7 +55,7 @@
                                         <div class="ml-1 text-xs">Dimensions</div>
                                     </div>
 
-                                    <div><span class="font-bold text-gray-700">{{ $space->present()->volume }}</span>(cu ft)</div>
+                                    <div><span class="font-bold text-gray-700">{{ $space->present()->volume }}</span> (cu ft)</div>
 
                                     <div class="text-sm">{{ $space->height }} x {{ $space->width }} x {{ $space->length }} (ft)</div>
                                 </div>

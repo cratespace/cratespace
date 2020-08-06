@@ -3,8 +3,9 @@
 namespace App\Models\Values;
 
 use Carbon\Carbon;
+use App\Contracts\Models\ValueObject as ValueObjectContract;
 
-class ScheduleValue
+class ScheduleValue implements ValueObjectContract
 {
     /**
      * Departure date as string.

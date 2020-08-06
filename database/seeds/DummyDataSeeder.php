@@ -14,7 +14,7 @@ class DummyDataSeeder extends Seeder
      */
     public function run()
     {
-        create(Space::class, ['user_id' => 1], 7)->each(function ($space) {
+        create(Space::class, ['user_id' => 1], 1000)->each(function ($space) {
             $service = $space->fullPrice() * config('charges.service');
 
             create(Order::class, [
