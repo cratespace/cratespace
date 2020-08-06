@@ -21,8 +21,8 @@ class ScheduleCast implements CastsAttributes
     public function get($model, string $key, $value, array $attributes)
     {
         return new ScheduleValue(
-            Carbon::parse($attributes['departs_at'])->format('M j, Y'),
-            Carbon::parse($attributes['arrives_at'])->format('M j, Y')
+            Carbon::parse($attributes['departs_at'])->format('M j, Y g:ia'),
+            Carbon::parse($attributes['arrives_at'])->format('M j, Y g:ia')
         );
     }
 

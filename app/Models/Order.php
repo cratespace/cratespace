@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Filters\Filter;
+use App\Models\Casts\PriceCast;
 use App\Models\Traits\Filterable;
 use App\Events\OrderStatusUpdated;
 use App\Models\Traits\Presentable;
@@ -22,6 +23,18 @@ class Order extends Model
         'space_id', 'name', 'email', 'phone', 'business',
         'service', 'price', 'tax', 'total', 'user_id', 'status',
         'confirmation_number',
+    ];
+
+    /**
+     * The attributes that should be cast to native types.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'total' => PriceCast::class,
+        'service' => PriceCast::class,
+        'price' => PriceCast::class,
+        'tax' => PriceCast::class,
     ];
 
     /**

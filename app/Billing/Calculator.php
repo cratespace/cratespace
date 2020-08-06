@@ -84,7 +84,7 @@ class Calculator
      */
     protected function getPriceAmount(): int
     {
-        return $this->getChargeAmountInCents($this->getResource()->price);
+        return $this->getChargeAmountInCents($this->getResource()->price());
     }
 
     /**
@@ -94,7 +94,7 @@ class Calculator
      */
     protected function getTaxAmount(): int
     {
-        return $this->getChargeAmountInCents($this->getResource()->tax ?? 0);
+        return $this->getChargeAmountInCents($this->getResource()->tax());
     }
 
     /**

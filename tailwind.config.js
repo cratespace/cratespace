@@ -4,14 +4,14 @@ module.exports = {
       default: {
         input: {
           borderRadius: theme('borderRadius.lg'),
-          backgroundColor: theme('colors.gray.100'),
+          backgroundColor: theme('colors.white'),
           '&:focus': {
             backgroundColor: theme('colors.white'),
           }
         },
         textarea: {
             borderRadius: theme('borderRadius.md'),
-            backgroundColor: theme('colors.gray.100'),
+            backgroundColor: theme('colors.white'),
             '&:focus': {
               backgroundColor: theme('colors.white'),
             }
@@ -19,18 +19,18 @@ module.exports = {
         select: {
           borderRadius: theme('borderRadius.md'),
           boxShadow: theme('boxShadow.none'),
-          backgroundColor: theme('colors.gray.100'),
+          backgroundColor: theme('colors.white'),
           '&:focus': {
             backgroundColor: theme('colors.white'),
           }
         },
         checkbox: {
-          backgroundColor: theme('colors.gray.100'),
+          backgroundColor: theme('colors.white'),
           width: theme('spacing.6'),
           height: theme('spacing.6'),
         },
         radio: {
-          backgroundColor: theme('colors.gray.100'),
+          backgroundColor: theme('colors.white'),
           width: theme('spacing.6'),
           height: theme('spacing.6'),
         },

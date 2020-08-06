@@ -10,7 +10,6 @@ use App\Models\Traits\Filterable;
 use App\Models\Traits\Searchable;
 use App\Models\Casts\ScheduleCast;
 use App\Models\Traits\Presentable;
-use Illuminate\Support\Facades\DB;
 use App\Contracts\Models\Priceable;
 use App\Contracts\Models\Statusable;
 use App\Models\Concerns\ManagesPricing;
@@ -42,6 +41,7 @@ class Space extends Model implements Statusable, Priceable
         'arrives_at' => 'datetime',
         'schedule' => ScheduleCast::class,
         'price' => PriceCast::class,
+        'tax' => PriceCast::class,
     ];
 
     /**
@@ -182,7 +182,7 @@ class Space extends Model implements Statusable, Priceable
                 ->latest()
                 ->take(1),
             ])
-            ->whereDate('departs_at', DB::raw('CURDATE()'))
+            ->whereBetween('departs_at', [Carbon::now(), Carbon::now()->endOfDay()])
             ->latest('departs_at');
     }
 

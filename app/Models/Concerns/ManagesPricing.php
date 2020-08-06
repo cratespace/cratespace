@@ -2,10 +2,18 @@
 
 namespace App\Models\Concerns;
 
-use App\Support\Formatter;
-
 trait ManagesPricing
 {
+    /**
+     * Get price format for editing.
+     *
+     * @return int
+     */
+    public function fullPrice(): int
+    {
+        return $this->price() + $this->tax();
+    }
+
     /**
      * Get price format for editing.
      *
@@ -17,27 +25,13 @@ trait ManagesPricing
     }
 
     /**
-     * Set the space's price in cents.
+     * Get tax format for editing.
      *
-     * @param string $value
-     *
-     * @return string
+     * @return int
      */
-    public function setTaxAttribute($value)
+    public function tax(): int
     {
-        $this->attributes['tax'] = $value * 100;
-    }
-
-    /**
-     * Get the space's tax amount.
-     *
-     * @param string $value
-     *
-     * @return string
-     */
-    public function getTaxAttribute($value)
-    {
-        return Formatter::money($value);
+        return $this->getTaxInCents() / 100;
     }
 
     /**
@@ -47,7 +41,7 @@ trait ManagesPricing
      */
     public function getPriceInCents(): int
     {
-        return $this->getChargeAmountInCents($this->price);
+        return $this->getChargeAmountInCents($this->price ?? 0);
     }
 
     /**
@@ -57,7 +51,7 @@ trait ManagesPricing
      */
     public function getTaxInCents(): int
     {
-        return $this->getChargeAmountInCents($this->tax);
+        return $this->getChargeAmountInCents($this->tax ?? 0);
     }
 
     /**

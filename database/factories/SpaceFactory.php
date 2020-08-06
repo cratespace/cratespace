@@ -35,8 +35,8 @@ $factory->define(Space::class, function (Faker $faker) {
 
     return [
         'uid' => Str::random(12),
-        'departs_at' => now()->addMonths(rand(1, 500)),
-        'arrives_at' => now()->addMonths(rand(1, 1000)),
+        'departs_at' => now()->addMonths(rand(1, 2)),
+        'arrives_at' => now()->addMonths(rand(2, 3)),
         'origin' => $faker->city,
         'destination' => $faker->city,
         'height' => rand(1, 9),

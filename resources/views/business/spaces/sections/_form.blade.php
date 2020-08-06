@@ -2,7 +2,7 @@
     <div class="col-12">
         <div>
             <h3 class="leadin-snug">
-                Add New Space
+                @if ($space->uid) Update Space Details @else Add New Space @endif
             </h3>
 
             <div class="flex items-center text-gray-600">

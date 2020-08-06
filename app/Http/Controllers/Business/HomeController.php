@@ -20,9 +20,27 @@ class HomeController extends Controller
     public function index()
     {
         return view('business.dashboard.home', [
+            'user' => $this->getAuthUserDetails(),
             'spacesDeparting' => Space::departing()->get(),
             'pendingOrders' => Order::pending()->get(),
             'chart' => $this->generateReport(),
+        ]);
+    }
+
+    /**
+     * Get authenticated user details with business and account details.
+     *
+     * @return \App\Models\User
+     */
+    protected function getAuthUserDetails()
+    {
+        return user()->load([
+            'business' => function ($query) {
+                $query->select('id', 'user_id', 'name', 'email');
+            },
+            'account' => function ($query) {
+                $query->select('id', 'user_id', 'credit');
+            },
         ]);
     }
 

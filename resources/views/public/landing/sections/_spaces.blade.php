@@ -55,9 +55,9 @@
                                         <div class="ml-1 text-xs">Dimensions</div>
                                     </div>
 
-                                    <div><span class="font-bold text-gray-700">25</span> (cu ft)</div>
+                                    <div><span class="font-bold text-gray-700">{{ $space->present()->volume }}</span>(cu ft)</div>
 
-                                    <div class="text-sm">5 x 6 x 2 (ft)</div>
+                                    <div class="text-sm">{{ $space->height }} x {{ $space->width }} x {{ $space->length }} (ft)</div>
                                 </div>
 
                                 <div class="mt-6">

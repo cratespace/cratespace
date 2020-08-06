@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Casts\PriceCast;
 use Illuminate\Database\Eloquent\Model;
 
 class Account extends Model
@@ -14,6 +15,15 @@ class Account extends Model
     protected $fillable = [
         'credit', 'bank_acount_number', 'bank_account_name',
         'bank_name', 'user_id',
+    ];
+
+    /**
+     * The attributes that should be cast to native types.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'credit' => PriceCast::class,
     ];
 
     /**

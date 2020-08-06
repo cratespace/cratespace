@@ -36,15 +36,23 @@
             </div>
 
             <div class="row">
-                <div class="col-lg-7 mb-6 lg:mb-0">
+                <div class="col-lg-4 mb-6">
                     @include('components.forms.fields._price', ['price' => $space->price()])
 
                     <span class="text-sm block mt-2 text-gray-500" role="alert">
-                        The price should be inclusive of all necessary taxes.
+                        The price should be exclusive of all taxes.
                     </span>
                 </div>
 
-                <div class="col-lg-5">
+                <div class="col-lg-4 mb-6">
+                    @include('components.forms.fields._tax', ['tax' => $space->tax()])
+
+                    <span class="text-sm block mt-2 text-gray-500" role="alert">
+                        All taxes should be totaled here.
+                    </span>
+                </div>
+
+                <div class="col-lg-4 mb-6">
                     @include('components.forms.fields._weight', ['weight' => $space->weight])
                 </div>
             </div>

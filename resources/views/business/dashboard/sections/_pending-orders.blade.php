@@ -32,9 +32,9 @@
                             <span>{{ $order->space->uid }}</span>
                         </div>
 
-                        <div class="text-xs text-gray-600 leading-5">{{ $order->space->departs_at->diffForHumans() }}</div>
-
                         <div class="text-xs text-gray-600 leading-5">{{ $order->space->schedule->departsAt }}</div>
+
+                        <div class="text-xs text-gray-600 leading-5">{{ $order->space->departs_at->diffForHumans() }}</div>
                     </div>
 
                     <div class="text-right">
@@ -45,7 +45,7 @@
                         </div>
 
                         <div class="mt-2 leading-none">
-                            <div class="font-bold text-gray-800">{{ $order->present()->total }}</div>
+                            <div class="font-bold text-gray-800">{{ $order->total }}</div>
                             <span class="text-xs text-gray-600">USD</span>
                         </div>
                     </div>
