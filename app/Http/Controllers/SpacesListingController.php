@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Space;
+use App\Queries\SpaceQuery;
 use App\Filters\SpaceFilter;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -35,7 +35,7 @@ class SpacesListingController extends Controller
      */
     protected function getSpaces(Request $request, SpaceFilter $filters): LengthAwarePaginator
     {
-        return Space::list()->filter($filters)->paginate($request->perPage ?: 12);
+        return SpaceQuery::list($filters)->paginate($request->perPage ?: 12);
     }
 
     /**

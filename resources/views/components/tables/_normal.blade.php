@@ -7,7 +7,7 @@
                 </tr>
             </thead>
 
-            <tbody class="bg-white">
+            <tbody class="bg-gray-100">
                 {{ $body }}
             </tbody>
         </table>

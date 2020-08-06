@@ -33,7 +33,7 @@
                         </div>
 
                         <form class="ml-4 w-80 relative" action="{{ route($resourceName . '.index') }}" method="GET">
-                            <input type="text" name="search" id="search" class="pl-10 form-input w-full block bg-white" placeholder="Search..." value="{{ old('search', request('search')) }}" required autocomplete="search">
+                            <input type="text" name="search" id="search" class="pl-10 form-input w-full block bg-gray-100" placeholder="Search..." value="{{ old('search', request('search')) }}" required autocomplete="search">
 
                             <div class="absolute top-0 left-0 bottom-0 flex items-center px-3">
                                 <x:heroicon-o-search class="w-5 h-5 text-gray-600"/>

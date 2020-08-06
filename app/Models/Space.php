@@ -67,6 +67,32 @@ class Space extends Model
     }
 
     /**
+     * Place an order for this space.
+     *
+     * @param array $data
+     *
+     * @return \App\Models\Order
+     */
+    public function placeOrder(array $data): Order
+    {
+        abort_if(!$this->isAvailable(), 422);
+
+        $order = $this->order()->create($data);
+
+        return $order;
+    }
+
+    /**
+     * Get the order the space is associated with.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function order()
+    {
+        return $this->hasOne(Order::class);
+    }
+
+    /**
      * Get the user the space belongs to.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
