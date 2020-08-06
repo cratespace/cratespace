@@ -31,7 +31,6 @@ class CreateSpacesTable extends Migration
                 ->constrained()
                 ->onDelete('cascade');
             $table->string('type')->default('Local');
-            $table->string('base');
             $table->timestamps();
         });
     }
