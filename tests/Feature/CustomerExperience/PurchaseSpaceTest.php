@@ -6,6 +6,7 @@ use Tests\TestCase;
 use App\Models\Space;
 use Illuminate\Pipeline\Pipeline;
 use App\Billing\Charges\Calculator;
+use App\Contracts\Models\Priceable;
 use App\Contracts\Billing\PaymentGateway;
 use App\Billing\PaymentGateways\FakePaymentGateway;
 
@@ -22,8 +23,10 @@ class PurchaseSpaceTest extends TestCase
     {
         parent::setUp();
 
-        $this->paymentGateway = new FakePaymentGateway(config('key'));
+        $this->paymentGateway = new FakePaymentGateway('base64:gKVpXFjfCb8kwMwLw68XyIb8+0phfkQkXsE/GCt2VFc=');
         $this->app->instance(PaymentGateway::class, $this->paymentGateway);
+
+        config()->set('defaults.billing.charges.services', 0.03); // 3% service charge
     }
 
     protected function tearDown(): void
@@ -36,12 +39,9 @@ class PurchaseSpaceTest extends TestCase
     {
         $this->withoutExceptionHandling();
 
-        config()->set('defaults.billing.charges.services', 0.03); // 3% service charge
-
         $space = create(Space::class, ['price' => 32.50, 'tax' => 0.5]);
 
-        $chargesCalculator = new Calculator(new Pipeline(app()), $space);
-        $chargesCalculator->calculate();
+        $this->calculateCharges($space);
 
         $this->postJson("/spaces/{$space->uid}/orders", $this->orderDetails());
 
@@ -69,5 +69,19 @@ class PurchaseSpaceTest extends TestCase
             'payment_token' => '',
             'card_number' => '4242424242424242',
         ], $extraAttributes);
+    }
+
+    /**
+     * Get charges calculator instacne and calculate required charges.
+     *
+     * @param \App\Contracts\Models\Priceable $space
+     *
+     * @return void
+     */
+    protected function calculateCharges(Priceable $space): void
+    {
+        $chargesCalculator = new Calculator(new Pipeline(app()), $space);
+
+        $chargesCalculator->calculate();
     }
 }

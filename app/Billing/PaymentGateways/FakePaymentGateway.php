@@ -2,11 +2,12 @@
 
 namespace App\Billing\PaymentGateways;
 
-use Illuminate\Support\Arr;
-use Illuminate\Support\Str;
 use InvalidArgumentException;
 use Illuminate\Support\Facades\Crypt;
 use App\Exceptions\PaymentFailedException;
+use App\Billing\PaymentGateways\Validators\CardValidator;
+use App\Billing\PaymentGateways\Validators\FormatValidator;
+use App\Billing\PaymentGateways\Validators\ExistenceValidator;
 use App\Contracts\Billing\PaymentGateway as PaymentGatewayContract;
 
 class FakePaymentGateway implements PaymentGatewayContract
@@ -24,6 +25,37 @@ class FakePaymentGateway implements PaymentGatewayContract
      * @var array
      */
     protected $tokens;
+
+    /**
+     * Application encryption key.
+     *
+     * @var string
+     */
+    protected $key;
+
+    /**
+     * Payment token validators.
+     *
+     * @var array
+     */
+    protected static $validators;
+
+    /**
+     * Payment token prefix.
+     *
+     * @param string $key
+     */
+    protected $prefix = 'fake-tok_';
+
+    /**
+     * Create new instance of fake payment token.
+     *
+     * @param string $key
+     */
+    public function __construct(string $key)
+    {
+        $this->key = $key;
+    }
 
     /**
      * Get total amount the customer is charged.
@@ -46,20 +78,11 @@ class FakePaymentGateway implements PaymentGatewayContract
      */
     public function charge(int $amount, string $paymentToken, ?string $destinationAccountId = null): void
     {
-        if (!$this->validPaymentToken($paymentToken)) {
+        if (!$this->matches($paymentToken)) {
             throw new PaymentFailedException("Token {$paymentToken} is invalid", $amount);
         }
 
         $this->total = $amount;
-    }
-
-    protected function validPaymentToken(string $token)
-    {
-        if (Str::contains($token, 'fake-tok_')) {
-            return Arr::has($this->tokens, $token);
-        }
-
-        return false;
     }
 
     /**
@@ -75,10 +98,66 @@ class FakePaymentGateway implements PaymentGatewayContract
             throw new InvalidArgumentException('Card number not found');
         }
 
-        $token = 'fake-tok_' . Crypt::encrypt($card['number']);
+        $token = $this->prefix . Crypt::encryptString($card['number']);
 
         $this->tokens[$token] = $card['number'];
 
         return $token;
+    }
+
+    /**
+     * Match the given payment token.
+     *
+     * @param string $token
+     *
+     * @return bool
+     */
+    public function matches(string $token): bool
+    {
+        foreach ($this->getValidators() as $validator) {
+            if (!$validator->validate($token, $this)) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    /**
+     * Get the route validators for the instance.
+     *
+     * @return array
+     */
+    public static function getValidators()
+    {
+        if (isset(static::$validators)) {
+            return static::$validators;
+        }
+
+        return static::$validators = [
+            new FormatValidator(),
+            new CardValidator(),
+            new ExistenceValidator(),
+        ];
+    }
+
+    /**
+     * Get payment token prefix.
+     *
+     * @return string
+     */
+    public function prefix(): string
+    {
+        return $this->prefix;
+    }
+
+    /**
+     * Get all registered paymnet tokens.
+     *
+     * @return array
+     */
+    public function tokens(): array
+    {
+        return $this->tokens;
     }
 }
