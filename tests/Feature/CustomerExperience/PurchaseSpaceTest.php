@@ -36,8 +36,6 @@ class PurchaseSpaceTest extends TestCase
     {
         $this->withoutExceptionHandling();
 
-        app()->instance(PaymentGateway::class, new FakePaymentGateway(config('app.key')));
-
         config()->set('defaults.billing.charges.services', 0.03); // 3% service charge
 
         $space = create(Space::class, ['price' => 32.50, 'tax' => 0.5]);
@@ -45,18 +43,31 @@ class PurchaseSpaceTest extends TestCase
         $chargesCalculator = new Calculator(new Pipeline(app()), $space);
         $chargesCalculator->calculate();
 
-        $this->postJson("/spaces/{$space->uid}/orders", [
+        $this->postJson("/spaces/{$space->uid}/orders", $this->orderDetails());
+
+        $this->assertEquals(3465, $this->paymentGateway->total());
+        $this->assertNotNull($space->order);
+        $this->assertFalse($space->isAvailable());
+        // $this->assertEquals('Ordered', $space->refresh()->status);
+        $this->assertEquals('john@example.com', $space->order->email);
+    }
+
+    /**
+     * Get fake order details.
+     *
+     * @param array $extraAttributes
+     *
+     * @return array
+     */
+    protected function orderDetails(array $extraAttributes = []): array
+    {
+        return array_merge([
             'name' => 'John Doe',
             'business' => 'Example, Co.',
             'phone' => '765487368',
             'email' => 'john@example.com',
             'payment_token' => '',
-        ]);
-
-        $this->assertEquals(4925, $this->paymentGateway->totalCharges());
-        $this->assertNotNull($space->order);
-        $this->assertFalse($space->isAvailable());
-        $this->assertEquals('Ordered', $space->refresh()->status);
-        $this->assertEquals('john@example.com', $space->order->email);
+            'card_number' => '4242424242424242',
+        ], $extraAttributes);
     }
 }

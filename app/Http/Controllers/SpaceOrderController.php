@@ -40,8 +40,7 @@ class SpaceOrderController extends Controller
 
         try {
             $this->paymentGateway->charge(
-                $order->total,
-                $this->generateToken($request)
+                $order->total, $this->generateToken($request)
             );
         } catch (PaymentFailedException $exception) {
             $order->delete();
@@ -49,15 +48,10 @@ class SpaceOrderController extends Controller
             throw $exception;
         }
 
-        if ($request->wantsJson()) {
-            return response($order, 201);
-        }
-
-        return $this->success(
+        return $request->wantsJson() ? response($order, 201) : $this->success(
             route('orders.confirmation', [
                 'confirmationNumber' => $order->confirmation_number,
-            ]),
-            'Order successfully processed.'
+            ]), 'Order successfully processed.'
         );
     }
 

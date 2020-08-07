@@ -4,6 +4,7 @@ namespace App\Observers;
 
 use App\Models\Order;
 use App\Support\UidGenerator;
+use Illuminate\Support\Facades\Schema;
 use App\Exceptions\ChargesNotFountException;
 
 class OrderObserver
@@ -81,8 +82,10 @@ class OrderObserver
             return $this;
         }
 
-        foreach (static::getChrages() as $name => $amount) {
-            $this->order->{$name} = $amount;
+        foreach (static::charges() as $name => $amount) {
+            if (Schema::hasColumn($this->order->getTable(), $name)) {
+                $this->order->{$name} = $amount;
+            }
         }
 
         return $this;
@@ -93,7 +96,7 @@ class OrderObserver
      *
      * @return array
      */
-    protected static function getChrages(): array
+    protected static function charges(): array
     {
         if (cache()->has('charges')) {
             return cache()->get('charges');

@@ -5,9 +5,12 @@ namespace App\Billing\Charges\Calculations;
 use Closure;
 use InvalidArgumentException;
 use App\Contracts\Billing\Calculation as CalculationContract;
+use App\Billing\Charges\Calculations\Traits\HasDefaultCharges;
 
 class PriceCalculation implements CalculationContract
 {
+    use HasDefaultCharges;
+
     /**
      * Apply charge to amount.
      *

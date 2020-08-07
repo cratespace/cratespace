@@ -4,9 +4,12 @@ namespace App\Billing\Charges\Calculations;
 
 use Closure;
 use App\Contracts\Billing\Calculation as CalculationContract;
+use App\Billing\Charges\Calculations\Traits\HasDefaultCharges;
 
 class SubTotalCalculation implements CalculationContract
 {
+    use HasDefaultCharges;
+
     /**
      * Apply charge to amount.
      *
@@ -16,7 +19,7 @@ class SubTotalCalculation implements CalculationContract
      */
     public function apply(array $amounts, Closure $next)
     {
-        $amounts['subtotal'] = array_sum(array_values($amounts));
+        $amounts['subtotal'] = round($this->sum($amounts));
 
         return $next($amounts);
     }

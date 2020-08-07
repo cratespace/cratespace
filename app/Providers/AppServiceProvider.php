@@ -18,7 +18,7 @@ class AppServiceProvider extends ServiceProvider
      */
     protected $observers = [
         Space::class => SpaceObserver::class,
-        // Order::class => OrderObserver::class,
+        Order::class => OrderObserver::class,
     ];
 
     /**

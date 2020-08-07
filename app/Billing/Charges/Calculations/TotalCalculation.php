@@ -4,9 +4,12 @@ namespace App\Billing\Charges\Calculations;
 
 use Closure;
 use App\Contracts\Billing\Calculation as CalculationContract;
+use App\Billing\Charges\Calculations\Traits\HasDefaultCharges;
 
 class TotalCalculation implements CalculationContract
 {
+    use HasDefaultCharges;
+
     /**
      * Apply charge to amount.
      *
@@ -20,7 +23,7 @@ class TotalCalculation implements CalculationContract
             return $name !== 'price' ? $amount : 0;
         }, ARRAY_FILTER_USE_BOTH);
 
-        $amounts['total'] = round(array_sum(array_values($total)), 2);
+        $amounts['total'] = round($this->sum($total), 2);
 
         return $next($amounts);
     }

@@ -9,10 +9,12 @@ use App\Models\Casts\ScheduleCast;
 use App\Models\Traits\Presentable;
 use App\Contracts\Models\Priceable;
 use App\Models\Traits\Redirectable;
+use App\Models\Concerns\ManagesStatus;
 use Illuminate\Database\Eloquent\Model;
 
 class Space extends Model implements Priceable
 {
+    use ManagesStatus;
     use Filterable;
     use Presentable;
     use Redirectable;

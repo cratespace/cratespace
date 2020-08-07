@@ -4,9 +4,12 @@ namespace App\Billing\Charges\Calculations;
 
 use Closure;
 use App\Contracts\Billing\Calculation as CalculationContract;
+use App\Billing\Charges\Calculations\Traits\HasDefaultCharges;
 
 class TaxCalculation implements CalculationContract
 {
+    use HasDefaultCharges;
+
     /**
      * Apply charge to amount.
      *
@@ -16,40 +19,8 @@ class TaxCalculation implements CalculationContract
      */
     public function apply(array $amounts, Closure $next)
     {
-        $amounts['tax'] = round(array_sum(array_values($amounts)) * $this->getTaxRate(), 2);
+        $amounts['tax'] = round($this->sum($amounts) * $this->getTaxRate(), 2);
 
         return $next($amounts);
-    }
-
-    /**
-     * Get applicable service rate.
-     *
-     * @return float
-     */
-    public function getTaxRate()
-    {
-        $taxRate = config('defaults.billing.charges.tax');
-
-        if ($taxRate !== null) {
-            return $taxRate;
-        }
-
-        return 0;
-    }
-
-    /**
-     * Get applicable service rate.
-     *
-     * @return float
-     */
-    public function getServiceRate()
-    {
-        $serviceChargeRate = config('defaults.billing.charges.service');
-
-        if ($serviceChargeRate !== null) {
-            return $serviceChargeRate;
-        }
-
-        return 0;
     }
 }
