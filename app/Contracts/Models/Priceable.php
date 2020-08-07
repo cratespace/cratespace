@@ -5,11 +5,9 @@ namespace App\Contracts\Models;
 interface Priceable
 {
     /**
-     * Get charge amount as integer and in cents.
+     * Get all chargeable attributes.
      *
-     * @param string|int $amount
-     *
-     * @return int
+     * @return array
      */
-    public function getChargeAmountInCents($amount): int;
+    public function getCharges(): array;
 }

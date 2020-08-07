@@ -9,7 +9,7 @@ interface PaymentGateway
      *
      * @return int
      */
-    public function totalCharges(): int;
+    public function total(): int;
 
     /**
      * Charge the customer with the given amount.

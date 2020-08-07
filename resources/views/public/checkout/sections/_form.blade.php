@@ -1,4 +1,3 @@
-
 <div class="col-xl-6 col-lg-7 mb-6 bg-gray-200 sm:bg-transparent py-5 sm:py-0 xl:mb-0 offset-xl-1">
     <x-cards._full>
         <div>
@@ -48,3 +47,7 @@
         </form>
     </x-cards._full>
 </div>
+
+@push('header-scripts')
+    <script src="https://js.stripe.com/v3/"></script>
+@endpush

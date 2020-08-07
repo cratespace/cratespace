@@ -43,6 +43,18 @@ class SpaceTest extends TestCase
     }
 
     /** @test */
+    public function it_can_cast_price_and_tax_attributes_as_cents_values()
+    {
+        $space = create(Space::class, [
+            'price' => 12.35,
+            'tax' => 0.35,
+        ]);
+
+        $this->assertEquals(1235, $space->price);
+        $this->assertEquals(35, $space->tax);
+    }
+
+    /** @test */
     public function it_can_create_a_schedule_value_object_of_given_dates()
     {
         $space = create(Space::class);

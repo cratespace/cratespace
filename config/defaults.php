@@ -2,12 +2,30 @@
 
 return [
     /*
-     * App Finance Configurations.
+     * App Billing Configurations.
      */
-    'finance' => [
+    'billing' => [
+        /*
+         * Billing Units.
+         */
         'currency' => env('APP_CURRENCY'),
         'currency_locale' => env('APP_CURRENCY_LOCALE'),
         'transaction-description' => 'Cratespace test purchase.',
+
+        /*
+         * Default Chargeable Amounts.
+         */
+        'charges' => [
+            'service' => 0.03,
+            'tax' => 0.01,
+        ],
+
+        /*
+         * Charges Calculation Classes.
+         */
+        'calculations' => [
+            // \App\Billing\Charges\Calculations\VATCalculation::class
+        ],
     ],
 
     /*

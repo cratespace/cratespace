@@ -12,8 +12,8 @@ Route::get('/', 'SpacesListingController');
 /*
  * Place Order for Space Route...
  */
-// Route::post('/spaces/{space}/orders', 'SpaceOrderController')
-//     ->name('spaces.orders');
+Route::post('/spaces/{space}/orders', 'SpaceOrderController')
+    ->name('spaces.orders');
 
 /*
  * Checkout Page...

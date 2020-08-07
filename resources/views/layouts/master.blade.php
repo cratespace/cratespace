@@ -9,6 +9,9 @@
 
     <title>{{ $title ?? config('app.title', 'Cratespace') }}</title>
 
+    <!-- Header Scripts -->
+    @stack('header-scripts')
+
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 </head>

@@ -39,7 +39,7 @@ class User extends UserModel
     }
 
     /**
-     * Perfrom all registered reponsibilities.
+     * Perform all registered responsibilities.
      *
      * @param \App\Models\User $user
      * @param array            $data
@@ -71,14 +71,14 @@ class User extends UserModel
         if (!$responsibility instanceof Responsibility) {
             $responsibility = class_basename($responsibility);
 
-            throw new InvalidArgumentException("Class {class_basename($responsibility)} does not adhere to the Responsibility interface");
+            throw new InvalidArgumentException("Class {$responsibility} does not adhere to the Responsibility interface");
         }
 
         return $responsibility;
     }
 
     /**
-     * Get all registered reponsibilities.
+     * Get all registered responsibilities.
      *
      * @return array
      */

@@ -2,14 +2,16 @@
 
 namespace App\Models;
 
+use App\Models\Casts\MoneyCast;
 use App\Models\Traits\Indexable;
 use App\Models\Traits\Filterable;
 use App\Models\Casts\ScheduleCast;
 use App\Models\Traits\Presentable;
+use App\Contracts\Models\Priceable;
 use App\Models\Traits\Redirectable;
 use Illuminate\Database\Eloquent\Model;
 
-class Space extends Model
+class Space extends Model implements Priceable
 {
     use Filterable;
     use Presentable;
@@ -54,6 +56,8 @@ class Space extends Model
         'departs_at' => 'datetime',
         'arrives_at' => 'datetime',
         'schedule' => ScheduleCast::class,
+        'price' => MoneyCast::class,
+        'tax' => MoneyCast::class,
     ];
 
     /**
@@ -64,6 +68,19 @@ class Space extends Model
     public function getRouteKeyName()
     {
         return 'uid';
+    }
+
+    /**
+     * Get all chargeable attributes.
+     *
+     * @return array
+     */
+    public function getCharges(): array
+    {
+        return [
+            'price' => $this->price,
+            'tax' => $this->tax,
+        ];
     }
 
     /**
