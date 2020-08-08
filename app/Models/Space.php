@@ -7,12 +7,12 @@ use App\Models\Casts\ScheduleCast;
 use App\Models\Traits\Presentable;
 use App\Contracts\Models\Priceable;
 use App\Models\Traits\Redirectable;
-use App\Models\Concerns\ManagesStatus;
+use App\Models\Concerns\DetectsStatus;
 use Illuminate\Database\Eloquent\Model;
 
 class Space extends Model implements Priceable
 {
-    use ManagesStatus;
+    use DetectsStatus;
     use Filterable;
     use Presentable;
     use Redirectable;

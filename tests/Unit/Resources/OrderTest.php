@@ -5,6 +5,8 @@ namespace Tests\Unit\Resources;
 use Tests\TestCase;
 use App\Models\Order;
 use App\Models\Space;
+use App\Events\OrderStatusUpdated;
+use Illuminate\Support\Facades\Event;
 
 class OrderTest extends TestCase
 {
@@ -52,6 +54,26 @@ class OrderTest extends TestCase
 
         $this->assertTrue($space->isAvailable());
         $this->assertDatabaseMissing('orders', $this->orderDetails());
+    }
+
+    /** @test */
+    public function it_can_fire_an_event_every_time_its_status_is_updated()
+    {
+        $this->signIn();
+
+        [$order, $space] = $this->placeOrder();
+
+        Event::fake();
+
+        $order->updateStatus('Approved');
+
+        Event::assertDispatched(function (OrderStatusUpdated $event) use ($order) {
+            return $event->getOrder()->id === $order->id &&
+                $event->getOrder()->status === $order->status &&
+                $event->getOrder()->status === 'Approved';
+        });
+
+        $this->assertEquals('Approved', $order->fresh()->status);
     }
 
     /**

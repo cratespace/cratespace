@@ -4,7 +4,7 @@ namespace App\Models\Concerns;
 
 use Carbon\Carbon;
 
-trait ManagesStatus
+trait DetectsStatus
 {
     /**
      * Determine if the space is associated with an order.

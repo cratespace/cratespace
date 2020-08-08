@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\Traits\Filterable;
+use App\Events\OrderStatusUpdated;
 use App\Models\Traits\Presentable;
 use App\Models\Traits\Redirectable;
 use Illuminate\Database\Eloquent\Model;
@@ -32,6 +33,20 @@ class Order extends Model
         'status',
         'confirmation_number',
     ];
+
+    /**
+     * Update order status.
+     *
+     * @param string $status
+     *
+     * @return void
+     */
+    public function updateStatus(string $status): void
+    {
+        $this->update(['status' => $status]);
+
+        event(new OrderStatusUpdated($this));
+    }
 
     /**
      * Get the space associated with this order.
