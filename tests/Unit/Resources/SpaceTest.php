@@ -7,15 +7,19 @@ use Tests\TestCase;
 use App\Models\User;
 use App\Models\Order;
 use App\Models\Space;
-use Illuminate\Pipeline\Pipeline;
-use App\Billing\Charges\Calculator;
-use App\Contracts\Models\Priceable;
 use App\Models\Values\ScheduleValue;
-use Illuminate\Database\Eloquent\Model;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class SpaceTest extends TestCase
 {
+    /** @test */
+    public function it_belongs_to_a_user()
+    {
+        $space = create(Space::class);
+
+        $this->assertInstanceOf(User::class, $space->user);
+    }
+
     /** @test */
     public function it_has_a_set_of_required_attributes()
     {
@@ -97,37 +101,49 @@ class SpaceTest extends TestCase
         $expiredSpace->placeOrder(make(Order::class)->toArray());
     }
 
-    /**
-     * Calculate charges using given resource.
-     *
-     * @param \App\Contracts\Models\Priceable $resource
-     *
-     * @return void
-     */
-    protected function calculateCharges(Priceable $resource)
+    /** @test */
+    public function it_can_release_it_self_from_an_order()
     {
-        $this->getCalculator($resource)->calculate();
+        $space = create(Space::class);
+        $this->calculateCharges($space);
+        $space->placeOrder(make(Order::class)->toArray());
+
+        $this->assertTrue($space->hasOrder());
+        $this->assertFalse($space->isAvailable());
+
+        $space->order()->delete();
+
+        $this->assertTrue($space->isAvailable());
     }
 
-    /**
-     * Get charge calculator instance.
-     *
-     * @param \Illuminate\Database\Eloquent\Model $resource
-     *
-     * @return \App\Contracts\Support\Calculator
-     */
-    public function getCalculator(Model $resource): Calculator
+    /** @test */
+    public function it_can_determine_its_availability()
     {
-        return new Calculator($this->getPipeline(), $resource);
+        $availableSpace = create(Space::class);
+        $expiredSpace = create(Space::class, ['departs_at' => Carbon::now()->subMonth()]);
+        $orderedSpace = create(Space::class);
+        $this->calculateCharges($orderedSpace);
+        $order = $orderedSpace->placeOrder([
+            'name' => 'John Doe',
+            'business' => 'Example, Co.',
+            'phone' => '765487368',
+            'email' => 'john@example.com',
+        ]);
+
+        $this->assertTrue($availableSpace->isAvailable());
+        $this->assertFalse($expiredSpace->isAvailable());
+        $this->assertTrue($expiredSpace->isExpired());
+        $this->assertFalse($orderedSpace->isAvailable());
+        $this->assertTrue($orderedSpace->hasOrder());
     }
 
-    /**
-     * Get Laravel pipeline instance.
-     *
-     * @return \Illuminate\Contracts\Pipeline\Pipeline
-     */
-    public function getPipeline(): Pipeline
+    /** @test */
+    public function it_can_determine_its_departure_date()
     {
-        return app()->make(Pipeline::class);
+        $space = create(Space::class, [
+            'departs_at' => Carbon::tomorrow(),
+        ]);
+
+        $this->assertTrue($space->schedule->nearingDeparture());
     }
 }

@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Models\Traits\Indexable;
 use App\Models\Traits\Filterable;
 use App\Models\Casts\ScheduleCast;
 use App\Models\Traits\Presentable;
@@ -17,7 +16,6 @@ class Space extends Model implements Priceable
     use Filterable;
     use Presentable;
     use Redirectable;
-    use Indexable;
 
     /**
      * The accessors to append to the model's array form.

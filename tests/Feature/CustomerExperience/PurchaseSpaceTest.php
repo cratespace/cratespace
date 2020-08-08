@@ -6,11 +6,7 @@ use Carbon\Carbon;
 use Tests\TestCase;
 use App\Models\Order;
 use App\Models\Space;
-use Illuminate\Pipeline\Pipeline;
-use App\Billing\Charges\Calculator;
-use App\Contracts\Models\Priceable;
 use Illuminate\Testing\TestResponse;
-use Illuminate\Database\Eloquent\Model;
 use App\Contracts\Billing\PaymentGateway;
 use App\Billing\PaymentGateways\FakePaymentGateway;
 
@@ -198,40 +194,6 @@ class PurchaseSpaceTest extends TestCase
         $this->calculateCharges($space);
 
         return $this->postJson("/spaces/{$space->uid}/orders", $parameters);
-    }
-
-    /**
-     * Calculate charges using given resource.
-     *
-     * @param \App\Contracts\Models\Priceable $resource
-     *
-     * @return void
-     */
-    protected function calculateCharges(Priceable $resource)
-    {
-        $this->getCalculator($resource)->calculate();
-    }
-
-    /**
-     * Get charge calculator instance.
-     *
-     * @param \Illuminate\Database\Eloquent\Model $resource
-     *
-     * @return \App\Contracts\Support\Calculator
-     */
-    public function getCalculator(Model $resource): Calculator
-    {
-        return new Calculator($this->getPipeline(), $resource);
-    }
-
-    /**
-     * Get Laravel pipeline instance.
-     *
-     * @return \Illuminate\Contracts\Pipeline\Pipeline
-     */
-    public function getPipeline(): Pipeline
-    {
-        return app()->make(Pipeline::class);
     }
 
     /**

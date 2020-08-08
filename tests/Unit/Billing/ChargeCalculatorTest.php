@@ -3,10 +3,8 @@
 namespace Tests\Unit\Billing;
 
 use Tests\TestCase;
-use Illuminate\Pipeline\Pipeline;
 use App\Billing\Charges\Calculator;
 use App\Contracts\Models\Priceable;
-use Illuminate\Database\Eloquent\Model;
 use Tests\Unit\Billing\fixtures\PriceableResourceMock;
 use App\Contracts\Support\Calculator as CalculatorContract;
 
@@ -46,27 +44,5 @@ class ChargeCalculatorTest extends TestCase
             ],
             $caculator->amounts()
         );
-    }
-
-    /**
-     * Get charge calculator instance.
-     *
-     * @param \Illuminate\Database\Eloquent\Model $resource
-     *
-     * @return \App\Contracts\Support\Calculator
-     */
-    public function getCalculator(Model $resource): Calculator
-    {
-        return new Calculator($this->getPipeline(), $resource);
-    }
-
-    /**
-     * Get Laravel pipeline instance.
-     *
-     * @return \Illuminate\Contracts\Pipeline\Pipeline
-     */
-    public function getPipeline(): Pipeline
-    {
-        return app()->make(Pipeline::class);
     }
 }
