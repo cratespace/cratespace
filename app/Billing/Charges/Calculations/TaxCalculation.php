@@ -19,7 +19,7 @@ class TaxCalculation implements CalculationContract
      */
     public function apply(array $amounts, Closure $next)
     {
-        $amounts['tax'] = round($this->sum($amounts) * $this->getTaxRate(), 2);
+        $amounts['tax'] = $this->sum($amounts) * $this->getTaxRate();
 
         return $next($amounts);
     }

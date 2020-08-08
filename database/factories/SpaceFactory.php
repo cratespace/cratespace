@@ -16,7 +16,7 @@ $factory->define(Space::class, function (Faker $faker) {
         'country' => 'Sri Lanka',
     ]);
 
-    $price = rand(1, 9);
+    $price = rand(100, 900);
 
     return [
         'uid' => strtoupper(Str::random(12)),

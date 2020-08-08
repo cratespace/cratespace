@@ -55,9 +55,9 @@ trait HasDefaultCharges
      *
      * @param array $amounts
      *
-     * @return float
+     * @return int
      */
-    protected function sum(array $amounts): float
+    protected function sum(array $amounts): int
     {
         if (Arr::isAssoc($amounts)) {
             $amounts = array_values($amounts);

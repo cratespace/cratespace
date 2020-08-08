@@ -76,7 +76,17 @@
 
                 <div class="mt-2 flex justify-between items-baseline">
                     <div class="font-base">
-                        <span>Value Added Tax</span>
+                        <span>Subtotal</span>
+                    </div>
+
+                    <div class="text-right">
+                        <span>{{ $charges['subtotal'] }}</span>
+                    </div>
+                </div>
+
+                <div class="mt-2 flex justify-between items-baseline">
+                    <div class="font-base">
+                        <span>Tax</span>
                     </div>
 
                     <div class="text-right">

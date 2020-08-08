@@ -22,7 +22,7 @@ class ServiceCalculation implements CalculationContract
     {
         $subtotal = $amounts['subtotal'] ?? $this->sum($amounts);
 
-        $amounts['service'] = round($subtotal * $this->getServiceRate(), 2);
+        $amounts['service'] = $subtotal * $this->getServiceRate();
 
         return $next($amounts);
     }

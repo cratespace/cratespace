@@ -38,11 +38,11 @@ class ChargeCalculatorTest extends TestCase
 
         $this->assertEquals(
             [
-              'price' => 10,
-              'tax' => 0.24,
-              'subtotal' => 12,
-              'service' => 0.36,
-              'total' => 12.6,
+                'price' => 10,
+                'tax' => 0.24,
+                'subtotal' => 12,
+                'service' => 0.36,
+                'total' => 12,
             ],
             $caculator->amounts()
         );

@@ -17,7 +17,7 @@ class FormatValidator implements ValidatorContract
      */
     public function validate($item, $standard): bool
     {
-        if (!Str::contains($item, $standard)) {
+        if (!Str::contains($item, $standard->prefix())) {
             return false;
         }
 

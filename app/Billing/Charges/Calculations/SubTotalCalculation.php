@@ -19,7 +19,7 @@ class SubTotalCalculation implements CalculationContract
      */
     public function apply(array $amounts, Closure $next)
     {
-        $amounts['subtotal'] = round($this->sum($amounts));
+        $amounts['subtotal'] = $this->sum($amounts);
 
         return $next($amounts);
     }

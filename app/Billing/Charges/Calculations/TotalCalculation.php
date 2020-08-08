@@ -23,7 +23,7 @@ class TotalCalculation implements CalculationContract
             return $name !== 'price' ? $amount : 0;
         }, ARRAY_FILTER_USE_BOTH);
 
-        $amounts['total'] = round($this->sum($total), 2);
+        $amounts['total'] = $this->sum($total);
 
         return $next($amounts);
     }

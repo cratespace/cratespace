@@ -42,7 +42,6 @@ class OrderQuery extends Query
             ->with('space')
             ->whereUserId(user('id'))
             ->filter($filters)
-            ->search($search)
             ->latest('updated_at');
     }
 

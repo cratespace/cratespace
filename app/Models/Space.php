@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Models\Casts\MoneyCast;
 use App\Models\Traits\Indexable;
 use App\Models\Traits\Filterable;
 use App\Models\Casts\ScheduleCast;
@@ -58,8 +57,6 @@ class Space extends Model implements Priceable
         'departs_at' => 'datetime',
         'arrives_at' => 'datetime',
         'schedule' => ScheduleCast::class,
-        'price' => MoneyCast::class,
-        'tax' => MoneyCast::class,
     ];
 
     /**

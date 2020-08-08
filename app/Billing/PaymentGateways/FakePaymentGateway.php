@@ -2,6 +2,7 @@
 
 namespace App\Billing\PaymentGateways;
 
+use Closure;
 use InvalidArgumentException;
 use Illuminate\Support\Facades\Crypt;
 use App\Exceptions\PaymentFailedException;
@@ -46,6 +47,13 @@ class FakePaymentGateway implements PaymentGatewayContract
     protected $prefix = 'fake-tok_';
 
     /**
+     * Call back to run as a hook before the first charge.
+     *
+     * @var \Closure
+     */
+    protected $beforeFirstChargeCallback;
+
+    /**
      * Get total amount the customer is charged.
      *
      * @return int
@@ -66,6 +74,8 @@ class FakePaymentGateway implements PaymentGatewayContract
      */
     public function charge(int $amount, string $paymentToken, ?string $destinationAccountId = null): void
     {
+        // $this->runBeforeChargesCallback();
+
         if (!$this->matches($paymentToken)) {
             throw new PaymentFailedException("Token {$paymentToken} is invalid", $amount);
         }
@@ -109,6 +119,34 @@ class FakePaymentGateway implements PaymentGatewayContract
         }
 
         return true;
+    }
+
+    /**
+     * Run a callback that has been set before original charge should be performed.
+     *
+     * @return void
+     */
+    protected function runBeforeChargesCallback(): void
+    {
+        if ($this->beforeFirstChargeCallback !== null) {
+            $callback = $this->beforeFirstChargeCallback;
+
+            $this->beforeFirstChargeCallback = null;
+
+            call_user_func_array($callback, [$this]);
+        }
+    }
+
+    /**
+     * Set a call back to run as a hook before the first charge.
+     *
+     * @param \Closure $callback
+     *
+     * @return void
+     */
+    public function beforeFirstCharge(Closure $callback): void
+    {
+        $this->beforeFirstChargeCallback = $callback;
     }
 
     /**

@@ -26,7 +26,7 @@ class CreateOrdersTable extends Migration
             $table->string('email')->index();
             $table->string('phone', 50)->index();
             $table->string('business')->nullable();
-            $table->string('service');
+            $table->integer('service');
             $table->integer('price');
             $table->integer('tax');
             $table->integer('total');
