@@ -27,13 +27,6 @@ class FakePaymentGateway implements PaymentGatewayContract
     protected $tokens;
 
     /**
-     * Application encryption key.
-     *
-     * @var string
-     */
-    protected $key;
-
-    /**
      * Payment token validators.
      *
      * @var array
@@ -41,21 +34,16 @@ class FakePaymentGateway implements PaymentGatewayContract
     protected static $validators;
 
     /**
+     * Test credit card number.
+     */
+    public const TEST_CARD_NUMBER = '4242424242424242';
+
+    /**
      * Payment token prefix.
      *
      * @param string $key
      */
     protected $prefix = 'fake-tok_';
-
-    /**
-     * Create new instance of fake payment token.
-     *
-     * @param string $key
-     */
-    public function __construct(string $key)
-    {
-        $this->key = $key;
-    }
 
     /**
      * Get total amount the customer is charged.

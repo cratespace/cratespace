@@ -13,15 +13,15 @@ class Formatter
     /**
      * Format the given amount into a displayable currency.
      *
-     * @param float       $amount
+     * @param int         $amount
      * @param string|null $currency
      * @param string|null $locale
      *
      * @return string
      */
-    public static function money(float $amount, ?string $currency = null, ?string $locale = null)
+    public static function money(int $amount, ?string $currency = null, ?string $locale = null)
     {
-        $money = new Money($amount, new Currency(strtoupper($currency ?? 'usd')));
+        $money = new Money((int) $amount, new Currency(strtoupper($currency ?? 'usd')));
 
         $locale = $locale ?? 'en';
 
