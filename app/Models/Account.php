@@ -2,21 +2,21 @@
 
 namespace App\Models;
 
-use App\Models\Traits\Indexable;
 use Illuminate\Database\Eloquent\Model;
 
 class Account extends Model
 {
-    use Indexable;
-
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
     protected $fillable = [
-        'credit', 'bank_acount_number', 'bank_account_name',
-        'bank_name', 'user_id',
+        'credit',
+        'bank_acount_number',
+        'bank_account_name',
+        'bank_name',
+        'user_id',
     ];
 
     /**

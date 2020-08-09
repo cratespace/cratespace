@@ -8,16 +8,16 @@ use App\Contracts\Support\Validator as ValidatorContract;
 class ExistenceValidator implements ValidatorContract
 {
     /**
-     * Determine if the given item passes the given statndards.
+     * Determine if the given item passes the given standards.
      *
-     * @param mixed $item
-     * @param mixed $standard
+     * @param mixed      $item
+     * @param array|null $options
      *
      * @return bool
      */
-    public function validate($item, $standard): bool
+    public function validate($item, ?array $options = null): bool
     {
-        if (!Arr::has($standard->tokens(), $item)) {
+        if (!Arr::has($options['gateway']->tokens(), $item)) {
             return false;
         }
 

@@ -113,7 +113,7 @@ class FakePaymentGateway implements PaymentGatewayContract
     public function matches(string $token): bool
     {
         foreach ($this->getValidators() as $validator) {
-            if (!$validator->validate($token, $this)) {
+            if (!$validator->validate($token, ['gateway' => $this])) {
                 return false;
             }
         }

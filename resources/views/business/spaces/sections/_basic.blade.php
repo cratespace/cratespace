@@ -13,12 +13,14 @@
 
     <div class="col-lg-7 offset-lg-1">
         <div>
-            <div class="mb-6">
-                @include('components.forms.fields._uid', ['uid' => $space->uid])
+            <div class="row mb-6">
+                <div class="col-lg-7 mb-6 lg:mb-0">
+                    @include('components.forms.fields._uid', ['uid' => $space->uid])
+                </div>
 
-                <span class="text-sm block mt-2 text-gray-500" role="alert">
-                    Code must be unique.
-                </span>
+                <div class="col-lg-5">
+                    @include('components.forms.fields._weight', ['weight' => $space->weight])
+                </div>
             </div>
 
             <div class="row">
@@ -36,16 +38,20 @@
             </div>
 
             <div class="row">
-                <div class="col-lg-7 mb-6 lg:mb-0">
-                    @include('components.forms.fields._price', ['price' => $space->present()->price])
+                <div class="col-xl-4 col-lg-6 mb-6 lg:mb-0">
+                    @include('components.forms.fields._price', ['price' => $space->price / 100])
 
                     <span class="text-sm block mt-2 text-gray-500" role="alert">
-                        The price should be inclusive of all necessary taxes.
+                        The price should be exclusive of all taxes and in <span class="font-semibold">USD</span>.
                     </span>
                 </div>
 
-                <div class="col-lg-5">
-                    @include('components.forms.fields._weight', ['weight' => $space->weight])
+                <div class="col-xl-4 col-lg-6 mb-6 lg:mb-0">
+                    @include('components.forms.fields._tax', ['tax' => $space->tax / 100])
+
+                    <span class="text-sm block mt-2 text-gray-500" role="alert">
+                        Tax should be a calculated amount of the price provided.
+                    </span>
                 </div>
             </div>
         </div>

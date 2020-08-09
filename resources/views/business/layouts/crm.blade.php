@@ -4,20 +4,20 @@
     <section class="py-8">
         <div class="container">
             <div class="row items-center">
-                <div class="col-lg-4 col-md-6">
-                    <div>
+                <div class="col-md-4">
+                    <div class="text-center md:text-left">
                         <h4>
                             {{ $pageTitle }}
                         </h4>
 
-                        <p class="text-sm max-w-sm">
+                        <p class="text-sm max-w-sm mx-auto md:mx-0">
                             Showing a total of {{ $resource->total() }} resource
                         </p>
                     </div>
                 </div>
 
-                <div class="mt-4 md:mt-0 col-lg-5 offset-lg-3 col-md-6">
-                    <div class="flex justify-end items-center">
+                <div class="mt-4 md:mt-0 col-lg-6 offset-lg-2 col-md-8 col-md-6">
+                    <div class="flex justify-center md:justify-end items-center">
                         <div class="dropdown">
                             <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <span class="text-sm">Show: <span class="font-bold text-gray-800">{{ request('status') ?? 'All' }}</span></span>
@@ -45,6 +45,8 @@
                                 </a>
                             </div>
                         </form>
+
+                        <a class="ml-4 btn btn-primary" href="{{ route($resourceName . '.create') }}">Add new</a>
                     </div>
                 </div>
             </div>

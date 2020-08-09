@@ -23,6 +23,28 @@ class SpacePresenter extends Presenter
      */
     public function price(): string
     {
-        return Formatter::money($this->model->price ?? 0);
+        return $this->formatMoney($this->model->price);
+    }
+
+    /**
+     * Get tax attribute in money format.
+     *
+     * @return string
+     */
+    public function tax(): string
+    {
+        return $this->formatMoney($this->model->tax);
+    }
+
+    /**
+     * Convert given amount from cents to money format.
+     *
+     * @param int $amount
+     *
+     * @return string
+     */
+    protected function formatMoney(?int $amount = null): string
+    {
+        return Formatter::money($amount ?? 0);
     }
 }

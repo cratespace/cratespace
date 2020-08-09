@@ -3,7 +3,6 @@
 namespace App\Models;
 
 use App\Models\Traits\HasImage;
-use App\Models\Traits\Indexable;
 use App\Models\Traits\Sluggable;
 use Illuminate\Database\Eloquent\Model;
 
@@ -11,7 +10,6 @@ class Business extends Model
 {
     use Sluggable;
     use HasImage;
-    use Indexable;
 
     /**
      * The attributes that are mass assignable.
@@ -19,8 +17,18 @@ class Business extends Model
      * @var array
      */
     protected $fillable = [
-        'name', 'slug', 'description', 'image', 'street', 'email',
-        'phone', 'city', 'state', 'country', 'postcode', 'user_id',
+        'name',
+        'slug',
+        'description',
+        'image',
+        'street',
+        'email',
+        'phone',
+        'city',
+        'state',
+        'country',
+        'postcode',
+        'user_id',
     ];
 
     /**

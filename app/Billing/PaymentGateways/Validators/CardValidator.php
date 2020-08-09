@@ -8,18 +8,18 @@ use App\Contracts\Support\Validator as ValidatorContract;
 class CardValidator implements ValidatorContract
 {
     /**
-     * Determine if the given item passes the given statndards.
+     * Determine if the given item passes the given standards.
      *
-     * @param mixed $item
-     * @param mixed $standard
+     * @param mixed      $item
+     * @param array|null $options
      *
      * @return bool
      */
-    public function validate($item, $standard): bool
+    public function validate($item, ?array $options = null): bool
     {
-        $cardNumber = Crypt::decryptString(str_replace($standard->prefix(), '', $item));
+        $cardNumber = Crypt::decryptString(str_replace($options['gateway']->prefix(), '', $item));
 
-        if (!in_array($cardNumber, $standard->tokens())) {
+        if (!in_array($cardNumber, $options['gateway']->tokens())) {
             return false;
         }
 
