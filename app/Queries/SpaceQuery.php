@@ -7,6 +7,7 @@ use App\Models\Order;
 use App\Models\Space;
 use App\Filters\Filter;
 use App\Models\Business;
+use App\Facades\Location;
 use Illuminate\Database\Eloquent\Builder;
 
 class SpaceQuery extends Query
@@ -74,6 +75,7 @@ class SpaceQuery extends Query
                     ->latest()
                     ->take(1),
             ])
+            ->where('base', Location::getCountry())
             ->whereDate('departs_at', '>', Carbon::now())
             ->doesntHave('order')
             ->filter($filters)

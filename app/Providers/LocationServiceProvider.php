@@ -42,4 +42,14 @@ class LocationServiceProvider extends ServiceProvider
             return new LocationService($app['request'], $app['ip']);
         });
     }
+
+    /**
+     * Get the services provided by the provider.
+     *
+     * @return array
+     */
+    public function provides()
+    {
+        return ['location'];
+    }
 }

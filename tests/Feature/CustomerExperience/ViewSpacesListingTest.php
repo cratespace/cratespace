@@ -12,9 +12,22 @@ use App\Contracts\Models\Priceable;
 
 class ViewSpacesListingTest extends TestCase
 {
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $_SERVER['REMOTE_ADDR'] = '122.255.0.0';
+    }
+
     protected function tearDown(): void
     {
         cache()->flush();
+
+        unset($_SERVER['HTTP_CLIENT_IP'], $_SERVER['HTTP_X_FORWARDED_FOR'], $_SERVER['REMOTE_ADDR']);
+
+        $_SERVER['HTTP_CLIENT_IP'] = null;
+        $_SERVER['HTTP_X_FORWARDED_FOR'] = null;
+        $_SERVER['REMOTE_ADDR'] = null;
     }
 
     /** @test */

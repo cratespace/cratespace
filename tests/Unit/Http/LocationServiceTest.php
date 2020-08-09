@@ -29,16 +29,16 @@ class LocationServiceTest extends TestCase
         config()->set('location.testing.enabled', true);
 
         $_SERVER['HTTP_CLIENT_IP'] = '192.168.1.8';
-        $_SERVER['HTTP_X_FORWARDED_FOR'] = '66.102.0.0';
+        $_SERVER['HTTP_X_FORWARDED_FOR'] = '122.255.0.0';
         $_SERVER['REMOTE_ADDR'] = '192.168.1.8';
 
         $request = Request::create('/', 'GET');
         $ipService = new IpService($request);
         $location = new LocationService($request, $ipService);
 
-        $this->assertEquals('66.102.0.0', $ipService->get());
-        $this->assertEquals('66.102.0.0', $location->getValidIp());
+        $this->assertEquals('122.255.0.0', $ipService->get());
+        $this->assertEquals('122.255.0.0', $location->getValidIp());
         $this->assertInstanceOf(Position::class, $location->get());
-        $this->assertEquals('United States', $location->getCountry());
+        $this->assertEquals('Sri Lanka', $location->getCountry());
     }
 }

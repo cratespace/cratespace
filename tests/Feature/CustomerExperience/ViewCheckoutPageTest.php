@@ -36,8 +36,6 @@ class ViewCheckoutPageTest extends TestCase
     /** @test */
     public function the_relevant_charges_are_calculated_when_a_space_is_booked()
     {
-        $this->withoutExceptionHandling();
-
         $space = create(Space::class);
 
         $this->get("/spaces/{$space->uid}/checkout")->assertStatus(200);
@@ -105,7 +103,17 @@ class ViewCheckoutPageTest extends TestCase
 
         $this->assertTrue(cache()->has('charges'));
 
+        $_SERVER['REMOTE_ADDR'] = '122.255.0.0';
+
         $this->get('/')->assertStatus(200);
+
+        unset(
+            $_SERVER['HTTP_CLIENT_IP'],
+            $_SERVER['HTTP_X_FORWARDED_FOR'],
+            $_SERVER['REMOTE_ADDR']
+        );
+
+        $_SERVER['REMOTE_ADDR'] = null;
 
         $this->assertTrue(!cache()->has('charges'));
     }

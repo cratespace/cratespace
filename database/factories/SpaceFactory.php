@@ -11,7 +11,7 @@ use Faker\Generator as Faker;
 $factory->define(Space::class, function (Faker $faker) {
     $user = create(User::class);
 
-    create(Business::class, [
+    $business = create(Business::class, [
         'user_id' => $user->id,
         'country' => 'Sri Lanka',
     ]);
@@ -33,5 +33,6 @@ $factory->define(Space::class, function (Faker $faker) {
         'tax' => round($price * 0.05), // 5% tax
         'type' => $faker->randomElement(['Local', 'International']),
         'user_id' => $user->id,
+        'base' => $business->country,
     ];
 });

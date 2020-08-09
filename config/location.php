@@ -106,14 +106,12 @@ return [
     | If your running your website locally and want to test different
     | IP addresses to see location detection, set 'enabled' to true.
     |
-    | The testing IP address is a Google host in the United-States.
-    |
     */
 
     'testing' => [
-        'enabled' => false,
+        'enabled' => env('APP_ENV') === 'local' ? true : false,
 
-        'ip' => '66.102.0.0',
+        'ip' => '122.255.0.0', // Sri Lankan IP
     ],
 
     'blacklist' => [],

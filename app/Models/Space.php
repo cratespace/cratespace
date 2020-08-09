@@ -44,6 +44,7 @@ class Space extends Model implements Priceable
         'tax',
         'user_id',
         'type',
+        'base',
     ];
 
     /**

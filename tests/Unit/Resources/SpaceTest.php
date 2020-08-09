@@ -21,6 +21,14 @@ class SpaceTest extends TestCase
     }
 
     /** @test */
+    public function it_has_a_country_where_it_is_based_in()
+    {
+        $space = create(Space::class);
+
+        $this->assertEquals($space->user->business->country, $space->base);
+    }
+
+    /** @test */
     public function it_has_a_set_of_required_attributes()
     {
         $space = create(Space::class);
