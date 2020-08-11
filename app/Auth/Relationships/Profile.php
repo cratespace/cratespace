@@ -2,30 +2,33 @@
 
 namespace App\Auth\Relationships;
 
+use Closure;
 use App\Models\User;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Hash;
-use App\Contracts\Auth\Responsibility;
+use App\Contracts\Support\Responsibility;
 
 class Profile implements Responsibility
 {
     /**
-     * Handle responsibility.
+     * Handle given data and pass it on to next action.
      *
-     * @param \App\Models\User $user
-     * @param array            $data
+     * @param array    $data
+     * @param \Closure $next
      *
-     * @return App\Models\User
+     * @return mixed
      */
-    public function handle(User $user, array $data): User
+    public function handle(array $data, Closure $next)
     {
-        return $user->create([
+        $data['user'] = $data['user']->create([
             'name' => $data['name'],
             'email' => $data['email'],
             'phone' => $data['phone'],
             'username' => $this->makeUsername($data['name']),
             'password' => Hash::make($data['password']),
         ]);
+
+        return $next($data);
     }
 
     /**

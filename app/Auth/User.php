@@ -2,12 +2,13 @@
 
 namespace App\Auth;
 
+use Error;
 use InvalidArgumentException;
 use App\Models\User as UserModel;
+use Illuminate\Pipeline\Pipeline;
 use App\Auth\Relationships\Account;
 use App\Auth\Relationships\Profile;
 use App\Auth\Relationships\Business;
-use App\Contracts\Auth\Responsibility;
 
 class User extends UserModel
 {
@@ -32,9 +33,9 @@ class User extends UserModel
     public function new(array $data)
     {
         try {
-            return $this->performResponsibilities(new self(), $data);
-        } catch (InvalidArgumentException $exception) {
-            abort(500, $exception->getMessage());
+            return $this->performResponsibilities($data);
+        } catch (InvalidArgumentException $e) {
+            abort(503, $e->getMessage());
         }
     }
 
@@ -45,36 +46,23 @@ class User extends UserModel
      * @param array            $data
      *
      * @return \App\Models\User
-     */
-    protected function performResponsibilities(UserModel $user, array $data): UserModel
-    {
-        foreach ($this->getResponsibilities() as $responsibility) {
-            $responsibility = $this->resolveResponsibility($responsibility);
-
-            $user = $responsibility->handle($user, $data);
-        }
-
-        return $user;
-    }
-
-    /**
-     * Instantiate the responsibility class.
      *
-     * @param string $responsibility
-     *
-     * @return \App\Contracts\Auth\Responsibility
+     * @throws \InvalidArgumentException
      */
-    protected function resolveResponsibility(string $responsibility): Responsibility
+    protected function performResponsibilities(array $data): UserModel
     {
-        $responsibility = new $responsibility();
+        $data['user'] = $this;
 
-        if (!$responsibility instanceof Responsibility) {
-            $responsibility = class_basename($responsibility);
-
-            throw new InvalidArgumentException("Class {$responsibility} does not adhere to the Responsibility interface");
+        try {
+            return (new Pipeline(app()))->send($data)
+                ->through($this->getResponsibilities())
+                ->via('handle')
+                ->then(function ($data) {
+                    return $data['user'];
+                });
+        } catch (Error $e) {
+            throw new InvalidArgumentException($e->getMessage());
         }
-
-        return $responsibility;
     }
 
     /**
@@ -84,9 +72,6 @@ class User extends UserModel
      */
     public function getResponsibilities(): array
     {
-        return array_merge(
-            $this->responsibilities,
-            config('auth.responsibilities')
-        );
+        return array_merge($this->responsibilities, config('auth.responsibilities'));
     }
 }
