@@ -1,6 +1,6 @@
 # Createspace
 
-![GitHub](https://github.com/cratespace/cratespace/workflows/Run%20Tests/badge.svg?branch=development)
+![GitHub](https://github.com/cratespace/cratespace/workflows/GitHub/badge.svg)
 [![CircleCI](https://circleci.com/gh/cratespace/cratespace.svg?style=shield&circle-token=12afa979588901907a76c6f2a883cab949cc7f28)](https://github.com/cratespace/cratespace/)
 
 ### What is Cratespace?
