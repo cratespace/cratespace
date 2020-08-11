@@ -3,8 +3,6 @@
 namespace App\Providers;
 
 use App\Events\OrderStatusUpdated;
-use App\Listeners\LogVerifiedUser;
-use Illuminate\Auth\Events\Verified;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
@@ -22,10 +20,16 @@ class EventServiceProvider extends ServiceProvider
             SendEmailVerificationNotification::class,
         ],
 
-        // Verified::class => [
-        //     LogVerifiedUser::class,
-        // ],
-
         OrderStatusUpdated::class => [],
     ];
+
+    /**
+     * Register any events for your application.
+     *
+     * @return void
+     */
+    public function boot()
+    {
+        parent::boot();
+    }
 }

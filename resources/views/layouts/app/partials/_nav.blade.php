@@ -12,11 +12,17 @@
                     </li>
 
                     <li class="ml-6">
-                        <a class="{{ is_active('orders*', 'bg-gray-700 bg-opacity-50') }} block px-3 py-2 rounded-lg text-sm font-medium text-gray-300 hover:text-white hover:bg-gray-700 hover:bg-opacity-50 focus:text-white active:text-white" href="/orders">{{ __('Orders') }}</a>
+                        <a class="{{ is_active('orders*', 'bg-gray-700 bg-opacity-50') }} block px-3 py-2 rounded-lg text-sm font-medium text-gray-300 hover:text-white hover:bg-gray-700 hover:bg-opacity-50 focus:text-white active:text-white" href="{{ route('orders.index') }}">{{ __('Orders') }}</a>
                     </li>
 
-                    <li class="ml-6">
-                        <a class="{{ is_active('spaces*', 'bg-gray-700 bg-opacity-50') }} block px-3 py-2 rounded-lg text-sm font-medium text-gray-300 hover:text-white hover:bg-gray-700 hover:bg-opacity-50 focus:text-white active:text-white" href="/spaces">{{ __('Spaces') }}</a>
+                    <li class="dropdown ml-6">
+                        <a class="{{ is_active('spaces*', 'bg-gray-700 bg-opacity-50') }} block px-3 py-2 rounded-lg text-sm font-medium text-gray-300 hover:text-white hover:bg-gray-700 hover:bg-opacity-50 focus:text-white active:text-white dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{ __('Spaces') }}</a>
+
+                        <div class="mt-3 dropdown-menu rounded-lg shadow-lg" aria-labelledby="dropdownMenuLink">
+                            <a class="dropdown-item text-sm font-medium text-gray-600 hover:text-gray-700 focus:text-white active:text-white py-2" href="{{ route('spaces.index') }}">{{ __('All spaces') }}</a>
+
+                            <a class="dropdown-item text-sm font-medium text-gray-600 hover:text-gray-700 focus:text-white active:text-white py-2" href="{{ route('spaces.create') }}">{{ __('New space') }}</a>
+                        </div>
                     </li>
 
                     <li class="ml-6">

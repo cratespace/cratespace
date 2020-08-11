@@ -27,7 +27,8 @@ abstract class Presenter
     /**
      * Show method as property if property does not exist.
      *
-     * @param  string $property
+     * @param string $property
+     *
      * @return \Closure
      *
      * @throws \InvalidArgumentException
@@ -44,16 +45,12 @@ abstract class Presenter
     /**
      * Throw exception if property or method does not exist in object.
      *
-     * @param  string $property
+     * @param string $property
      *
      * @throws \InvalidArgumentException
      */
     protected function handleExceptionThrow($property)
     {
-        throw new InvalidArgumentException(sprintf(
-            '%s does not respond to the property or method "%s"',
-            static::class,
-            $property
-        ));
+        throw new InvalidArgumentException(sprintf('%s does not respond to the property or method "%s"', static::class, $property));
     }
 }

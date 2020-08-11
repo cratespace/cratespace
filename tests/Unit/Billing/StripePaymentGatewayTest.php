@@ -2,112 +2,109 @@
 
 namespace Tests\Unit\Billing;
 
+use Stripe\Token;
 use Tests\TestCase;
-use ReflectionClass;
-use App\Billing\Charge;
-use Stripe\StripeClient;
-use Stripe\Service\ChargeService;
-use Stripe\Token as StripeTokenGenerator;
+use App\Models\Order;
+use App\Models\Space;
+use Stripe\Charge as StripeCharge;
 use App\Billing\PaymentGateways\StripePaymentGateway;
 
-/**
- * @group integration
- */
 class StripePaymentGatewayTest extends TestCase
 {
-    use PaymentGatewayContractTest;
-
     /**
-     * Stripe test secret key.
+     * Instance of fake payment gateway.
      *
-     * @var string
+     * @var \App\Billing\PaymentGateways\StripePaymentGateway
      */
-    protected $apiKey;
+    protected $paymentGateway;
 
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->apiKey = config('services.stripe.secret');
+        config()->set('defaults.charges.service', 0.03);
+        config()->set('defaults.charges.tax', 0.01);
+
+        $this->paymentGateway = new StripePaymentGateway(env('STRIPE_SECRET_KEY'));
+        $this->app->instance(PaymentGateway::class, $this->paymentGateway);
+    }
+
+    protected function tearDown(): void
+    {
+        cache()->flush();
     }
 
     /** @test */
-    public function it_can_create_instance_of_stripe_api_client()
+    public function it_accepts_charges_with_a_valid_payment_token()
     {
-        $stripePaymentGateway = new StripePaymentGateway($this->apiKey);
+        $space = create(Space::class, ['price' => 3250, 'tax' => 162.5]);
+        $this->calculateCharges($space);
+        $order = $space->placeOrder($this->orderDetails());
 
-        $stripeReflection = new ReflectionClass($stripePaymentGateway);
-        $getStripeProperty = $stripeReflection->getMethod('makeStripeClient');
-        $getStripeProperty->setAccessible(true);
+        $this->paymentGateway->charge($order, $this->paymentGateway->generateToken($this->getCardDetails()));
 
-        $this->assertInstanceOf(StripeClient::class, $getStripeProperty->invoke($stripePaymentGateway));
+        $this->assertEquals(3583, $this->paymentGateway->total());
+        $this->assertDatabaseHas('charges', [
+            'confirmation_number' => $order->confirmation_number,
+        ]);
     }
 
-    /** @test */
-    public function it_can_create_instance_of_stripe_charger()
-    {
-        $stripePaymentGateway = new StripePaymentGateway($this->apiKey);
-
-        $stripeReflection = new ReflectionClass($stripePaymentGateway);
-        $getStripeProperty = $stripeReflection->getMethod('getStripeCharger');
-        $getStripeProperty->setAccessible(true);
-
-        $this->assertInstanceOf(ChargeService::class, $getStripeProperty->invoke($stripePaymentGateway));
-    }
-
-    /** @test */
-    public function it_can_create_instance_of_local_charger()
-    {
-        $stripePaymentGateway = new StripePaymentGateway($this->apiKey);
-
-        $stripeReflection = new ReflectionClass($stripePaymentGateway);
-        $getStripeProperty = $stripeReflection->getMethod('getLocalCharger');
-        $getStripeProperty->setAccessible(true);
-
-        $this->assertInstanceOf(
-            Charge::class,
-            $getStripeProperty->invokeArgs(
-                $stripePaymentGateway,
-                [$this->getCardDetails()]
-            )
-        );
-    }
+    // protected function getCharges()
+    // {
+    //     StripeCharge::all()
+    // }
 
     /**
-     * Get instance of payment gateway.
-     *
-     * @return \App\Contracts\Billing\PaymentGateway
-     */
-    protected function getPaymentGateway()
-    {
-        return new StripePaymentGateway($this->apiKey);
-    }
-
-    /**
-     * Generate valid payment token.
-     *
-     * @param string|null $apiKey
+     * Generate test stripe payment token.
      *
      * @return string
      */
-    protected function generateTestStripeToken(?string $apiKey = null): string
+    protected function generateToken(): string
     {
-        $tokenObject = StripeTokenGenerator::create([
-            'card' => $this->getCardDetails(),
-        ], ['api_key' => $apiKey ?? $this->apiKey]);
-
-        return $tokenObject->id;
+        return Token::create($this->getCardDetails());
     }
 
     /**
-     * Get test credit card details.
+     * Fake a json post request to purchase/order a space.
+     *
+     * @param \App\Models\Space $space
+     * @param array             $parameters
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    protected function orderSpace(Space $space, array $parameters = [])
+    {
+        $this->calculateCharges($space);
+
+        return $this->postJson("/spaces/{$space->uid}/orders", $parameters);
+    }
+
+    /**
+     * Get fake order details.
+     *
+     * @param array $attributes
+     *
+     * @return array
+     */
+    protected function orderDetails(array $attributes = []): array
+    {
+        return array_merge([
+            'name' => 'John Doe',
+            'business' => 'Example, Co.',
+            'phone' => '765487368',
+            'email' => 'john@example.com',
+        ], $attributes);
+    }
+
+    /**
+     * Get fake credit card details.
      *
      * @return array
      */
     protected function getCardDetails(): array
     {
         return [
-            'number' => $this->getPaymentGateway()::TEST_CARD_NUMBER,
+            'number' => StripePaymentGateway::TEST_CARD_NUMBER,
             'exp_month' => 1,
             'exp_year' => date('Y') + 1,
             'cvc' => '123',

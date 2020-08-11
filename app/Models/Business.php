@@ -17,8 +17,18 @@ class Business extends Model
      * @var array
      */
     protected $fillable = [
-        'name', 'slug', 'description', 'image', 'street', 'email',
-        'phone', 'city', 'state', 'country', 'postcode', 'user_id',
+        'name',
+        'slug',
+        'description',
+        'image',
+        'street',
+        'email',
+        'phone',
+        'city',
+        'state',
+        'country',
+        'postcode',
+        'user_id',
     ];
 
     /**

@@ -20,33 +20,6 @@ if (!function_exists('user')) {
     }
 }
 
-if (!function_exists('greet')) {
-    /**
-     * Greet user according to user's time.
-     *
-     * @return string
-     */
-    function greet(): string
-    {
-        $hour = date('G');
-
-        switch ($hour) {
-            case $hour >= 5 && $hour <= 11:
-                return 'Good Morning';
-
-                break;
-            case $hour >= 12 && $hour <= 18:
-                return 'Good Afternoon';
-
-                break;
-            case $hour >= 19 || $hour <= 4:
-                return 'Good Evening';
-
-                break;
-        }
-    }
-}
-
 if (!function_exists('is_active')) {
     /**
      * Determine if the given route is active path.

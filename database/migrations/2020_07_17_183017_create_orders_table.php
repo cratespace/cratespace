@@ -18,7 +18,6 @@ class CreateOrdersTable extends Migration
             $table->foreignId('space_id')->constrained('spaces');
             $table->foreignId('user_id');
             $table->string('status')->default('Pending');
-            $table->string('uid')->unique()->index();
             $table->string('confirmation_number')
                 ->unique()
                 ->nullable()
@@ -27,7 +26,7 @@ class CreateOrdersTable extends Migration
             $table->string('email')->index();
             $table->string('phone', 50)->index();
             $table->string('business')->nullable();
-            $table->string('service');
+            $table->integer('service');
             $table->integer('price');
             $table->integer('tax');
             $table->integer('total');

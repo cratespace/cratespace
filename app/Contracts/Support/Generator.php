@@ -10,4 +10,11 @@ interface Generator
      * @return \object|string|array|int
      */
     public function generate();
+
+    /**
+     * Set generator options.
+     *
+     * @param array $options
+     */
+    public function setOptions(array $options = []): void;
 }

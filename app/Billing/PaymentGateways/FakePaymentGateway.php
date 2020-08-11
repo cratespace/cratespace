@@ -3,64 +3,87 @@
 namespace App\Billing\PaymentGateways;
 
 use Closure;
-use Illuminate\Support\Str;
-use Illuminate\Support\Collection;
+use App\Models\Order;
+use InvalidArgumentException;
+use App\Billing\Charges\Charge;
+use Illuminate\Support\Facades\Crypt;
 use App\Exceptions\PaymentFailedException;
+use App\Billing\PaymentGateways\Validators\CardValidator;
+use App\Billing\PaymentGateways\Validators\FormatValidator;
+use App\Billing\PaymentGateways\Validators\ExistenceValidator;
 use App\Contracts\Billing\PaymentGateway as PaymentGatewayContract;
 
 class FakePaymentGateway extends PaymentGateway implements PaymentGatewayContract
 {
+    /**
+     * Total charge amount.
+     *
+     * @var int
+     */
+    protected $total = 0;
+
+    /**
+     * All registered tokens.
+     *
+     * @var array
+     */
+    protected $tokens;
+
+    /**
+     * Payment token validators.
+     *
+     * @var array
+     */
+    protected static $validators;
+
     /**
      * Test credit card number.
      */
     public const TEST_CARD_NUMBER = '4242424242424242';
 
     /**
-     * List of fake payment tokens.
+     * Payment token prefix.
      *
-     * @var \Illuminate\Support\Collection
+     * @param string $key
      */
-    protected $tokens;
+    protected $prefix = 'fake-tok_';
 
     /**
-     * All charge amount received.
+     * Call back to run as a hook before the first charge.
      *
-     * @var \Illuminate\Support\Collection
+     * @var \Closure
      */
-    protected $chargeAmount = [];
+    protected $beforeFirstChargeCallback;
 
     /**
-     * Create new instance of fake payment gateway.
+     * Get total amount the customer is charged.
+     *
+     * @return int
      */
-    public function __construct()
+    public function total(): int
     {
-        $this->tokens = collect();
-
-        parent::__construct();
+        return $this->total;
     }
 
     /**
      * Charge the customer with the given amount.
      *
-     * @param int         $amount
-     * @param string      $paymentToken
-     * @param string|null $destinationAccountId
+     * @param \App\Models\Order $order
+     * @param string            $paymentToken
      *
      * @return void
      */
-    public function charge(int $amount, string $paymentToken, ?string $destinationAccountId = null): void
+    public function charge(Order $order, string $paymentToken): void
     {
-        $this->runBeforeChargesCallback();
+        // $this->runBeforeChargesCallback();
 
-        if (!$this->tokens->has($paymentToken)) {
-            throw new PaymentFailedException('Invalid payment token received', $amount);
+        if (!$this->matches($paymentToken)) {
+            throw new PaymentFailedException("Token {$paymentToken} is invalid", $order->total);
         }
 
-        $this->charges[] = $this->getLocalCharger([
-            'amount' => $this->setChargeAmount($amount),
-            'card_last_four' => substr($this->tokens[$paymentToken], -4),
-            'destination' => $destinationAccountId,
-        ]);
+        $this->createCharge($order, $paymentToken);
+
+        $this->total = $order->total;
     }
 
     /**
@@ -72,48 +95,98 @@ class FakePaymentGateway extends PaymentGateway implements PaymentGatewayContrac
      */
     public function generateToken(array $card): string
     {
-        $token = 'fake-tok_' . Str::random(24);
+        if (is_null($card['number'])) {
+            throw new InvalidArgumentException('Card number not found');
+        }
 
-        $this->tokens[$token] = $card['card_number'] ?? self::TEST_CARD_NUMBER;
+        $token = $this->prefix . Crypt::encryptString($card['number']);
+
+        $this->tokens[$token] = $card['number'];
 
         return $token;
     }
 
     /**
-     * Get all new charges during given callback.
+     * Match the given payment token.
+     *
+     * @param string $token
+     *
+     * @return bool
+     */
+    public function matches(string $token): bool
+    {
+        foreach ($this->getValidators() as $validator) {
+            if (!$validator->validate($token, ['gateway' => $this])) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    /**
+     * Run a callback that has been set before original charge should be performed.
+     *
+     * @return void
+     */
+    protected function runBeforeChargesCallback(): void
+    {
+        if ($this->beforeFirstChargeCallback !== null) {
+            $callback = $this->beforeFirstChargeCallback;
+
+            $this->beforeFirstChargeCallback = null;
+
+            call_user_func_array($callback, [$this]);
+        }
+    }
+
+    /**
+     * Set a call back to run as a hook before the first charge.
      *
      * @param \Closure $callback
      *
-     * @return \Illuminate\Support\Collection
+     * @return void
      */
-    public function newChargesDuring(Closure $callback): Collection
+    public function beforeFirstCharge(Closure $callback): void
     {
-        $chargesFrom = $this->charges->count();
-
-        call_user_func_array($callback, [$this]);
-
-        return $this->charges->slice($chargesFrom)->reverse()->values();
+        $this->beforeFirstChargeCallback = $callback;
     }
 
     /**
-     * Get all new charges since given charge ID.
+     * Get the route validators for the instance.
      *
-     * @param string|null $chargeId
-     *
-     * @return \Illuminate\Support\Collection
+     * @return array
      */
-    public function newChargesSince(?string $chargeId = null): Collection
+    public static function getValidators()
     {
-        return $this->charges->where('id', $chargeId);
+        if (isset(static::$validators)) {
+            return static::$validators;
+        }
+
+        return static::$validators = [
+            new FormatValidator(),
+            new CardValidator(),
+            new ExistenceValidator(),
+        ];
     }
 
     /**
-     * Get total amount the customer is charged.
+     * Get payment token prefix.
      *
-     * @return int
+     * @return string
      */
-    public function totalCharges(): int
+    public function prefix(): string
     {
-        return $this->totalCharges = $this->chargeAmount->sum();
+        return $this->prefix;
+    }
+
+    /**
+     * Get all registered paymnet tokens.
+     *
+     * @return array
+     */
+    public function tokens(): array
+    {
+        return $this->tokens;
     }
 }

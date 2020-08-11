@@ -3,8 +3,10 @@
 namespace App\Models;
 
 use App\Models\Traits\HasImage;
+use App\Models\Traits\Indexable;
 use App\Models\Casts\SettingsCast;
 use App\Models\Traits\Presentable;
+use App\Models\Traits\Redirectable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use App\Models\Concerns\ManagesRolesAndAbilities;
@@ -16,6 +18,8 @@ class User extends Authenticatable implements MustVerifyEmail
     use HasImage;
     use ManagesRolesAndAbilities;
     use Presentable;
+    use Indexable;
+    use Redirectable;
 
     /**
      * The attributes that are mass assignable.

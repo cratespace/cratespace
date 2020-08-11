@@ -2,108 +2,24 @@
 
 namespace App\Billing\PaymentGateways;
 
-use Closure;
-use Illuminate\Support\Collection;
-use App\Billing\Charge as LocalCharge;
+use App\Models\Order;
+use App\Billing\Charges\Charge;
 
 abstract class PaymentGateway
 {
-    /**
-     * Total amount the customer is charged.
-     *
-     * @var int
-     */
-    protected $totalCharges = 0;
-
-    /**
-     * The amount the customer ought to be charged.
-     *
-     * @var \Illuminate\Support\Collection
-     */
-    protected $charges;
-
-    /**
-     * All charge amount received.
-     *
-     * @var \Illuminate\Support\Collection
-     */
-    protected $chargeAmount = [];
-
-    /**
-     * Call back to run as a hook before the first charge.
-     *
-     * @var \Closure
-     */
-    protected $beforeFirstChargeCallback;
-
-    /**
-     * Create new payment gateway instance.
-     */
-    public function __construct()
+    protected function createCharge(Order $order, string $paymentToken, ?array $details = null)
     {
-        $this->charges = collect();
-        $this->chargeAmount = collect();
-    }
+        $chargeDetails = new Charge([
+            'amount' => $order->total,
+            'card_last_four' => substr($this->tokens[$paymentToken], -4),
+            'response' => (array) $details ?? 'local',
+        ]);
 
-    /**
-     * Get total amount the customer is charged.
-     *
-     * @return \Illuminate\Support\Collection
-     */
-    public function charges(): Collection
-    {
-        return $this->charges;
-    }
+        $order->charge()->create([
+            'confirmation_number' => $order->confirmation_number,
+            'details' => (array) $chargeDetails->getData(),
+        ]);
 
-    /**
-     * Create stripe charge handler.
-     *
-     * @return \App\Billing\Charge
-     */
-    protected function getLocalCharger(array $data): LocalCharge
-    {
-        return new LocalCharge($data);
-    }
-
-    /**
-     * Set a call back to run as a hook before the first charge.
-     *
-     * @param \Closure $callback
-     *
-     * @return void
-     */
-    public function beforeFirstCharge(Closure $callback): void
-    {
-        $this->beforeFirstChargeCallback = $callback;
-    }
-
-    /**
-     * Determine and run a callback that has been set before original charge should be performed.
-     *
-     * @return void
-     */
-    protected function runBeforeChargesCallback(): void
-    {
-        if ($this->beforeFirstChargeCallback !== null) {
-            $callback = $this->beforeFirstChargeCallback;
-
-            $this->beforeFirstChargeCallback = null;
-
-            call_user_func_array($callback, [$this]);
-        }
-    }
-
-    /**
-     * Set total amount charged to customer.
-     *
-     * @param int $amount
-     *
-     * @return int
-     */
-    protected function setChargeAmount(int $amount): int
-    {
-        $this->chargeAmount[] = $amount;
-
-        return $amount;
+        return $chargeDetails->getData();
     }
 }
