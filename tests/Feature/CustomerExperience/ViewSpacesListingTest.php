@@ -6,9 +6,6 @@ use Carbon\Carbon;
 use Tests\TestCase;
 use App\Models\Order;
 use App\Models\Space;
-use Illuminate\Pipeline\Pipeline;
-use App\Billing\Charges\Calculator;
-use App\Contracts\Models\Priceable;
 
 class ViewSpacesListingTest extends TestCase
 {
@@ -54,19 +51,5 @@ class ViewSpacesListingTest extends TestCase
             ->assertDontSee($expiredSpace->uid)
             ->assertDontSee($orderedSpace->uid)
             ->assertSee($availableSpace->uid);
-    }
-
-    /**
-     * Get charges calculator instacne and calculate required charges.
-     *
-     * @param \App\Contracts\Models\Priceable $space
-     *
-     * @return void
-     */
-    protected function calculateCharges(Priceable $space): void
-    {
-        $chargesCalculator = new Calculator(new Pipeline(app()), $space);
-
-        $chargesCalculator->calculate();
     }
 }

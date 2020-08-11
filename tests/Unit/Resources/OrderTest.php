@@ -5,6 +5,7 @@ namespace Tests\Unit\Resources;
 use Tests\TestCase;
 use App\Models\Order;
 use App\Models\Space;
+use App\Models\Charge;
 use App\Events\OrderStatusUpdated;
 use Illuminate\Support\Facades\Event;
 
@@ -74,6 +75,32 @@ class OrderTest extends TestCase
         });
 
         $this->assertEquals('Approved', $order->fresh()->status);
+    }
+
+    /** @test */
+    public function it_can_save_charge_details()
+    {
+        $space = create(Space::class);
+        $this->calculateCharges($space);
+        $order = $space->placeOrder([
+            'name' => 'John Doe',
+            'business' => 'Example, Co.',
+            'phone' => '765487368',
+            'email' => 'john@example.com',
+        ]);
+        $chargeDetails = $order->createCharge([
+            'amount' => $order->total,
+            'card_last_four' => '4242',
+            'details' => 'local',
+        ]);
+
+        $this->assertNotNull($order->charge);
+        $this->assertInstanceOf(Charge::class, $order->charge);
+        $this->assertDatabaseHas('charges', [
+            'amount' => $order->total,
+            'card_last_four' => '4242',
+            'details' => json_encode('local'),
+        ]);
     }
 
     /**

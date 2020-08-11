@@ -83,33 +83,4 @@ class FakePaymentGatewayTest extends TestCase
         $this->assertEquals(1, $timesCallbackRan);
         $this->assertEquals($secondOrder->total, $paymentGateway->total());
     }
-
-    /**
-     * Get fake order details.
-     *
-     * @param array $attributes
-     *
-     * @return array
-     */
-    protected function orderDetails(array $attributes = []): array
-    {
-        return array_merge([
-            'name' => 'John Doe',
-            'business' => 'Example, Co.',
-            'phone' => '765487368',
-            'email' => 'john@example.com',
-        ], $attributes);
-    }
-
-    /**
-     * Get fake credit card details.
-     *
-     * @return array
-     */
-    protected function getCardDetails(): array
-    {
-        return [
-            'number' => FakePaymentGateway::TEST_CARD_NUMBER,
-        ];
-    }
 }

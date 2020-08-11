@@ -49,6 +49,18 @@ class Order extends Model
     }
 
     /**
+     * Create new charge details.
+     *
+     * @param array $data
+     *
+     * @return \App\Models\Charge
+     */
+    public function createCharge(array $data): Charge
+    {
+        return $this->charge()->create($data);
+    }
+
+    /**
      * Get the space associated with this order.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo

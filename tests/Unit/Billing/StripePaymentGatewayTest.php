@@ -4,9 +4,7 @@ namespace Tests\Unit\Billing;
 
 use Stripe\Token;
 use Tests\TestCase;
-use App\Models\Order;
 use App\Models\Space;
-use Stripe\Charge as StripeCharge;
 use App\Billing\PaymentGateways\StripePaymentGateway;
 
 class StripePaymentGatewayTest extends TestCase
@@ -49,11 +47,6 @@ class StripePaymentGatewayTest extends TestCase
         ]);
     }
 
-    // protected function getCharges()
-    // {
-    //     StripeCharge::all()
-    // }
-
     /**
      * Generate test stripe payment token.
      *
@@ -62,52 +55,5 @@ class StripePaymentGatewayTest extends TestCase
     protected function generateToken(): string
     {
         return Token::create($this->getCardDetails());
-    }
-
-    /**
-     * Fake a json post request to purchase/order a space.
-     *
-     * @param \App\Models\Space $space
-     * @param array             $parameters
-     *
-     * @return \Illuminate\Http\JsonResponse
-     */
-    protected function orderSpace(Space $space, array $parameters = [])
-    {
-        $this->calculateCharges($space);
-
-        return $this->postJson("/spaces/{$space->uid}/orders", $parameters);
-    }
-
-    /**
-     * Get fake order details.
-     *
-     * @param array $attributes
-     *
-     * @return array
-     */
-    protected function orderDetails(array $attributes = []): array
-    {
-        return array_merge([
-            'name' => 'John Doe',
-            'business' => 'Example, Co.',
-            'phone' => '765487368',
-            'email' => 'john@example.com',
-        ], $attributes);
-    }
-
-    /**
-     * Get fake credit card details.
-     *
-     * @return array
-     */
-    protected function getCardDetails(): array
-    {
-        return [
-            'number' => StripePaymentGateway::TEST_CARD_NUMBER,
-            'exp_month' => 1,
-            'exp_year' => date('Y') + 1,
-            'cvc' => '123',
-        ];
     }
 }

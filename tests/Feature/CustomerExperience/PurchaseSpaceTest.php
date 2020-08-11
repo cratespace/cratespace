@@ -6,7 +6,6 @@ use Carbon\Carbon;
 use Tests\TestCase;
 use App\Models\Order;
 use App\Models\Space;
-use Illuminate\Testing\TestResponse;
 use App\Contracts\Billing\PaymentGateway;
 use App\Billing\PaymentGateways\FakePaymentGateway;
 
@@ -179,62 +178,5 @@ class PurchaseSpaceTest extends TestCase
         $response->assertStatus(201);
         $this->assertFalse(is_null($order));
         $this->assertEquals($order->total, $this->paymentGateway->total());
-    }
-
-    /**
-     * Fake a json post request to purchase/order a space.
-     *
-     * @param \App\Models\Space $space
-     * @param array             $parameters
-     *
-     * @return \Illuminate\Http\JsonResponse
-     */
-    protected function orderSpace(Space $space, array $parameters = [])
-    {
-        $this->calculateCharges($space);
-
-        return $this->postJson("/spaces/{$space->uid}/orders", $parameters);
-    }
-
-    /**
-     * Get fake order details.
-     *
-     * @param array $attributes
-     *
-     * @return array
-     */
-    protected function orderDetails(array $attributes = []): array
-    {
-        return array_merge([
-            'name' => 'John Doe',
-            'business' => 'Example, Co.',
-            'phone' => '765487368',
-            'email' => 'john@example.com',
-        ], $attributes);
-    }
-
-    /**
-     * Get fake credit card details.
-     *
-     * @return array
-     */
-    public function getCardDetails(): array
-    {
-        return [
-            'number' => $this->paymentGateway::TEST_CARD_NUMBER,
-        ];
-    }
-
-    /**
-     * Assert that a validation exception is thrown.
-     *
-     * @param \Illuminate\Testing\TestResponse $response
-     * @param string                           $key
-     *
-     * @return \Illuminate\Testing\TestResponse
-     */
-    public function assertValidationError(TestResponse $response, string $key)
-    {
-        return $response->assertStatus(422)->assertSessionMissing($key);
     }
 }

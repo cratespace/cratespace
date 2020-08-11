@@ -62,7 +62,7 @@ abstract class PaymentGateway
      */
     protected function createCharge(Order $order, string $paymentToken, ?array $details = null): Charge
     {
-        return $order->charge()->create([
+        return $order->createCharge([
             'amount' => $order->total,
             'card_last_four' => substr($this->tokens[$paymentToken], -4),
             'details' => $details ?? 'local',
