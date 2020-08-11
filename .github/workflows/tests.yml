@@ -3,8 +3,6 @@ name: GitHub
 on:
   push:
   pull_request:
-  schedule:
-    - cron: '0 0 * * *'
 
 jobs:
   laravel-tests:
