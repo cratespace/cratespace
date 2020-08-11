@@ -4,8 +4,8 @@ namespace Tests\Unit\Billing;
 
 use Tests\TestCase;
 use App\Models\Space;
-use App\Models\Charge;
 use App\Billing\PaymentGateways\FakePaymentGateway;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class FakePaymentGatewayTest extends TestCase
 {
@@ -43,7 +43,7 @@ class FakePaymentGatewayTest extends TestCase
 
         $this->assertEquals(3583, $this->paymentGateway->total());
         $this->assertDatabaseHas('charges', [
-            'confirmation_number' => $order->confirmation_number,
+            'amount' => $order->total,
         ]);
     }
 
@@ -58,23 +58,31 @@ class FakePaymentGatewayTest extends TestCase
     }
 
     /** @test */
-    // public function It_can_run_a_hook_before_the_first_charge()
-    // {
-    //     $paymentGateway = new FakePaymentGateway();
-    //     $timesCallbackRan = 0;
+    public function It_can_run_a_hook_before_the_first_charge()
+    {
+        $space = create(Space::class, ['price' => 3250, 'tax' => 162.5]);
+        $paymentGateway = new FakePaymentGateway();
+        $timesCallbackRan = 0;
 
-    //     $paymentGateway->beforeFirstCharge(function ($paymentGateway) use (&$timesCallbackRan) {
-    //         $paymentGateway->charge(1200, $paymentGateway->generateToken($this->getCardDetails()));
+        $paymentGateway->beforeFirstCharge(function ($paymentGateway) use (&$timesCallbackRan, $space) {
+            try {
+                $this->calculateCharges($space);
+                $firstOrder = $space->placeOrder($this->orderDetails());
+                $paymentGateway->charge($firstOrder, $paymentGateway->generateToken($this->getCardDetails()));
+            } catch (HttpException $e) {
+                ++$timesCallbackRan;
+                $this->assertEquals(0, $paymentGateway->total());
 
-    //         ++$timesCallbackRan;
+                return;
+            }
+        });
 
-    //         $this->assertEquals(1200, $paymentGateway->total());
-    //     });
-
-    //     $paymentGateway->charge(1200, $paymentGateway->generateToken($this->getCardDetails()));
-    //     $this->assertEquals(1, $timesCallbackRan);
-    //     $this->assertEquals(2400, $paymentGateway->total());
-    // }
+        $this->calculateCharges($space);
+        $secondOrder = $space->placeOrder($this->orderDetails());
+        $paymentGateway->charge($secondOrder, $paymentGateway->generateToken($this->getCardDetails()));
+        $this->assertEquals(1, $timesCallbackRan);
+        $this->assertEquals($secondOrder->total, $paymentGateway->total());
+    }
 
     /**
      * Get fake order details.

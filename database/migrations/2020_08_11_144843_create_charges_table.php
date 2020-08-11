@@ -15,7 +15,8 @@ class CreateChargesTable extends Migration
     {
         Schema::create('charges', function (Blueprint $table) {
             $table->id();
-            $table->string('confirmation_number')->unique();
+            $table->integer('amount');
+            $table->string('card_last_four');
             $table->foreignId('order_id')->constrained('orders');
             $table->json('details')->nullable();
             $table->timestamps();

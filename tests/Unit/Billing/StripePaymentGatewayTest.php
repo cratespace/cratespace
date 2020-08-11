@@ -45,7 +45,7 @@ class StripePaymentGatewayTest extends TestCase
 
         $this->assertEquals(3583, $this->paymentGateway->total());
         $this->assertDatabaseHas('charges', [
-            'confirmation_number' => $order->confirmation_number,
+            'amount' => $order->total,
         ]);
     }
 

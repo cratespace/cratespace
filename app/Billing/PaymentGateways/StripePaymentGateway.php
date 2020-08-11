@@ -8,6 +8,8 @@ use Stripe\StripeClient;
 use Stripe\Service\ChargeService;
 use App\Exceptions\PaymentFailedException;
 use Stripe\Exception\InvalidRequestException;
+use App\Billing\PaymentGateways\Validators\FormatValidator;
+use App\Billing\PaymentGateways\Validators\TokenExistenceValidator;
 use App\Contracts\Billing\PaymentGateway as PaymentGatewayContract;
 
 class StripePaymentGateway extends PaymentGateway implements PaymentGatewayContract
@@ -20,16 +22,21 @@ class StripePaymentGateway extends PaymentGateway implements PaymentGatewayContr
     protected $apiKey;
 
     /**
-     * Test credit card number.
+     * Payment token prefix.
+     *
+     * @param string $key
      */
-    public const TEST_CARD_NUMBER = '4242424242424242';
+    protected $prefix = 'tok_';
 
     /**
-     * Total charge amount.
+     * Payment token validators.
      *
-     * @var int
+     * @var array
      */
-    protected $total = 0;
+    protected static $validators = [
+        FormatValidator::class,
+        TokenExistenceValidator::class,
+    ];
 
     /**
      * Create new instance of stripe payment gateway.
@@ -61,6 +68,12 @@ class StripePaymentGateway extends PaymentGateway implements PaymentGatewayContr
      */
     public function charge(Order $order, string $paymentToken): void
     {
+        $this->runBeforeChargesCallback();
+
+        if (!$this->matches($paymentToken)) {
+            throw new PaymentFailedException("Token {$paymentToken} is invalid", $order->total);
+        }
+
         try {
             $stripeCharge = $this->getStripeCharges()->create([
                 'amount' => $this->total = $order->total,
@@ -71,7 +84,7 @@ class StripePaymentGateway extends PaymentGateway implements PaymentGatewayContr
 
             $this->createCharge($order, $paymentToken, (array) $stripeCharge);
         } catch (InvalidRequestException $e) {
-            throw new PaymentFailedException($e->getMessage(), $amount);
+            throw new PaymentFailedException($e->getMessage(), $order->total);
         }
     }
 
