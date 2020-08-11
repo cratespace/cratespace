@@ -3,7 +3,6 @@
 namespace Tests\Unit\Reports;
 
 use Tests\TestCase;
-use ReflectionClass;
 use Illuminate\Support\Arr;
 use Illuminate\Database\Eloquent\Model;
 use App\Reports\Query\Builder as ReportBuilder;
@@ -23,11 +22,8 @@ class BuilderTest extends TestCase
     public function it_can_build_an_instance_of_query_builder()
     {
         $builder = new ReportBuilder('mock');
-        $builderReflection = new ReflectionClass($builder);
-        $getFacadeMethod = $builderReflection->getMethod('getFacade');
-        $getFacadeMethod->setAccessible(true);
 
-        $this->assertInstanceOf(QueryBuilder::class, $getFacadeMethod->invokeArgs($builder, []));
+        $this->assertInstanceOf(QueryBuilder::class, $this->setAccessibleMethod($builder, 'getFacade', []));
     }
 
     /** @test */

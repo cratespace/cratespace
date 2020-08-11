@@ -7,6 +7,7 @@ use Tests\Support\CreatesFakeUser;
 use Illuminate\Testing\TestResponse;
 use Tests\Support\CalculatesCharges;
 use Tests\Support\ChecksForInternet;
+use Tests\Support\TestsProtectedQualities;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
@@ -20,6 +21,7 @@ abstract class TestCase extends BaseTestCase
     use CalculatesCharges;
     use ChecksForInternet;
     use CanPlaceOrder;
+    use TestsProtectedQualities;
 
     /**
      * Assert that a validation exception is thrown.

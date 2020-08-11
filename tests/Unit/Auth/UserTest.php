@@ -4,7 +4,6 @@ namespace Tests\Unit\Auth;
 
 use App\Auth\User;
 use Tests\TestCase;
-use ReflectionClass;
 use InvalidArgumentException;
 use App\Models\User as UserModel;
 use App\Contracts\Auth\Responsibility;
@@ -65,11 +64,7 @@ class UserTest extends TestCase
 
         $user = new User();
 
-        $reflection = new ReflectionClass($user);
-        $method = $reflection->getMethod('resolveResponsibility');
-        $method->setAccessible(true);
-
-        $method->invokeArgs($user, [InvalidResponsibility::class]);
+        $this->setAccessibleMethod($user, 'resolveResponsibility', [InvalidResponsibility::class]);
     }
 
     /** @test */
