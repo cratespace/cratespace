@@ -39,20 +39,21 @@ class SpaceOrderController extends Controller
         $order = $space->placeOrder($request->validated());
 
         try {
-            $this->paymentGateway->charge(
-                $order->total, $this->generateToken($request)
-            );
+            $this->paymentGateway->charge($order, $this->generateToken($request));
         } catch (PaymentFailedException $exception) {
             $order->delete();
 
             throw $exception;
         }
 
-        return $request->wantsJson() ? response($order, 201) : $this->success(
-            route('orders.confirmation', [
-                'confirmationNumber' => $order->confirmation_number,
-            ]), 'Order successfully processed.'
-        );
+        return $request->wantsJson()
+            ? $this->successJson($order->toArray(), 201)
+            : $this->success(
+                route('orders.confirmation', [
+                    'confirmationNumber' => $order->confirmation_number,
+                ]),
+                'Order successfully processed.'
+            );
     }
 
     /**

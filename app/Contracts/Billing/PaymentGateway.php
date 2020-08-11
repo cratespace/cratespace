@@ -2,6 +2,8 @@
 
 namespace App\Contracts\Billing;
 
+use App\Models\Order;
+
 interface PaymentGateway
 {
     /**
@@ -14,13 +16,12 @@ interface PaymentGateway
     /**
      * Charge the customer with the given amount.
      *
-     * @param int         $amount
-     * @param string      $paymentToken
-     * @param string|null $destinationAccountId
+     * @param \App\Models\Order $order
+     * @param string            $paymentToken
      *
      * @return void
      */
-    public function charge(int $amount, string $paymentToken, ?string $destinationAccountId = null): void;
+    public function charge(Order $order, string $paymentToken): void;
 
     /**
      * Generate payment token.

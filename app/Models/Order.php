@@ -59,6 +59,16 @@ class Order extends Model
     }
 
     /**
+     * Get the charge associated with the order.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function charge()
+    {
+        return $this->hasOne(Charge::class, 'order_id');
+    }
+
+    /**
      * Get the business user associated with this order.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo

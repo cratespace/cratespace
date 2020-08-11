@@ -2,13 +2,15 @@
 
 namespace App\Billing\PaymentGateways;
 
+use App\Models\Order;
+use App\Models\Charge;
 use Stripe\StripeClient;
 use Stripe\Service\ChargeService;
 use App\Exceptions\PaymentFailedException;
 use Stripe\Exception\InvalidRequestException;
 use App\Contracts\Billing\PaymentGateway as PaymentGatewayContract;
 
-class StripePaymentGateway implements PaymentGatewayContract
+class StripePaymentGateway extends PaymentGateway implements PaymentGatewayContract
 {
     /**
      * Stripe secret api key.
@@ -18,6 +20,11 @@ class StripePaymentGateway implements PaymentGatewayContract
     protected $apiKey;
 
     /**
+     * Test credit card number.
+     */
+    public const TEST_CARD_NUMBER = '4242424242424242';
+
+    /**
      * Total charge amount.
      *
      * @var int
@@ -25,7 +32,7 @@ class StripePaymentGateway implements PaymentGatewayContract
     protected $total = 0;
 
     /**
-     * Create new isnatnce of stripe payment gateway.
+     * Create new instance of stripe payment gateway.
      *
      * @param string $apiKey
      */
@@ -47,25 +54,22 @@ class StripePaymentGateway implements PaymentGatewayContract
     /**
      * Charge the customer with the given amount.
      *
-     * @param int         $amount
-     * @param string      $paymentToken
-     * @param string|null $destinationAccountId
+     * @param \App\Models\Order $order
+     * @param string            $paymentToken
      *
      * @return void
      */
-    public function charge(int $amount, string $paymentToken, ?string $destinationAccountId = null): void
+    public function charge(Order $order, string $paymentToken): void
     {
         try {
-            $this->getStripeCharges()->create([
-                'amount' => $this->total = $amount,
+            $stripeCharge = $this->getStripeCharges()->create([
+                'amount' => $this->total = $order->total,
                 'currency' => config('defaults.billing.currency'),
                 'source' => $paymentToken,
                 'description' => config('defaults.billing.transaction-description'),
-                'destination' => [
-                    'account' => $destinationAccountId,
-                    'amount' => $amount * .9,
-                ],
             ]);
+
+            $this->createCharge($order, $paymentToken, (array) $stripeCharge);
         } catch (InvalidRequestException $e) {
             throw new PaymentFailedException($e->getMessage(), $amount);
         }
@@ -80,12 +84,14 @@ class StripePaymentGateway implements PaymentGatewayContract
      */
     public function generateToken(array $card): string
     {
-        $tokenObject = $this->makeStripeClient()->tokens->create(
-            ['card' => $card],
-            ['api_key' => $this->apiKey]
-        );
+        $token = $this->createStripeClient()
+            ->tokens
+            ->create(['card' => $card])
+            ->id;
 
-        return $tokenObject->id;
+        $this->tokens[$token] = $card['number'];
+
+        return $token;
     }
 
     /**
@@ -95,7 +101,7 @@ class StripePaymentGateway implements PaymentGatewayContract
      */
     protected function getStripeCharges(): ChargeService
     {
-        return $this->makeStripeClient()->charges;
+        return $this->createStripeClient()->charges;
     }
 
     /**
@@ -103,7 +109,7 @@ class StripePaymentGateway implements PaymentGatewayContract
      *
      * @return \Stripe\StripeClient
      */
-    protected function makeStripeClient(): StripeClient
+    protected function createStripeClient(): StripeClient
     {
         return new StripeClient($this->apiKey);
     }

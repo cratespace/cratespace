@@ -3,7 +3,9 @@
 namespace App\Billing\PaymentGateways;
 
 use Closure;
+use App\Models\Order;
 use InvalidArgumentException;
+use App\Billing\Charges\Charge;
 use Illuminate\Support\Facades\Crypt;
 use App\Exceptions\PaymentFailedException;
 use App\Billing\PaymentGateways\Validators\CardValidator;
@@ -11,7 +13,7 @@ use App\Billing\PaymentGateways\Validators\FormatValidator;
 use App\Billing\PaymentGateways\Validators\ExistenceValidator;
 use App\Contracts\Billing\PaymentGateway as PaymentGatewayContract;
 
-class FakePaymentGateway implements PaymentGatewayContract
+class FakePaymentGateway extends PaymentGateway implements PaymentGatewayContract
 {
     /**
      * Total charge amount.
@@ -66,21 +68,22 @@ class FakePaymentGateway implements PaymentGatewayContract
     /**
      * Charge the customer with the given amount.
      *
-     * @param int         $amount
-     * @param string      $paymentToken
-     * @param string|null $destinationAccountId
+     * @param \App\Models\Order $order
+     * @param string            $paymentToken
      *
      * @return void
      */
-    public function charge(int $amount, string $paymentToken, ?string $destinationAccountId = null): void
+    public function charge(Order $order, string $paymentToken): void
     {
         // $this->runBeforeChargesCallback();
 
         if (!$this->matches($paymentToken)) {
-            throw new PaymentFailedException("Token {$paymentToken} is invalid", $amount);
+            throw new PaymentFailedException("Token {$paymentToken} is invalid", $order->total);
         }
 
-        $this->total = $amount;
+        $this->createCharge($order, $paymentToken);
+
+        $this->total = $order->total;
     }
 
     /**

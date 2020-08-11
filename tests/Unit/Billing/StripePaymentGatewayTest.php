@@ -2,12 +2,14 @@
 
 namespace Tests\Unit\Billing;
 
+use Stripe\Token;
 use Tests\TestCase;
+use App\Models\Order;
 use App\Models\Space;
-use App\Models\Charge;
-use App\Billing\PaymentGateways\FakePaymentGateway;
+use Stripe\Charge as StripeCharge;
+use App\Billing\PaymentGateways\StripePaymentGateway;
 
-class FakePaymentGatewayTest extends TestCase
+class StripePaymentGatewayTest extends TestCase
 {
     /**
      * Instance of fake payment gateway.
@@ -23,7 +25,7 @@ class FakePaymentGatewayTest extends TestCase
         config()->set('defaults.charges.service', 0.03);
         config()->set('defaults.charges.tax', 0.01);
 
-        $this->paymentGateway = new FakePaymentGateway();
+        $this->paymentGateway = new StripePaymentGateway(env('STRIPE_SECRET_KEY'));
         $this->app->instance(PaymentGateway::class, $this->paymentGateway);
     }
 
@@ -47,34 +49,35 @@ class FakePaymentGatewayTest extends TestCase
         ]);
     }
 
-    /** @test */
-    public function it_can_generate_and_validate_a_testing_payment_token()
+    // protected function getCharges()
+    // {
+    //     StripeCharge::all()
+    // }
+
+    /**
+     * Generate test stripe payment token.
+     *
+     * @return string
+     */
+    protected function generateToken(): string
     {
-        $paymentGateway = new FakePaymentGateway();
-
-        $token = $paymentGateway->generateToken($this->getCardDetails());
-
-        $this->assertTrue($paymentGateway->matches($token));
+        return Token::create($this->getCardDetails());
     }
 
-    /** @test */
-    // public function It_can_run_a_hook_before_the_first_charge()
-    // {
-    //     $paymentGateway = new FakePaymentGateway();
-    //     $timesCallbackRan = 0;
+    /**
+     * Fake a json post request to purchase/order a space.
+     *
+     * @param \App\Models\Space $space
+     * @param array             $parameters
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    protected function orderSpace(Space $space, array $parameters = [])
+    {
+        $this->calculateCharges($space);
 
-    //     $paymentGateway->beforeFirstCharge(function ($paymentGateway) use (&$timesCallbackRan) {
-    //         $paymentGateway->charge(1200, $paymentGateway->generateToken($this->getCardDetails()));
-
-    //         ++$timesCallbackRan;
-
-    //         $this->assertEquals(1200, $paymentGateway->total());
-    //     });
-
-    //     $paymentGateway->charge(1200, $paymentGateway->generateToken($this->getCardDetails()));
-    //     $this->assertEquals(1, $timesCallbackRan);
-    //     $this->assertEquals(2400, $paymentGateway->total());
-    // }
+        return $this->postJson("/spaces/{$space->uid}/orders", $parameters);
+    }
 
     /**
      * Get fake order details.
@@ -101,7 +104,10 @@ class FakePaymentGatewayTest extends TestCase
     protected function getCardDetails(): array
     {
         return [
-            'number' => FakePaymentGateway::TEST_CARD_NUMBER,
+            'number' => StripePaymentGateway::TEST_CARD_NUMBER,
+            'exp_month' => 1,
+            'exp_year' => date('Y') + 1,
+            'cvc' => '123',
         ];
     }
 }

@@ -7,6 +7,7 @@ use Tests\TestCase;
 use App\Models\Space;
 use App\Reports\WeeklyReport;
 use App\Reports\Query\Builder;
+use Illuminate\Support\Collection;
 
 class WeeklyReportTest extends TestCase
 {
@@ -17,7 +18,7 @@ class WeeklyReportTest extends TestCase
         $query = new Builder('spaces');
         $query->setForAuthurizedOnly();
 
-        $endOfWeek = Carbon::now()->ENDOfWeek(Carbon::SUNDAY)->day;
+        $endOfWeek = Carbon::now()->endOfWeek(Carbon::SUNDAY)->day;
 
         for ($i = 0; $i < $endOfWeek; ++$i) {
             create(Space::class, [
@@ -29,8 +30,10 @@ class WeeklyReportTest extends TestCase
         $graph = new WeeklyReport($query);
         $graphData = $graph->make();
 
-        $this->assertTrue(array_key_exists(Carbon::now()->toDateString(), $graphData->toArray()));
-        // $this->assertCount(Carbon::now()->startOfWeek(Carbon::MONDAY)->day + 1, $graphData);
-        $this->assertInstanceOf(Carbon::class, Carbon::parse(collect($graphData)->keys()->first()));
+        $this->assertInstanceOf(Collection::class, $graphData);
+        $this->assertInstanceOf(
+            Carbon::class,
+            Carbon::parse(collect($graphData)->keys()->first())
+        );
     }
 }

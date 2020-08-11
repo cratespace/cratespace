@@ -45,7 +45,7 @@ class PurchaseSpaceTest extends TestCase
             'business' => 'Example, Co.',
             'phone' => '765487368',
             'email' => 'john@example.com',
-            'payment_token' => $this->paymentGateway->generateToken($this->getCradDetails()),
+            'payment_token' => $this->paymentGateway->generateToken($this->getCardDetails()),
         ]);
 
         $response->assertStatus(201)->assertJson([
@@ -64,10 +64,10 @@ class PurchaseSpaceTest extends TestCase
     /** @test */
     public function an_email_is_required_to_purchase_spaces()
     {
-        $space = create(Space::class, ['price' => 32.50]);
+        $space = create(Space::class, ['price' => 3250]);
 
         $response = $this->orderSpace($space, [
-            'payment_token' => $this->paymentGateway->generateToken($this->getCradDetails()),
+            'payment_token' => $this->paymentGateway->generateToken($this->getCardDetails()),
         ]);
 
         $this->assertValidationError($response, 'email');
@@ -76,14 +76,14 @@ class PurchaseSpaceTest extends TestCase
     /** @test */
     public function an_valid_email_is_required_to_purchase_spaces()
     {
-        $space = create(Space::class, ['price' => 32.50]);
+        $space = create(Space::class, ['price' => 3250]);
 
         $response = $this->orderSpace($space, [
             'email' => 'not-an-email-address',
             'name' => 'John Doe',
             'business' => 'Example, Co.',
             'phone' => '765487368',
-            'payment_token' => $this->paymentGateway->generateToken($this->getCradDetails()),
+            'payment_token' => $this->paymentGateway->generateToken($this->getCardDetails()),
         ]);
 
         $this->assertValidationError($response, 'email');
@@ -92,7 +92,7 @@ class PurchaseSpaceTest extends TestCase
     /** @test */
     public function a_valid_payment_token_is_required_to_purchase_spaces()
     {
-        $space = create(Space::class, ['price' => 32.50]);
+        $space = create(Space::class, ['price' => 3250]);
 
         $response = $this->orderSpace($space, [
             'email' => 'john@example.com',
@@ -108,7 +108,7 @@ class PurchaseSpaceTest extends TestCase
     /** @test */
     public function an_order_is_not_created_if_the_payment_failed()
     {
-        $space = create(Space::class, ['price' => 32.50]);
+        $space = create(Space::class, ['price' => 3250]);
 
         $response = $this->orderSpace($space, [
             'name' => 'John Doe',
@@ -123,7 +123,7 @@ class PurchaseSpaceTest extends TestCase
     }
 
     /** @test */
-    public function cannot_purchase_an_expired_or_ordered_space()
+    public function customer_cannot_purchase_an_expired_or_ordered_space()
     {
         $expiredSpace = create(Space::class, ['departs_at' => Carbon::now()->subMonth()]);
         $orderedSpace = create(Space::class);
@@ -135,7 +135,7 @@ class PurchaseSpaceTest extends TestCase
             'name' => 'John Doe',
             'business' => 'Example, Co.',
             'phone' => '765487368',
-            'payment_token' => $this->paymentGateway->generateToken($this->getCradDetails()),
+            'payment_token' => $this->paymentGateway->generateToken($this->getCardDetails()),
         ]);
 
         // The request will only be authorized if the space status is
@@ -146,7 +146,7 @@ class PurchaseSpaceTest extends TestCase
 
         $response = $this->orderSpace($orderedSpace, [
             'email' => 'john@example.com',
-            'payment_token' => $this->paymentGateway->generateToken($this->getCradDetails()),
+            'payment_token' => $this->paymentGateway->generateToken($this->getCardDetails()),
         ]);
 
         $response->assertStatus(403);
@@ -161,7 +161,7 @@ class PurchaseSpaceTest extends TestCase
         $this->paymentGateway->beforeFirstCharge(function ($paymentGateway) use ($space) {
             $response = $this->orderSpace($space, $this->orderDetails([
                 'email' => 'john.bernard@example.com',
-                'payment_token' => $this->paymentGateway->generateToken($this->getCradDetails()),
+                'payment_token' => $this->paymentGateway->generateToken($this->getCardDetails()),
             ]));
 
             $response->assertStatus(403);
@@ -171,7 +171,7 @@ class PurchaseSpaceTest extends TestCase
 
         $response = $this->orderSpace($space, $this->orderDetails([
             'email' => 'john.bunyan@example.com',
-            'payment_token' => $this->paymentGateway->generateToken($this->getCradDetails()),
+            'payment_token' => $this->paymentGateway->generateToken($this->getCardDetails()),
         ]));
 
         $order = Order::whereEmail('john.bunyan@example.com')->first();
@@ -218,7 +218,7 @@ class PurchaseSpaceTest extends TestCase
      *
      * @return array
      */
-    public function getCradDetails(): array
+    public function getCardDetails(): array
     {
         return [
             'number' => $this->paymentGateway::TEST_CARD_NUMBER,

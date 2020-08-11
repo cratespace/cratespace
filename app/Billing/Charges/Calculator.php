@@ -73,7 +73,7 @@ class Calculator implements CalculatorContract
         $this->pipeline()
             ->send($this->resourceCharges())
             ->through($this->calculations)
-            ->via('apply')
+            ->via('handle')
             ->then(function ($amounts) {
                 $this->saveAmountsToCache($this->amounts = $amounts);
             });
