@@ -16,7 +16,7 @@ class OrderConfirmationController extends Controller
         cache()->flush();
 
         $order = OrderQuery::findByConfirmationNumber($confirmationNumber)
-            ->load(['space']);
+            ->load(['space', 'charge']);
 
         return view('public.orders.confirmation', [
             'order' => $order,

@@ -1,10 +1,10 @@
 @extends('layouts.web.base')
 
 @section('content')
-    <section class="py-16 bg-white">
+    <section class="pt-8 pb-16 bg-white">
         <div class="container">
             <div class="row justify-center">
-                <div class="col-lg-4">
+                <div class="mb-20 lg:mb-0 col-lg-4">
                     <div>
                         <div>
                             <a href="{{ url('/') }}" class="flex justify-center lg:block">
@@ -16,7 +16,7 @@
                             <span class="text-blue-500 font-semibold">{{ $order->space->uid }}</span>
 
                             <div>
-                                {{ $order->space->businessName }}
+                                {{ $order->space->present()->businessName }}
                             </div>
 
                             <div class="mt-2">
@@ -81,11 +81,11 @@
 
                             <div class="mt-2 flex justify-between items-baseline">
                                 <div class="font-base">
-                                    <span>Tax</span>
+                                    <span>Estimated Tax</span>
                                 </div>
 
                                 <div class="text-right">
-                                    <span>{{ App\Support\Formatter::money($order->tax) }}</span>
+                                    <span>{{ App\Support\Formatter::money($order->tax + $order->space->tax) }}</span>
                                 </div>
                             </div>
 
@@ -134,7 +134,38 @@
 
                     <div class="mt-6">
                         <div class="text-sm">
-                            Tracking information will be available in 24 hours.
+                            Tracking information will be available in 24 hours. Tracking system is real-time and does not require the web page to be reloaded.
+                        </div>
+                    </div>
+
+                    <div>
+                        <hr class="my-6">
+
+                        <h5>Payment Information</h5>
+
+                        <div class="mt-4">
+                            <p>
+                                <div>
+                                    Payed with card ending with <span class="ml-1 font-mono tracking-widest rounded-lg px-2 py-1 bg-gray-200 text-sm font-medim">**** **** **** {{ $order->charge->card_last_four }}</span>
+                                </div>
+
+                                <div class="mt-2">
+                                    Payed total of <span class="font-bold text-blue-500">{{ $order->present()->total }}</span> and payment was <span class="px-2 py-1 text-xs rounded-full font-semibold text-green-800 bg-green-100 uppercase">Successful</span>
+                                </div>
+                            </p>
+                        </div>
+
+                        <hr class="my-6">
+
+                        <h5>Contact Information</h5>
+
+                        <div class="mt-4">
+                            <p>
+                                <div class="font-medium text-gray-700">{{ $order->name }}</div>
+                                <div class="text-blue-500">{{ $order->email }}</div>
+                                <div>{{ $order->phone }}</div>
+                                <div class="mt-1 font-medium">{{ $order->business }}</div>
+                            </p>
                         </div>
                     </div>
                 </div>

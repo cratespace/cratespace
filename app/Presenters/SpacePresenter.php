@@ -2,6 +2,7 @@
 
 namespace App\Presenters;
 
+use App\Models\Business;
 use App\Support\Formatter;
 
 class SpacePresenter extends Presenter
@@ -34,6 +35,19 @@ class SpacePresenter extends Presenter
     public function tax(): string
     {
         return $this->formatMoney($this->model->tax);
+    }
+
+    /**
+     * Get the name of the business the space is associated with.
+     *
+     * @return string
+     */
+    public function businessName()
+    {
+        return Business::select('name')
+            ->whereUserId($this->model->user_id)
+            ->first()
+            ->name;
     }
 
     /**

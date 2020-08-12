@@ -1,4 +1,4 @@
-<nav class="py-4 {{ $bgNav ?? 'bg-white' }}">
+<nav class="py-4 {{ $bgNav ?? 'bg-white' }} border-b border-gray-200">
     <div class="container">
         <div class="flex justify-between items-center">
             <a class="block h-10 w-10" href="/" title="{{ config('app.name') }}">
@@ -8,7 +8,7 @@
             <div class="ml-10 hidden md:flex flex-1 items-center justify-between">
                 <ul class="flex items-center">
                     <li>
-                        <a class="text-sm font-semibold text-gray-500 hover:text-gray-600 focus:text-gray-600 active:text-gray-600" href="/listings">{{ __('Listings') }}</a>
+                        <a class="text-sm font-semibold text-gray-500 hover:text-gray-600 focus:text-gray-600 active:text-gray-600" href="/">{{ __('Listings') }}</a>
                     </li>
 
                     <li class="ml-6">

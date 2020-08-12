@@ -83,7 +83,7 @@
 </section>
 
 @if (! $spaces->isEmpty())
-    <section class="py-8 bg-gray-100">
+    <section class="py-8 bg-gray-100 border-b border-gray-300">
         <div class="container">
             <div class="row">
                 <div class="col-12">
