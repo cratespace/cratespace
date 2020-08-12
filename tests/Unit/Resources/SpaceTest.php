@@ -84,12 +84,7 @@ class SpaceTest extends TestCase
     {
         $space = create(Space::class);
         $this->calculateCharges($space);
-        $space->placeOrder([
-            'name' => 'John Doe',
-            'business' => 'Example, Co.',
-            'phone' => '765487368',
-            'email' => 'john@example.com',
-        ]);
+        $space->placeOrder($this->orderDetails());
 
         $this->assertNotNull($space->order);
         $this->assertInstanceOf(Order::class, $space->order);
@@ -131,12 +126,7 @@ class SpaceTest extends TestCase
         $expiredSpace = create(Space::class, ['departs_at' => Carbon::now()->subMonth()]);
         $orderedSpace = create(Space::class);
         $this->calculateCharges($orderedSpace);
-        $order = $orderedSpace->placeOrder([
-            'name' => 'John Doe',
-            'business' => 'Example, Co.',
-            'phone' => '765487368',
-            'email' => 'john@example.com',
-        ]);
+        $order = $orderedSpace->placeOrder($this->orderDetails());
 
         $this->assertTrue($availableSpace->isAvailable());
         $this->assertFalse($expiredSpace->isAvailable());

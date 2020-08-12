@@ -2,9 +2,10 @@
 
 namespace Tests\Unit\Billing;
 
-use Stripe\Token;
 use Tests\TestCase;
 use App\Models\Space;
+use Stripe\StripeClient;
+use Stripe\Service\ChargeService;
 use App\Billing\PaymentGateways\StripePaymentGateway;
 
 class StripePaymentGatewayTest extends TestCase
@@ -47,13 +48,29 @@ class StripePaymentGatewayTest extends TestCase
         ]);
     }
 
-    /**
-     * Generate test stripe payment token.
-     *
-     * @return string
-     */
-    protected function generateToken(): string
+    /** @test */
+    public function it_can_generate_a_valid_payment_token_and_validate_it()
     {
-        return Token::create($this->getCardDetails());
+        $token = $this->paymentGateway->generateToken($this->getCardDetails());
+
+        $this->assertTrue($this->paymentGateway->matches($token));
+    }
+
+    /** @test */
+    public function it_can_create_an_instance_of_stripe_api_client()
+    {
+        $this->assertInstanceOf(
+            StripeClient::class,
+            $this->setAccessibleMethod($this->paymentGateway, 'createStripeClient')
+        );
+    }
+
+    /** @test */
+    public function it_can_create_an_instance_of_stripe_charges()
+    {
+        $this->assertInstanceOf(
+            ChargeService::class,
+            $this->setAccessibleMethod($this->paymentGateway, 'getStripeCharges')
+        );
     }
 }

@@ -39,13 +39,9 @@ class PurchaseSpaceTest extends TestCase
     {
         $space = create(Space::class, ['price' => 3250, 'tax' => 162.5]);
 
-        $response = $this->orderSpace($space, [
-            'name' => 'John Doe',
-            'business' => 'Example, Co.',
-            'phone' => '765487368',
-            'email' => 'john@example.com',
+        $response = $this->orderSpace($space, $this->orderDetails([
             'payment_token' => $this->paymentGateway->generateToken($this->getCardDetails()),
-        ]);
+        ]));
 
         $response->assertStatus(201)->assertJson([
             'name' => 'John Doe',
@@ -77,13 +73,10 @@ class PurchaseSpaceTest extends TestCase
     {
         $space = create(Space::class, ['price' => 3250]);
 
-        $response = $this->orderSpace($space, [
-            'email' => 'not-an-email-address',
-            'name' => 'John Doe',
-            'business' => 'Example, Co.',
-            'phone' => '765487368',
+        $response = $this->orderSpace($space, $this->orderDetails([
+            'email' => 'invalid-email',
             'payment_token' => $this->paymentGateway->generateToken($this->getCardDetails()),
-        ]);
+        ]));
 
         $this->assertValidationError($response, 'email');
     }
@@ -93,13 +86,9 @@ class PurchaseSpaceTest extends TestCase
     {
         $space = create(Space::class, ['price' => 3250]);
 
-        $response = $this->orderSpace($space, [
-            'email' => 'john@example.com',
-            'name' => 'John Doe',
-            'business' => 'Example, Co.',
-            'phone' => '765487368',
+        $response = $this->orderSpace($space, $this->orderDetails([
             'payment_token' => 'invalid-payment-token',
-        ]);
+        ]));
 
         $this->assertValidationError($response, 'payment_token');
     }
@@ -109,12 +98,9 @@ class PurchaseSpaceTest extends TestCase
     {
         $space = create(Space::class, ['price' => 3250]);
 
-        $response = $this->orderSpace($space, [
-            'name' => 'John Doe',
-            'phone' => '76536849943',
-            'email' => 'john@example.com',
+        $response = $this->orderSpace($space, $this->orderDetails([
             'payment_token' => 'invalid-payment-token',
-        ]);
+        ]));
 
         $response->assertStatus(422);
         $this->assertNull($space->order);
@@ -129,13 +115,9 @@ class PurchaseSpaceTest extends TestCase
         $this->calculateCharges($orderedSpace);
         $orderedSpace->placeOrder($this->orderDetails());
 
-        $response = $this->orderSpace($expiredSpace, [
-            'email' => 'john@example.com',
-            'name' => 'John Doe',
-            'business' => 'Example, Co.',
-            'phone' => '765487368',
+        $response = $this->orderSpace($expiredSpace, $this->orderDetails([
             'payment_token' => $this->paymentGateway->generateToken($this->getCardDetails()),
-        ]);
+        ]));
 
         // The request will only be authorized if the space status is
         // marked as "Available". This is don on the authorization
@@ -143,10 +125,9 @@ class PurchaseSpaceTest extends TestCase
         $response->assertStatus(403);
         $this->assertEquals(0, $this->paymentGateway->total());
 
-        $response = $this->orderSpace($orderedSpace, [
-            'email' => 'john@example.com',
+        $response = $this->orderSpace($orderedSpace, $this->orderDetails([
             'payment_token' => $this->paymentGateway->generateToken($this->getCardDetails()),
-        ]);
+        ]));
 
         $response->assertStatus(403);
         $this->assertEquals(0, $this->paymentGateway->total());

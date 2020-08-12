@@ -60,7 +60,7 @@ abstract class PaymentGateway
      *
      * @return \App\Models\Charge
      */
-    protected function createCharge(Order $order, string $paymentToken, ?array $details = null): Charge
+    public function createCharge(Order $order, string $paymentToken, ?array $details = null): Charge
     {
         return $order->createCharge([
             'amount' => $order->total,

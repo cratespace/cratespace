@@ -4,6 +4,7 @@ namespace App\Queries;
 
 use App\Models\Order;
 use App\Filters\Filter;
+use Illuminate\Database\Query\Builder;
 
 class OrderQuery extends Query
 {
@@ -21,7 +22,7 @@ class OrderQuery extends Query
      *
      * @return \App\Models\Order
      */
-    public static function findByConfirmationNumber(string $confirmationNumber)
+    public static function findByConfirmationNumber(string $confirmationNumber): Order
     {
         return static::model()->query()
             ->where('confirmation_number', $confirmationNumber)
@@ -36,10 +37,10 @@ class OrderQuery extends Query
      *
      * @return \Illuminate\Database\Query\Builder
      */
-    public static function forBusiness(Filter $filters, ?string $search = null)
+    public static function forBusiness(Filter $filters, ?string $search = null): Builder
     {
         return static::model()->query()
-            ->with('space')
+            ->with('space', 'charge')
             ->whereUserId(user('id'))
             ->filter($filters)
             ->latest('updated_at');
@@ -52,7 +53,7 @@ class OrderQuery extends Query
      *
      * @return \Illuminate\Database\Query\Builder
      */
-    public static function pending(int $limit = 10)
+    public static function pending(int $limit = 10): Builder
     {
         return static::model()->query()
             ->whereUserId(user('id'))
@@ -72,7 +73,7 @@ class OrderQuery extends Query
      *
      * @return \Illuminate\Database\Query\Builder
      */
-    public static function search(?string $terms = null)
+    public static function search(?string $terms = null): Builder
     {
         $query = static::model()->query();
 

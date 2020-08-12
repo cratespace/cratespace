@@ -82,12 +82,7 @@ class OrderTest extends TestCase
     {
         $space = create(Space::class);
         $this->calculateCharges($space);
-        $order = $space->placeOrder([
-            'name' => 'John Doe',
-            'business' => 'Example, Co.',
-            'phone' => '765487368',
-            'email' => 'john@example.com',
-        ]);
+        $order = $space->placeOrder($this->orderDetails());
         $chargeDetails = $order->createCharge([
             'amount' => $order->total,
             'card_last_four' => '4242',
@@ -115,22 +110,5 @@ class OrderTest extends TestCase
         $order = $space->placeOrder($this->orderDetails());
 
         return [$order, $space];
-    }
-
-    /**
-     * Get fake order details.
-     *
-     * @param array $attributes
-     *
-     * @return array
-     */
-    protected function orderDetails(array $attributes = []): array
-    {
-        return [
-            'name' => 'John Doe',
-            'business' => 'Example, Co.',
-            'phone' => '765487368',
-            'email' => 'john@example.com',
-        ];
     }
 }
