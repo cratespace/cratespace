@@ -1,11 +1,11 @@
-<section class="py-20 bg-gray-100">
+<section class="py-20 bg-white border-t border-gray-200">
     <div class="container">
         <div class="row">
             <div class="col-lg-4 mb-10 lg:mb-0">
                 <div>
                     <img class="h-12 w-12 mb-6" src="{{ asset('img/logo.png') }}">
 
-                    <p class="text-gray-600 mb-6 max-w-sm">
+                    <p class="text-sm text-gray-600 mb-6 max-w-sm">
                         {{ config('app.name') }} is helping carriers and shippers move in a new direction to reach their goals.
                     </p>
 
@@ -54,23 +54,23 @@
 
                     <ul class="mt-4">
                         <li class="mb-2">
-                            <a href="#" class="text-sm text-gray-500 hover:text-blue-600">About</a>
+                            <a href="/about" class="text-sm text-gray-500 hover:text-blue-600">About</a>
                         </li>
 
                         <li class="mb-2">
-                            <a href="#" class="text-sm text-gray-500 hover:text-blue-600">Blog</a>
+                            <a href="/blog" class="text-sm text-gray-500 hover:text-blue-600">Blog</a>
                         </li>
 
                         <li class="mb-2">
-                            <a href="/" class="text-sm text-gray-500 hover:text-blue-600">Contact</a>
+                            <a href="/contact" class="text-sm text-gray-500 hover:text-blue-600">Contact</a>
                         </li>
 
                         <li class="mb-2">
-                            <a href="#" class="text-sm text-gray-500 hover:text-blue-600">Press</a>
+                            <a href="/press" class="text-sm text-gray-500 hover:text-blue-600">Press</a>
                         </li>
 
                         <li>
-                            <a href="#" class="text-sm text-gray-500 hover:text-blue-600">Partners</a>
+                            <a href="/partners" class="text-sm text-gray-500 hover:text-blue-600">Partners</a>
                         </li>
                     </ul>
                 </div>
@@ -82,19 +82,19 @@
 
                     <ul class="mt-4">
                         <li class="mb-2">
-                            <a href="/" class="text-sm text-gray-500 hover:text-blue-600">Pricing</a>
+                            <a href="/pricing" class="text-sm text-gray-500 hover:text-blue-600">Pricing</a>
                         </li>
 
                         <li class="mb-2">
-                            <a href="/" class="text-sm text-gray-500 hover:text-blue-600">Guides</a>
+                            <a href="/support/guides" class="text-sm text-gray-500 hover:text-blue-600">Guides</a>
                         </li>
 
                         <li class="mb-2">
-                            <a href="/" class="text-sm text-gray-500 hover:text-blue-600">FAQ</a>
+                            <a href="/support/faq" class="text-sm text-gray-500 hover:text-blue-600">FAQ</a>
                         </li>
 
                         <li class="mb-2">
-                            <a href="/" class="text-sm text-gray-500 hover:text-blue-600">Help</a>
+                            <a href="/support" class="text-sm text-gray-500 hover:text-blue-600">Help</a>
                         </li>
                     </ul>
                 </div>
@@ -110,11 +110,11 @@
                         </li>
 
                         <li class="mb-2">
-                            <a href="{{ url('/ptext-sm rivacy') }}" class="text-sm text-gray-500 hover:text-blue-600">Privacy</a>
+                            <a href="/privacy" class="text-sm text-gray-500 hover:text-blue-600">Privacy</a>
                         </li>
 
                         <li>
-                            <a href="{{ url('/privacy') }}" class="text-sm text-gray-500 hover:text-blue-600">Terms</a>
+                            <a href="/terms-conditions" class="text-sm text-gray-500 hover:text-blue-600">Terms</a>
                         </li>
                     </ul>
                 </div>
