@@ -4,6 +4,8 @@ namespace App\Observers;
 
 use App\Models\Order;
 use App\Support\UidGenerator;
+use App\Mail\OrderStatusUpdated;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Schema;
 use App\Exceptions\ChargesNotFountException;
 
@@ -15,6 +17,17 @@ class OrderObserver
      * @var \App\Models\Order
      */
     protected $order;
+
+    /**
+     * All order statuses to notify the customer about.
+     *
+     * @var array
+     */
+    protected $mailableStatus = [
+        'Approved',
+        'Shipped',
+        'Delivered',
+    ];
 
     /**
      * Handle the order "creating" event.
@@ -30,6 +43,20 @@ class OrderObserver
         $this->setBusinessRelation()
             ->calculateCharges()
             ->generateConfirmationNumber();
+    }
+
+    /**
+     * Handle the order "updated" event.
+     *
+     * @param \App\Models\Order $order
+     *
+     * @return void
+     */
+    public function updated(Order $order)
+    {
+        if (in_array($order->status, $this->mailableStatus)) {
+            Mail::to($order->email)->send(new OrderStatusUpdated($order));
+        }
     }
 
     /**

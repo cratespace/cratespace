@@ -126,7 +126,7 @@
                         <div class="mt-2 flex items-center justify-between text-sm font-medium">
                             <span class="text-gray-700">Order placed</span>
                             <span class="text-gray-700">Processing</span>
-                            <span class="text-gray-700">Preparing to ship</span>
+                            <span class="text-gray-700">Approved</span>
                             <span class="text-gray-700">Shipped</span>
                             <span class="text-green-500">Delivered</span>
                         </div>

@@ -80,10 +80,9 @@ return [
         'statuses' => [
             'Pending',
             'Approved',
-            'Rejected',
             'Shipped',
             'Delivered',
-            'Completed',
+            'Rejected',
         ],
     ],
 ];
