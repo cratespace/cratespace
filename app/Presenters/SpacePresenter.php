@@ -38,6 +38,16 @@ class SpacePresenter extends Presenter
     }
 
     /**
+     * Get tax attribute in money format.
+     *
+     * @return string
+     */
+    public function fullPrice(): string
+    {
+        return $this->formatMoney($this->model->price + $this->model->tax);
+    }
+
+    /**
      * Get the name of the business the space is associated with.
      *
      * @return string

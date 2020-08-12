@@ -61,7 +61,7 @@
                                 </div>
 
                                 <div class="mt-6">
-                                    <div class="text-blue-500 font-bold">{{ $space->present()->price }}</div>
+                                    <div class="text-blue-500 font-bold">{{ $space->present()->fullPrice }}</div>
                                 </div>
                             </div>
                         </div>

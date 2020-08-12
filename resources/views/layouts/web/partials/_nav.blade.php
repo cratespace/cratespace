@@ -8,19 +8,19 @@
             <div class="ml-10 hidden md:flex flex-1 items-center justify-between">
                 <ul class="flex items-center">
                     <li>
-                        <a class="text-sm font-semibold text-gray-500 hover:text-gray-600 focus:text-gray-600 active:text-gray-600" href="/">{{ __('Listings') }}</a>
+                        <a class="text-sm font-semibold text-gray-600 hover:text-gray-700 focus:text-gray-700 active:text-gray-700" href="/">{{ __('Listings') }}</a>
                     </li>
 
                     <li class="ml-6">
-                        <a class="text-sm font-semibold text-gray-500 hover:text-gray-600 focus:text-gray-600 active:text-gray-600" href="/businesses">{{ __('Businesses') }}</a>
+                        <a class="text-sm font-semibold text-gray-600 hover:text-gray-700 focus:text-gray-700 active:text-gray-700" href="/businesses">{{ __('Businesses') }}</a>
                     </li>
 
                     <li class="ml-6">
-                        <a class="text-sm font-semibold text-gray-500 hover:text-gray-600 focus:text-gray-600 active:text-gray-600" href="/pricing">{{ __('Pricing') }}</a>
+                        <a class="text-sm font-semibold text-gray-600 hover:text-gray-700 focus:text-gray-700 active:text-gray-700" href="/pricing">{{ __('Pricing') }}</a>
                     </li>
 
                     <li class="ml-6">
-                        <a class="text-sm font-semibold text-gray-500 hover:text-gray-600 focus:text-gray-600 active:text-gray-600" href="/support">{{ __('Support') }}</a>
+                        <a class="text-sm font-semibold text-gray-600 hover:text-gray-700 focus:text-gray-700 active:text-gray-700" href="/support">{{ __('Support') }}</a>
                     </li>
                 </ul>
 
@@ -45,10 +45,10 @@
                 </a>
 
                 <div class="mt-3 dropdown-menu dropdown-menu-right rounded-lg shadow-lg" aria-labelledby="dropdownMenuLink">
-                    <a class="dropdown-item text-sm font-semibold text-gray-500 hover:text-gray-600 focus:text-white active:text-white py-2" href="#">{{ __('Listings') }}</a>
-                    <a class="dropdown-item text-sm font-semibold text-gray-500 hover:text-gray-600 focus:text-white active:text-white py-2" href="#">{{ __('Businesses') }}</a>
-                    <a class="dropdown-item text-sm font-semibold text-gray-500 hover:text-gray-600 focus:text-white active:text-white py-2" href="#">{{ __('Pricing') }}</a>
-                    <a class="dropdown-item text-sm font-semibold text-gray-500 hover:text-gray-600 focus:text-white active:text-white py-2" href="#">{{ __('Support') }}</a>
+                    <a class="dropdown-item text-sm font-semibold text-gray-600 hover:text-gray-700 focus:text-white active:text-white py-2" href="#">{{ __('Listings') }}</a>
+                    <a class="dropdown-item text-sm font-semibold text-gray-600 hover:text-gray-700 focus:text-white active:text-white py-2" href="#">{{ __('Businesses') }}</a>
+                    <a class="dropdown-item text-sm font-semibold text-gray-600 hover:text-gray-700 focus:text-white active:text-white py-2" href="#">{{ __('Pricing') }}</a>
+                    <a class="dropdown-item text-sm font-semibold text-gray-600 hover:text-gray-700 focus:text-white active:text-white py-2" href="#">{{ __('Support') }}</a>
                     <div class="dropdown-divider"></div>
                     <a class="dropdown-item text-sm font-semibold text-blue-500 hover:text-blue-600 focus:text-white active:text-white py-2" href="{{ route('login') }}">{{ __('Sign in') }} <span class="ml-1">&rarr;</span></a>
                 </div>

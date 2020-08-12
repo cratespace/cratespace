@@ -66,25 +66,7 @@
             <div>
                 <div class="flex justify-between items-baseline">
                     <div class="font-base">
-                        <span>Original price</span>
-
-                        <div class="text-xs text-gray-500">
-                            Original price of space available
-                        </div>
-                    </div>
-
-                    <div class="text-right">
-                        <span>{{ $charges['price'] }}</span>
-                    </div>
-                </div>
-
-                <div class="mt-2 flex justify-between items-baseline">
-                    <div class="font-base">
-                        <span>Subtotal</span>
-
-                        <div class="text-xs text-gray-500">
-                            Includes Tax incurred from shipping company
-                        </div>
+                        <span>Price</span>
                     </div>
 
                     <div class="text-right">
@@ -94,11 +76,7 @@
 
                 <div class="mt-2 flex justify-between items-baseline">
                     <div class="font-base">
-                        <span>Value Added Tax</span>
-
-                        <div class="text-xs text-gray-500">
-                            Tax incurred from <span class="font-semibold">Cratespace</span> services
-                        </div>
+                        <span>Estimated Tax</span>
                     </div>
 
                     <div class="text-right">
