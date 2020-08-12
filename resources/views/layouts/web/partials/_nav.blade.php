@@ -1,4 +1,4 @@
-<nav class="py-4 {{ $bgNav ?? 'bg-white' }} border-b border-gray-300">
+<nav class="py-4 {{ $bgNav ?? 'bg-white' }}">
     <div class="container">
         <div class="flex justify-between items-center">
             <a class="block h-10 w-10" href="/" title="{{ config('app.name') }}">
@@ -26,7 +26,7 @@
 
                 <ul class="flex items-center">
                     <li class="ml-6">
-                        <a class="btn btn-secondary px-3 py-0 leading-9 text-sm" href="@guest {{ route('login') }} @else {{ route('home') }} @endguest">
+                        <a class="btn btn-primary px-3 py-0 leading-9 text-sm" href="@guest {{ route('login') }} @else {{ route('home') }} @endguest">
                             @guest()
                                 <span>{{ __('Sign in') }}</span>
                             @else
@@ -40,8 +40,8 @@
             </div>
 
             <div class="dropdown block md:hidden">
-                <a class="bg-blue-200 shadow-none px-0 h-10 w-10 flex items-center justify-center rounded-full dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <x:heroicon-o-menu class="w-6 h-6 text-white"/>
+                <a class="bg-white shadow-none px-0 h-10 w-10 flex items-center justify-center rounded-full dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <x:heroicon-o-menu class="w-6 h-6 text-gray-600"/>
                 </a>
 
                 <div class="mt-3 dropdown-menu dropdown-menu-right rounded-lg shadow-lg" aria-labelledby="dropdownMenuLink">

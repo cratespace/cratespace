@@ -6,6 +6,7 @@ use App\Models\Order;
 use App\Models\Charge;
 use Stripe\StripeClient;
 use Stripe\Service\ChargeService;
+use Stripe\Charge as StripeCharge;
 use App\Exceptions\PaymentFailedException;
 use Stripe\Exception\InvalidRequestException;
 use App\Billing\PaymentGateways\Validators\FormatValidator;
@@ -82,10 +83,26 @@ class StripePaymentGateway extends PaymentGateway implements PaymentGatewayContr
                 'description' => config('defaults.billing.transaction-description'),
             ]);
 
-            $this->createCharge($order, $paymentToken, (array) $stripeCharge);
+            $this->createCharge(
+                $order,
+                $paymentToken,
+                $this->prepareChargeData($stripeCharge)
+            );
         } catch (InvalidRequestException $e) {
             throw new PaymentFailedException($e->getMessage(), $order->total);
         }
+    }
+
+    /**
+     * Extract stripe charge response data.
+     *
+     * @param \Stripe\Charge $stripeCharge
+     *
+     * @return array
+     */
+    protected function prepareChargeData(StripeCharge $stripeCharge): array
+    {
+        return (array) json_decode($stripeCharge->getLastResponse()->body);
     }
 
     /**

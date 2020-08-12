@@ -6,6 +6,9 @@ use Tests\TestCase;
 use Illuminate\Http\Request;
 use App\Http\Services\IpService;
 
+/**
+ * @group network
+ */
 class IpServiceTest extends TestCase
 {
     protected function tearDown(): void

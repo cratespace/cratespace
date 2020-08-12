@@ -24,5 +24,5 @@ Route::get('/spaces/{space}/checkout', 'CheckoutController@show')
 /*
  * Order Completion Confirmation Route...
  */
-// Route::get('/orders/{confirmationNumber}', 'OrderConfirmationController')
-//     ->name('orders.confirmation');
+Route::get('/orders/{confirmationNumber}', 'OrderConfirmationController')
+    ->name('orders.confirmation');

@@ -110,8 +110,12 @@ return [
 
     'testing' => [
         'enabled' => env('APP_ENV') === 'local' ? true : false,
-
         'ip' => '122.255.0.0', // Sri Lankan IP
+    ],
+
+    'fallback' => [
+        'ip' => '122.255.0.0', // Sri Lankan IP,
+        'country' => 'Sri Lanka',
     ],
 
     'blacklist' => [],

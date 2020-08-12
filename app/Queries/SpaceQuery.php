@@ -75,7 +75,7 @@ class SpaceQuery extends Query
                     ->latest()
                     ->take(1),
             ])
-            ->where('base', Location::getCountry())
+            ->where('base', Location::getCountry() ?: config('location.fallback.country'))
             ->whereDate('departs_at', '>', Carbon::now())
             ->doesntHave('order')
             ->filter($filters)

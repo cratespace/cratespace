@@ -8,6 +8,9 @@ use App\Http\Services\IpService;
 use Stevebauman\Location\Position;
 use App\Http\Services\LocationService;
 
+/**
+ * @group network
+ */
 class LocationServiceTest extends TestCase
 {
     protected function tearDown(): void

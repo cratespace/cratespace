@@ -78,6 +78,9 @@
         ],
         "test": [
             "vendor/bin/phpunit --verbose --color=always"
+        ],
+        "test-offline": [
+            "vendor/bin/phpunit --verbose --color=always --exclude-group integration"
         ]
     }
 }

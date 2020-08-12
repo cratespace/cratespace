@@ -2,8 +2,10 @@
 
 namespace Tests\Unit\Billing;
 
+use Exception;
 use Tests\TestCase;
 use App\Models\Space;
+use App\Exceptions\PaymentFailedException;
 use App\Billing\PaymentGateways\FakePaymentGateway;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 
@@ -45,6 +47,29 @@ class FakePaymentGatewayTest extends TestCase
         $this->assertDatabaseHas('charges', [
             'amount' => $order->total,
         ]);
+    }
+
+    /** @test */
+    public function it_rejects_charges_with_an_invalid_payment_token()
+    {
+        $space = create(Space::class, ['price' => 3250, 'tax' => 162.5]);
+        $this->calculateCharges($space);
+        $order = $space->placeOrder($this->orderDetails());
+
+        try {
+            $this->paymentGateway->charge($order, 'invalid-payment-token');
+        } catch (Exception $e) {
+            $this->assertInstanceOf(PaymentFailedException::class, $e);
+            $this->assertEquals(3583, $e->chargedAmount());
+            $this->assertEquals(0, $this->paymentGateway->total());
+            $this->assertDatabaseMissing('charges', [
+                'amount' => $order->total,
+            ]);
+
+            return true;
+        }
+
+        $this->fail();
     }
 
     /** @test */

@@ -22,6 +22,13 @@ class LocationService extends Service
     protected $ipService;
 
     /**
+     * Default IP address to get results from. (Sri Lankan IP).
+     *
+     * @var string
+     */
+    protected $fallbackIp = '122.255.0.0';
+
+    /**
      * Create new instance of ip location retrieval service.
      *
      * @param \Illuminate\Http\Request          $request
@@ -38,9 +45,9 @@ class LocationService extends Service
      *
      * @return string
      */
-    public function getCountry(): string
+    public function getCountry(): ?string
     {
-        return $this->get()->countryName;
+        return $this->get()->countryName ?? null;
     }
 
     /**
@@ -48,9 +55,9 @@ class LocationService extends Service
      *
      * @return string
      */
-    public function getCountryCode(): string
+    public function getCountryCode(): ?string
     {
-        return $this->get()->countryCode;
+        return $this->get()->countryCode ?? null;
     }
 
     /**
@@ -59,7 +66,7 @@ class LocationService extends Service
     public function get()
     {
         return (new LocationIdentifier())->get(
-            $this->getValidIp() ?? $this->request->ip
+            $this->getValidIp() ?? ($this->request->ip ?? $this->fallbackIp)
         );
     }
 
