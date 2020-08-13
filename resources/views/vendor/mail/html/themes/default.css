@@ -10,7 +10,7 @@ body *:not(html):not(style):not(br):not(tr):not(code) {
 
 body {
     -webkit-text-size-adjust: none;
-    background-color: #ffffff;
+    background-color: #F7FAFC;
     color: #718096;
     height: 100%;
     line-height: 1.4;
@@ -28,7 +28,9 @@ blockquote {
 }
 
 a {
-    color: #3869d4;
+    text-decoration: none;
+    color: #0366D6;
+    font-weight: normal;
 }
 
 a img {
@@ -38,32 +40,32 @@ a img {
 /* Typography */
 
 h1 {
-    color: #3d4852;
+    color: #2D3748;
     font-size: 18px;
     font-weight: bold;
     margin-top: 0;
-    text-align: left;
+    text-align: center;
 }
 
 h2 {
     font-size: 16px;
     font-weight: bold;
     margin-top: 0;
-    text-align: left;
+    text-align: center;
 }
 
 h3 {
     font-size: 14px;
     font-weight: bold;
     margin-top: 0;
-    text-align: left;
+    text-align: center;
 }
 
 p {
     font-size: 16px;
     line-height: 1.5em;
-    margin-top: 0;
-    text-align: left;
+    margin-top: 30px;
+    text-align: center;
 }
 
 p.sub {
@@ -80,7 +82,7 @@ img {
     -premailer-cellpadding: 0;
     -premailer-cellspacing: 0;
     -premailer-width: 100%;
-    background-color: #edf2f7;
+    background-color: #F7FAFC;
     margin: 0;
     padding: 0;
     width: 100%;
@@ -103,8 +105,10 @@ img {
 }
 
 .header a {
-    color: #3d4852;
-    font-size: 19px;
+    color: #0366D6;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    font-size: 16px;
     font-weight: bold;
     text-decoration: none;
 }
@@ -122,12 +126,13 @@ img {
     -premailer-cellpadding: 0;
     -premailer-cellspacing: 0;
     -premailer-width: 100%;
-    background-color: #edf2f7;
-    border-bottom: 1px solid #edf2f7;
-    border-top: 1px solid #edf2f7;
+    background-color: #F7FAFC;
+    border-bottom: 1px solid #F7FAFC;
+    border-top: 1px solid #F7FAFC;
     margin: 0;
     padding: 0;
     width: 100%;
+    text-align: center;
 }
 
 .inner-body {
@@ -136,12 +141,14 @@ img {
     -premailer-width: 570px;
     background-color: #ffffff;
     border-color: #e8e5ef;
-    border-radius: 2px;
+    border-radius: 0.5rem;
+    overflow: hidden;
     border-width: 1px;
-    box-shadow: 0 2px 0 rgba(0, 0, 150, 0.025), 2px 4px 0 rgba(0, 0, 150, 0.015);
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
     margin: 0 auto;
     padding: 0;
     width: 570px;
+    text-align: center;
 }
 
 /* Subcopy */
@@ -169,14 +176,15 @@ img {
 }
 
 .footer p {
-    color: #b0adc5;
+    color: #A0AEC0;
     font-size: 12px;
     text-align: center;
+    margin-top: 0;
 }
 
 .footer a {
-    color: #b0adc5;
-    text-decoration: underline;
+    color: #A0AEC0;
+    text-decoration: none;
 }
 
 /* Tables */
@@ -206,6 +214,8 @@ img {
 .content-cell {
     max-width: 100vw;
     padding: 32px;
+    border-radius: 0.5rem;
+    overflow: hidden;
 }
 
 /* Buttons */
@@ -221,21 +231,28 @@ img {
 }
 
 .button {
-    -webkit-text-size-adjust: none;
-    border-radius: 4px;
-    color: #fff;
-    display: inline-block;
-    overflow: hidden;
     text-decoration: none;
+    display: inline-block;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    padding-top: 0;
+    padding-bottom: 0;
+    line-height: 2.5rem;
+    white-space: nowrap;
+    border-radius: 0.5rem;
+    text-align: center;
+    font-size: 0.875rem;
+    font-weight: 500;
+    transition-property: background-color, border-color, color, fill, stroke, opacity, box-shadow, transform;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 150ms;
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
 }
 
 .button-blue,
 .button-primary {
-    background-color: #2d3748;
-    border-bottom: 8px solid #2d3748;
-    border-left: 18px solid #2d3748;
-    border-right: 18px solid #2d3748;
-    border-top: 8px solid #2d3748;
+    color: white;
+    background-color: #0366D6;
 }
 
 .button-green,
@@ -259,18 +276,18 @@ img {
 /* Panels */
 
 .panel {
-    border-left: #2d3748 solid 4px;
+    border-left: #0366D6 solid 4px;
     margin: 21px 0;
 }
 
 .panel-content {
-    background-color: #edf2f7;
-    color: #718096;
+    background-color: #F7FAFC;
+    color: #4A5568;
     padding: 16px;
 }
 
 .panel-content p {
-    color: #718096;
+    color: #4A5568;
 }
 
 .panel-item {
