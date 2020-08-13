@@ -18,7 +18,7 @@ jobs:
             sudo apt-get install -y nodejs
       - run:
           name: Install PHP Extensions
-          command: docker-php-ext-install gmp
+          command: sudo docker-php-ext-install gmp
 
       # Download and cache dependencies
 
