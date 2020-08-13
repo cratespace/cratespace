@@ -19,9 +19,10 @@ $factory->define(Space::class, function (Faker $faker) {
     $price = rand(100, 900);
 
     return [
-        'uid' => strtoupper(Str::random(12)),
+        'code' => strtoupper(Str::random(12)),
         'departs_at' => now()->addMonths(rand(1, 3)),
         'arrives_at' => now()->addMonths(rand(2, 3)),
+        'reserved_at' => null,
         'origin' => $faker->city,
         'destination' => $faker->city,
         'height' => rand(1, 9),

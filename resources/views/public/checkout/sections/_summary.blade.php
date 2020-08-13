@@ -8,7 +8,7 @@
             </div>
 
             <div class="mt-8 leading-snug">
-                <span class="text-blue-500 font-semibold">{{ '#' . $space->uid }}</span>
+                <span class="text-blue-500 font-semibold">{{ '#' . $space->code }}</span>
 
                 <div>
                     {{ $space->present()->businessName }}

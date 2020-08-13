@@ -83,7 +83,7 @@ class StripePaymentGateway extends PaymentGateway implements PaymentGatewayContr
                 'description' => config('defaults.billing.transaction-description'),
             ]);
 
-            $this->createCharge(
+            $this->saveChargeDetails(
                 $order,
                 $paymentToken,
                 $this->prepareChargeData($stripeCharge)

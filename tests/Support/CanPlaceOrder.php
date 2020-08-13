@@ -18,7 +18,7 @@ trait CanPlaceOrder
     {
         $this->calculateCharges($space);
 
-        return $this->postJson("/spaces/{$space->uid}/orders", $parameters);
+        return $this->postJson("/spaces/{$space->code}/orders", $parameters);
     }
 
     /**

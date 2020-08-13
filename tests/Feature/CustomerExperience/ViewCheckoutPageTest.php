@@ -30,7 +30,7 @@ class ViewCheckoutPageTest extends TestCase
     {
         $space = create(Space::class);
 
-        $this->get("/spaces/{$space->uid}/checkout")->assertStatus(200);
+        $this->get("/spaces/{$space->code}/checkout")->assertStatus(200);
     }
 
     /** @test */
@@ -38,7 +38,7 @@ class ViewCheckoutPageTest extends TestCase
     {
         $space = create(Space::class);
 
-        $this->get("/spaces/{$space->uid}/checkout")->assertStatus(200);
+        $this->get("/spaces/{$space->code}/checkout")->assertStatus(200);
 
         $charges = cache()->get('charges');
         $this->assertTrue(cache()->has('charges'));
@@ -55,7 +55,7 @@ class ViewCheckoutPageTest extends TestCase
     {
         $space = create(Space::class);
 
-        $response = $this->get("/spaces/{$space->uid}/checkout");
+        $response = $this->get("/spaces/{$space->code}/checkout");
 
         $charges = [];
 
@@ -64,7 +64,7 @@ class ViewCheckoutPageTest extends TestCase
         }
 
         $response->assertStatus(200)
-            ->assertSee($space->uid)
+            ->assertSee($space->code)
             ->assertSee($space->present()->fullPrice)
             ->assertSee($charges['service'])
             ->assertSee($charges['tax'])
@@ -76,10 +76,10 @@ class ViewCheckoutPageTest extends TestCase
     {
         $space = create(Space::class);
 
-        $response = $this->get("/spaces/{$space->uid}/checkout")
+        $response = $this->get("/spaces/{$space->code}/checkout")
             ->assertStatus(200)
             ->assertSee($space->present()->fullPrice)
-            ->assertSee($space->uid)
+            ->assertSee($space->code)
             ->assertSee($space->businessName)
             ->assertSee($space->type)
             ->assertSee($space->origin)
@@ -97,7 +97,7 @@ class ViewCheckoutPageTest extends TestCase
     {
         $space = create(Space::class);
 
-        $this->get("/spaces/{$space->uid}/checkout")->assertStatus(200);
+        $this->get("/spaces/{$space->code}/checkout")->assertStatus(200);
 
         $this->assertTrue(cache()->has('charges'));
 

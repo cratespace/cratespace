@@ -20,9 +20,10 @@ $factory->define(Order::class, function (Faker $faker) {
         'confirmation_number' => Str::random(7),
         'status' => 'Pending',
         'phone' => $faker->phoneNumber,
-        'price' => null,
-        'tax' => null,
-        'service' => null,
-        'total' => null,
+        'price' => 100,
+        'tax' => 10,
+        'service' => 10,
+        'subtotal' => 100,
+        'total' => 120,
     ];
 });

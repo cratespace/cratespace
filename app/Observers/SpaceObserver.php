@@ -3,7 +3,7 @@
 namespace App\Observers;
 
 use App\Models\Space;
-use App\Support\UidGenerator;
+use App\Support\HashidsCodeGenerator;
 
 class SpaceObserver
 {
@@ -16,23 +16,24 @@ class SpaceObserver
      */
     public function creating(Space $space)
     {
-        $space->uid = $space->uid ?? $this->generateUid();
+        $space->code = $space->code ?? $this->generateHashCode($space);
     }
 
     /**
-     * Generate unique identification number for given space.
+     * Generate unique identification code for given space.
+     *
+     * @param \App\Models\Space
      *
      * @return string
      */
-    protected function generateUid(): string
+    protected function generateHashCode(Space $space): string
     {
-        $generator = new UidGenerator();
-
-        $generator->setOptions([
-            'type' => 'humanUuid',
-            'parameters' => null,
+        $hashCodeGenerator = new HashidsCodeGenerator();
+        $hashCodeGenerator->setOptions([
+            'salt' => config('app.key'),
+            'id' => $space->id,
         ]);
 
-        return $generator->generate();
+        return $hashCodeGenerator->generate();
     }
 }

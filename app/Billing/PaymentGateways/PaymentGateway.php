@@ -72,7 +72,7 @@ abstract class PaymentGateway
      *
      * @return \App\Models\Charge
      */
-    public function createCharge(Order $order, string $paymentToken, ?array $details = null): Charge
+    public function saveChargeDetails(Order $order, string $paymentToken, ?array $details = null): Charge
     {
         $this->fireChargeEvents($order);
 

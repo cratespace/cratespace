@@ -6,7 +6,7 @@
                     <x-cards._full hasFooter="true">
                         <div class="flex justify-between items-start">
                             <div class="leading-snug">
-                                <span class="text-blue-500 font-bold text-sm">{{ $space->uid }}</span>
+                                <span class="text-blue-500 font-bold text-sm">{{ $space->code }}</span>
 
                                 <div class="text-sm">
                                     {{ $space->business }}

@@ -39,6 +39,7 @@ class OrderPlaced extends Mailable implements ShouldQueue
      */
     public function build()
     {
-        return $this->markdown('emails.orders.placed');
+        return $this->markdown('emails.orders.placed')
+            ->subject('Your Cratespace Order');
     }
 }

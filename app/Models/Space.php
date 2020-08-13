@@ -30,9 +30,10 @@ class Space extends Model implements Priceable
      * @var array
      */
     protected $fillable = [
-        'uid',
+        'code',
         'departs_at',
         'arrives_at',
+        'reserved_at',
         'origin',
         'destination',
         'height',
@@ -53,6 +54,7 @@ class Space extends Model implements Priceable
      * @var array
      */
     protected $casts = [
+        'reserved_at' => 'datetime',
         'departs_at' => 'datetime',
         'arrives_at' => 'datetime',
         'schedule' => ScheduleCast::class,
@@ -65,7 +67,7 @@ class Space extends Model implements Priceable
      */
     public function getRouteKeyName()
     {
-        return 'uid';
+        return 'code';
     }
 
     /**

@@ -15,7 +15,8 @@ class CreateSpacesTable extends Migration
     {
         Schema::create('spaces', function (Blueprint $table) {
             $table->id();
-            $table->string('uid')->unique()->index();
+            $table->string('code')->unique()->index();
+            $table->datetime('reserved_at')->nullable();
             $table->datetime('departs_at');
             $table->datetime('arrives_at');
             $table->string('origin');

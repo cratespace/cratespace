@@ -34,7 +34,7 @@ class ViewSpacesListingTest extends TestCase
 
         $this->get('/')
             ->assertStatus(200)
-            ->assertSee($space->uid);
+            ->assertSee($space->code);
     }
 
     /** @test */
@@ -48,8 +48,8 @@ class ViewSpacesListingTest extends TestCase
 
         $this->get('/')
             ->assertStatus(200)
-            ->assertDontSee($expiredSpace->uid)
-            ->assertDontSee($orderedSpace->uid)
-            ->assertSee($availableSpace->uid);
+            ->assertDontSee($expiredSpace->code)
+            ->assertDontSee($orderedSpace->code)
+            ->assertSee($availableSpace->code);
     }
 }

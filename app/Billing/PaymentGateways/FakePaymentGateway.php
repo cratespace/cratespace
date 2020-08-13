@@ -46,7 +46,7 @@ class FakePaymentGateway extends PaymentGateway implements PaymentGatewayContrac
 
         $this->total = $order->total;
 
-        $this->createCharge($order, $paymentToken);
+        $this->saveChargeDetails($order, $paymentToken);
     }
 
     /**

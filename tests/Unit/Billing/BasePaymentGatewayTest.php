@@ -25,7 +25,7 @@ class BasePaymentGatewayTest extends TestCase
 
         $paymentGateway = new MockPaymentGateway();
         $token = $paymentGateway->generateToken($this->getCardDetails());
-        $charge = $paymentGateway->createCharge($order, $token);
+        $charge = $paymentGateway->saveChargeDetails($order, $token);
 
         $this->assertInstanceOf(Charge::class, $charge);
         $this->assertTrue($charge->order->is($order));

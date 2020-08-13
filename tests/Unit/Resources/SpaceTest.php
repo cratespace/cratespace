@@ -34,7 +34,7 @@ class SpaceTest extends TestCase
         $space = create(Space::class);
 
         $this->assertDatabaseHas('spaces', [
-            'uid' => $space->uid,
+            'code' => $space->code,
             'departs_at' => $space->departs_at,
             'arrives_at' => $space->arrives_at,
             'origin' => $space->origin,

@@ -64,7 +64,7 @@ class PlaceOrderTest extends TestCase
         ]);
         $this->calculateCharges($space);
 
-        $response = $this->post("/spaces/{$space->uid}/orders", $this->orderDetails($this->getCardDetails()));
+        $response = $this->post("/spaces/{$space->code}/orders", $this->orderDetails($this->getCardDetails()));
 
         $order = Order::where('space_id', $space->id)->first();
 
@@ -78,7 +78,7 @@ class PlaceOrderTest extends TestCase
             ->assertSee($order->name)
             ->assertSee($order->phone)
             ->assertSee($order->business)
-            ->assertSee($space->uid);
+            ->assertSee($space->code);
     }
 
     /** @test */
@@ -96,7 +96,7 @@ class PlaceOrderTest extends TestCase
             OrderPlacedEvent::class,
         ]);
 
-        $response = $this->postJson("/spaces/{$space->uid}/orders", $this->orderDetails($this->getCardDetails()));
+        $response = $this->postJson("/spaces/{$space->code}/orders", $this->orderDetails($this->getCardDetails()));
 
         $order = Order::where('space_id', $space->id)->first();
 
@@ -120,7 +120,7 @@ class PlaceOrderTest extends TestCase
 
         Mail::assertNothingSent();
 
-        $response = $this->postJson("/spaces/{$space->uid}/orders", $this->orderDetails($this->getCardDetails()));
+        $response = $this->postJson("/spaces/{$space->code}/orders", $this->orderDetails($this->getCardDetails()));
 
         $order = Order::where('space_id', $space->id)->first();
 
