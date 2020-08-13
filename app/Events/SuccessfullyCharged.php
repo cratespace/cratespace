@@ -8,14 +8,14 @@ use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Broadcasting\InteractsWithSockets;
 
-class OrderStatusUpdated
+class SuccessfullyCharged
 {
     use Dispatchable;
     use InteractsWithSockets;
     use SerializesModels;
 
     /**
-     * Instance if currently updated order.
+     * Instance of newly placed order.
      *
      * @var \App\Models\Order
      */
@@ -40,6 +40,6 @@ class OrderStatusUpdated
      */
     public function broadcastOn()
     {
-        // return new PrivateChannel('channel-name');
+        return new PrivateChannel('channel-name');
     }
 }

@@ -3,7 +3,6 @@
 namespace App\Models;
 
 use App\Models\Traits\Filterable;
-use App\Events\OrderStatusUpdated;
 use App\Models\Traits\Presentable;
 use App\Models\Traits\Redirectable;
 use Illuminate\Database\Eloquent\Model;
@@ -28,25 +27,12 @@ class Order extends Model
         'service',
         'price',
         'tax',
+        'subtotal',
         'total',
         'user_id',
         'status',
         'confirmation_number',
     ];
-
-    /**
-     * Update order status.
-     *
-     * @param string $status
-     *
-     * @return void
-     */
-    public function updateStatus(string $status): void
-    {
-        $this->update(['status' => $status]);
-
-        event(new OrderStatusUpdated($this));
-    }
 
     /**
      * Create new charge details.

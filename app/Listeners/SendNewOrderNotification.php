@@ -2,7 +2,7 @@
 
 namespace App\Listeners;
 
-class LogVerifiedUser
+class SendNewOrderNotification
 {
     /**
      * Handle the event.

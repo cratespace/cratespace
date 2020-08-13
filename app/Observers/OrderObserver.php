@@ -4,10 +4,11 @@ namespace App\Observers;
 
 use App\Models\Order;
 use App\Support\UidGenerator;
-use App\Mail\OrderStatusUpdated;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Schema;
 use App\Exceptions\ChargesNotFountException;
+use App\Mail\OrderStatusUpdated as OrderStatusUpdatedMail;
+use App\Events\OrderStatusUpdated as OrderStatusUpdatedEvent;
 
 class OrderObserver
 {
@@ -55,7 +56,9 @@ class OrderObserver
     public function updated(Order $order)
     {
         if (in_array($order->status, $this->mailableStatus)) {
-            Mail::to($order->email)->send(new OrderStatusUpdated($order));
+            event(new OrderStatusUpdatedEvent($order));
+
+            Mail::to($order->email)->send(new OrderStatusUpdatedMail($order));
         }
     }
 

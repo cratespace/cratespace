@@ -8,7 +8,7 @@ use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
-class OrderStatusUpdated extends Mailable implements ShouldQueue
+class OrderPlaced extends Mailable implements ShouldQueue
 {
     use Queueable;
     use SerializesModels;
@@ -39,6 +39,6 @@ class OrderStatusUpdated extends Mailable implements ShouldQueue
      */
     public function build()
     {
-        return $this->markdown('emails.orders.status-updated');
+        return $this->markdown('emails.orders.placed');
     }
 }

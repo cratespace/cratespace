@@ -5,6 +5,8 @@ namespace App\Billing\PaymentGateways;
 use Closure;
 use App\Models\Order;
 use App\Models\Charge;
+use App\Events\OrderPlaced;
+use App\Events\SuccessfullyCharged;
 use App\Billing\PaymentGateways\Validators\CardValidator;
 use App\Billing\PaymentGateways\Validators\FormatValidator;
 use App\Billing\PaymentGateways\Validators\TokenExistenceValidator;
@@ -62,11 +64,39 @@ abstract class PaymentGateway
      */
     public function createCharge(Order $order, string $paymentToken, ?array $details = null): Charge
     {
+        $this->fireSuccessfulChargeEvent($order);
+
+        $this->fireOrderPlacedEvent($order);
+
         return $order->createCharge([
             'amount' => $order->total,
             'card_last_four' => substr($this->tokens[$paymentToken], -4),
             'details' => $details ?? 'local',
         ]);
+    }
+
+    /**
+     * Fire event "successfully charged".
+     *
+     * @param \App\Models\Order $order
+     *
+     * @return void
+     */
+    protected function fireSuccessfulChargeEvent(Order $order): void
+    {
+        event(new SuccessfullyCharged($order));
+    }
+
+    /**
+     * Fire event "successfully charged".
+     *
+     * @param \App\Models\Order $order
+     *
+     * @return void
+     */
+    protected function fireOrderPlacedEvent(Order $order): void
+    {
+        event(new OrderPlaced($order));
     }
 
     /**

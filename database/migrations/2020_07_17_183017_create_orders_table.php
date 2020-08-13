@@ -28,6 +28,7 @@ class CreateOrdersTable extends Migration
             $table->string('business')->nullable();
             $table->integer('service');
             $table->integer('price');
+            $table->integer('subtotal');
             $table->integer('tax');
             $table->integer('total');
             $table->timestamps();
