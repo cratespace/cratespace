@@ -14,7 +14,12 @@ class BasePaymentGatewayTest extends TestCase
     /** @test */
     public function it_can_save_charge_details()
     {
-        $space = create(Space::class, ['price' => 3250, 'tax' => 162.5]);
+        $user = $this->signIn();
+        $space = create(Space::class, [
+            'user_id' => $user->id,
+            'price' => 3250,
+            'tax' => 162.5,
+        ]);
         $this->calculateCharges($space);
         $order = $space->placeOrder($this->orderDetails());
 

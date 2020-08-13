@@ -47,7 +47,12 @@ class StripePaymentGatewayTest extends TestCase
             $this->markTestSkipped('An Internet connection is not available.');
         }
 
-        $space = create(Space::class, ['price' => 3250, 'tax' => 162.5]);
+        $user = $this->signIn();
+        $space = create(Space::class, [
+            'user_id' => $user->id,
+            'price' => 3250,
+            'tax' => 162.5,
+        ]);
         $this->calculateCharges($space);
         $order = $space->placeOrder($this->orderDetails());
 
@@ -78,7 +83,12 @@ class StripePaymentGatewayTest extends TestCase
     /** @test */
     public function it_rejects_charges_with_an_invalid_payment_token()
     {
-        $space = create(Space::class, ['price' => 3250, 'tax' => 162.5]);
+        $user = $this->signIn();
+        $space = create(Space::class, [
+            'user_id' => $user->id,
+            'price' => 3250,
+            'tax' => 162.5,
+        ]);
         $this->calculateCharges($space);
         $order = $space->placeOrder($this->orderDetails());
 

@@ -65,9 +65,7 @@ class ViewCheckoutPageTest extends TestCase
 
         $response->assertStatus(200)
             ->assertSee($space->uid)
-            ->assertSee($space->present()->price)
-            ->assertSee($charges['price'])
-            ->assertSee($charges['subtotal'])
+            ->assertSee($space->present()->fullPrice)
             ->assertSee($charges['service'])
             ->assertSee($charges['tax'])
             ->assertSee($charges['total']);
@@ -80,7 +78,7 @@ class ViewCheckoutPageTest extends TestCase
 
         $response = $this->get("/spaces/{$space->uid}/checkout")
             ->assertStatus(200)
-            ->assertSee($space->present()->price)
+            ->assertSee($space->present()->fullPrice)
             ->assertSee($space->uid)
             ->assertSee($space->businessName)
             ->assertSee($space->type)

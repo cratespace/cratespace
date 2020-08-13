@@ -2,22 +2,12 @@
 
 namespace App\Listeners;
 
+use App\Models\Order;
 use App\Models\Account;
+use App\Events\SuccessfullyCharged;
 
 class CreditBusinessAccount
 {
-    public $order;
-
-    /**
-     * Create the event listener.
-     *
-     * @return void
-     */
-    public function __construct(Order $order)
-    {
-        $this->order = $order;
-    }
-
     /**
      * Handle the event.
      *
@@ -25,10 +15,10 @@ class CreditBusinessAccount
      *
      * @return void
      */
-    public function handle($event)
+    public function handle(SuccessfullyCharged $event)
     {
-        $this->getBusinessAccount($order)
-            ->increment('credit', $order->subtotal);
+        $this->getBusinessAccount($event->order)
+            ->increment('credit', $event->order->subtotal);
     }
 
     /**
@@ -40,6 +30,6 @@ class CreditBusinessAccount
      */
     protected function getBusinessAccount(Order $order): Account
     {
-        return Account::where('user_id', $event->order->user_id)->first();
+        return Account::where('user_id', $order->user_id)->first();
     }
 }

@@ -34,10 +34,10 @@ class PlaceOrderRequest extends FormRequest
     {
         return $this->getRulesFor('order', app()->runningUnitTests() ? [] : [
             'name_on_card' => ['required', 'string', 'max:255'],
-            'card_number' => ['required', new CardNumber()],
-            'expiration_year' => ['required', new CardExpirationYear($this->get('expiration_month'))],
-            'expiration_month' => ['required', new CardExpirationMonth($this->get('expiration_year'))],
-            'cvc' => ['required', new CardCvc($this->get('card_number'))],
+            'number' => ['required', new CardNumber()],
+            'exp_year' => ['required', new CardExpirationYear($this->get('exp_month'))],
+            'exp_month' => ['required', new CardExpirationMonth($this->get('exp_year'))],
+            'cvc' => ['required', new CardCvc($this->get('number'))],
         ]);
     }
 
@@ -49,9 +49,9 @@ class PlaceOrderRequest extends FormRequest
     public function getCardDetails(): array
     {
         return [
-            'number' => $this->card_number,
-            'exp_month' => $this->expiration_month,
-            'exp_year' => $this->expiration_year,
+            'number' => $this->number,
+            'exp_month' => $this->exp_month,
+            'exp_year' => $this->exp_year,
             'cvc' => $this->cvc,
         ];
     }

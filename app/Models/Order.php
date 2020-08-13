@@ -41,7 +41,7 @@ class Order extends Model
      *
      * @return \App\Models\Charge
      */
-    public function createCharge(array $data): Charge
+    public function saveChargeDetails(array $data): Charge
     {
         return $this->charge()->create($data);
     }

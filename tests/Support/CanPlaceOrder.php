@@ -43,7 +43,7 @@ trait CanPlaceOrder
      *
      * @return array
      */
-    public function getCardDetails(): array
+    protected function getCardDetails(): array
     {
         return [
             'number' => '4242424242424242',

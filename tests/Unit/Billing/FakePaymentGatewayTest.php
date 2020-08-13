@@ -37,7 +37,12 @@ class FakePaymentGatewayTest extends TestCase
     /** @test */
     public function it_accepts_charges_with_a_valid_payment_token()
     {
-        $space = create(Space::class, ['price' => 3250, 'tax' => 162.5]);
+        $user = $this->signIn();
+        $space = create(Space::class, [
+            'user_id' => $user->id,
+            'price' => 3250,
+            'tax' => 162.5,
+            ]);
         $this->calculateCharges($space);
         $order = $space->placeOrder($this->orderDetails());
 
@@ -52,7 +57,12 @@ class FakePaymentGatewayTest extends TestCase
     /** @test */
     public function it_rejects_charges_with_an_invalid_payment_token()
     {
-        $space = create(Space::class, ['price' => 3250, 'tax' => 162.5]);
+        $user = $this->signIn();
+        $space = create(Space::class, [
+            'user_id' => $user->id,
+            'price' => 3250,
+            'tax' => 162.5,
+        ]);
         $this->calculateCharges($space);
         $order = $space->placeOrder($this->orderDetails());
 
@@ -85,7 +95,12 @@ class FakePaymentGatewayTest extends TestCase
     /** @test */
     public function It_can_run_a_hook_before_the_first_charge()
     {
-        $space = create(Space::class, ['price' => 3250, 'tax' => 162.5]);
+        $user = $this->signIn();
+        $space = create(Space::class, [
+            'user_id' => $user->id,
+            'price' => 3250,
+            'tax' => 162.5,
+        ]);
         $paymentGateway = new FakePaymentGateway();
         $timesCallbackRan = 0;
 

@@ -37,7 +37,12 @@ class PurchaseSpaceTest extends TestCase
     /** @test */
     public function a_customer_can_purchase_a_space()
     {
-        $space = create(Space::class, ['price' => 3250, 'tax' => 162.5]);
+        $user = $this->signIn();
+        $space = create(Space::class, [
+            'user_id' => $user->id,
+            'price' => 3250,
+            'tax' => 162.5,
+        ]);
 
         $response = $this->orderSpace($space, $this->orderDetails([
             'payment_token' => $this->paymentGateway->generateToken($this->getCardDetails()),
@@ -136,7 +141,12 @@ class PurchaseSpaceTest extends TestCase
     /** @test */
     public function a_customer_cannot_purchase_space_another_customer_is_already_trying_to_purchase()
     {
-        $space = create(Space::class);
+        $user = $this->signIn();
+        $space = create(Space::class, [
+            'user_id' => $user->id,
+            'price' => 3250,
+            'tax' => 162.5,
+        ]);
 
         $this->paymentGateway->beforeFirstCharge(function ($paymentGateway) use ($space) {
             $response = $this->orderSpace($space, $this->orderDetails([

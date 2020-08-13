@@ -54,6 +54,16 @@ abstract class PaymentGateway
     protected static $validators;
 
     /**
+     * All events to be fired after a successful charge.
+     *
+     * @var array
+     */
+    protected static $chargeEvents = [
+        SuccessfullyCharged::class,
+        OrderPlaced::class,
+    ];
+
+    /**
      * Save charge details to database.
      *
      * @param \App\Models\Order $order
@@ -64,13 +74,11 @@ abstract class PaymentGateway
      */
     public function createCharge(Order $order, string $paymentToken, ?array $details = null): Charge
     {
-        $this->fireSuccessfulChargeEvent($order);
+        $this->fireChargeEvents($order);
 
-        $this->fireOrderPlacedEvent($order);
-
-        return $order->createCharge([
+        return $order->saveChargeDetails([
             'amount' => $order->total,
-            'card_last_four' => substr($this->tokens[$paymentToken], -4),
+            'card_last_four' => substr($this->tokens()[$paymentToken], -4),
             'details' => $details ?? 'local',
         ]);
     }
@@ -82,21 +90,12 @@ abstract class PaymentGateway
      *
      * @return void
      */
-    protected function fireSuccessfulChargeEvent(Order $order): void
+    protected function fireChargeEvents(Order $order): void
     {
-        event(new SuccessfullyCharged($order));
-    }
-
-    /**
-     * Fire event "successfully charged".
-     *
-     * @param \App\Models\Order $order
-     *
-     * @return void
-     */
-    protected function fireOrderPlacedEvent(Order $order): void
-    {
-        event(new OrderPlaced($order));
+        collect(static::$chargeEvents)
+            ->each(function ($event) use ($order) {
+                event(new $event($order));
+            });
     }
 
     /**
