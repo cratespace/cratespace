@@ -17,8 +17,8 @@ jobs:
             curl -sL https://deb.nodesource.com/setup_10.x | sudo -E bash -
             sudo apt-get install -y nodejs
       - run:
-          name: Install GMP
-          command: sudo apt-get install php7.3-gmp
+          name: Install PHP Extensions
+          command: docker-php-ext-install gmp
 
       # Download and cache dependencies
 
