@@ -36,7 +36,7 @@ Next, boot up a server and visit cratespace landing page. If using a tool like L
 2. Edit `config/auth.php`, and add any email address that should be marked as an administrator under `administrators` key.
 3. Visit: `http://cratespace.test/admin/dashboard` to get started on the metrics.
 
-## Running the tests
+## Running tests
 
 Cratespace uses PHPUnit for testing. To clone cratespace into your local machine and run tests, simple open up your preferred terminal application, navigate into cratespace project root directory and run the following command..
 
@@ -46,16 +46,8 @@ cd cratespace && composer install && npm install && npm run dev
 vendor/bin/phpunit
 ```
 
-## Contributing
-
-Please read [CONTRIBUTING.md](https://github.com/Thavarshan/cratespace/blob/49964bea98f3b34ddb6ce59519b14e2885dc7413/CONTRIBUTING.md) for details on our code of conduct, and the process for submitting pull requests to us.
-
 ## Authors
 
 * **Thavarshan Thayananthajothy** - *Initial work* - [Thavarshan](https://github.com/Thavarshan)
 
 See also the list of [contributors](https://github.com/Thavarshan/cratespace/contributors) who participated in this project.
-
-## License
-
-This project is licensed under the proprietary license - see the [LICENSE.md](https://github.com/Thavarshan/cratespace/blob/49964bea98f3b34ddb6ce59519b14e2885dc7413/LICENSE.md) file for details
