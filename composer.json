@@ -10,6 +10,10 @@
     "license": "proprietary",
     "require": {
         "php": "^7.3.0",
+        "ext-gmp": "*",
+        "ext-json": "*",
+        "ext-mbstring": "*",
+        "ext-openssl": "*",
         "blade-ui-kit/blade-heroicons": "^0.1.2",
         "blade-ui-kit/blade-icons": "^0.4.3",
         "doctrine/dbal": "^2.10",
