@@ -46,12 +46,17 @@ class AddNewSpaceTest extends TestCase
             'base' => $user->business->country,
         ];
 
-        $response = $this->post('/spaces', $spaceAttributes);
+        $this->post('/spaces', $spaceAttributes);
+
+        $response = $this->get('/spaces');
 
         tap(Space::first(), function ($space) use ($response) {
-            $response->assertStatus(302)
-                ->assertRedirect($space->path)
-                ->assertSee($space->code);
+            $response->assertStatus(200)
+                ->assertSee($space->code)
+                ->assertSee($space->schedule->departsAt)
+                ->assertSee($space->departs_at->diffForHumans())
+                ->assertSee($space->schedule->arrivesAt)
+                ->assertSee($space->arrives_at->diffForHumans());
         });
     }
 }

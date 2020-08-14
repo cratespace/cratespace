@@ -19,6 +19,7 @@ class OrderController extends Controller
     public function index(Request $request, OrderFilter $filters)
     {
         return view('business.orders.index', [
+            'createEnabled' => false,
             'resource' => OrderQuery::ForBusiness($filters, $request->search)
                 ->paginate($request->perPage ?? 10),
         ]);

@@ -4,7 +4,7 @@ namespace App\Queries;
 
 use App\Models\Order;
 use App\Filters\Filter;
-use Illuminate\Database\Query\Builder;
+use Illuminate\Database\Eloquent\Builder;
 
 class OrderQuery extends Query
 {

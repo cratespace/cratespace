@@ -46,7 +46,9 @@
                             </div>
                         </form>
 
-                        <a class="ml-4 btn btn-primary" href="{{ route($resourceName . '.create') }}">Add new</a>
+                        @if ($createEnabled)
+                            <a class="ml-4 btn btn-primary" href="{{ route($resourceName . '.create') }}">Add new</a>
+                        @endif
                     </div>
                 </div>
             </div>
