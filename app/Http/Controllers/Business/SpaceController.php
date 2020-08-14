@@ -22,7 +22,6 @@ class SpaceController extends Controller
     public function index(Request $request, SpaceFilter $filters)
     {
         return view('business.spaces.index', [
-            'createEnabled' => true,
             'resource' => SpaceQuery::ofBusiness($filters, $request->search)
                 ->paginate($request->perPage ?? 10),
         ]);

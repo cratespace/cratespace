@@ -58,7 +58,7 @@
                     <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200 bg-gray-100">
                         <div class="mt-1">
                             <div class="text-sm leading-5 text-gray-800 font-semibold">
-                                <a href="{{ $order->space->path }}">{{ $order->space->uid }}</a>
+                                <a href="{{ $order->space->path }}">{{ $order->space->code }}</a>
                             </div>
 
                             <div class="text-xs leading-5">{{ $order->space->departs_at->diffForHumans() }}</div>

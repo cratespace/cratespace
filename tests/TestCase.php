@@ -2,12 +2,7 @@
 
 namespace Tests;
 
-use Tests\Support\CanPlaceOrder;
-use Tests\Support\CreatesFakeUser;
 use Illuminate\Testing\TestResponse;
-use Tests\Support\CalculatesCharges;
-use Tests\Support\ChecksForInternet;
-use Tests\Support\TestsProtectedQualities;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
@@ -19,11 +14,12 @@ abstract class TestCase extends BaseTestCase
     use DatabaseMigrations;
     use RefreshDatabase;
     use WithFaker;
-    use CreatesFakeUser;
-    use CalculatesCharges;
-    use ChecksForInternet;
-    use CanPlaceOrder;
-    use TestsProtectedQualities;
+
+    use Concerns\CreatesFakeUser;
+    use Concerns\CalculatesCharges;
+    use Concerns\ChecksForInternet;
+    use Concerns\CanPlaceOrder;
+    use Concerns\TestsProtectedQualities;
 
     /**
      * Assert that a validation exception is thrown.

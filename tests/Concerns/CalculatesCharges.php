@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Support;
+namespace Tests\Concerns;
 
 use Illuminate\Pipeline\Pipeline;
 use App\Billing\Charges\Calculator;

@@ -40,7 +40,9 @@ class OrderQuery extends Query
     public static function forBusiness(Filter $filters, ?string $search = null): Builder
     {
         return static::model()->query()
-            ->with('space', 'charge')
+            ->with(['space' => function ($query) {
+                $query->select('id', 'code', 'departs_at', 'arrives_at');
+            }])
             ->whereUserId(user('id'))
             ->filter($filters)
             ->latest('updated_at');

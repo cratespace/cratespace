@@ -46,7 +46,7 @@
                             </div>
                         </form>
 
-                        @if ($createEnabled)
+                        @if (Route::has($resourceName . '.create'))
                             <a class="ml-4 btn btn-primary" href="{{ route($resourceName . '.create') }}">Add new</a>
                         @endif
                     </div>
