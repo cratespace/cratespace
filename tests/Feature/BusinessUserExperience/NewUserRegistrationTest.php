@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature\UserProfileSettings;
+namespace Tests\Feature\BusinessUserExperience;
 
 use Tests\TestCase;
 use App\Models\User;
