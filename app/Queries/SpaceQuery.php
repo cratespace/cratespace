@@ -2,8 +2,6 @@
 
 namespace App\Queries;
 
-use Carbon\Carbon;
-use App\Models\Order;
 use App\Models\Space;
 use App\Filters\Filter;
 use App\Models\Business;
@@ -27,15 +25,9 @@ class SpaceQuery extends Query
      *
      * @return \Illuminate\Database\Query\Builder
      */
-    public static function OfBusiness(Filter $filters, ?string $search = null): Builder
+    public static function ofBusiness(Filter $filters, ?string $search = null): Builder
     {
         return static::model()->query()
-            ->addSelect([
-                'order_id' => Order::select('uid')
-                    ->whereColumn('space_id', 'spaces.id')
-                    ->latest()
-                    ->take(1),
-            ])
             ->whereUserId(user('id'))
             ->filter($filters)
             ->latest('created_at');
@@ -46,16 +38,12 @@ class SpaceQuery extends Query
      *
      * @return \Illuminate\Database\Query\Builder
      */
-    public static function Departing(): Builder
+    public static function departing(): Builder
     {
         return static::model()->query()
-            ->addSelect([
-                'business' => Business::select('name')
-                    ->whereColumn('user_id', 'spaces.user_id')
-                    ->latest()
-                    ->take(1),
+            ->whereBetween('departs_at', [
+                now(), now()->endOfDay(),
             ])
-            ->whereBetween('departs_at', [Carbon::now(), Carbon::now()->endOfDay()])
             ->latest('departs_at');
     }
 
@@ -66,7 +54,7 @@ class SpaceQuery extends Query
      *
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public static function List(Filter $filters): Builder
+    public static function list(Filter $filters): Builder
     {
         return static::model()->query()
             ->addSelect([
@@ -76,8 +64,8 @@ class SpaceQuery extends Query
                     ->take(1),
             ])
             ->where('base', Location::getCountry() ?: config('location.fallback.country'))
-            ->whereDate('departs_at', '>', Carbon::now())
-            ->doesntHave('order')
+            ->whereDate('departs_at', '>', now())
+            ->whereNull('reserved_at')
             ->filter($filters)
             ->latest('departs_at');
     }

@@ -2,8 +2,8 @@
 
 namespace App\Listeners;
 
-use App\Mail\OrderStatusUpdated as OrderStatusUpdatedMail;
-use App\Events\OrderStatusUpdated as OrderStatusUpdatedEvent;
+use App\Mail\OrderStatusUpdatedMail;
+use App\Events\OrderStatusUpdatedEvent;
 
 class SendOrderStatusUpdatedNotification
 {

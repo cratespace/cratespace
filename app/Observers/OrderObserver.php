@@ -4,11 +4,11 @@ namespace App\Observers;
 
 use App\Models\Order;
 use App\Support\UidGenerator;
+use App\Mail\OrderStatusUpdatedMail;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Schema;
+use App\Events\OrderStatusUpdatedEvent;
 use App\Exceptions\ChargesNotFountException;
-use App\Mail\OrderStatusUpdated as OrderStatusUpdatedMail;
-use App\Events\OrderStatusUpdated as OrderStatusUpdatedEvent;
 
 class OrderObserver
 {
@@ -42,6 +42,7 @@ class OrderObserver
         $this->order = $order;
 
         $this->setBusinessRelation()
+            ->reserveSpace()
             ->calculateCharges()
             ->generateConfirmationNumber();
     }
@@ -74,6 +75,20 @@ class OrderObserver
         }
 
         $this->order->user_id = $this->order->space->user_id;
+
+        return $this;
+    }
+
+    /**
+     * Set reservation time on space if not already set.
+     *
+     * @return \App\Observers\OrderObserver
+     */
+    protected function reserveSpace(): OrderObserver
+    {
+        $reservedAt = $this->order->space->reserved_at;
+
+        $reservedAt = $reservedAt ?? now();
 
         return $this;
     }

@@ -5,9 +5,9 @@ namespace Tests\Unit\Billing;
 use Exception;
 use App\Models\Space;
 use App\Models\Charge;
-use App\Events\OrderPlaced;
-use App\Events\SuccessfullyCharged;
+use App\Events\OrderPlacedEvent;
 use Illuminate\Support\Facades\Event;
+use App\Events\SuccessfullyChargedEvent;
 use App\Exceptions\PaymentFailedException;
 
 trait PaymentGatewayContractTest
@@ -45,11 +45,11 @@ trait PaymentGatewayContractTest
 
         $this->paymentGateway->charge($order, $this->paymentGateway->generateToken($this->getCardDetails()));
 
-        Event::assertDispatched(function (SuccessfullyCharged $event) use ($order) {
+        Event::assertDispatched(function (SuccessfullyChargedEvent $event) use ($order) {
             return $event->order->id === $order->id;
         });
 
-        Event::assertDispatched(function (OrderPlaced $event) use ($order) {
+        Event::assertDispatched(function (OrderPlacedEvent $event) use ($order) {
             return $event->order->id === $order->id;
         });
     }

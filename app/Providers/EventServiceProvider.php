@@ -2,11 +2,11 @@
 
 namespace App\Providers;
 
-use App\Events\OrderPlaced;
-use App\Events\OrderStatusUpdated;
-use App\Events\SuccessfullyCharged;
+use App\Events\OrderPlacedEvent;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Auth\Events\Registered;
+use App\Events\OrderStatusUpdatedEvent;
+use App\Events\SuccessfullyChargedEvent;
 use App\Listeners\CreditBusinessAccount;
 use App\Listeners\SendNewOrderNotification;
 use App\Listeners\SendOrderPlacedNotification;
@@ -28,18 +28,18 @@ class EventServiceProvider extends ServiceProvider
         ],
 
         // For business users.
-        SuccessfullyCharged::class => [
+        SuccessfullyChargedEvent::class => [
             CreditBusinessAccount::class,
             SendNewOrderNotification::class,
         ],
 
         // For customers.
-        OrderPlaced::class => [
+        OrderPlacedEvent::class => [
             SendOrderPlacedNotification::class,
         ],
 
         // For customers.
-        OrderStatusUpdated::class => [
+        OrderStatusUpdatedEvent::class => [
             SendOrderStatusUpdatedNotification::class,
         ],
     ];

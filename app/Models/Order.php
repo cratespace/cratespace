@@ -47,6 +47,18 @@ class Order extends Model
     }
 
     /**
+     * Make associated space available again and delete instance.
+     *
+     * @return void
+     */
+    public function cancel(): void
+    {
+        $this->space->release();
+
+        $this->delete();
+    }
+
+    /**
      * Get the space associated with this order.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo

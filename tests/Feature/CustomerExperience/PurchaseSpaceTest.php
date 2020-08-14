@@ -37,8 +37,6 @@ class PurchaseSpaceTest extends TestCase
     /** @test */
     public function a_customer_can_purchase_a_space()
     {
-        $this->withoutexceptionHandling();
-
         $user = $this->signIn();
         $space = create(Space::class, [
             'user_id' => $user->id,
@@ -58,8 +56,7 @@ class PurchaseSpaceTest extends TestCase
         ]);
         $this->assertEquals(3583, $this->paymentGateway->total());
         $this->assertNotNull($space->order);
-        $this->assertFalse($space->isAvailable());
-        // $this->assertEquals('Ordered', $space->refresh()->status);
+        $this->assertFalse($space->refresh()->isAvailable());
         $this->assertEquals('john@example.com', $space->order->email);
     }
 

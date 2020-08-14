@@ -49,9 +49,9 @@ class OrderTest extends TestCase
 
         $this->assertFalse($space->isAvailable());
 
-        $order->delete();
+        $order->cancel();
 
-        $this->assertTrue($space->isAvailable());
+        $this->assertTrue($space->refresh()->isAvailable());
         $this->assertDatabaseMissing('orders', $this->orderDetails());
     }
 

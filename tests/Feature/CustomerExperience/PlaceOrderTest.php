@@ -6,11 +6,11 @@ use Tests\TestCase;
 use App\Models\Order;
 use App\Models\Space;
 use App\Models\Account;
+use App\Mail\OrderPlacedMail;
+use App\Events\OrderPlacedEvent;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Event;
 use App\Contracts\Billing\PaymentGateway;
-use App\Mail\OrderPlaced as OrderPlacedMail;
-use App\Events\OrderPlaced as OrderPlacedEvent;
 use App\Billing\PaymentGateways\FakePaymentGateway;
 
 class PlaceOrderTest extends TestCase
@@ -125,8 +125,7 @@ class PlaceOrderTest extends TestCase
         $order = Order::where('space_id', $space->id)->first();
 
         Mail::assertQueued(OrderPlacedMail::class, function ($mail) use ($order) {
-            return $mail->hasTo($order->email) &&
-            $mail->order->id === $order->id;
+            return $mail->hasTo($order->email) && $mail->order->id === $order->id;
         });
     }
 }

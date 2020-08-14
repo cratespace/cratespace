@@ -114,9 +114,9 @@ class SpaceTest extends TestCase
         $this->assertTrue($space->hasOrder());
         $this->assertFalse($space->isAvailable());
 
-        $space->order()->delete();
+        $space->release();
 
-        $this->assertTrue($space->isAvailable());
+        $this->assertTrue($space->refresh()->isAvailable());
     }
 
     /** @test */

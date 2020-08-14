@@ -41,7 +41,7 @@ class SpaceOrderController extends Controller
         try {
             $this->paymentGateway->charge($order, $this->generateToken($request));
         } catch (PaymentFailedException $exception) {
-            $order->delete();
+            $order->cancel();
 
             throw $exception;
         }

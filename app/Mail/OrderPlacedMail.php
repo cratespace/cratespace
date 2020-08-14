@@ -8,7 +8,7 @@ use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
-class OrderPlaced extends Mailable implements ShouldQueue
+class OrderPlacedMail extends Mailable implements ShouldQueue
 {
     use Queueable;
     use SerializesModels;

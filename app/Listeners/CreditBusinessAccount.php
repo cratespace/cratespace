@@ -4,7 +4,7 @@ namespace App\Listeners;
 
 use App\Models\Order;
 use App\Models\Account;
-use App\Events\SuccessfullyCharged;
+use App\Events\SuccessfullyChargedEvent;
 
 class CreditBusinessAccount
 {
@@ -15,7 +15,7 @@ class CreditBusinessAccount
      *
      * @return void
      */
-    public function handle(SuccessfullyCharged $event)
+    public function handle(SuccessfullyChargedEvent $event)
     {
         $this->getBusinessAccount($event->order)
             ->increment('credit', $event->order->subtotal);

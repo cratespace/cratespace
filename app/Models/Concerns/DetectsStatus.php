@@ -37,10 +37,10 @@ trait DetectsStatus
      */
     public function hasOrder(): bool
     {
-        if (is_null($this->order_id)) {
-            return $this->order()->exists();
+        if (is_null($this->reserved_at)) {
+            return false;
         }
 
-        return $this->order_id ? true : false;
+        return true;
     }
 }

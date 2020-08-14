@@ -84,6 +84,20 @@ class Space extends Model implements Priceable
     }
 
     /**
+     * Release space from order.
+     *
+     * @return bool|null
+     */
+    public function release(): ?bool
+    {
+        if ($this->order()->exists()) {
+            $this->order->delete();
+        }
+
+        return $this->update(['reserved_at' => null]);
+    }
+
+    /**
      * Place an order for this space.
      *
      * @param array $data
@@ -93,6 +107,8 @@ class Space extends Model implements Priceable
     public function placeOrder(array $data): Order
     {
         abort_if(!$this->isAvailable(), 422);
+
+        $this->update(['reserved_at' => now()]);
 
         $order = $this->order()->create($data);
 

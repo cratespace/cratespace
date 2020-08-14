@@ -8,7 +8,7 @@ use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Broadcasting\InteractsWithSockets;
 
-class OrderStatusUpdated
+class OrderStatusUpdatedEvent
 {
     use Dispatchable;
     use InteractsWithSockets;

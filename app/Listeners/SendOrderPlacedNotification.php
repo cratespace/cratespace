@@ -2,16 +2,16 @@
 
 namespace App\Listeners;
 
+use App\Mail\OrderPlacedMail;
+use App\Events\OrderPlacedEvent;
 use Illuminate\Support\Facades\Mail;
-use App\Mail\OrderPlaced as OrderPlacedMail;
-use App\Events\OrderPlaced as OrderPlacedEvent;
 
 class SendOrderPlacedNotification
 {
     /**
      * Handle the event.
      *
-     * @param \App\Events\OrderPlaced $event
+     * @param \App\Events\OrderPlacedEvent $event
      *
      * @return void
      */

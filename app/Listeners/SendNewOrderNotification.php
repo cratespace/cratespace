@@ -2,7 +2,7 @@
 
 namespace App\Listeners;
 
-use App\Events\SuccessfullyCharged;
+use App\Events\SuccessfullyChargedEvent;
 
 class SendNewOrderNotification
 {
@@ -13,7 +13,7 @@ class SendNewOrderNotification
      *
      * @return void
      */
-    public function handle(SuccessfullyCharged $event)
+    public function handle(SuccessfullyChargedEvent $event)
     {
     }
 }

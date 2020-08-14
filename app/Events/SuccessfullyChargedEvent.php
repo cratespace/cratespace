@@ -8,7 +8,7 @@ use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Broadcasting\InteractsWithSockets;
 
-class SuccessfullyCharged
+class SuccessfullyChargedEvent
 {
     use Dispatchable;
     use InteractsWithSockets;

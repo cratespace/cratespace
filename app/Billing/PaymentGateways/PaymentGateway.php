@@ -5,8 +5,8 @@ namespace App\Billing\PaymentGateways;
 use Closure;
 use App\Models\Order;
 use App\Models\Charge;
-use App\Events\OrderPlaced;
-use App\Events\SuccessfullyCharged;
+use App\Events\OrderPlacedEvent;
+use App\Events\SuccessfullyChargedEvent;
 use App\Billing\PaymentGateways\Validators\CardValidator;
 use App\Billing\PaymentGateways\Validators\FormatValidator;
 use App\Billing\PaymentGateways\Validators\TokenExistenceValidator;
@@ -59,8 +59,8 @@ abstract class PaymentGateway
      * @var array
      */
     protected static $chargeEvents = [
-        SuccessfullyCharged::class,
-        OrderPlaced::class,
+        SuccessfullyChargedEvent::class,
+        OrderPlacedEvent::class,
     ];
 
     /**

@@ -41,7 +41,7 @@ class ViewSpacesListingTest extends TestCase
     public function user_cannot_view_unavailable_spaces_in_listing()
     {
         $expiredSpace = create(Space::class, ['departs_at' => Carbon::now()->subMonth()]);
-        $orderedSpace = create(Space::class);
+        $orderedSpace = create(Space::class, ['reserved_at' => now()]);
         $this->calculateCharges($orderedSpace);
         create(Order::class, ['space_id' => $orderedSpace->id]);
         $availableSpace = create(Space::class);
