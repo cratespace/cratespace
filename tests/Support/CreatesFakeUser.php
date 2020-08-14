@@ -2,7 +2,6 @@
 
 namespace Tests\Support;
 
-use Tests\TestCase;
 use App\Models\Role;
 use App\Models\User;
 use App\Models\Ability;
@@ -42,7 +41,7 @@ trait CreatesFakeUser
      *
      * @return \Tests\TestCase
      */
-    protected function createBusiness(): TestCase
+    protected function createBusiness()
     {
         create(Business::class, ['user_id' => $this->user->id]);
 
@@ -54,7 +53,7 @@ trait CreatesFakeUser
      *
      * @return \Tests\TestCase
      */
-    protected function createFinancialAccount(): TestCase
+    protected function createFinancialAccount()
     {
         create(Account::class, ['user_id' => $this->user->id]);
 

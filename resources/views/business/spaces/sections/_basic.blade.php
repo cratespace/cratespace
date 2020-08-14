@@ -15,7 +15,7 @@
         <div>
             <div class="row mb-6">
                 <div class="col-lg-7 mb-6 lg:mb-0">
-                    @include('components.forms.fields._uid', ['uid' => $space->uid])
+                    @include('components.forms.fields._uid', ['uid' => $space->code])
                 </div>
 
                 <div class="col-lg-5">

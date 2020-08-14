@@ -48,27 +48,13 @@ class SpaceController extends Controller
      */
     public function store(SpaceRequest $request)
     {
-        $space = Space::create($reqeust->validated());
+        $space = user()->spaces()->create($request->validated());
 
         if ($request->wantsJson()) {
             return response($space, 201);
         }
 
-        return redirect()->to($space->path());
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param \App\Models\Space $space
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Space $space)
-    {
-        $this->authorize('manage', $space);
-
-        return view('business.spaces.show', compact('space'));
+        return redirect()->to($space->path);
     }
 
     /**
@@ -82,7 +68,7 @@ class SpaceController extends Controller
     {
         $this->authorize('manage', $space);
 
-        return view('business.spaces.create', compact('space'));
+        return view('business.spaces.edit', compact('space'));
     }
 
     /**

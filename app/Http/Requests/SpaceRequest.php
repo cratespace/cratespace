@@ -18,7 +18,11 @@ class SpaceRequest extends FormRequest
      */
     public function authorize()
     {
-        return $this->resourceBelongsToUser($this->space);
+        if ($this->space) {
+            return $this->resourceBelongsToUser($this->space);
+        }
+
+        return $this->authenticated();
     }
 
     /**

@@ -27,12 +27,13 @@ return [
      * Spaces Inputs Rules
      */
     'space' => [
-        'uid' => ['required', 'string', 'max:255'],
+        'code' => ['required', 'string', 'max:255'],
         'height' => ['required', 'integer'],
         'width' => ['required', 'integer'],
         'length' => ['required', 'integer'],
         'weight' => ['required', 'integer'],
-        'price' => ['required', 'numeric', 'min:1'],
+        'price' => ['required', 'integer'],
+        'tax' => ['nullable', 'integer'],
         'origin' => ['required', 'string'],
         'destination' => ['required', 'string'],
         'departs_at' => ['required', 'date'],

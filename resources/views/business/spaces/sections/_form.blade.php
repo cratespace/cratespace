@@ -2,11 +2,13 @@
     <div class="col-12">
         <div>
             <h3 class="leadin-snug">
-                Add New Space
+                {{ isset($space->code) ? 'Edit Space Details' : 'Add New Space' }}
             </h3>
 
             <div class="flex items-center text-gray-600">
-                <p class="text-sm">Get closer to your first sale by adding products.</p>
+                <p class="text-sm">
+                    {{ isset($space->code) ? 'Accurate details help customers.' : 'Get closer to your first sale by adding products.' }}
+                </p>
             </div>
         </div>
     </div>
