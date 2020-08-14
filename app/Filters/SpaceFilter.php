@@ -92,21 +92,21 @@ class SpaceFilter extends Filter
     {
         switch ($status) {
             case 'Available':
-                return $this->builder->doesntHave('order');
+                return $this->builder->whereNull('reserved_at');
 
                 break;
 
             case 'Ordered':
                 return $this->builder
                     ->whereDate('departs_at', '>', Carbon::now())
-                    ->whereHas('order');
+                    ->whereNotNull('reserved_at');
 
                 break;
 
             case 'Expired':
                 return $this->builder
                     ->whereDate('departs_at', '<=', Carbon::now())
-                    ->doesntHave('order');
+                    ->whereNull('reserved_at');
 
                 break;
         }

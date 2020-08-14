@@ -48,7 +48,7 @@
                     </td>
 
                     <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200 bg-gray-100 text-sm leading-4">
-                        <div class="font-bold text-gray-800">{{ $space->price }}</div>
+                        <div class="font-bold text-gray-800">{{ $space->present()->price }}</div>
                         <span class="text-xs">USD</span>
                     </td>
 
@@ -69,7 +69,7 @@
                     </td>
 
                     <td class="px-6 py-4 whitespace-no-wrap text-right border-b border-gray-200 bg-gray-100 text-sm leading-5 font-medium">
-                        <a href="#">Manage</a>
+                        <a href="{{ route('spaces.edit', $space) }}">Manage</a>
                     </td>
                 </tr>
             @empty

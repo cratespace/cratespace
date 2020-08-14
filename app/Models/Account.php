@@ -12,8 +12,11 @@ class Account extends Model
      * @var array
      */
     protected $fillable = [
-        'credit', 'bank_acount_number', 'bank_account_name',
-        'bank_name', 'user_id',
+        'credit',
+        'bank_acount_number',
+        'bank_account_name',
+        'bank_name',
+        'user_id',
     ];
 
     /**

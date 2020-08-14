@@ -2,125 +2,51 @@
 
 namespace App\Billing\PaymentGateways;
 
-use Closure;
+use App\Models\Order;
+use App\Models\Charge;
 use Stripe\StripeClient;
-use Illuminate\Support\Arr;
 use Stripe\Service\ChargeService;
-use Illuminate\Support\Collection;
+use Stripe\Charge as StripeCharge;
 use App\Exceptions\PaymentFailedException;
 use Stripe\Exception\InvalidRequestException;
+use App\Billing\PaymentGateways\Validators\FormatValidator;
+use App\Billing\PaymentGateways\Validators\TokenExistenceValidator;
 use App\Contracts\Billing\PaymentGateway as PaymentGatewayContract;
 
 class StripePaymentGateway extends PaymentGateway implements PaymentGatewayContract
 {
     /**
-     * Test credit card number.
-     */
-    public const TEST_CARD_NUMBER = '4242424242424242';
-
-    /**
-     * List of fake payment tokens.
-     *
-     * @var \Illuminate\Support\Collection
-     */
-    protected $tokens;
-
-    /**
-     * Stripe services secret key.
+     * Stripe secret api key.
      *
      * @var string
      */
     protected $apiKey;
 
     /**
-     * Create new Stripe payment gateway instance.
+     * Payment token prefix.
+     *
+     * @param string $key
+     */
+    protected $prefix = 'tok_';
+
+    /**
+     * Payment token validators.
+     *
+     * @var array
+     */
+    protected static $validators = [
+        FormatValidator::class,
+        TokenExistenceValidator::class,
+    ];
+
+    /**
+     * Create new instance of stripe payment gateway.
      *
      * @param string $apiKey
      */
     public function __construct(string $apiKey)
     {
         $this->apiKey = $apiKey;
-
-        parent::__construct();
-    }
-
-    /**
-     * Charge the customer with the given amount.
-     *
-     * @param int         $amount
-     * @param string      $paymentToken
-     * @param string|null $destinationAccountId
-     *
-     * @return void
-     */
-    public function charge(int $amount, string $paymentToken, ?string $destinationAccountId = null): void
-    {
-        $this->runBeforeChargesCallback();
-
-        try {
-            $this->charges[] = $this->getStripeCharger()->create([
-                'amount' => $this->setChargeAmount($amount),
-                'currency' => config('defaults.finance.currency'),
-                'source' => $paymentToken,
-                'description' => config('defaults.finance.transaction-description'),
-                // 'destination' => [
-                //     'account' => $destinationAccountId,
-                //     'amount' => $amount * .9,
-                // ],
-            ]);
-        } catch (InvalidRequestException $e) {
-            throw new PaymentFailedException($e->getMessage(), $amount);
-        }
-    }
-
-    /**
-     * Get all new charges during given callback.
-     *
-     * @param \Closure $callback
-     *
-     * @return \Illuminate\Support\Collection
-     */
-    public function newChargesDuring(Closure $callback): Collection
-    {
-        $latestCharge = Arr::first($this->getCharges(1));
-
-        call_user_func_array($callback, [$this]);
-
-        return $this->newChargesSince($latestCharge->id)->map(function ($stripeCharge) {
-            return $this->getLocalCharger([
-                'amount' => $stripeCharge['amount'],
-                'card_last_four' => $stripeCharge['source']['last4'],
-            ]);
-        });
-    }
-
-    /**
-     * Get all new charges since given charge ID.
-     *
-     * @param string $chargeId
-     *
-     * @return \Illuminate\Support\Collection
-     */
-    public function newChargesSince(string $chargeId): Collection
-    {
-        return collect($this->getCharges(null, $chargeId));
-    }
-
-    /**
-     * Get latest charge details from stripe.
-     *
-     * @param int|null    $limit
-     * @param string|null $endingBefore
-     *
-     * @return array
-     */
-    public function getCharges(?int $limit = null, ?string $endingBefore = null): array
-    {
-        $constraints = is_null($endingBefore)
-            ? ['limit' => $limit ?? 10]
-            : ['ending_before' => $endingBefore];
-
-        return $this->getStripeCharger()->all($constraints)['data'];
     }
 
     /**
@@ -128,29 +54,55 @@ class StripePaymentGateway extends PaymentGateway implements PaymentGatewayContr
      *
      * @return int
      */
-    public function totalCharges(): int
+    public function total(): int
     {
-        return $this->totalCharges = $this->chargeAmount->sum();
+        return $this->total;
     }
 
     /**
-     * Create stripe charge handler.
+     * Charge the customer with the given amount.
      *
-     * @return \Stripe\Service\ChargeService
+     * @param \App\Models\Order $order
+     * @param string            $paymentToken
+     *
+     * @return void
      */
-    protected function getStripeCharger(): ChargeService
+    public function charge(Order $order, string $paymentToken): void
     {
-        return $this->makeStripeClient()->charges;
+        $this->runBeforeChargesCallback();
+
+        if (!$this->matches($paymentToken)) {
+            throw new PaymentFailedException("Token {$paymentToken} is invalid", $order->total);
+        }
+
+        try {
+            $stripeCharge = $this->getStripeCharges()->create([
+                'amount' => $this->total = $order->total,
+                'currency' => config('defaults.billing.currency'),
+                'source' => $paymentToken,
+                'description' => config('defaults.billing.transaction-description'),
+            ]);
+
+            $this->saveChargeDetails(
+                $order,
+                $paymentToken,
+                $this->prepareChargeData($stripeCharge)
+            );
+        } catch (InvalidRequestException $e) {
+            throw new PaymentFailedException($e->getMessage(), $order->total);
+        }
     }
 
     /**
-     * Create new stripe client instance.
+     * Extract stripe charge response data.
      *
-     * @return \Stripe\StripeClient
+     * @param \Stripe\Charge $stripeCharge
+     *
+     * @return array
      */
-    protected function makeStripeClient(): StripeClient
+    protected function prepareChargeData(StripeCharge $stripeCharge): array
     {
-        return new StripeClient($this->apiKey);
+        return (array) json_decode($stripeCharge->getLastResponse()->body);
     }
 
     /**
@@ -162,11 +114,33 @@ class StripePaymentGateway extends PaymentGateway implements PaymentGatewayContr
      */
     public function generateToken(array $card): string
     {
-        $tokenObject = $this->makeStripeClient()->tokens->create(
-            ['card' => $card],
-            ['api_key' => $this->apiKey]
-        );
+        $token = $this->createStripeClient()
+            ->tokens
+            ->create(['card' => $card])
+            ->id;
 
-        return $tokenObject->id;
+        $this->tokens[$token] = $card['number'];
+
+        return $token;
+    }
+
+    /**
+     * Create stripe charge handler.
+     *
+     * @return \Stripe\Service\ChargeService
+     */
+    protected function getStripeCharges(): ChargeService
+    {
+        return $this->createStripeClient()->charges;
+    }
+
+    /**
+     * Create new stripe client instance.
+     *
+     * @return \Stripe\StripeClient
+     */
+    protected function createStripeClient(): StripeClient
+    {
+        return new StripeClient($this->apiKey);
     }
 }

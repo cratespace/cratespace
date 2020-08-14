@@ -2,12 +2,11 @@
 
 namespace Tests\Unit\Auth;
 
+use Closure;
 use App\Auth\User;
 use Tests\TestCase;
-use ReflectionClass;
-use InvalidArgumentException;
 use App\Models\User as UserModel;
-use App\Contracts\Auth\Responsibility;
+use App\Contracts\Support\Responsibility;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class UserTest extends TestCase
@@ -59,20 +58,6 @@ class UserTest extends TestCase
     }
 
     /** @test */
-    public function it_throws_exception_when_invalid_responsibility_is_set_to_be_resolved()
-    {
-        $this->expectException(InvalidArgumentException::class);
-
-        $user = new User();
-
-        $reflection = new ReflectionClass($user);
-        $method = $reflection->getMethod('resolveResponsibility');
-        $method->setAccessible(true);
-
-        $method->invokeArgs($user, [InvalidResponsibility::class]);
-    }
-
-    /** @test */
     public function it_can_create_a_new_user_from_the_given_details()
     {
         $userCreator = new User();
@@ -97,15 +82,16 @@ class UserTest extends TestCase
 class MockResponsibility implements Responsibility
 {
     /**
-     * Handle responsibility.
+     * Handle given data and pass it on to next action.
      *
-     * @param \App\Models\User $user
-     * @param array            $data
+     * @param array    $data
+     * @param \Closure $next
      *
-     * @return App\Models\User
+     * @return mixed
      */
-    public function handle(UserModel $user, array $data): UserModel
+    public function handle(array $data, Closure $next)
     {
+        return $next($data);
     }
 }
 

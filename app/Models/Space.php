@@ -2,29 +2,20 @@
 
 namespace App\Models;
 
-use Carbon\Carbon;
-use App\Filters\Filter;
-use App\Support\Formatter;
-use App\Models\Casts\PriceCast;
 use App\Models\Traits\Filterable;
-use App\Models\Traits\Searchable;
 use App\Models\Casts\ScheduleCast;
 use App\Models\Traits\Presentable;
 use App\Contracts\Models\Priceable;
-use App\Contracts\Models\Statusable;
-use App\Models\Concerns\GeneratesUID;
-use App\Models\Concerns\ManagesPricing;
+use App\Models\Traits\Redirectable;
+use App\Models\Concerns\DetectsStatus;
 use Illuminate\Database\Eloquent\Model;
-use App\Models\Concerns\GetsPathToResource;
 
-class Space extends Model implements Statusable, Priceable
+class Space extends Model implements Priceable
 {
+    use DetectsStatus;
     use Filterable;
     use Presentable;
-    use ManagesPricing;
-    use GetsPathToResource;
-    use GeneratesUID;
-    use Searchable;
+    use Redirectable;
 
     /**
      * The accessors to append to the model's array form.
@@ -34,26 +25,39 @@ class Space extends Model implements Statusable, Priceable
     protected $appends = ['path'];
 
     /**
-     * The attributes that should be cast to native types.
-     *
-     * @var array
-     */
-    protected $casts = [
-        'departs_at' => 'datetime',
-        'arrives_at' => 'datetime',
-        'schedule' => ScheduleCast::class,
-        'price' => PriceCast::class,
-    ];
-
-    /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
     protected $fillable = [
-        'uid', 'departs_at', 'arrives_at', 'height', 'width', 'length',
-        'weight', 'note', 'price', 'tax', 'user_id', 'origin', 'destination',
-        'type', 'base',
+        'code',
+        'departs_at',
+        'arrives_at',
+        'reserved_at',
+        'origin',
+        'destination',
+        'height',
+        'width',
+        'length',
+        'weight',
+        'note',
+        'price',
+        'tax',
+        'user_id',
+        'type',
+        'base',
+    ];
+
+    /**
+     * The attributes that should be cast to native types.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'reserved_at' => 'datetime',
+        'departs_at' => 'datetime',
+        'arrives_at' => 'datetime',
+        'schedule' => ScheduleCast::class,
     ];
 
     /**
@@ -63,178 +67,34 @@ class Space extends Model implements Statusable, Priceable
      */
     public function getRouteKeyName()
     {
-        return 'uid';
+        return 'code';
     }
 
     /**
-     * Determine status of space.
+     * Get all chargeable attributes.
      *
-     * @return string
+     * @return array
      */
-    public function getStatusAttribute()
+    public function getCharges(): array
     {
-        if ($this->isAvailable()) {
-            return 'Available';
-        } elseif (
-            $this->hasOrder() ||
-            ($this->isExpired() && $this->hasOrder())
-        ) {
-            return 'Ordered';
+        return [
+            'price' => $this->price,
+            'tax' => $this->tax,
+        ];
+    }
+
+    /**
+     * Release space from order.
+     *
+     * @return bool|null
+     */
+    public function release(): ?bool
+    {
+        if ($this->order()->exists()) {
+            $this->order->delete();
         }
 
-        return 'Expired';
-    }
-
-    /**
-     * Get charge amount as integer and in cents.
-     *
-     * @param string|int $amount
-     *
-     * @return int
-     */
-    public function getChargeAmountInCents($amount): int
-    {
-        if (is_string($amount)) {
-            return Formatter::getIntegerValues($amount);
-        }
-
-        return $amount * 100;
-    }
-
-    /**
-     * Get the name of the business the space is associated with.
-     *
-     * @return string
-     */
-    public function getBusinessNameAttribute()
-    {
-        return Business::select('name')
-            ->whereUserId($this->user_id)
-            ->first()
-            ->name;
-    }
-
-    /**
-     * Determine if the resource is available to perform an action on.
-     *
-     * @return bool
-     */
-    public function isAvailable(): bool
-    {
-        if (!$this->isExpired()) {
-            return !$this->hasOrder();
-        }
-
-        return false;
-    }
-
-    /**
-     * Determine if the space is associated with an order.
-     *
-     * @return bool
-     */
-    public function hasOrder(): bool
-    {
-        if (is_null($this->order_id)) {
-            return $this->order()->exists();
-        }
-
-        return $this->order_id ? true : false;
-    }
-
-    /**
-     * Determine if the space departure date is close or has passed.
-     *
-     * @return bool
-     */
-    public function isExpired(): bool
-    {
-        return $this->departs_at <= Carbon::now();
-    }
-
-    /**
-     * Get all spaces associated with the currently authenticated business.
-     *
-     * @param \Illuminate\Database\Query\Builder $query
-     * @param \App\Filters\Filter                $filters
-     * @param string|null                        $search
-     *
-     * @return \Illuminate\Database\Query\Builder
-     */
-    public function scopeOfBusiness($query, Filter $filters, ?string $search = null)
-    {
-        $query->addSelect([
-                'order_id' => Order::select('uid')
-                    ->whereColumn('space_id', 'spaces.id')
-                    ->latest()
-                    ->take(1),
-            ])
-            ->whereUserId(user('id'))
-            ->filter($filters)
-            ->search($search)
-            ->latest('created_at');
-    }
-
-    public function scopeDeparting($query)
-    {
-        return $query->addSelect([
-            'business' => Business::select('name')
-                ->whereColumn('user_id', 'spaces.user_id')
-                ->latest()
-                ->take(1),
-            ])
-            ->whereDate('departs_at', '=', Carbon::now())
-            ->latest('departs_at');
-    }
-
-    /**
-     * Scope a query to only include spaces based in user's country.
-     *
-     * @param \Illuminate\Database\Eloquent\Builder $query
-     *
-     * @return \Illuminate\Database\Eloquent\Builder
-     */
-    public function scopeList($query)
-    {
-        return $query->addSelect([
-            'business' => Business::select('name')
-                ->whereColumn('user_id', 'spaces.user_id')
-                ->latest()
-                ->take(1),
-            ])
-            ->whereDate('departs_at', '>', Carbon::now())
-            ->doesntHave('order')
-            ->latest();
-    }
-
-    /**
-     * Get full path to resource page.
-     *
-     * @return string
-     */
-    public function getPathAttribute()
-    {
-        return $this->path();
-    }
-
-    /**
-     * Get full url to order page.
-     *
-     * @return string
-     */
-    public function path(): string
-    {
-        return route('spaces.show', $this);
-    }
-
-    /**
-     * Get the user the space belongs to.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
-    public function user()
-    {
-        return $this->belongsTo(User::class);
+        return $this->update(['reserved_at' => null]);
     }
 
     /**
@@ -247,6 +107,8 @@ class Space extends Model implements Statusable, Priceable
     public function placeOrder(array $data): Order
     {
         abort_if(!$this->isAvailable(), 422);
+
+        $this->update(['reserved_at' => now()]);
 
         $order = $this->order()->create($data);
 
@@ -261,5 +123,15 @@ class Space extends Model implements Statusable, Priceable
     public function order()
     {
         return $this->hasOne(Order::class);
+    }
+
+    /**
+     * Get the user the space belongs to.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function user()
+    {
+        return $this->belongsTo(User::class);
     }
 }

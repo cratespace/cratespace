@@ -30,8 +30,7 @@ return [
     ],
 
     'stripe' => [
-        'key' => env('STRIPE_KEY'),
-        'secret' => env('STRIPE_SECRET'),
-        'test-account' => env('STRIPE_TEST_PROMOTER_ID'),
+        'key' => env('STRIPE_API_KEY'),
+        'secret' => env('STRIPE_SECRET_KEY'),
     ],
 ];

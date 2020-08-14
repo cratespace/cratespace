@@ -10,10 +10,8 @@ use Faker\Generator as Faker;
 
 $factory->define(Order::class, function (Faker $faker) {
     $space = create(Space::class);
-    $service = $space->getPriceInCents() * config('charges.service');
 
     return [
-        'uid' => Str::random(7),
         'name' => $faker->name,
         'business' => $faker->company,
         'email' => $faker->email,
@@ -22,9 +20,10 @@ $factory->define(Order::class, function (Faker $faker) {
         'confirmation_number' => Str::random(7),
         'status' => 'Pending',
         'phone' => $faker->phoneNumber,
-        'price' => $space->getPriceInCents(),
-        'tax' => $space->getTaxInCents(),
-        'service' => $service,
-        'total' => $space->getPriceInCents() + $space->getTaxInCents() + $service,
+        'price' => 100,
+        'tax' => 10,
+        'service' => 10,
+        'subtotal' => 100,
+        'total' => 120,
     ];
 });

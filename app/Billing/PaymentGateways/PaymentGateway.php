@@ -3,31 +3,41 @@
 namespace App\Billing\PaymentGateways;
 
 use Closure;
-use Illuminate\Support\Collection;
-use App\Billing\Charge as LocalCharge;
+use App\Models\Order;
+use App\Models\Charge;
+use App\Events\OrderPlacedEvent;
+use App\Events\SuccessfullyChargedEvent;
+use App\Billing\PaymentGateways\Validators\CardValidator;
+use App\Billing\PaymentGateways\Validators\FormatValidator;
+use App\Billing\PaymentGateways\Validators\TokenExistenceValidator;
 
 abstract class PaymentGateway
 {
     /**
-     * Total amount the customer is charged.
+     * Test credit card number.
+     */
+    public const TEST_CARD_NUMBER = '4242424242424242';
+
+    /**
+     * Total charge amount.
      *
      * @var int
      */
-    protected $totalCharges = 0;
+    protected $total = 0;
 
     /**
-     * The amount the customer ought to be charged.
+     * All registered tokens.
      *
-     * @var \Illuminate\Support\Collection
+     * @var array
      */
-    protected $charges;
+    protected $tokens;
 
     /**
-     * All charge amount received.
+     * Payment token prefix.
      *
-     * @var \Illuminate\Support\Collection
+     * @param string $key
      */
-    protected $chargeAmount = [];
+    protected $prefix;
 
     /**
      * Call back to run as a hook before the first charge.
@@ -37,32 +47,71 @@ abstract class PaymentGateway
     protected $beforeFirstChargeCallback;
 
     /**
-     * Create new payment gateway instance.
+     * Payment token validators.
+     *
+     * @var array
      */
-    public function __construct()
+    protected static $validators;
+
+    /**
+     * All events to be fired after a successful charge.
+     *
+     * @var array
+     */
+    protected static $chargeEvents = [
+        SuccessfullyChargedEvent::class,
+        OrderPlacedEvent::class,
+    ];
+
+    /**
+     * Save charge details to database.
+     *
+     * @param \App\Models\Order $order
+     * @param string            $paymentToken
+     * @param array|null        $details
+     *
+     * @return \App\Models\Charge
+     */
+    public function saveChargeDetails(Order $order, string $paymentToken, ?array $details = null): Charge
     {
-        $this->charges = collect();
-        $this->chargeAmount = collect();
+        $this->fireChargeEvents($order);
+
+        return $order->saveChargeDetails([
+            'amount' => $order->total,
+            'card_last_four' => substr($this->tokens()[$paymentToken], -4),
+            'details' => $details ?? 'local',
+        ]);
     }
 
     /**
-     * Get total amount the customer is charged.
+     * Fire event "successfully charged".
      *
-     * @return \Illuminate\Support\Collection
+     * @param \App\Models\Order $order
+     *
+     * @return void
      */
-    public function charges(): Collection
+    protected function fireChargeEvents(Order $order): void
     {
-        return $this->charges;
+        collect(static::$chargeEvents)
+            ->each(function ($event) use ($order) {
+                event(new $event($order));
+            });
     }
 
     /**
-     * Create stripe charge handler.
+     * Run a callback that has been set before original charge should be performed.
      *
-     * @return \App\Billing\Charge
+     * @return mixed
      */
-    protected function getLocalCharger(array $data): LocalCharge
+    protected function runBeforeChargesCallback()
     {
-        return new LocalCharge($data);
+        if ($this->beforeFirstChargeCallback !== null) {
+            $callback = $this->beforeFirstChargeCallback;
+
+            $this->beforeFirstChargeCallback = null;
+
+            call_user_func_array($callback, [$this]);
+        }
     }
 
     /**
@@ -78,32 +127,62 @@ abstract class PaymentGateway
     }
 
     /**
-     * Determine and run a callback that has been set before original charge should be performed.
+     * Get all registered payment tokens.
      *
-     * @return void
+     * @return array
      */
-    protected function runBeforeChargesCallback(): void
+    public function tokens(): array
     {
-        if ($this->beforeFirstChargeCallback !== null) {
-            $callback = $this->beforeFirstChargeCallback;
-
-            $this->beforeFirstChargeCallback = null;
-
-            call_user_func_array($callback, [$this]);
-        }
+        return $this->tokens;
     }
 
     /**
-     * Set total amount charged to customer.
+     * Get payment token prefix.
      *
-     * @param int $amount
-     *
-     * @return int
+     * @return string
      */
-    protected function setChargeAmount(int $amount): int
+    public function prefix(): string
     {
-        $this->chargeAmount[] = $amount;
+        return $this->prefix;
+    }
 
-        return $amount;
+    /**
+     * Match the given payment token.
+     *
+     * @param string $token
+     *
+     * @return bool
+     */
+    public function matches(string $token): bool
+    {
+        foreach ($this->getValidators() as $validator) {
+            if (is_string($validator)) {
+                $validator = app()->make($validator);
+            }
+
+            if (!$validator->validate($token, ['gateway' => $this])) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    /**
+     * Get the route validators for the instance.
+     *
+     * @return array
+     */
+    public static function getValidators(): array
+    {
+        if (isset(static::$validators)) {
+            return static::$validators;
+        }
+
+        return static::$validators = [
+            FormatValidator::class,
+            CardValidator::class,
+            TokenExistenceValidator::class,
+        ];
     }
 }

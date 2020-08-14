@@ -19,7 +19,7 @@
                 <div class="flex items-center justify-between">
                     <div>
                         <div class="text-sm leading-5 text-blue-500 font-semibold">
-                            {{ '#' . $order->uid }}
+                            {{ '#' . $order->confirmation_number }}
                         </div>
 
                         <div class="mt-1 text-sm leading-5 font-medium text-gray-800">{{ $order->name }}</div>

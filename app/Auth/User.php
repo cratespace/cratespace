@@ -2,12 +2,13 @@
 
 namespace App\Auth;
 
+use Error;
 use InvalidArgumentException;
 use App\Models\User as UserModel;
+use Illuminate\Pipeline\Pipeline;
 use App\Auth\Relationships\Account;
 use App\Auth\Relationships\Profile;
 use App\Auth\Relationships\Business;
-use App\Contracts\Auth\Responsibility;
 
 class User extends UserModel
 {
@@ -32,61 +33,45 @@ class User extends UserModel
     public function new(array $data)
     {
         try {
-            return $this->performResponsibilities(new self(), $data);
-        } catch (InvalidArgumentException $exception) {
-            abort(500, $exception->getMessage());
+            return $this->performResponsibilities($data);
+        } catch (InvalidArgumentException $e) {
+            abort(503, $e->getMessage());
         }
     }
 
     /**
-     * Perfrom all registered reponsibilities.
+     * Perform all registered responsibilities.
      *
      * @param \App\Models\User $user
      * @param array            $data
      *
      * @return \App\Models\User
+     *
+     * @throws \InvalidArgumentException
      */
-    protected function performResponsibilities(UserModel $user, array $data): UserModel
+    protected function performResponsibilities(array $data): UserModel
     {
-        foreach ($this->getResponsibilities() as $responsibility) {
-            $responsibility = $this->resolveResponsibility($responsibility);
+        $data['user'] = $this;
 
-            $user = $responsibility->handle($user, $data);
+        try {
+            return (new Pipeline(app()))->send($data)
+                ->through($this->getResponsibilities())
+                ->via('handle')
+                ->then(function ($data) {
+                    return $data['user'];
+                });
+        } catch (Error $e) {
+            throw new InvalidArgumentException($e->getMessage());
         }
-
-        return $user;
     }
 
     /**
-     * Instantiate the responsibility class.
-     *
-     * @param string $responsibility
-     *
-     * @return \App\Contracts\Auth\Responsibility
-     */
-    protected function resolveResponsibility(string $responsibility): Responsibility
-    {
-        $responsibility = new $responsibility();
-
-        if (!$responsibility instanceof Responsibility) {
-            $responsibility = class_basename($responsibility);
-
-            throw new InvalidArgumentException("Class {class_basename($responsibility)} does not adhere to the Responsibility interface");
-        }
-
-        return $responsibility;
-    }
-
-    /**
-     * Get all registered reponsibilities.
+     * Get all registered responsibilities.
      *
      * @return array
      */
     public function getResponsibilities(): array
     {
-        return array_merge(
-            $this->responsibilities,
-            config('auth.responsibilities')
-        );
+        return array_merge($this->responsibilities, config('auth.responsibilities'));
     }
 }

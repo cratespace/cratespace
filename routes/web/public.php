@@ -10,6 +10,16 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', 'SpacesListingController');
 
 /*
+ * Privacy Page...
+ */
+Route::get('/privacy', 'GeneralPagesController@privacy');
+
+/*
+ * Terms & Conditions Page...
+ */
+Route::get('/terms-conditions', 'GeneralPagesController@terms');
+
+/*
  * Place Order for Space Route...
  */
 Route::post('/spaces/{space}/orders', 'SpaceOrderController')

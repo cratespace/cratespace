@@ -2,65 +2,51 @@
 
 namespace App\Billing\PaymentGateways;
 
-use Closure;
-use Illuminate\Support\Str;
-use Illuminate\Support\Collection;
+use App\Models\Order;
+use InvalidArgumentException;
+use App\Billing\Charges\Charge;
+use Illuminate\Support\Facades\Crypt;
 use App\Exceptions\PaymentFailedException;
 use App\Contracts\Billing\PaymentGateway as PaymentGatewayContract;
 
 class FakePaymentGateway extends PaymentGateway implements PaymentGatewayContract
 {
     /**
-     * Test credit card number.
-     */
-    public const TEST_CARD_NUMBER = '4242424242424242';
-
-    /**
-     * List of fake payment tokens.
+     * Payment token prefix.
      *
-     * @var \Illuminate\Support\Collection
+     * @param string $key
      */
-    protected $tokens;
+    protected $prefix = 'fake-tok_';
 
     /**
-     * All charge amount received.
+     * Get total amount the customer is charged.
      *
-     * @var \Illuminate\Support\Collection
+     * @return int
      */
-    protected $chargeAmount = [];
-
-    /**
-     * Create new instance of fake payment gateway.
-     */
-    public function __construct()
+    public function total(): int
     {
-        $this->tokens = collect();
-
-        parent::__construct();
+        return $this->total;
     }
 
     /**
      * Charge the customer with the given amount.
      *
-     * @param int         $amount
-     * @param string      $paymentToken
-     * @param string|null $destinationAccountId
+     * @param \App\Models\Order $order
+     * @param string            $paymentToken
      *
      * @return void
      */
-    public function charge(int $amount, string $paymentToken, ?string $destinationAccountId = null): void
+    public function charge(Order $order, string $paymentToken): void
     {
         $this->runBeforeChargesCallback();
 
-        if (!$this->tokens->has($paymentToken)) {
-            throw new PaymentFailedException('Invalid payment token received', $amount);
+        if (!$this->matches($paymentToken)) {
+            throw new PaymentFailedException("Token {$paymentToken} is invalid", $order->total);
         }
 
-        $this->charges[] = $this->getLocalCharger([
-            'amount' => $this->setChargeAmount($amount),
-            'card_last_four' => substr($this->tokens[$paymentToken], -4),
-            'destination' => $destinationAccountId,
-        ]);
+        $this->total = $order->total;
+
+        $this->saveChargeDetails($order, $paymentToken);
     }
 
     /**
@@ -72,48 +58,14 @@ class FakePaymentGateway extends PaymentGateway implements PaymentGatewayContrac
      */
     public function generateToken(array $card): string
     {
-        $token = 'fake-tok_' . Str::random(24);
+        if (is_null($card['number'])) {
+            throw new InvalidArgumentException('Card number not found');
+        }
 
-        $this->tokens[$token] = $card['card_number'] ?? self::TEST_CARD_NUMBER;
+        $token = $this->prefix . Crypt::encryptString($card['number']);
+
+        $this->tokens[$token] = $card['number'];
 
         return $token;
-    }
-
-    /**
-     * Get all new charges during given callback.
-     *
-     * @param \Closure $callback
-     *
-     * @return \Illuminate\Support\Collection
-     */
-    public function newChargesDuring(Closure $callback): Collection
-    {
-        $chargesFrom = $this->charges->count();
-
-        call_user_func_array($callback, [$this]);
-
-        return $this->charges->slice($chargesFrom)->reverse()->values();
-    }
-
-    /**
-     * Get all new charges since given charge ID.
-     *
-     * @param string|null $chargeId
-     *
-     * @return \Illuminate\Support\Collection
-     */
-    public function newChargesSince(?string $chargeId = null): Collection
-    {
-        return $this->charges->where('id', $chargeId);
-    }
-
-    /**
-     * Get total amount the customer is charged.
-     *
-     * @return int
-     */
-    public function totalCharges(): int
-    {
-        return $this->totalCharges = $this->chargeAmount->sum();
     }
 }

@@ -26,11 +26,7 @@ class BillingServiceProvider extends ServiceProvider
     protected function registerPaymentGateways(): void
     {
         $this->app->bind(StripePaymentGateway::class, function ($app) {
-            $fakePaymentGateway = new StripePaymentGateway(
-                $app['config']->get('services.stripe.secret')
-            );
-
-            return $fakePaymentGateway;
+            return new StripePaymentGateway($app['config']->get('services.stripe.secret'));
         });
 
         $this->app->bind(PaymentGateway::class, StripePaymentGateway::class);

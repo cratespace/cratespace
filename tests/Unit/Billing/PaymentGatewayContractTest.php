@@ -2,108 +2,115 @@
 
 namespace Tests\Unit\Billing;
 
+use Exception;
+use App\Models\Space;
+use App\Models\Charge;
+use App\Events\OrderPlacedEvent;
+use Illuminate\Support\Facades\Event;
+use App\Events\SuccessfullyChargedEvent;
 use App\Exceptions\PaymentFailedException;
 
 trait PaymentGatewayContractTest
 {
     /**
-     * ID of latest charge made.
+     * Instance of fake payment gateway.
      *
-     * @var string
+     * @var \App\Billing\PaymentGateways\PaymentGateway
      */
-    protected $lastChargeId;
+    protected $paymentGateway;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        config()->set('defaults.charges.service', 0.03);
+        config()->set('defaults.charges.tax', 0.01);
+
+        $this->getPaymentGateway();
+    }
+
+    protected function tearDown(): void
+    {
+        cache()->flush();
+    }
 
     /** @test */
-    public function charges_with_a_valid_payment_token_are_successful()
+    public function it_fires_an_event_after_a_successfull_charge()
     {
-        $this->performFirstCharge();
+        $space = create(Space::class, ['price' => 3250, 'tax' => 162.5]);
+        $this->calculateCharges($space);
+        $order = $space->placeOrder($this->orderDetails());
 
-        $paymentGateway = $this->getPaymentGateway();
+        Event::fake();
 
-        $newCharges = $paymentGateway->newChargesDuring(function ($paymentGateway) {
-            $paymentGateway->charge(
-                2500,
-                $paymentGateway->generateToken($this->getCardDetails()),
-                config('services.stripe.client_id')
-            );
+        $this->paymentGateway->charge($order, $this->paymentGateway->generateToken($this->getCardDetails()));
+
+        Event::assertDispatched(function (SuccessfullyChargedEvent $event) use ($order) {
+            return $event->order->id === $order->id;
         });
 
-        $this->assertCount(1, $newCharges);
-        $this->assertEquals(2500, $newCharges->map->amount()->sum());
-    }
-
-    /** @test */
-    public function it_has_a_test_card_number()
-    {
-        $this->assertEquals(
-            $this->getPaymentGateway()::TEST_CARD_NUMBER,
-            '4242424242424242'
-        );
-    }
-
-    /** @test */
-    public function charges_with_an_invalid_payment_token_fail()
-    {
-        $paymentGateway = $this->getPaymentGateway();
-
-        $newCharges = $paymentGateway->newChargesDuring(function ($paymentGateway) {
-            try {
-                $paymentGateway->charge(2500, 'invalid-payment-token', env('STRIPE_TEST_PROMOTER_ID'));
-            } catch (PaymentFailedException $e) {
-                $this->assertEquals(2500, $e->chargedAmount());
-                $this->assertInstanceOf(PaymentFailedException::class, $e);
-
-                return;
-            }
-
-            $this->fail('Charging with an invalid payment token did not throw a PaymentFailedException.');
+        Event::assertDispatched(function (OrderPlacedEvent $event) use ($order) {
+            return $event->order->id === $order->id;
         });
-
-        $this->assertCount(0, $newCharges);
     }
 
     /** @test */
-    public function It_can_run_a_hook_before_the_first_charge()
+    public function it_accepts_charges_with_a_valid_payment_token()
     {
-        $paymentGateway = $this->getPaymentGateway();
-        $timesCallbackRan = 0;
+        $user = $this->signIn();
+        $space = create(Space::class, [
+            'user_id' => $user->id,
+            'price' => 3250,
+            'tax' => 162.5,
+            ]);
+        $this->calculateCharges($space);
+        $order = $space->placeOrder($this->orderDetails());
 
-        $paymentGateway->beforeFirstCharge(function ($paymentGateway) use (&$timesCallbackRan) {
-            $paymentGateway->charge(
-                1200,
-                $paymentGateway->generateToken($this->getCardDetails()),
-                config('services.stripe.client_id')
-            );
+        $this->paymentGateway->charge($order, $this->paymentGateway->generateToken($this->getCardDetails()));
 
-            ++$timesCallbackRan;
+        $charge = (object) Charge::where('order_id', $order->id)->first()->details;
 
-            $this->assertEquals(1200, $paymentGateway->totalCharges());
-        });
+        $lastCharge = $this->getLastCharge($order, $charge);
 
-        $paymentGateway->charge(
-            1200,
-            $paymentGateway->generateToken($this->getCardDetails()),
-            config('services.stripe.client_id')
-        );
-        $this->assertEquals(1, $timesCallbackRan);
-        $this->assertEquals(2400, $paymentGateway->totalCharges());
+        $this->assertEquals(3583, $this->paymentGateway->total());
+        $this->assertEquals(3583, $lastCharge->amount);
+        $this->assertEquals($order->total, $lastCharge->amount);
+        $this->assertDatabaseHas('charges', ['amount' => $order->total]);
     }
 
-    /**
-     * Perform initial charge action.
-     *
-     * @return void
-     */
-    protected function performFirstCharge(): void
+    /** @test */
+    public function it_can_generate_and_validate_a_testing_payment_token()
     {
-        $paymentGatewayFirst = $this->getPaymentGateway();
+        $token = $this->paymentGateway->generateToken($this->getCardDetails());
 
-        $paymentGatewayFirst->charge(
-            2400,
-            $paymentGatewayFirst->generateToken($this->getCardDetails()),
-            config('services.stripe.client_id')
-        );
+        $this->assertTrue($this->paymentGateway->matches($token));
+    }
 
-        $this->lastChargeId = $paymentGatewayFirst->charges()->last()->id;
+    /** @test */
+    public function it_rejects_charges_with_an_invalid_payment_token()
+    {
+        $user = $this->signIn();
+        $space = create(Space::class, [
+            'user_id' => $user->id,
+            'price' => 3250,
+            'tax' => 162.5,
+        ]);
+        $this->calculateCharges($space);
+        $order = $space->placeOrder($this->orderDetails());
+
+        try {
+            $this->paymentGateway->charge($order, 'invalid-payment-token');
+        } catch (Exception $e) {
+            $this->assertInstanceOf(PaymentFailedException::class, $e);
+            $this->assertEquals(3583, $e->chargedAmount());
+            $this->assertEquals(0, $this->paymentGateway->total());
+            $this->assertDatabaseMissing('charges', [
+                'amount' => $order->total,
+            ]);
+
+            return true;
+        }
+
+        $this->fail();
     }
 }

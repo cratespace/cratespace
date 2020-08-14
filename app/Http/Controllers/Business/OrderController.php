@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Business;
 
 use App\Models\Order;
+use App\Queries\OrderQuery;
 use App\Filters\OrderFilter;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -18,7 +19,7 @@ class OrderController extends Controller
     public function index(Request $request, OrderFilter $filters)
     {
         return view('business.orders.index', [
-            'resource' => Order::ForBusiness($filters, $request->search)
+            'resource' => OrderQuery::ForBusiness($filters, $request->search)
                 ->paginate($request->perPage ?? 10),
         ]);
     }

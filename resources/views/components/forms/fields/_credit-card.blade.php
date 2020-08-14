@@ -3,10 +3,10 @@
         <label class="block">
             <span class="text-gray-700 text-sm font-semibold">{{ __('Card number') }}</span>
 
-            <input type="tel" name="card_number" id="card_number" class="form-input mt-1 block w-full @error('card_number') placeholder-red-500 border-red-300 bg-red-100 @enderror" inputmode="numeric" pattern="[0-9\s]{13,19}" autocomplete="cc-number" maxlength="19" placeholder="4242 4242 4242 4242" value="{{ old('card_number') ?? ($card_number ?? null) }}">
+            <input type="tel" name="number" id="number" class="form-input mt-1 block w-full @error('number') placeholder-red-500 border-red-300 bg-red-100 @enderror" inputmode="numeric" pattern="[0-9\s]{13,19}" autocomplete="cc-number" maxlength="19" placeholder="4242 4242 4242 4242" value="{{ old('number') ?? ($number ?? null) }}">
         </label>
 
-        @error('card_number')
+        @error('number')
             <div class="mt-2" role="alert">
                 <span class="text-xs text-red-500 font-semibold">{{ $message }}</span>
             </div>
@@ -49,7 +49,7 @@
 
             <div class="row mt-1">
                 <div class="col-7">
-                    <select class="form-select block w-full" name="expiration_month" id="expiration_month">
+                    <select class="form-select block w-full" name="exp_month" id="exp_month">
                         <option value="01">January</option>
                         <option value="02">February </option>
                         <option value="03">March</option>
@@ -66,7 +66,7 @@
                 </div>
 
                 <div class="col-5">
-                    <select class="form-select block w-full" name="expiration_year" id="expiration_year">
+                    <select class="form-select block w-full" name="exp_year" id="exp_year">
                         @foreach (range(date('Y'), date('Y') + 10) as $year)
                             <option value="{{ $year }}"> {{ $year }}</option>
                         @endforeach
@@ -75,7 +75,7 @@
             </div>
         </label>
 
-        @error('expiration_month')
+        @error('exp_month')
             <div class="mt-2" role="alert">
                 <span class="text-xs text-red-500 font-semibold">{{ __('Expiration month or year is invalid') }}</span>
             </div>

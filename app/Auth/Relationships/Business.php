@@ -2,29 +2,29 @@
 
 namespace App\Auth\Relationships;
 
-use App\Models\User;
+use Closure;
 use Illuminate\Support\Str;
-use App\Contracts\Auth\Responsibility;
+use App\Contracts\Support\Responsibility;
 use App\Models\Business as BusinessModel;
 
 class Business implements Responsibility
 {
     /**
-     * Handle responsibility.
+     * Handle given data and pass it on to next action.
      *
-     * @param \App\Models\User $user
-     * @param array            $data
+     * @param array    $data
+     * @param \Closure $next
      *
-     * @return App\Models\User
+     * @return mixed
      */
-    public function handle(User $user, array $data): User
+    public function handle(array $data, Closure $next)
     {
         BusinessModel::create([
-            'user_id' => $user->id,
+            'user_id' => $data['user']->id,
             'name' => $data['business'],
             'slug' => Str::slug($data['business']),
         ]);
 
-        return $user;
+        return $next($data);
     }
 }

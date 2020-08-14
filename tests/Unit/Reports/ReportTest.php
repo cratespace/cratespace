@@ -4,7 +4,6 @@ namespace Tests\Unit\Reports;
 
 use Carbon\Carbon;
 use Tests\TestCase;
-use ReflectionClass;
 use App\Reports\Report;
 use App\Reports\Query\Builder;
 use Illuminate\Support\Collection;
@@ -21,11 +20,7 @@ class ReportTest extends TestCase
         $query->setForAuthurizedOnly();
         $report = new MockDailyReport($query);
 
-        $reportReflection = new ReflectionClass($report);
-        $getReportProperty = $reportReflection->getProperty('query');
-        $getReportProperty->setAccessible(true);
-
-        $this->assertInstanceOf(QueryBuilder::class, $getReportProperty->getValue($report));
+        $this->assertInstanceOf(QueryBuilder::class, $this->setAccessibleProperty($report, 'query'));
     }
 
     /** @test */

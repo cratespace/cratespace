@@ -16,6 +16,14 @@ jobs:
           command: |
             curl -sL https://deb.nodesource.com/setup_10.x | sudo -E bash -
             sudo apt-get install -y nodejs
+      - run:
+          name: Install PHP Extensions
+          command: |
+            sudo apt-get update -y
+            sudo apt-get install -y libgmp-dev re2c libmhash-dev libmcrypt-dev file
+            sudo ln -s /usr/include/x86_64-linux-gnu/gmp.h /usr/local/include/
+            sudo docker-php-ext-configure gmp
+            sudo docker-php-ext-install gmp
 
       # Download and cache dependencies
 

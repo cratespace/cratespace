@@ -6,13 +6,25 @@ use Carbon\Carbon;
 use Tests\TestCase;
 use App\Models\Order;
 use App\Models\Space;
-use App\Billing\Calculator;
 
 class ViewSpacesListingTest extends TestCase
 {
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $_SERVER['REMOTE_ADDR'] = '122.255.0.0';
+    }
+
     protected function tearDown(): void
     {
         cache()->flush();
+
+        unset($_SERVER['HTTP_CLIENT_IP'], $_SERVER['HTTP_X_FORWARDED_FOR'], $_SERVER['REMOTE_ADDR']);
+
+        $_SERVER['HTTP_CLIENT_IP'] = null;
+        $_SERVER['HTTP_X_FORWARDED_FOR'] = null;
+        $_SERVER['REMOTE_ADDR'] = null;
     }
 
     /** @test */
@@ -22,23 +34,22 @@ class ViewSpacesListingTest extends TestCase
 
         $this->get('/')
             ->assertStatus(200)
-            ->assertSee($space->uid);
+            ->assertSee($space->code);
     }
 
     /** @test */
     public function user_cannot_view_unavailable_spaces_in_listing()
     {
         $expiredSpace = create(Space::class, ['departs_at' => Carbon::now()->subMonth()]);
-        $orderedSpace = create(Space::class);
-        $chargesCalculator = new Calculator($orderedSpace);
-        $chargesCalculator->calculateCharges();
+        $orderedSpace = create(Space::class, ['reserved_at' => now()]);
+        $this->calculateCharges($orderedSpace);
         create(Order::class, ['space_id' => $orderedSpace->id]);
         $availableSpace = create(Space::class);
 
         $this->get('/')
             ->assertStatus(200)
-            ->assertDontSee($expiredSpace->uid)
-            ->assertDontSee($orderedSpace->uid)
-            ->assertSee($availableSpace->uid);
+            ->assertDontSee($expiredSpace->code)
+            ->assertDontSee($orderedSpace->code)
+            ->assertSee($availableSpace->code);
     }
 }

@@ -4,7 +4,7 @@
             <div class="col-12">
                 <div class="rounded-lg overflow-hidden">
                     <div class="flex flex-col md:flex-row items-center">
-                        <div class="w-full md:flex-1 bg-white pr-6 py-5 border-b md:border-r border-gray-300">
+                        <div class="w-full md:flex-1 bg-white pr-0 md:pr-6 py-5 border-b md:border-r border-gray-300">
                             <div class="flex items-start justify-between">
                                 <div class="leading-tight">
                                     <div>
@@ -24,7 +24,7 @@
                             </div>
                         </div>
 
-                        <div class="w-full md:flex-1 bg-white px-6 py-5 border-b md:border-r border-gray-300">
+                        <div class="w-full md:flex-1 bg-white px-0 md:px-6 py-5 border-b md:border-r border-gray-300">
                             <div class="flex items-start justify-between">
                                 <div class="leading-tight">
                                     <div>
@@ -44,7 +44,7 @@
                             </div>
                         </div>
 
-                        <div class="w-full md:flex-1 bg-white pl-6 py-5 border-b">
+                        <div class="w-full md:flex-1 bg-white pl-0 md:pl-6 py-5 border-b">
                             <div class="flex items-start justify-between">
                                 <div class="leading-tight">
                                     <div>
