@@ -27,7 +27,7 @@ class CreateSpacesTable extends Migration
             $table->float('weight');
             $table->text('note')->nullable();
             $table->integer('price')->default(0);
-            $table->integer('tax')->default(0);
+            $table->integer('tax')->default(0)->nullable();
             $table->foreignId('user_id')
                 ->constrained()
                 ->onDelete('cascade');

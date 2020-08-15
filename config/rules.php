@@ -1,6 +1,8 @@
 <?php
 
-/**
+use Illuminate\Validation\Rule;
+
+/*
  * All Validation Rules.
  */
 return [
@@ -27,19 +29,22 @@ return [
      * Spaces Inputs Rules
      */
     'space' => [
-        'code' => ['required', 'string', 'max:255'],
+        'code' => ['nullable', 'string', 'max:255'],
         'height' => ['required', 'integer'],
         'width' => ['required', 'integer'],
         'length' => ['required', 'integer'],
         'weight' => ['required', 'integer'],
-        'price' => ['required', 'integer'],
-        'tax' => ['nullable', 'integer'],
+        'price' => ['required', 'numeric'],
+        'tax' => ['nullable', 'numeric'],
         'origin' => ['required', 'string'],
         'destination' => ['required', 'string'],
         'departs_at' => ['required', 'date'],
         'arrives_at' => ['required', 'date', 'after:departs_at'],
         'note' => ['nullable', 'string'],
-        'type' => ['required', 'string'],
+        'type' => [
+            'required', 'string',
+            Rule::in(['Local', 'International']),
+        ],
         'base' => ['required', 'string'],
     ],
 
