@@ -11,6 +11,10 @@ class ManageSpacesTest extends TestCase
     /** @test */
     public function authorized_users_can_only_view_their_own_space_listing()
     {
+        $this->get('/spaces')
+            ->assertStatus(302)
+            ->assertRedirect('/login');
+
         $user = $this->signIn();
         $spaceOfUser = create(Space::class, ['user_id' => $user->id]);
         $spaceOfAnotherUser = create(Space::class);
