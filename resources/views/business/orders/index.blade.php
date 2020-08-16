@@ -45,7 +45,7 @@
                         <div class="flex items-center">
                             <div>
                                 <div class="text-sm leading-5 text-gray-800 font-semibold">
-                                    <a href="#">{{ '#' . $order->confirmation_number }}</a>
+                                    <a href="{{ $order->space->path }}">{{ '#' . $order->confirmation_number }}</a>
                                 </div>
 
                                 <div class="mt-1 text-sm leading-5 font-medium text-gray-800">{{ $order->name }}</div>
@@ -84,7 +84,7 @@
                     </td>
 
                     <td class="px-6 py-4 whitespace-no-wrap text-right border-b border-gray-200 bg-gray-100 text-sm leading-5 font-medium">
-                        <a href="#">Manage</a>
+                        <a href="{{ $order->space->path }}">Manage</a>
                     </td>
                 </tr>
             @empty

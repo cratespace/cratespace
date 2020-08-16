@@ -26,7 +26,7 @@
 
                 <ul class="flex items-center">
                     <li class="ml-6">
-                        <a class="btn btn-primary px-3 py-0 leading-9 text-sm" href="@guest {{ route('login') }} @else {{ route('home') }} @endguest">
+                        <a class="{{ is_active('/', 'btn btn-secondary px-3 py-0 leading-9', 'font-semibold') }} text-sm" href="@guest {{ route('login') }} @else {{ route('home') }} @endguest">
                             @guest()
                                 <span>{{ __('Sign in') }}</span>
                             @else

@@ -35,7 +35,10 @@ class OrderController extends Controller
     {
         $this->authorize('delete', $order);
 
-        return view('business.orders.show', compact('order'));
+        return view('business.orders.show', [
+            'order' => $order,
+            'space' => $order->space,
+        ]);
     }
 
     /**
@@ -48,7 +51,7 @@ class OrderController extends Controller
      */
     public function update(UpdateOrderStatusRequest $request, Order $order)
     {
-        $order->updateStatus($request->status);
+        $order->update(['status' => $request->status]);
 
         if ($request->wantsJson()) {
             return response($order->fresh(), 201);

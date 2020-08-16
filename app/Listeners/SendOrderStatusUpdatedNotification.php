@@ -3,6 +3,7 @@
 namespace App\Listeners;
 
 use App\Mail\OrderStatusUpdatedMail;
+use Illuminate\Support\Facades\Mail;
 use App\Events\OrderStatusUpdatedEvent;
 
 class SendOrderStatusUpdatedNotification

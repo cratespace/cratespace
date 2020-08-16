@@ -61,7 +61,7 @@ class OrderQuery extends Query
             ->whereUserId(user('id'))
             ->select('id', 'confirmation_number', 'name', 'phone', 'status', 'total', 'space_id')
             ->with(['space' => function ($query) {
-                $query->select('id', 'uid', 'departs_at', 'arrives_at');
+                $query->select('id', 'code', 'departs_at', 'arrives_at');
             }])
             ->whereStatus('Pending')
             ->take($limit)

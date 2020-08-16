@@ -28,6 +28,23 @@ class SpaceController extends Controller
     }
 
     /**
+     * Display the specified resource.
+     *
+     * @param \App\Models\Space $space
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function show(Space $space)
+    {
+        $this->authorize('delete', $space);
+
+        return view('business.spaces.show', [
+            'space' => $space,
+            'order' => $space->order ?: null,
+        ]);
+    }
+
+    /**
      * Show the form for creating a new resource.
      *
      * @return \Illuminate\Http\Response

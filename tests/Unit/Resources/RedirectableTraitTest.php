@@ -14,11 +14,11 @@ class RedirectableTraitTest extends TestCase
         $mockModel = new Mock();
         $mockModel->id = 1;
 
-        Route::name('mocks.edit')
-            ->get('/mocks/{mock}/edit', function () {
+        Route::name('mocks.show')
+            ->get('/mocks/{mock}', function () {
                 return 'mocked';
             });
 
-        $this->assertEquals('http://localhost/mocks/1/edit', $mockModel->path);
+        $this->assertEquals('http://localhost/mocks/1', $mockModel->path);
     }
 }
