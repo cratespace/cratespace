@@ -1,15 +1,7 @@
 @extends('business.layouts.crm', [
     'pageTitle' => 'Orders',
     'resourceName' => 'orders',
-    'statuses' => [
-        'Pending',
-        'Approved',
-        'Canceled',
-        'Rejected',
-        'Completed',
-        'Shipped',
-        'Delivered'
-    ]
+    'statuses' => config('defaults.orders.statuses')
 ])
 
 @section('crm-content')

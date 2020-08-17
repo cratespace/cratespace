@@ -1,11 +1,7 @@
 @extends('business.layouts.crm', [
     'pageTitle' => 'Spaces',
     'resourceName' => 'spaces',
-    'statuses' => [
-        'Available',
-        'Ordered',
-        'Expired'
-    ]
+    'statuses' => config('defaults.spaces.statuses')
 ])
 
 @section('crm-content')

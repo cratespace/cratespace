@@ -71,6 +71,12 @@ return [
             'Local',
             'International',
         ],
+
+        'statuses' => [
+            'Available',
+            'Ordered',
+            'Expired',
+        ],
     ],
 
     /*

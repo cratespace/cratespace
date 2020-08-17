@@ -48,16 +48,30 @@
                             </div>
 
                             <div class="text-right flex flex-col justify-between items-end">
-                                <div>
-                                    <div class="flex items-center">
-                                        <x:heroicon-o-arrows-expand class="w-4 h-4 text-gray-400"/>
+                                <div class="flex flex-col justify-between items-end">
+                                    <div>
+                                        <div class="flex items-center">
+                                            <x:heroicon-o-arrows-expand class="w-4 h-4 text-gray-400"/>
 
-                                        <div class="ml-1 text-xs">Dimensions</div>
+                                            <div class="ml-1 text-xs">Dimensions</div>
+                                        </div>
+
+                                        <div><span class="font-bold text-gray-700">{{ $space->present()->volume }}</span> (cu ft)</div>
+
+                                        <div class="text-sm">{{ $space->height }} x {{ $space->width }} x {{ $space->length }} (ft)</div>
                                     </div>
 
-                                    <div><span class="font-bold text-gray-700">{{ $space->present()->volume }}</span> (cu ft)</div>
+                                    <div class="mt-4">
+                                        <div>
+                                            <div class="flex items-center">
+                                                <x:heroicon-o-archive class="w-4 h-4 text-gray-400"/>
 
-                                    <div class="text-sm">{{ $space->height }} x {{ $space->weight }} x {{ $space->length }} (ft)</div>
+                                                <div class="ml-1 text-xs">Max. weight</div>
+                                            </div>
+
+                                            <div><span class="font-bold text-gray-700">{{ $space->weight }}</span> (kg)</div>
+                                        </div>
+                                    </div>
                                 </div>
 
                                 <div class="mt-6">

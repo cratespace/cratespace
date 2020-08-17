@@ -124,16 +124,16 @@
         },
         {
             "name": "blade-ui-kit/blade-icons",
-            "version": "0.4.3",
+            "version": "0.4.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/blade-ui-kit/blade-icons.git",
-                "reference": "709cc25c732f0e88c103af2ee423e7220e53c5bd"
+                "reference": "53bbc70dcd93a35cd3b6f328778f0666bdcba1e0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/blade-ui-kit/blade-icons/zipball/709cc25c732f0e88c103af2ee423e7220e53c5bd",
-                "reference": "709cc25c732f0e88c103af2ee423e7220e53c5bd",
+                "url": "https://api.github.com/repos/blade-ui-kit/blade-icons/zipball/53bbc70dcd93a35cd3b6f328778f0666bdcba1e0",
+                "reference": "53bbc70dcd93a35cd3b6f328778f0666bdcba1e0",
                 "shasum": ""
             },
             "require": {
@@ -195,7 +195,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2020-07-09T20:12:04+00:00"
+            "time": "2020-08-14T09:15:55+00:00"
         },
         {
             "name": "brick/math",
@@ -3133,16 +3133,16 @@
         },
         {
             "name": "stripe/stripe-php",
-            "version": "v7.46.1",
+            "version": "v7.47.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/stripe/stripe-php.git",
-                "reference": "fd57205d3e3a1dccab80538654128d5c46a1f5ac"
+                "reference": "b51656cb398d081fcee53a76f6edb8fd5c1a5306"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/stripe/stripe-php/zipball/fd57205d3e3a1dccab80538654128d5c46a1f5ac",
-                "reference": "fd57205d3e3a1dccab80538654128d5c46a1f5ac",
+                "url": "https://api.github.com/repos/stripe/stripe-php/zipball/b51656cb398d081fcee53a76f6edb8fd5c1a5306",
+                "reference": "b51656cb398d081fcee53a76f6edb8fd5c1a5306",
                 "shasum": ""
             },
             "require": {
@@ -3186,7 +3186,7 @@
                 "payment processing",
                 "stripe"
             ],
-            "time": "2020-08-07T22:11:58+00:00"
+            "time": "2020-08-13T22:35:56+00:00"
         },
         {
             "name": "swiftmailer/swiftmailer",
@@ -6624,16 +6624,16 @@
         },
         {
             "name": "phpdocumentor/reflection-docblock",
-            "version": "5.2.0",
+            "version": "5.2.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpDocumentor/ReflectionDocBlock.git",
-                "reference": "3170448f5769fe19f456173d833734e0ff1b84df"
+                "reference": "d870572532cd70bc3fab58f2e23ad423c8404c44"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpDocumentor/ReflectionDocBlock/zipball/3170448f5769fe19f456173d833734e0ff1b84df",
-                "reference": "3170448f5769fe19f456173d833734e0ff1b84df",
+                "url": "https://api.github.com/repos/phpDocumentor/ReflectionDocBlock/zipball/d870572532cd70bc3fab58f2e23ad423c8404c44",
+                "reference": "d870572532cd70bc3fab58f2e23ad423c8404c44",
                 "shasum": ""
             },
             "require": {
@@ -6672,7 +6672,7 @@
                 }
             ],
             "description": "With this component, a library can provide support for annotations via DocBlocks or otherwise retrieve information that is embedded in a DocBlock.",
-            "time": "2020-07-20T20:05:34+00:00"
+            "time": "2020-08-15T11:14:08+00:00"
         },
         {
             "name": "phpdocumentor/type-resolver",
@@ -6784,16 +6784,16 @@
         },
         {
             "name": "phpunit/php-code-coverage",
-            "version": "9.1.3",
+            "version": "9.1.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/php-code-coverage.git",
-                "reference": "4abbce3b0ad05f2e7143ea5f775d5513cb5261e4"
+                "reference": "4422fca28c3634e2de8c7c373af97a104dd1a45f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/php-code-coverage/zipball/4abbce3b0ad05f2e7143ea5f775d5513cb5261e4",
-                "reference": "4abbce3b0ad05f2e7143ea5f775d5513cb5261e4",
+                "url": "https://api.github.com/repos/sebastianbergmann/php-code-coverage/zipball/4422fca28c3634e2de8c7c373af97a104dd1a45f",
+                "reference": "4422fca28c3634e2de8c7c373af97a104dd1a45f",
                 "shasum": ""
             },
             "require": {
@@ -6853,7 +6853,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2020-08-10T17:45:51+00:00"
+            "time": "2020-08-13T15:04:53+00:00"
         },
         {
             "name": "phpunit/php-file-iterator",
