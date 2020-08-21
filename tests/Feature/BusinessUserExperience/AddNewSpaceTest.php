@@ -28,6 +28,8 @@ class AddNewSpaceTest extends TestCase
     /** @test */
     public function authenticated_users_can_add_new_space()
     {
+        $this->withoutExceptionHandling();
+
         $user = $this->signIn();
         $spaceAttributes = [
             'code' => 'FAKESPACEFORTESTING',
@@ -46,7 +48,7 @@ class AddNewSpaceTest extends TestCase
             'base' => $user->business->country,
         ];
 
-        $this->post('/spaces', $spaceAttributes);
+        $postResponse = $this->post('/spaces', $spaceAttributes);
 
         $response = $this->get('/spaces');
 

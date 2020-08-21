@@ -29,7 +29,7 @@ return [
      * Spaces Inputs Rules
      */
     'space' => [
-        'code' => ['nullable', 'string', 'max:255'],
+        'code' => ['nullable', 'string', 'max:255', 'unique:spaces,code'],
         'height' => ['required', 'integer'],
         'width' => ['required', 'integer'],
         'length' => ['required', 'integer'],

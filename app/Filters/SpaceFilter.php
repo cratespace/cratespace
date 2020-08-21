@@ -24,7 +24,7 @@ class SpaceFilter extends Filter
      *
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    protected function origin($city): Builder
+    protected function origin(string $city): Builder
     {
         return $this->builder->whereOrigin($city);
     }
@@ -36,7 +36,7 @@ class SpaceFilter extends Filter
      *
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    protected function destination($city): Builder
+    protected function destination(string $city): Builder
     {
         return $this->builder->whereDestination($city);
     }
@@ -44,11 +44,11 @@ class SpaceFilter extends Filter
     /**
      * Filter according to departure date and time.
      *
-     * @param string $date
+     * @param \Carbon\Carbon $date
      *
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    protected function departs_at($date): Builder
+    protected function departs_at(Carbon $date): Builder
     {
         return $this->builder->whereDate('departs_at', '=', $date);
     }
@@ -56,11 +56,11 @@ class SpaceFilter extends Filter
     /**
      * Filter according to arrival date and time.
      *
-     * @param string $date
+     * @param \Carbon\Carbon $date
      *
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    protected function arrives_at($date): Builder
+    protected function arrives_at(Carbon $date): Builder
     {
         return $this->builder->whereDate('arrives_at', '=', $date);
     }
@@ -72,7 +72,7 @@ class SpaceFilter extends Filter
      *
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    protected function type($option): Builder
+    protected function type(string $option): Builder
     {
         if ($option == 'all') {
             return $this->builder;

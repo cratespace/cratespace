@@ -18,6 +18,53 @@ class SpacePresenter extends Presenter
     }
 
     /**
+     * Get text and color of status badge.
+     *
+     * @return array
+     */
+    public function status(): array
+    {
+        switch (true) {
+            case $this->model->isAvailable():
+                return [
+                    'text' => 'Available',
+                    'color' => 'green',
+                ];
+
+                break;
+
+            case $this->model->hasOrder():
+                return [
+                    'text' => 'Ordered',
+                    'color' => 'blue',
+                ];
+
+                break;
+
+            case $this->model->isExpired():
+                return [
+                    'text' => 'Expired',
+                    'color' => 'gray',
+                ];
+
+                break;
+        }
+    }
+
+    /**
+     * Get the name of the business the space is associated with.
+     *
+     * @return string
+     */
+    public function businessName()
+    {
+        return Business::select('name')
+            ->whereUserId($this->model->user_id)
+            ->first()
+            ->name;
+    }
+
+    /**
      * Get price attribute in money format.
      *
      * @return string
@@ -45,19 +92,6 @@ class SpacePresenter extends Presenter
     public function fullPrice(): string
     {
         return $this->formatMoney($this->model->price + $this->model->tax);
-    }
-
-    /**
-     * Get the name of the business the space is associated with.
-     *
-     * @return string
-     */
-    public function businessName()
-    {
-        return Business::select('name')
-            ->whereUserId($this->model->user_id)
-            ->first()
-            ->name;
     }
 
     /**

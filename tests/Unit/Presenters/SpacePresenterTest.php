@@ -2,6 +2,7 @@
 
 namespace Tests\Unit\Presenters;
 
+use Carbon\Carbon;
 use Tests\TestCase;
 use App\Models\Space;
 use App\Models\Business;
@@ -37,6 +38,37 @@ class SpacePresenterTest extends TestCase
 
         $this->assertEquals($volume, $space->present()->volume);
         $this->assertTrue(is_int($space->present()->volume));
+    }
+
+    /** @test */
+    public function it_can_give_an_array_of_status_information()
+    {
+        $availableSpace = create(Space::class);
+        $this->assertEquals(
+            ['text' => 'Available', 'color' => 'green'],
+            $availableSpace->present()->status
+        );
+
+        $orderedSpace = create(Space::class, ['reserved_at' => Carbon::now()->subDays(1)]);
+        $this->assertEquals(
+            ['text' => 'Ordered', 'color' => 'blue'],
+            $orderedSpace->present()->status
+        );
+
+        $expiredSpace = create(Space::class, ['departs_at' => Carbon::now()->subDays(1)]);
+        $this->assertEquals(
+            ['text' => 'Expired', 'color' => 'gray'],
+            $expiredSpace->present()->status
+        );
+
+        $expiredOrderedSpace = create(Space::class, [
+            'reserved_at' => Carbon::now()->subDays(2),
+            'departs_at' => Carbon::now()->subDays(1),
+        ]);
+        $this->assertEquals(
+            ['text' => 'Ordered', 'color' => 'blue'],
+            $expiredOrderedSpace->present()->status
+        );
     }
 
     /** @test */

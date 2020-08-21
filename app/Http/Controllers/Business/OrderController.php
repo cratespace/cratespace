@@ -25,23 +25,6 @@ class OrderController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     *
-     * @param \App\Models\Order $order
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Order $order)
-    {
-        $this->authorize('delete', $order);
-
-        return view('business.orders.show', [
-            'order' => $order,
-            'space' => $order->space,
-        ]);
-    }
-
-    /**
      * Update the specified resource in storage.
      *
      * @param \App\Http\Requests\UpdateOrderStatusRequest $request
