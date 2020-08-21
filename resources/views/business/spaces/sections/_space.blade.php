@@ -21,7 +21,7 @@
 <div>
     <dl>
         <div class="sm:grid sm:grid-cols-3 sm:gap-4">
-            <dt class="text-sm leading-5 font-medium">
+            <dt class="text-sm leading-5 font-medium text-gray-500">
                 UID/Hash Code
             </dt>
 
@@ -31,7 +31,7 @@
         </div>
 
         <div class="mt-6 sm:grid sm:grid-cols-3 sm:gap-4">
-            <dt class="text-sm leading-5 font-medium">
+            <dt class="text-sm leading-5 font-medium text-gray-500">
                 Type
             </dt>
 
@@ -41,7 +41,7 @@
         </div>
 
         <div class="mt-6 sm:grid sm:grid-cols-3 sm:gap-4">
-            <dt class="text-sm leading-5 font-medium">
+            <dt class="text-sm leading-5 font-medium text-gray-500">
                 Dimensions
             </dt>
 
@@ -55,7 +55,7 @@
         </div>
 
         <div class="mt-6 sm:grid sm:grid-cols-3 sm:gap-4">
-            <dt class="text-sm leading-5 font-medium">
+            <dt class="text-sm leading-5 font-medium text-gray-500">
                 Max. allowable weight
             </dt>
 
@@ -67,7 +67,7 @@
         </div>
 
         <div class="mt-6 sm:grid sm:grid-cols-3 sm:gap-4">
-            <dt class="text-sm leading-5 font-medium">
+            <dt class="text-sm leading-5 font-medium text-gray-500">
                 Schedule
             </dt>
 
@@ -85,7 +85,7 @@
         </div>
 
         <div class="mt-6 sm:grid sm:grid-cols-3 sm:gap-4">
-            <dt class="text-sm leading-5 font-medium">
+            <dt class="text-sm leading-5 font-medium text-gray-500">
                 Travel from/to
             </dt>
 
@@ -101,7 +101,7 @@
         </div>
 
         <div class="mt-6 sm:grid sm:grid-cols-3 sm:gap-4">
-            <dt class="text-sm leading-5 font-medium">
+            <dt class="text-sm leading-5 font-medium text-gray-500">
                 Pricing
             </dt>
 
@@ -121,7 +121,7 @@
         </div>
 
         <div class="mt-6 sm:grid sm:grid-cols-3 sm:gap-4">
-            <dt class="text-sm leading-5 font-medium">
+            <dt class="text-sm leading-5 font-medium text-gray-500">
                 Addtional information
             </dt>
 

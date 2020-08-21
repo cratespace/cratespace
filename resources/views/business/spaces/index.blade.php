@@ -49,8 +49,8 @@
                     </td>
 
                     <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200 bg-gray-100">
-                        <span class="px-2 inline-flex text-sm leading-5 font-medium rounded-full bg-blue-100 text-blue-800">
-                            {{ $space->status }}
+                        <span class="px-2 inline-flex text-sm leading-5 font-medium rounded-full bg-{{ $space->present()->status['color'] }}-100 text-{{ $space->present()->status['color'] }}-800">
+                            {{ $space->present()->status['text'] }}
                         </span>
                     </td>
 
@@ -65,7 +65,7 @@
                     </td>
 
                     <td class="px-6 py-4 whitespace-no-wrap text-right border-b border-gray-200 bg-gray-100 text-sm leading-5 font-medium">
-                        <a href="{{ route('spaces.edit', $space) }}">Manage</a>
+                        <a href="{{ route('spaces.edit', $space) }}">Edit</a>
                     </td>
                 </tr>
             @empty

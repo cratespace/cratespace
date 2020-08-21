@@ -3,10 +3,12 @@
 namespace App\Presenters;
 
 use App\Models\Business;
-use App\Support\Formatter;
+use App\Presenters\Traits\FormatsMoney;
 
 class SpacePresenter extends Presenter
 {
+    use FormatsMoney;
+
     /**
      * Calculate and present volume of space.
      *
@@ -92,17 +94,5 @@ class SpacePresenter extends Presenter
     public function fullPrice(): string
     {
         return $this->formatMoney($this->model->price + $this->model->tax);
-    }
-
-    /**
-     * Convert given amount from cents to money format.
-     *
-     * @param int $amount
-     *
-     * @return string
-     */
-    protected function formatMoney(?int $amount = null): string
-    {
-        return Formatter::money($amount ?? 0);
     }
 }

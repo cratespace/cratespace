@@ -13,8 +13,9 @@
 
             <div>
                 <div class="dropdown">
-                    <a class="btn btn-primary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        {{ $order->status }}
+                    <a class="btn btn-secondary inline-flex items-center dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <span class="mr-2">{{ $order->status }}</span>
+                        <x:heroicon-o-chevron-down class="w-4 h-4"/>
                     </a>
 
                     <div class="mt-3 dropdown-menu dropdown-menu-right rounded-lg shadow-lg" aria-labelledby="dropdownMenuLink">

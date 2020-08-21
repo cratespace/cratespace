@@ -20,6 +20,17 @@ abstract class TestCase extends BaseTestCase
     use Concerns\ChecksForInternet;
     use Concerns\CanPlaceOrder;
     use Concerns\TestsProtectedQualities;
+    use Concerns\HasMacros;
+
+    /**
+     * Setup test suite.
+     */
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->registerMacros();
+    }
 
     /**
      * Assert that a validation exception is thrown.

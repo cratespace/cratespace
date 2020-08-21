@@ -65,8 +65,8 @@
                     </td>
 
                     <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200 bg-gray-100">
-                        <span class="px-2 inline-flex text-sm leading-5 font-medium rounded-full bg-yellow-100 text-yellow-800">
-                            {{ $order->status }}
+                        <span class="px-2 inline-flex text-sm leading-5 font-medium rounded-full bg-{{ $order->present()->status['color'] }}-100 text-{{ $order->present()->status['color'] }}-800">
+                            {{ $order->present()->status['text'] }}
                         </span>
                     </td>
 

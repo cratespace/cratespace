@@ -2,11 +2,11 @@
     <div class="container">
         <div class="row">
             <div class="col-md-6 mb-20">
-                @include('business.general.sections._space')
+                @include('business.spaces.sections._space')
             </div>
 
             <div class="col-md-6 mb-20">
-                @include('business.general.sections._order')
+                @include('business.spaces.sections._order')
             </div>
         </div>
     </div>
