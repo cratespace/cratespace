@@ -62,6 +62,14 @@ class TicketTest extends TestCase
     }
 
     /** @test */
+    public function it_can_generate_a_unique_hasid_for_itself()
+    {
+        $ticket = create(Ticket::class, ['code' => null]);
+
+        $this->assertNotNull($ticket->code);
+    }
+
+    /** @test */
     public function it_has_a_set_of_required_attributes()
     {
         $agent = $this->signIn();
