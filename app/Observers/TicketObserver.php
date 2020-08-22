@@ -5,10 +5,13 @@ namespace App\Observers;
 use Exception;
 use App\Models\User;
 use App\Models\Ticket;
+use App\Observers\Traits\GeneratesHashids;
 use App\Exceptions\AgentNotAvailableException;
 
 class TicketObserver
 {
+    use GeneratesHashids;
+
     /**
      * Handle the ticket "creating" event.
      *
@@ -20,6 +23,8 @@ class TicketObserver
     {
         try {
             if (is_null($ticket->agent_id)) {
+                $this->generateHashCode($ticket);
+
                 $this->assignToAgent($ticket);
             }
         } catch (Exception $e) {
