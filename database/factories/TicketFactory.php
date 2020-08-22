@@ -8,6 +8,7 @@ use Faker\Generator as Faker;
 
 $factory->define(Ticket::class, function (Faker $faker) {
     return [
+        'code' => strtoupper(Str::random(12)),
         'subject' => $faker->sentence,
         'status' => 'Open',
         'priority' => $faker->randomElement(['Low', 'Medium', 'High']),
