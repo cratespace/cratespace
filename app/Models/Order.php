@@ -16,6 +16,13 @@ class Order extends Model
     use ManagesStatus;
 
     /**
+     * Preferred route key name.
+     *
+     * @var string
+     */
+    protected static $routeKey = 'confirmation_number';
+
+    /**
      * The attributes that are mass assignable.
      *
      * @var array
@@ -35,16 +42,6 @@ class Order extends Model
         'status',
         'confirmation_number',
     ];
-
-    /**
-     * Get the route key for the model.
-     *
-     * @return string
-     */
-    public function getRouteKeyName()
-    {
-        return 'confirmation_number';
-    }
 
     /**
      * Create new charge details.

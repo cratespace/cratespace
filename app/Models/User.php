@@ -22,6 +22,13 @@ class User extends Authenticatable implements MustVerifyEmail
     use Redirectable;
 
     /**
+     * Preferred route key name.
+     *
+     * @var string
+     */
+    protected static $routeKey = 'username';
+
+    /**
      * The attributes that are mass assignable.
      *
      * @var array
@@ -49,16 +56,6 @@ class User extends Authenticatable implements MustVerifyEmail
         'email_verified_at' => 'datetime',
         'settings' => SettingsCast::class,
     ];
-
-    /**
-     * Get the route key for the model.
-     *
-     * @return string
-     */
-    public function getRouteKeyName()
-    {
-        return 'username';
-    }
 
     /**
      * Get the user's business details.

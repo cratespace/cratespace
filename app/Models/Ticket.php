@@ -3,12 +3,21 @@
 namespace App\Models;
 
 use InvalidArgumentException;
+use App\Models\Traits\Redirectable;
 use App\Models\Concerns\ManagesStatus;
 use Illuminate\Database\Eloquent\Model;
 
 class Ticket extends Model
 {
     use ManagesStatus;
+    use Redirectable;
+
+    /**
+     * Preferred route key name.
+     *
+     * @var string
+     */
+    protected static $routeKey = 'code';
 
     /**
      * The attributes that are mass assignable.
@@ -16,6 +25,7 @@ class Ticket extends Model
      * @var array
      */
     protected $fillable = [
+        'code',
         'subject',
         'priority',
         'status',

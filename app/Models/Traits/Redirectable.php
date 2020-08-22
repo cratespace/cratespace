@@ -27,4 +27,18 @@ trait Redirectable
 
         return 'show';
     }
+
+    /**
+     * Get the route key for the model.
+     *
+     * @return string
+     */
+    public function getRouteKeyName()
+    {
+        if (isset(static::$routeKey)) {
+            return static::$routeKey;
+        }
+
+        return 'id';
+    }
 }
