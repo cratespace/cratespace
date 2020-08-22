@@ -72,6 +72,19 @@ return [
     ],
 
     /*
+     * Client Message Inputs Rules
+     */
+    'ticket' => [
+        'name' => ['required', 'string', 'max:255'],
+        'email' => ['required', 'string', 'email', 'max:255'],
+        'phone' => ['required', 'integer', 'min:9'],
+        'subject' => ['required', 'string', 'max:255'],
+        'message' => ['required', 'string'],
+        'attachment' => ['nullable', 'image'],
+        'user_id' => ['nullable', 'integer'],
+    ],
+
+    /*
      * User Business Inputs Rules
      */
     'business' => [
