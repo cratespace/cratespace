@@ -27,6 +27,7 @@
 
                                 <form id="order-update-form" action="{{ route('orders.update', $order) }}" method="POST" style="display: none;">
                                     @csrf
+
                                     @method('PUT')
 
                                     <input type="hidden" name="status" value="{{ $status }}">

@@ -4,8 +4,10 @@ namespace App\Providers;
 
 use App\Models\Order;
 use App\Models\Space;
+use App\Models\Ticket;
 use App\Observers\OrderObserver;
 use App\Observers\SpaceObserver;
+use App\Observers\TicketObserver;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\ServiceProvider;
 
@@ -19,6 +21,7 @@ class AppServiceProvider extends ServiceProvider
     protected $observers = [
         Space::class => SpaceObserver::class,
         Order::class => OrderObserver::class,
+        Ticket::class => TicketObserver::class,
     ];
 
     /**

@@ -23,6 +23,8 @@ trait PaymentGatewayContractTest
     {
         parent::setUp();
 
+        $this->determineNetworkConnectionForStripeTests();
+
         config()->set('defaults.charges.service', 0.03);
         config()->set('defaults.charges.tax', 0.01);
 
@@ -112,5 +114,17 @@ trait PaymentGatewayContractTest
         }
 
         $this->fail();
+    }
+
+    /**
+     * Skip stripe integration tests if no network connection is detected.
+     *
+     * @return void
+     */
+    protected function determineNetworkConnectionForStripeTests(): void
+    {
+        if (!$this->isConnected() && class_basename($this) === 'StripePaymentGatewayTest') {
+            $this->markTestSkipped('An Internet connection is not available.');
+        }
     }
 }

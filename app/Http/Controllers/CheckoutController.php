@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\Space;
 use App\Support\Formatter;
-use Illuminate\Pipeline\Pipeline;
 use App\Contracts\Billing\PaymentGateway;
 use App\Billing\Charges\Calculator as ChargesCalculator;
 
@@ -51,7 +50,7 @@ class CheckoutController extends Controller
     {
         $charges = [];
 
-        $chargesCalculator = new ChargesCalculator(new Pipeline(app()), $space);
+        $chargesCalculator = new ChargesCalculator($space);
 
         $chargesCalculator->calculate();
 

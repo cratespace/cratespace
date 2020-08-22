@@ -17,13 +17,6 @@ use App\Contracts\Support\Calculator as CalculatorContract;
 class Calculator implements CalculatorContract
 {
     /**
-     * Instance of application pipeline.
-     *
-     * @var \Illuminate\Cache\CacheManager
-     */
-    protected $pipeline;
-
-    /**
      * Instance of resource model adhering to "Priceable" interface.
      *
      * @var \App\Contracts\Models\Priceable
@@ -53,12 +46,10 @@ class Calculator implements CalculatorContract
     /**
      * Create new instance of charges calculator.
      *
-     * @param \Illuminate\Contracts\Pipeline\Pipeline $pipeline
-     * @param \App\Contracts\Models\Priceable         $resource
+     * @param \App\Contracts\Models\Priceable $resource
      */
-    public function __construct(?Pipeline $pipeline = null, Priceable $resource)
+    public function __construct(Priceable $resource)
     {
-        $this->pipeline = $pipeline ?? new Pipeline(app());
         $this->resource = $resource;
         $this->amounts = collect();
     }
@@ -70,8 +61,7 @@ class Calculator implements CalculatorContract
      */
     public function calculate()
     {
-        $this->pipeline()
-            ->send($this->resourceCharges())
+        (new Pipeline(app()))->send($this->resourceCharges())
             ->through($this->calculations)
             ->via('handle')
             ->then(function ($amounts) {
@@ -119,16 +109,6 @@ class Calculator implements CalculatorContract
     public function amounts(): array
     {
         return $this->amounts;
-    }
-
-    /**
-     * Get instance of pipeline handler.
-     *
-     * @return \Illuminate\Contracts\Pipeline\Pipeline
-     */
-    public function pipeline(): Pipeline
-    {
-        return $this->pipeline;
     }
 
     /**

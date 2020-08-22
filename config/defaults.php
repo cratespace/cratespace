@@ -64,6 +64,13 @@ return [
     ],
 
     /*
+     * Default Support Agent Module Details.
+     */
+    'support-agents' => [
+        'max-tickets' => 10,
+    ],
+
+    /*
      * Default Space Module Details.
      */
     'spaces' => [
@@ -89,6 +96,23 @@ return [
             'Shipped',
             'Delivered',
             'Rejected',
+        ],
+    ],
+
+    /*
+     * Default Support Ticket Management Details.
+     */
+    'tickets' => [
+        'statuses' => [
+            'Open',
+            'Pending',
+            'Closed',
+        ],
+
+        'priorities' => [
+            'Low',
+            'Medium',
+            'High',
         ],
     ],
 ];

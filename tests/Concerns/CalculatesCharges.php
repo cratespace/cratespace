@@ -2,7 +2,6 @@
 
 namespace Tests\Concerns;
 
-use Illuminate\Pipeline\Pipeline;
 use App\Billing\Charges\Calculator;
 use App\Contracts\Models\Priceable;
 use Illuminate\Database\Eloquent\Model;
@@ -30,16 +29,6 @@ trait CalculatesCharges
      */
     public function getCalculator(Model $resource): Calculator
     {
-        return new Calculator($this->getPipeline(), $resource);
-    }
-
-    /**
-     * Get Laravel pipeline instance.
-     *
-     * @return \Illuminate\Contracts\Pipeline\Pipeline
-     */
-    public function getPipeline(): Pipeline
-    {
-        return app()->make(Pipeline::class);
+        return new Calculator($resource);
     }
 }
