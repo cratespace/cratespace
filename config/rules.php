@@ -63,8 +63,7 @@ return [
      * Client Message Inputs Rules
      */
     'message' => [
-        'first_name' => ['required', 'string', 'max:255'],
-        'last_name' => ['required', 'string', 'max:255'],
+        'name' => ['required', 'string', 'max:255'],
         'email' => ['required', 'string', 'email', 'max:255'],
         'phone' => ['required', 'integer', 'min:9'],
         'subject' => ['required', 'string', 'max:255'],
@@ -83,6 +82,13 @@ return [
         'attachment' => ['nullable', 'image'],
         'user_id' => ['nullable', 'integer'],
     ],
+
+    /*
+     * Support Ticket Reply Inputs Rules
+     */
+    'reply' => [
+        'body' => ['required', 'spamfree']
+    ]
 
     /*
      * User Business Inputs Rules
