@@ -98,4 +98,16 @@ class User extends Authenticatable implements MustVerifyEmail
             return $this->hasMany(Ticket::class, 'agent_id');
         }
     }
+
+    /**
+     * Get all replies associated with the support ticket.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function replies()
+    {
+        if ($this->hasRole('support-agent')) {
+            return $this->hasMany(Reply::class, 'agent_id')->latest();
+        }
+    }
 }

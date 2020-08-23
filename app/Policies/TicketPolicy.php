@@ -48,7 +48,15 @@ class TicketPolicy
         return $this->ticketBelongsToAgent($user, $ticket);
     }
 
-    protected function ticketBelongsToAgent(User $user, Ticket $ticket)
+    /**
+     * Determine if the given ticket is handled by the given agent.
+     *
+     * @param \App\Models\User   $user
+     * @param \App\Models\Ticket $ticket
+     *
+     * @return bool
+     */
+    protected function ticketBelongsToAgent(User $user, Ticket $ticket): bool
     {
         return ($user->hasRole('support-agent') && $user->is($ticket->agent)) ||
             $user->hasRole('admin');

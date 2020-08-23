@@ -29,9 +29,6 @@ class Ticket extends Model
      */
     protected $fillable = [
         'code',
-        'name',
-        'email',
-        'phone',
         'subject',
         'priority',
         'status',
