@@ -39,7 +39,12 @@ class OrderPlacedMail extends Mailable implements ShouldQueue
      */
     public function build()
     {
-        return $this->markdown('emails.orders.placed')
-            ->subject('Your Cratespace Order');
+        return $this->from('billing@cratespace.biz', 'Cratespace Billing Service')
+            ->to($this->order->email, $this->order->name)
+            ->subject('Your Cratespace Order')
+            ->markdown(
+                'emails.orders.placed',
+                ['order' => $this->order]
+            );
     }
 }

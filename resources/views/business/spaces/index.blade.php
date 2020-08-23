@@ -1,11 +1,7 @@
 @extends('business.layouts.crm', [
     'pageTitle' => 'Spaces',
     'resourceName' => 'spaces',
-    'statuses' => [
-        'Available',
-        'Ordered',
-        'Expired'
-    ]
+    'statuses' => config('defaults.spaces.statuses')
 ])
 
 @section('crm-content')
@@ -40,7 +36,7 @@
                     <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200 bg-gray-100">
                         <div class="mt-1">
                             <div class="text-sm leading-5 text-gray-800 font-semibold">
-                                <a href="{{ $space->path }}">{{ $space->uid }}</a>
+                                <a href="{{ $space->path }}">{{ $space->code }}</a>
                             </div>
 
                             <div class="text-xs leading-5">{{ 'Added ' . $space->created_at->diffForHumans() }}</div>
@@ -48,13 +44,13 @@
                     </td>
 
                     <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200 bg-gray-100 text-sm leading-4">
-                        <div class="font-bold text-gray-800">{{ $space->present()->price }}</div>
+                        <div class="font-bold text-gray-800">{{ $space->present()->fullPrice }}</div>
                         <span class="text-xs">USD</span>
                     </td>
 
                     <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200 bg-gray-100">
-                        <span class="px-2 inline-flex text-sm leading-5 font-medium rounded-full bg-blue-100 text-blue-800">
-                            {{ $space->status }}
+                        <span class="px-2 inline-flex text-sm leading-5 font-medium rounded-full bg-{{ $space->present()->status['color'] }}-100 text-{{ $space->present()->status['color'] }}-800">
+                            {{ $space->present()->status['text'] }}
                         </span>
                     </td>
 
@@ -69,7 +65,7 @@
                     </td>
 
                     <td class="px-6 py-4 whitespace-no-wrap text-right border-b border-gray-200 bg-gray-100 text-sm leading-5 font-medium">
-                        <a href="{{ route('spaces.edit', $space) }}">Manage</a>
+                        <a href="{{ route('spaces.edit', $space) }}">Edit</a>
                     </td>
                 </tr>
             @empty

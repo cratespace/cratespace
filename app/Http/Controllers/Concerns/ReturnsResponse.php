@@ -29,4 +29,17 @@ trait ReturnsResponse
     {
         return response($data, $code);
     }
+
+    /**
+     * Returns a JSON response with given data attached.
+     *
+     * @param array $data
+     * @param int   $code
+     *
+     * @return \Illuminate\Routing\RedirectResponse
+     */
+    protected function unAuthorizedJson(array $data = [], int $code = 422)
+    {
+        return response($data, $code);
+    }
 }

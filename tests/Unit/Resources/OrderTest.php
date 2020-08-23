@@ -25,6 +25,16 @@ class OrderTest extends TestCase
     }
 
     /** @test */
+    public function it_can_update_its_status()
+    {
+        $order = create(Order::class);
+        $this->assertEquals('Pending', $order->status);
+        $order->mark('Rejected');
+        $this->assertEquals('Rejected', $order->refresh()->status);
+        $this->assertTrue($order->refresh()->marked('Rejected'));
+    }
+
+    /** @test */
     public function it_can_calculate_total_amount_and_present_in_currency_format()
     {
         [$order, $space] = $this->placeOrder();

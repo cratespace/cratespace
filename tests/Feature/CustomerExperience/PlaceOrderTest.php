@@ -128,4 +128,79 @@ class PlaceOrderTest extends TestCase
             return $mail->hasTo($order->email) && $mail->order->id === $order->id;
         });
     }
+
+    /** @test */
+    public function full_name_is_required()
+    {
+        $space = create(Space::class);
+
+        $response = $this->from("/spaces/{$space->code}/checkout")
+            ->post("/spaces/{$space->code}/orders", $this->orderDetails([
+                'name' => '',
+            ]));
+
+        $response->assertStatus(302)
+            ->assertRedirect("/spaces/{$space->code}/checkout")
+            ->assertSessionHasErrors('name');
+
+        $this->assertEquals(0, Order::count());
+    }
+
+    /** @test */
+    public function email_address_is_required()
+    {
+        $space = create(Space::class);
+
+        $response = $this->from("/spaces/{$space->code}/checkout")
+            ->post("/spaces/{$space->code}/orders", $this->orderDetails([
+                'email' => '',
+            ]));
+
+        $response->assertStatus(302)
+            ->assertRedirect("/spaces/{$space->code}/checkout")
+            ->assertSessionHasErrors('email');
+
+        $this->assertEquals(0, Order::count());
+    }
+
+    /** @test */
+    public function a_phone_number_is_required()
+    {
+        $space = create(Space::class);
+
+        $response = $this->from("/spaces/{$space->code}/checkout")
+            ->post("/spaces/{$space->code}/orders", $this->orderDetails([
+                'phone' => '',
+            ]));
+
+        $response->assertStatus(302)
+            ->assertRedirect("/spaces/{$space->code}/checkout")
+            ->assertSessionHasErrors('phone');
+
+        $this->assertEquals(0, Order::count());
+    }
+
+    /** @test */
+    public function business_name_is_optional()
+    {
+        $this->withoutExceptionHandling();
+
+        $space = create(Space::class, ['user_id' => $this->signIn()]);
+        $this->calculateCharges($space);
+
+        $response = $this->from("/spaces/{$space->code}/checkout")
+            ->post("/spaces/{$space->code}/orders", $this->orderDetails([
+                'business' => '',
+                'number' => '4242424242424242',
+                'exp_month' => 1,
+                'exp_year' => date('Y') + 1,
+                'cvc' => '123',
+            ]));
+
+        tap(Order::first(), function ($order) use ($response) {
+            $response->assertRedirect("/orders/{$order->confirmation_number}");
+
+            $this->assertNull($order->business);
+        });
+    }
 }

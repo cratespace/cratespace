@@ -2,10 +2,12 @@
 
 namespace App\Presenters;
 
-use App\Support\Formatter;
+use App\Presenters\Traits\FormatsMoney;
 
 class OrderPresenter extends Presenter
 {
+    use FormatsMoney;
+
     /**
      * Calculate and present price in money format.
      *
@@ -13,7 +15,7 @@ class OrderPresenter extends Presenter
      */
     public function price(): string
     {
-        return Formatter::money($this->model->price);
+        return $this->formatMoney($this->model->price);
     }
 
     /**
@@ -23,7 +25,7 @@ class OrderPresenter extends Presenter
      */
     public function tax(): string
     {
-        return Formatter::money($this->model->tax);
+        return $this->formatMoney($this->model->tax);
     }
 
     /**
@@ -33,7 +35,7 @@ class OrderPresenter extends Presenter
      */
     public function service(): string
     {
-        return Formatter::money($this->model->service);
+        return $this->formatMoney($this->model->service);
     }
 
     /**
@@ -43,7 +45,7 @@ class OrderPresenter extends Presenter
      */
     public function subtotal(): string
     {
-        return Formatter::money($this->model->subtotal);
+        return $this->formatMoney($this->model->subtotal);
     }
 
     /**
@@ -53,6 +55,56 @@ class OrderPresenter extends Presenter
      */
     public function total(): string
     {
-        return Formatter::money($this->model->total);
+        return $this->formatMoney($this->model->total);
+    }
+
+    /**
+     * Get text and color of status badge.
+     *
+     * @return array
+     */
+    public function status(): array
+    {
+        switch ($this->model->status) {
+            case 'Pending':
+                return [
+                    'text' => 'Pending',
+                    'color' => 'yellow',
+                ];
+
+                break;
+
+            case 'Approved':
+                return [
+                    'text' => 'Approved',
+                    'color' => 'teal',
+                ];
+
+                break;
+
+            case 'Shipped':
+                return [
+                    'text' => 'Shipped',
+                    'color' => 'blue',
+                ];
+
+                break;
+
+            case 'Delivered':
+                return [
+                    'text' => 'Delivered',
+                    'color' => 'green',
+                ];
+
+                break;
+
+            case 'Rejected':
+                return [
+                    'text' => 'Rejected',
+                    'color' => 'red',
+                ];
+
+                break;
+        }
     }
 }

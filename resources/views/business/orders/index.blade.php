@@ -1,15 +1,7 @@
 @extends('business.layouts.crm', [
     'pageTitle' => 'Orders',
     'resourceName' => 'orders',
-    'statuses' => [
-        'Pending',
-        'Approved',
-        'Canceled',
-        'Rejected',
-        'Completed',
-        'Shipped',
-        'Delivered'
-    ]
+    'statuses' => config('defaults.orders.statuses')
 ])
 
 @section('crm-content')
@@ -45,7 +37,7 @@
                         <div class="flex items-center">
                             <div>
                                 <div class="text-sm leading-5 text-gray-800 font-semibold">
-                                    <a href="#">{{ '#' . $order->confirmation_number }}</a>
+                                    <a href="{{ $order->space->path }}">{{ '#' . $order->confirmation_number }}</a>
                                 </div>
 
                                 <div class="mt-1 text-sm leading-5 font-medium text-gray-800">{{ $order->name }}</div>
@@ -58,7 +50,7 @@
                     <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200 bg-gray-100">
                         <div class="mt-1">
                             <div class="text-sm leading-5 text-gray-800 font-semibold">
-                                <a href="{{ $order->space->path }}">{{ $order->space->uid }}</a>
+                                <a href="{{ $order->space->path }}">{{ $order->space->code }}</a>
                             </div>
 
                             <div class="text-xs leading-5">{{ $order->space->departs_at->diffForHumans() }}</div>
@@ -73,8 +65,8 @@
                     </td>
 
                     <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200 bg-gray-100">
-                        <span class="px-2 inline-flex text-sm leading-5 font-medium rounded-full bg-yellow-100 text-yellow-800">
-                            {{ $order->status }}
+                        <span class="px-2 inline-flex text-sm leading-5 font-medium rounded-full bg-{{ $order->present()->status['color'] }}-100 text-{{ $order->present()->status['color'] }}-800">
+                            {{ $order->present()->status['text'] }}
                         </span>
                     </td>
 
@@ -84,7 +76,7 @@
                     </td>
 
                     <td class="px-6 py-4 whitespace-no-wrap text-right border-b border-gray-200 bg-gray-100 text-sm leading-5 font-medium">
-                        <a href="#">Manage</a>
+                        <a href="{{ $order->space->path }}">Manage</a>
                     </td>
                 </tr>
             @empty

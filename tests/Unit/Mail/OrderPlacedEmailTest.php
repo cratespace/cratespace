@@ -21,7 +21,7 @@ class OrderPlacedEmailTest extends TestCase
     }
 
     /** @test */
-    public function email_has_a_subject()
+    public function it_has_a_subject()
     {
         $order = make(Order::class);
         $email = new OrderPlacedMail($order);

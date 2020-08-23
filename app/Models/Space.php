@@ -25,6 +25,13 @@ class Space extends Model implements Priceable
     protected $appends = ['path'];
 
     /**
+     * Preferred route key name.
+     *
+     * @var string
+     */
+    protected static $routeKey = 'code';
+
+    /**
      * The attributes that are mass assignable.
      *
      * @var array
@@ -59,16 +66,6 @@ class Space extends Model implements Priceable
         'arrives_at' => 'datetime',
         'schedule' => ScheduleCast::class,
     ];
-
-    /**
-     * Get the route key for the model.
-     *
-     * @return string
-     */
-    public function getRouteKeyName()
-    {
-        return 'code';
-    }
 
     /**
      * Get all chargeable attributes.

@@ -15,7 +15,7 @@
 <ul>
     @forelse ($pendingOrders as $order)
         <li class="mb-3 rounded-lg overflow-hidden">
-            <a href="/" class="block bg-gray-100 px-4 py-5 sm:px-6">
+            <a href="{{ $order->space->path }}" class="block bg-gray-100 hover:bg-gray-200 px-4 py-5 sm:px-6">
                 <div class="flex items-center justify-between">
                     <div>
                         <div class="text-sm leading-5 text-blue-500 font-semibold">
@@ -29,7 +29,7 @@
 
                     <div>
                         <div class="text-sm leading-5 text-gray-800 font-semibold">
-                            <span>{{ $order->space->uid }}</span>
+                            <span>{{ $order->space->code }}</span>
                         </div>
 
                         <div class="text-xs text-gray-600 leading-5">{{ $order->space->departs_at->diffForHumans() }}</div>

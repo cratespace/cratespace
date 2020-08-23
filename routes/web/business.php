@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Route;
  * Authenticated Business Customer Routes...
  */
 Route::group([
-    'middleware' => ['auth', 'verified', 'money'],
+    'middleware' => ['auth', 'verified'],
 ], function (): void {
     /*
      * Business Customer Dashboard Route...

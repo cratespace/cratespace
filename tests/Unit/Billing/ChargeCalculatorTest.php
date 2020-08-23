@@ -14,7 +14,7 @@ class ChargeCalculatorTest extends TestCase
     public function it_can_be_instantiated()
     {
         $resource = new PriceableResourceMock();
-        $caculator = new Calculator($this->getPipeline(), $resource);
+        $caculator = new Calculator($resource);
 
         $this->assertInstanceOf(CalculatorContract::class, $caculator);
         $this->assertInstanceOf(Priceable::class, $caculator->resource());

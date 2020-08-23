@@ -25,6 +25,11 @@ require 'web/auth.php';
 require 'web/business.php';
 
 /*
+ * Customer Support Routes...
+ */
+require 'web/support.php';
+
+/*
  * User Routes...
  */
 require 'web/user.php';

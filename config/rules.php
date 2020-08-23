@@ -1,6 +1,8 @@
 <?php
 
-/**
+use Illuminate\Validation\Rule;
+
+/*
  * All Validation Rules.
  */
 return [
@@ -27,18 +29,22 @@ return [
      * Spaces Inputs Rules
      */
     'space' => [
-        'uid' => ['required', 'string', 'max:255'],
+        'code' => ['nullable', 'string', 'max:255', 'unique:spaces,code'],
         'height' => ['required', 'integer'],
         'width' => ['required', 'integer'],
         'length' => ['required', 'integer'],
         'weight' => ['required', 'integer'],
-        'price' => ['required', 'numeric', 'min:1'],
+        'price' => ['required', 'numeric'],
+        'tax' => ['nullable', 'numeric'],
         'origin' => ['required', 'string'],
         'destination' => ['required', 'string'],
         'departs_at' => ['required', 'date'],
         'arrives_at' => ['required', 'date', 'after:departs_at'],
         'note' => ['nullable', 'string'],
-        'type' => ['required', 'string'],
+        'type' => [
+            'required', 'string',
+            Rule::in(['Local', 'International']),
+        ],
         'base' => ['required', 'string'],
     ],
 
@@ -57,12 +63,30 @@ return [
      * Client Message Inputs Rules
      */
     'message' => [
-        'first_name' => ['required', 'string', 'max:255'],
-        'last_name' => ['required', 'string', 'max:255'],
+        'name' => ['required', 'string', 'max:255'],
         'email' => ['required', 'string', 'email', 'max:255'],
         'phone' => ['required', 'integer', 'min:9'],
         'subject' => ['required', 'string', 'max:255'],
         'body' => ['required', 'string'],
+    ],
+
+    /*
+     * Client Message Inputs Rules
+     */
+    'ticket' => [
+        'name' => ['required', 'string', 'max:255'],
+        'email' => ['required', 'string', 'email', 'max:255'],
+        'phone' => ['required', 'string', 'min:9'],
+        'subject' => ['required', 'string', 'max:255'],
+        'description' => ['required', 'string'],
+        'attachment' => ['nullable', 'image'],
+    ],
+
+    /*
+     * Support Ticket Reply Inputs Rules
+     */
+    'reply' => [
+        'body' => ['required', 'spamfree'],
     ],
 
     /*

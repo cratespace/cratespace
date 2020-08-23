@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Models\Traits\Filterable;
 use App\Models\Traits\Presentable;
 use App\Models\Traits\Redirectable;
+use App\Models\Concerns\ManagesStatus;
 use Illuminate\Database\Eloquent\Model;
 
 class Order extends Model
@@ -12,6 +13,14 @@ class Order extends Model
     use Presentable;
     use Filterable;
     use Redirectable;
+    use ManagesStatus;
+
+    /**
+     * Preferred route key name.
+     *
+     * @var string
+     */
+    protected static $routeKey = 'confirmation_number';
 
     /**
      * The attributes that are mass assignable.

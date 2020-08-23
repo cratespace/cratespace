@@ -22,6 +22,13 @@ class User extends Authenticatable implements MustVerifyEmail
     use Redirectable;
 
     /**
+     * Preferred route key name.
+     *
+     * @var string
+     */
+    protected static $routeKey = 'username';
+
+    /**
      * The attributes that are mass assignable.
      *
      * @var array
@@ -51,16 +58,6 @@ class User extends Authenticatable implements MustVerifyEmail
     ];
 
     /**
-     * Get the route key for the model.
-     *
-     * @return string
-     */
-    public function getRouteKeyName()
-    {
-        return 'username';
-    }
-
-    /**
      * Get the user's business details.
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasOne
@@ -88,5 +85,29 @@ class User extends Authenticatable implements MustVerifyEmail
     public function spaces()
     {
         return $this->hasMany(Space::class)->latest();
+    }
+
+    /**
+     * Get all support tickets assigned to the user.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function tickets()
+    {
+        if ($this->hasRole('support-agent')) {
+            return $this->hasMany(Ticket::class, 'agent_id');
+        }
+    }
+
+    /**
+     * Get all replies associated with the support ticket.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function replies()
+    {
+        if ($this->hasRole('support-agent')) {
+            return $this->hasMany(Reply::class, 'agent_id')->latest();
+        }
     }
 }

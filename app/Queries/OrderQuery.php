@@ -4,7 +4,7 @@ namespace App\Queries;
 
 use App\Models\Order;
 use App\Filters\Filter;
-use Illuminate\Database\Query\Builder;
+use Illuminate\Database\Eloquent\Builder;
 
 class OrderQuery extends Query
 {
@@ -40,7 +40,9 @@ class OrderQuery extends Query
     public static function forBusiness(Filter $filters, ?string $search = null): Builder
     {
         return static::model()->query()
-            ->with('space', 'charge')
+            ->with(['space' => function ($query) {
+                $query->select('id', 'code', 'departs_at', 'arrives_at');
+            }])
             ->whereUserId(user('id'))
             ->filter($filters)
             ->latest('updated_at');
@@ -59,7 +61,7 @@ class OrderQuery extends Query
             ->whereUserId(user('id'))
             ->select('id', 'confirmation_number', 'name', 'phone', 'status', 'total', 'space_id')
             ->with(['space' => function ($query) {
-                $query->select('id', 'uid', 'departs_at', 'arrives_at');
+                $query->select('id', 'code', 'departs_at', 'arrives_at');
             }])
             ->whereStatus('Pending')
             ->take($limit)

@@ -2,7 +2,7 @@
 
 namespace App\Auth;
 
-use Error;
+use Throwable;
 use InvalidArgumentException;
 use App\Models\User as UserModel;
 use Illuminate\Pipeline\Pipeline;
@@ -42,8 +42,7 @@ class User extends UserModel
     /**
      * Perform all registered responsibilities.
      *
-     * @param \App\Models\User $user
-     * @param array            $data
+     * @param array $data
      *
      * @return \App\Models\User
      *
@@ -60,7 +59,7 @@ class User extends UserModel
                 ->then(function ($data) {
                     return $data['user'];
                 });
-        } catch (Error $e) {
+        } catch (Throwable $e) {
             throw new InvalidArgumentException($e->getMessage());
         }
     }

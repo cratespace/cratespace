@@ -18,7 +18,7 @@
             <a href="/" class="block bg-gray-100 px-4 py-5 sm:px-6">
                 <div class="flex items-center justify-between">
                     <div class="leading-5 text-blue-500 font-semibold">
-                        {{ '#' . $space->uid }}
+                        {{ '#' . $space->code }}
                     </div>
 
                     <span class="px-2 inline-flex text-sm leading-5 font-medium rounded-full bg-blue-100 text-blue-800">

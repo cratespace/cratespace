@@ -5082,18 +5082,21 @@ a {
   transition-property: background-color, border-color, color, fill, stroke, opacity, box-shadow, transform;
   transition-duration: 150ms;
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  text-decoration: none;
 }
 
 a:hover {
   --text-opacity: 1;
   color: #035CC1;
   color: rgba(3, 92, 193, var(--text-opacity));
+  text-decoration: none;
 }
 
 a:focus {
   --text-opacity: 1;
   color: #035CC1;
   color: rgba(3, 92, 193, var(--text-opacity));
+  text-decoration: none;
 }
 
 h1,
@@ -5137,6 +5140,10 @@ h6 {
 
 .w-80 {
   width: 20rem;
+}
+
+.prose a {
+  text-decoration: none;
 }
 
 .space-y-0 > :not(template) ~ :not(template){

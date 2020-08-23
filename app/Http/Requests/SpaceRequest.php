@@ -18,7 +18,11 @@ class SpaceRequest extends FormRequest
      */
     public function authorize()
     {
-        return $this->resourceBelongsToUser($this->space);
+        if ($this->space) {
+            return $this->resourceBelongsToUser($this->space);
+        }
+
+        return $this->authenticated();
     }
 
     /**
@@ -28,6 +32,10 @@ class SpaceRequest extends FormRequest
      */
     public function rules()
     {
-        return $this->getRulesFor('space');
+        $additionalRules = !is_null($this->space)
+            ? ['code' => ['unique:spaces,code', 'exists:spaces']]
+            : [];
+
+        return $this->getRulesFor('space', $additionalRules);
     }
 }

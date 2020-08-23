@@ -8,12 +8,15 @@ a {
     @apply .transition;
     @apply .duration-150;
     @apply .ease-in-out;
+    @apply .no-underline;
 
     &:hover {
         @apply .text-blue-600;
+        @apply .no-underline;
     }
 
     &:focus {
         @apply .text-blue-600;
+        @apply .no-underline;
     }
 }
