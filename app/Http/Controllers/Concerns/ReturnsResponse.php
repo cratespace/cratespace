@@ -25,7 +25,20 @@ trait ReturnsResponse
      *
      * @return \Illuminate\Routing\RedirectResponse
      */
-    protected function successJson(array $data = [], int $code = 200)
+    protected function successJson(array $data = [])
+    {
+        return response($data, 200);
+    }
+
+    /**
+     * Returns a JSON response with given data attached.
+     *
+     * @param array $data
+     * @param int   $code
+     *
+     * @return \Illuminate\Routing\RedirectResponse
+     */
+    protected function unAuthorizedJson(array $data = [], int $code = 422)
     {
         return response($data, $code);
     }
