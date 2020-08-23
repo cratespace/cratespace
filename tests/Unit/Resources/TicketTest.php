@@ -8,9 +8,30 @@ use App\Models\Role;
 use App\Models\User;
 use App\Models\Ticket;
 use InvalidArgumentException;
+use Illuminate\Database\Eloquent\Collection;
 
 class TicketTest extends TestCase
 {
+    /** @test */
+    public function it_has_replies()
+    {
+        $this->assertInstanceOf(Collection::class, create(Ticket::class)->replies);
+    }
+
+    /** @test */
+    public function it_can_add_replies()
+    {
+        $ticket = create(Ticket::class);
+        $reply = $ticket->addReply([
+            'user_id' => create(User::class)->id,
+            'agent_id' => null,
+            'body' => $this->faker->sentence,
+        ]);
+
+        $this->assertTrue($reply->is($ticket->replies->first()));
+        $this->assertCount(1, $ticket->replies);
+    }
+
     /** @test */
     public function it_belongs_to_a_user()
     {

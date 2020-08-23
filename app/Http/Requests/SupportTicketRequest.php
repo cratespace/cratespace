@@ -18,7 +18,7 @@ class SupportTicketRequest extends FormRequest
      */
     public function authorize()
     {
-        return $this->authenticated();
+        return true;
     }
 
     /**

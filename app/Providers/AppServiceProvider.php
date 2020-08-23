@@ -10,6 +10,7 @@ use App\Observers\SpaceObserver;
 use App\Observers\TicketObserver;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Facades\Validator;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -44,6 +45,8 @@ class AppServiceProvider extends ServiceProvider
         $this->bootObservers();
 
         Paginator::useTailwind();
+
+        $this->extendCustomValidators();
     }
 
     /**
@@ -70,5 +73,15 @@ class AppServiceProvider extends ServiceProvider
         foreach ($this->observers as $model => $observer) {
             $model::observe($observer);
         }
+    }
+
+    /**
+     * Add custom validator extensions.
+     *
+     * @return void
+     */
+    protected function extendCustomValidators(): void
+    {
+        Validator::extend('spamfree', 'App\Rules\SpamFree@passes');
     }
 }
