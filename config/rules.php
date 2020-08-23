@@ -76,11 +76,10 @@ return [
     'ticket' => [
         'name' => ['required', 'string', 'max:255'],
         'email' => ['required', 'string', 'email', 'max:255'],
-        'phone' => ['required', 'integer', 'min:9'],
+        'phone' => ['required', 'string', 'min:9'],
         'subject' => ['required', 'string', 'max:255'],
-        'message' => ['required', 'string'],
+        'description' => ['required', 'string'],
         'attachment' => ['nullable', 'image'],
-        'user_id' => ['nullable', 'integer'],
     ],
 
     /*

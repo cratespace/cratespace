@@ -13,12 +13,19 @@ Route::group([
     /*
      * Support Landing Page...
      */
-    // Route::get('/', 'Support\ArticlesController@index')->name('support');
+    Route::get('/', 'Support\SupportPageController')->name('support');
 
     /*
      * Support Ticket Resource Routes...
      */
     Route::resource('/tickets', 'Support\TicketController', [
+        'except' => ['edit'],
+    ]);
+
+    /*
+     * Support Ticket Resource Routes...
+     */
+    Route::resource('/tickets/replies', 'Support\TicketReplyController', [
         'except' => ['edit'],
     ]);
 });

@@ -24,8 +24,6 @@ class TicketObserver
      */
     public function creating(Ticket $ticket): void
     {
-        $this->generateHashCode($ticket);
-
         try {
             if (is_null($ticket->agent_id)) {
                 $this->assignToAgent($ticket);
@@ -44,7 +42,9 @@ class TicketObserver
      */
     public function created(Ticket $ticket): void
     {
-        Mail::to($ticket->email)->send(
+        $this->generateHashCode($ticket);
+
+        Mail::to($ticket->customer->email)->send(
             new NewTicketCreatedMail($ticket)
         );
 
@@ -75,9 +75,9 @@ class TicketObserver
     protected function assignToAgent(Ticket $ticket): bool
     {
         $supportAgents = User::all()
-            ->filter(function ($user) {
-                return $user->hasRole('support-agent') &&
-                    $user->tickets->count() <= config('defaults.support-agents.max-tickets');
+            ->filter(function ($agent) {
+                return $agent->hasRole('support-agent') &&
+                    $agent->tickets->count() <= config('defaults.support-agents.max-tickets');
             });
 
         if (!$supportAgents->isEmpty()) {

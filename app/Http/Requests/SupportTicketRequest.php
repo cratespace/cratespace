@@ -2,7 +2,6 @@
 
 namespace App\Http\Requests;
 
-use Illuminate\Support\Facades\Gate;
 use Illuminate\Foundation\Http\FormRequest;
 use App\Http\Requests\Traits\AuthorizesRequest;
 use App\Http\Requests\Traits\HasValidationRules;
@@ -19,10 +18,6 @@ class SupportTicketRequest extends FormRequest
      */
     public function authorize()
     {
-        if ($this->ticket) {
-            Gate::allow('view', $this->ticket);
-        }
-
         return true;
     }
 

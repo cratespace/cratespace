@@ -40,7 +40,7 @@ class NewTicketCreatedMail extends Mailable implements ShouldQueue
     public function build()
     {
         return $this->from('support@cratespace.biz', 'Cratespace Support')
-            ->to($this->ticket->email, $this->ticket->name)
+            ->to($this->ticket->customer->email, $this->ticket->customer->name)
             ->subject('New Support Ticket Created')
             ->markdown(
                 'emails.support.tickets.created',

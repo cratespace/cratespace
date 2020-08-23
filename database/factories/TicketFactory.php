@@ -14,7 +14,7 @@ $factory->define(Ticket::class, function (Faker $faker) {
         'subject' => $faker->sentence,
         'status' => 'Open',
         'priority' => $faker->randomElement(['Low', 'Medium', 'High']),
-        'message' => $faker->paragraph(7),
+        'description' => $faker->paragraph(7),
         'attachment' => null,
         'customer_id' => $customer->id,
         'agent_id' => null,

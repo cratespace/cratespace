@@ -10,13 +10,13 @@ class SpaceObserver
     use GeneratesHashids;
 
     /**
-     * Handle the space "creating" event.
+     * Handle the space "created" event.
      *
      * @param \App\Models\Space $space
      *
      * @return void
      */
-    public function creating(Space $space)
+    public function created(Space $space)
     {
         $this->generateHashCode($space);
     }

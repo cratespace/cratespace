@@ -23,6 +23,8 @@ trait GeneratesHashids
             'id' => $model->id,
         ]);
 
-        $model->code = $model->code ?? $hashCodeGenerator->generate();
+        $model->update([
+            'code' => $model->code ?? $hashCodeGenerator->generate(),
+        ]);
     }
 }

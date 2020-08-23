@@ -16,13 +16,13 @@ class Reply extends Model
     protected $guarded = [];
 
     /**
-     * Get the user the reply belongs to.
+     * Get the customer the reply belongs to.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function user()
+    public function customer()
     {
-        return $this->belongsTo(User::class, 'user_id');
+        return $this->belongsTo(Customer::class, 'customer_id');
     }
 
     /**
@@ -48,11 +48,11 @@ class Reply extends Model
     /**
      * Get the model instance of the person the reply belongs to.
      *
-     * @return \App\Models\User
+     * @return \App\Models\Customer|\App\Models\User
      */
-    public function by(): User
+    public function by()
     {
-        return $this->user ?? $this->agent;
+        return $this->customer ?? $this->agent;
     }
 
     /**

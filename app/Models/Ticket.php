@@ -32,10 +32,10 @@ class Ticket extends Model
         'subject',
         'priority',
         'status',
-        'message',
+        'description',
         'attachment',
-        'user_id',
         'agent_id',
+        'customer_id',
     ];
 
     /**
@@ -57,13 +57,13 @@ class Ticket extends Model
     }
 
     /**
-     * Get the user the support ticket belongs to.
+     * Get the customer the support ticket belongs to.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function user()
+    public function customer()
     {
-        return $this->belongsTo(User::class, 'user_id');
+        return $this->belongsTo(Customer::class, 'customer_id');
     }
 
     /**

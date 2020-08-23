@@ -20,7 +20,7 @@ class CreateCustomersTable extends Migration
             $table->string('phone')->nullable();
             $table->foreignId('user_id')
                 ->nullable()
-                ->constrained('users');
+                ->constrained();
             $table->timestamps();
         });
     }

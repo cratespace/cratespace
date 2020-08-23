@@ -15,11 +15,14 @@ class CreateTicketsTable extends Migration
     {
         Schema::create('tickets', function (Blueprint $table) {
             $table->id();
-            $table->string('code')->unique()->index();
+            $table->string('code')
+                ->unique()
+                ->index()
+                ->nullable();
             $table->string('subject');
             $table->string('status')->default('Open'); // Open, Closed
             $table->string('priority')->default('Low'); // Low, Medium, High
-            $table->text('message')->nullable();
+            $table->text('description')->nullable();
             $table->text('attachment')->nullable();
             $table->foreignId('customer_id')
                 ->constrained('customers');

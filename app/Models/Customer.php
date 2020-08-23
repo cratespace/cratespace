@@ -34,4 +34,14 @@ class Customer extends Model
     {
         return $this->hasMany(Reply::class, 'customer_id')->latest();
     }
+
+    /**
+     * Get all tickets associated with the support ticket.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function tickets()
+    {
+        return $this->hasMany(Ticket::class, 'customer_id')->latest();
+    }
 }

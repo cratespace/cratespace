@@ -25,9 +25,9 @@ trait ReturnsResponse
      *
      * @return \Illuminate\Routing\RedirectResponse
      */
-    protected function successJson(array $data = [])
+    protected function successJson(array $data = [], int $code = 200)
     {
-        return response($data, 200);
+        return response($data, $code);
     }
 
     /**

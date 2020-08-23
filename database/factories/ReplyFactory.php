@@ -6,6 +6,7 @@ use App\Models\Role;
 use App\Models\User;
 use App\Models\Reply;
 use App\Models\Ticket;
+use App\Models\Customer;
 use Faker\Generator as Faker;
 
 $factory->define(Reply::class, function (Faker $faker) {
@@ -15,7 +16,7 @@ $factory->define(Reply::class, function (Faker $faker) {
     return [
         'body' => $faker->paragraph(7),
         'ticket_id' => create(Ticket::class)->id,
-        'user_id' => create(User::class)->id,
+        'customer_id' => create(Customer::class)->id,
         'agent_id' => $agent->id,
     ];
 });

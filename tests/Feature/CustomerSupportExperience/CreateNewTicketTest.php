@@ -15,36 +15,33 @@ use Illuminate\Support\Facades\Notification;
 class CreateNewTicketTest extends TestCase implements Postable
 {
     /** @test */
-    public function users_can_visit_create_new_ticket_page()
+    public function customers_can_visit_create_new_ticket_page()
     {
-        $this->get('/tickets/create')
+        $this->get('support/tickets/create')
             ->assertStatus(200)
-            ->assertSee('Create Support Ticket');
+            ->assertSee('Contact support');
     }
 
     /** @test */
-    public function users_can_create_new_ticket()
+    public function customers_can_create_new_ticket()
     {
-        $user = $this->signIn();
+        $this->withoutExceptionHandling();
 
         $ticketAttributes = [
-            'name' => $user->name,
-            'email' => $user->email,
-            'phone' => $user->phone,
+            'name' => $this->faker->name,
+            'email' => $this->faker->email,
+            'phone' => $this->faker->phoneNumber,
             'subject' => $this->faker->sentence,
-            'status' => 'Open',
-            'priority' => $this->faker->randomElement(['Low', 'Medium', 'High']),
-            'message' => $this->faker->paragraph(7),
-            'attachment' => null,
-            'user_id' => $user->id,
-            'agent_id' => null,
+            'description' => $this->faker->paragraph(7),
         ];
 
         $postResponse = $this->post('/support/tickets', $ticketAttributes);
 
+        $ticket = Ticket::first();
+
         $response = $this->get("/support/tickets/{$ticket->code}");
 
-        tap(Ticket::first(), function ($ticket) use ($response) {
+        tap($ticket, function ($ticket) use ($response) {
             $response->assertStatus(200)
                 ->assertSee($ticket->code)
                 ->assertSee($ticket->name)
@@ -65,7 +62,7 @@ class CreateNewTicketTest extends TestCase implements Postable
             ]));
 
         $response->assertStatus(302)
-            ->assertRedirect('/spaces/create')
+            ->assertRedirect('/support/tickets/create')
             ->assertSessionHasErrors('subject');
 
         $this->assertEquals(0, Ticket::count());
@@ -81,7 +78,7 @@ class CreateNewTicketTest extends TestCase implements Postable
             ]));
 
         $response->assertStatus(302)
-            ->assertRedirect('/spaces/create')
+            ->assertRedirect('/support/tickets/create')
             ->assertSessionHasErrors('name');
 
         $this->assertEquals(0, Ticket::count());
@@ -97,7 +94,7 @@ class CreateNewTicketTest extends TestCase implements Postable
             ]));
 
         $response->assertStatus(302)
-            ->assertRedirect('/spaces/create')
+            ->assertRedirect('/support/tickets/create')
             ->assertSessionHasErrors('email');
 
         $this->assertEquals(0, Ticket::count());
@@ -113,7 +110,7 @@ class CreateNewTicketTest extends TestCase implements Postable
             ]));
 
         $response->assertStatus(302)
-            ->assertRedirect('/spaces/create')
+            ->assertRedirect('/support/tickets/create')
             ->assertSessionHasErrors('phone');
 
         $this->assertEquals(0, Ticket::count());
@@ -128,7 +125,7 @@ class CreateNewTicketTest extends TestCase implements Postable
         $ticket = create(Ticket::class, ['agent_id' => null]);
 
         Mail::assertQueued(NewTicketCreatedMail::class, function ($mail) use ($ticket) {
-            return $mail->hasTo($ticket->email);
+            return $mail->hasTo($ticket->customer->email);
         });
     }
 
