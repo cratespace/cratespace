@@ -4,9 +4,10 @@ namespace Tests\Feature\BusinessUserExperience;
 
 use Tests\TestCase;
 use App\Models\Space;
+use Tests\Contracts\Postable;
 use Illuminate\Support\Facades\Auth;
 
-class ManageSpacesTest extends TestCase
+class ManageSpacesTest extends TestCase implements Postable
 {
     /** @test */
     public function authorized_users_can_only_view_their_own_space_listing()
@@ -500,7 +501,7 @@ class ManageSpacesTest extends TestCase
      *
      * @return array
      */
-    protected function validParameters(array $overrides = []): array
+    public function validParameters(array $overrides = []): array
     {
         return array_merge([
             'departs_at' => now()->addMonth(),

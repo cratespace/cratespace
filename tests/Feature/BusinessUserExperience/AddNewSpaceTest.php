@@ -5,9 +5,10 @@ namespace Tests\Feature\BusinessUserExperience;
 use Tests\TestCase;
 use App\Models\User;
 use App\Models\Space;
+use Tests\Contracts\Postable;
 use Illuminate\Support\Facades\Auth;
 
-class AddNewSpaceTest extends TestCase
+class AddNewSpaceTest extends TestCase implements Postable
 {
     /** @test */
     public function only_authenticated_users_can_visit_add_new_space_page()
@@ -428,7 +429,7 @@ class AddNewSpaceTest extends TestCase
      *
      * @return array
      */
-    protected function validParameters(array $overrides = []): array
+    public function validParameters(array $overrides = []): array
     {
         return array_merge([
             'code' => 'FAKESPACEFORTESTING',
