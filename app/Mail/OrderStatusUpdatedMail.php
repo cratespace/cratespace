@@ -39,6 +39,12 @@ class OrderStatusUpdatedMail extends Mailable implements ShouldQueue
      */
     public function build()
     {
-        return $this->markdown('emails.orders.status-updated');
+        return $this->from('billing@cratespace.biz', 'Cratespace Billing Service')
+            ->to($this->order->email, $this->order->name)
+            ->subject('Cratespace Order Status Updated')
+            ->markdown(
+                'emails.orders.status-updated',
+                ['order' => $this->order]
+            );
     }
 }

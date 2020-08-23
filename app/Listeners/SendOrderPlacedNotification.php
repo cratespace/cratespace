@@ -17,6 +17,8 @@ class SendOrderPlacedNotification
      */
     public function handle(OrderPlacedEvent $event)
     {
-        Mail::to($event->order->email)->send(new OrderPlacedMail($event->order));
+        Mail::to($event->order->email)->send(
+            new OrderPlacedMail($event->order)
+        );
     }
 }

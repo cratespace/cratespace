@@ -17,7 +17,8 @@ class SendOrderStatusUpdatedNotification
      */
     public function handle(OrderStatusUpdatedEvent $event)
     {
-        Mail::to($event->order->email)
-            ->send(new OrderStatusUpdatedMail($event->order));
+        Mail::to($event->order->email)->send(
+            new OrderStatusUpdatedMail($event->order)
+        );
     }
 }

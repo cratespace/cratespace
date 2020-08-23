@@ -5,6 +5,9 @@ namespace App\Observers;
 use Exception;
 use App\Models\User;
 use App\Models\Ticket;
+use App\Mail\NewTicketCreatedMail;
+use Illuminate\Support\Facades\Mail;
+use App\Notifications\NewTicketAssigned;
 use App\Observers\Traits\GeneratesHashids;
 use App\Exceptions\AgentNotAvailableException;
 
@@ -21,14 +24,32 @@ class TicketObserver
      */
     public function creating(Ticket $ticket): void
     {
+        $this->generateHashCode($ticket);
+
         try {
             if (is_null($ticket->agent_id)) {
-                $this->generateHashCode($ticket);
-
                 $this->assignToAgent($ticket);
             }
         } catch (Exception $e) {
             $ticket->status = 'Pending';
+        }
+    }
+
+    /**
+     * Handle the ticket "created" event.
+     *
+     * @param \App\Models\Ticket $ticket
+     *
+     * @return void
+     */
+    public function created(Ticket $ticket): void
+    {
+        Mail::to($ticket->email)->send(
+            new NewTicketCreatedMail($ticket)
+        );
+
+        if (!is_null($ticket->agent_id)) {
+            $ticket->agent->notify(new NewTicketAssigned($ticket));
         }
     }
 
@@ -41,6 +62,7 @@ class TicketObserver
      */
     public function updated(Ticket $ticket): void
     {
+        // Mail::send(new TicketStatusUpdatedEvent($ticket));
     }
 
     /**
