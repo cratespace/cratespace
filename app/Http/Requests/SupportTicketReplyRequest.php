@@ -7,7 +7,7 @@ use Illuminate\Foundation\Http\FormRequest;
 use App\Http\Requests\Traits\AuthorizesRequest;
 use App\Http\Requests\Traits\HasValidationRules;
 
-class SupportTicketRequest extends FormRequest
+class SupportTicketReplyRequest extends FormRequest
 {
     use AuthorizesRequest;
     use HasValidationRules;
@@ -33,6 +33,6 @@ class SupportTicketRequest extends FormRequest
      */
     public function rules()
     {
-        return $this->getRulesFor('ticket');
+        return $this->getRulesFor('reply');
     }
 }

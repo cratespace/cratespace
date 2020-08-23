@@ -87,8 +87,8 @@ return [
      * Support Ticket Reply Inputs Rules
      */
     'reply' => [
-        'body' => ['required', 'spamfree']
-    ]
+        'body' => ['required', 'spamfree'],
+    ],
 
     /*
      * User Business Inputs Rules
