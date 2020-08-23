@@ -34,7 +34,6 @@ class CheckoutController extends Controller
     public function show(Space $space)
     {
         return view('public.checkout.page', [
-            'paymentToken' => $this->paymentGateway->getValidTestToken(),
             'space' => $space,
             'charges' => $this->calculateCharges($space),
         ]);
@@ -51,8 +50,12 @@ class CheckoutController extends Controller
     {
         $charges = [];
 
-        foreach ((new ChargesCalculator($space))->calculateCharges() as $name => $amount) {
-            $charges[$name] = Formatter::moneyFormat((int) $amount);
+        $chargesCalculator = new ChargesCalculator($space);
+
+        $chargesCalculator->calculate();
+
+        foreach ($chargesCalculator->amounts() as $name => $amount) {
+            $charges[$name] = Formatter::money((int) $amount);
         }
 
         return $charges;

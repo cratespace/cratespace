@@ -3,10 +3,18 @@
 namespace App\Reports;
 
 use App\Reports\Query\Builder;
-use Illuminate\Support\Collection;
+use App\Exceptions\OptionsNotSetException;
+use App\Contracts\Support\Generator as GeneratorContract;
 
-class Generator
+class Generator implements GeneratorContract
 {
+    /**
+     * Generator options.
+     *
+     * @var array
+     */
+    protected $options = [];
+
     /**
      * Create report generator instance.
      *
@@ -20,18 +28,41 @@ class Generator
     }
 
     /**
-     * Generate given report.
+     * Set generator options.
      *
-     * @param string   $report
-     * @param int|null $limit
+     * @param array $options
      *
-     * @return \Illuminate\Support\Collection
+     * @return void
      */
-    public function generate(string $report, ?int $limit = null): Collection
+    public function setOptions(array $options = []): void
     {
-        $report = new $report($this->getReportQueryBuilder());
+        $this->options = $options;
+    }
 
-        return $report->make($limit);
+    /**
+     * {@inheritdoc}
+     */
+    public function generate()
+    {
+        return $this->getReport()->make($this->options['limit']);
+    }
+
+    /**
+     * Resolve report type form set options.
+     *
+     * @return \App\Contracts\Reports\Report
+     *
+     * @throws \App\Exceptions\OptionsNotSetException
+     */
+    protected function getReport()
+    {
+        if (isset($this->options['report'])) {
+            $report = $this->options['report'];
+
+            return new $report($this->getReportQueryBuilder());
+        }
+
+        throw new OptionsNotSetException('Report type not set');
     }
 
     /**

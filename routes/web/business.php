@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Route;
  * Authenticated Business Customer Routes...
  */
 Route::group([
-    'middleware' => 'auth',
+    'middleware' => ['auth', 'verified'],
 ], function (): void {
     /*
      * Business Customer Dashboard Route...
@@ -18,7 +18,9 @@ Route::group([
     /*
      * Order Resource Routes...
      */
-    Route::resource('/orders', 'Business\OrderController');
+    Route::resource('/orders', 'Business\OrderController', [
+        'except' => ['create', 'store', 'edit'],
+    ]);
 
     /*
      * Search Orders Route...

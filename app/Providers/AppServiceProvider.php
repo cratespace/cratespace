@@ -2,11 +2,29 @@
 
 namespace App\Providers;
 
+use App\Models\Order;
+use App\Models\Space;
+use App\Models\Ticket;
+use App\Observers\OrderObserver;
+use App\Observers\SpaceObserver;
+use App\Observers\TicketObserver;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Facades\Validator;
 
 class AppServiceProvider extends ServiceProvider
 {
+    /**
+     * All registered model observers.
+     *
+     * @var array
+     */
+    protected $observers = [
+        Space::class => SpaceObserver::class,
+        Order::class => OrderObserver::class,
+        Ticket::class => TicketObserver::class,
+    ];
+
     /**
      * Register any application services.
      *
@@ -14,7 +32,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        // $this->registerTelescope();
         $this->registerMarkdownParser();
     }
 
@@ -25,20 +42,11 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        Paginator::useTailwind();
-    }
+        $this->bootObservers();
 
-    /**
-     * Register telescope services.
-     *
-     * @return void
-     */
-    protected function registerTelescope(): void
-    {
-        if ($this->app->isLocal()) {
-            $this->app->register(\Laravel\Telescope\TelescopeServiceProvider::class);
-            $this->app->register(TelescopeServiceProvider::class);
-        }
+        Paginator::useTailwind();
+
+        $this->extendCustomValidators();
     }
 
     /**
@@ -53,5 +61,27 @@ class AppServiceProvider extends ServiceProvider
 
             return $parsedown;
         });
+    }
+
+    /**
+     * Boot all available observers.
+     *
+     * @return void
+     */
+    protected function bootObservers(): void
+    {
+        foreach ($this->observers as $model => $observer) {
+            $model::observe($observer);
+        }
+    }
+
+    /**
+     * Add custom validator extensions.
+     *
+     * @return void
+     */
+    protected function extendCustomValidators(): void
+    {
+        Validator::extend('spamfree', 'App\Rules\SpamFree@passes');
     }
 }

@@ -2,19 +2,25 @@
 
 namespace App\Models;
 
-use App\Events\OrderStatusUpdated;
+use App\Models\Traits\Filterable;
 use App\Models\Traits\Presentable;
-use App\Models\Concerns\GeneratesUID;
-use App\Models\Concerns\FindsBusiness;
+use App\Models\Traits\Redirectable;
+use App\Models\Concerns\ManagesStatus;
 use Illuminate\Database\Eloquent\Model;
-use App\Models\Concerns\CalculatesCharges;
 
 class Order extends Model
 {
-    use CalculatesCharges;
-    use FindsBusiness;
-    use GeneratesUID;
     use Presentable;
+    use Filterable;
+    use Redirectable;
+    use ManagesStatus;
+
+    /**
+     * Preferred route key name.
+     *
+     * @var string
+     */
+    protected static $routeKey = 'confirmation_number';
 
     /**
      * The attributes that are mass assignable.
@@ -22,96 +28,43 @@ class Order extends Model
      * @var array
      */
     protected $fillable = [
-        'uid', 'space_id', 'name', 'email', 'phone', 'business',
-        'service', 'price', 'tax', 'total', 'user_id', 'status',
+        'space_id',
+        'name',
+        'email',
+        'phone',
+        'business',
+        'service',
+        'price',
+        'tax',
+        'subtotal',
+        'total',
+        'user_id',
+        'status',
+        'confirmation_number',
     ];
 
     /**
-     * Get all orders associated with the currently authenticated business.
+     * Create new charge details.
      *
-     * @param string|null                        $search
-     * @param \Illuminate\Database\Query\Builder $query
+     * @param array $data
      *
-     * @return \Illuminate\Database\Query\Builder
+     * @return \App\Models\Charge
      */
-    public function scopeForBusiness($query, ?string $search = null)
+    public function saveChargeDetails(array $data): Charge
     {
-        $query->with('space')
-            ->whereUserId(user('id'))
-            ->search($search)
-            ->latest('updated_at');
+        return $this->charge()->create($data);
     }
 
     /**
-     * Search for orders with given like terms.
-     *
-     * @param \Illuminate\Database\Query\Builder $query
-     * @param string|null                        $terms
-     *
-     * @return \Illuminate\Database\Query\Builder
-     */
-    public function scopeSearch($query, ?string $terms = null)
-    {
-        if (is_null($terms)) {
-            return $query;
-        }
-
-        collect(str_getcsv($terms, ' ', '"'))->filter()->each(function ($term) use ($query) {
-            $term = preg_replace('/[^A-Za-z0-9]/', '', $term) . '%';
-
-            $query->whereIn('id', function ($query) use ($term) {
-                $query->select('id')
-                    ->from(function ($query) use ($term) {
-                        $query->select('orders.id')
-                            ->from('orders')
-                            ->where('orders.uid', 'like', $term)
-                            ->orWhere('orders.name', 'like', $term)
-                            ->orWhere('orders.email', 'like', $term)
-                            ->orWhere('orders.phone', 'like', $term)
-                            ->union(
-                                $query->newQuery()
-                                    ->select('orders.id')
-                                    ->from('orders')
-                                    ->join('spaces', 'orders.space_id', '=', 'spaces.id')
-                                    ->where('spaces.uid', 'like', $term)
-                            );
-                    }, 'matches');
-            });
-        });
-    }
-
-    /**
-     * Get full path to resource page.
-     *
-     * @return string
-     */
-    public function getPathAttribute()
-    {
-        return $this->path();
-    }
-
-    /**
-     * Get full url to order page.
-     *
-     * @return string
-     */
-    public function path(): string
-    {
-        return route('orders.show', $this);
-    }
-
-    /**
-     * Update order status.
-     *
-     * @param string $status
+     * Make associated space available again and delete instance.
      *
      * @return void
      */
-    public function updateStatus(string $status): void
+    public function cancel(): void
     {
-        $this->update(['status' => $status]);
+        $this->space->release();
 
-        event(new OrderStatusUpdated($this));
+        $this->delete();
     }
 
     /**
@@ -122,6 +75,16 @@ class Order extends Model
     public function space()
     {
         return $this->belongsTo(Space::class, 'space_id');
+    }
+
+    /**
+     * Get the charge associated with the order.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function charge()
+    {
+        return $this->hasOne(Charge::class, 'order_id');
     }
 
     /**

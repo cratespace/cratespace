@@ -2,7 +2,11 @@
     <div class="container">
         <div class="row">
             <div class="col-12">
-                <div class="flex items-center justify-center">
+                <div class="flex items-center justify-between">
+                    <div class="text-sm">
+                        Showing spaces from <span class="font-semibold text-blue-500">{{ Location::getCountry() ?? 'Sri Lanka' }}</span>
+                    </div>
+
                     <div class="text-sm text-center">
                         @if (request('type'))
                             <span class="inline-block bg-blue-100 rounded-full px-3 py-1 text-sm font-medium text-blue-800 mr-2">{{ ucfirst(request('type')) }}</span>

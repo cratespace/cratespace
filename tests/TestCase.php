@@ -2,92 +2,46 @@
 
 namespace Tests;
 
-use App\Models\Role;
-use App\Models\User;
-use App\Models\Ability;
-use App\Models\Account;
-use App\Models\Business;
+use Illuminate\Testing\TestResponse;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
 
 abstract class TestCase extends BaseTestCase
 {
     use CreatesApplication;
+    use DatabaseMigrations;
     use RefreshDatabase;
     use WithFaker;
 
-    /**
-     * Instance of fake user.
-     *
-     * @var \App\Models\User
-     */
-    protected $user;
+    use Concerns\CreatesFakeUser;
+    use Concerns\CalculatesCharges;
+    use Concerns\ChecksForInternet;
+    use Concerns\CanPlaceOrder;
+    use Concerns\TestsProtectedQualities;
+    use Concerns\HasMacros;
 
     /**
-     * Mock authenticated user.
-     *
-     * @param \App\Models\User $user
-     *
-     * @return \App\Models\User
+     * Setup test suite.
      */
-    protected function signIn($user = null): User
+    protected function setUp(): void
     {
-        $this->user = $user ?: create(User::class);
+        parent::setUp();
 
-        $this->createBusiness()
-            ->createFinancialAccount()
-            ->assignRolesAndAbilities()
-            ->actingAs($this->user);
-
-        return $this->user;
+        $this->registerMacros();
     }
 
     /**
-     * Create a fake business profile for the user.
+     * Assert that a validation exception is thrown.
      *
-     * @return \Tests\TestCase
-     */
-    protected function createBusiness(): TestCase
-    {
-        create(Business::class, ['user_id' => $this->user->id]);
-
-        return $this;
-    }
-
-    /**
-     * Create a fake financial account for the user.
+     * @param \Illuminate\Testing\TestResponse $response
+     * @param string                           $key
      *
-     * @return \Tests\TestCase
+     * @return \Illuminate\Testing\TestResponse
      */
-    protected function createFinancialAccount(): TestCase
+    public function assertValidationError(TestResponse $response, string $key)
     {
-        create(Account::class, ['user_id' => $this->user->id]);
-
-        return $this;
-    }
-
-    /**
-     * Create and assign customer role.
-     *
-     * @return \Tests\TestCase
-     */
-    protected function assignRolesAndAbilities()
-    {
-        $customerRole = Role::firstOrCreate([
-            'title' => 'customer',
-            'label' => 'Customer',
-        ]);
-
-        $purchaseSpace = Ability::firstOrCreate([
-            'title' => 'purchase_spaces',
-            'label' => 'Purchase spaces',
-        ]);
-
-        $customerRole->allowTo($purchaseSpace);
-
-        $this->user->assignRole($customerRole);
-
-        return $this;
+        return $response->assertStatus(422)->assertSessionMissing($key);
     }
 }

@@ -10,13 +10,13 @@ trait HasValidationRules
     /**
      * Get the validation rules that apply to the resource.
      *
-     * @param strig $key
-     * @param array $additionalRules
+     * @param string $key
+     * @param array  $additionalRules
      *
      * @return array
      */
     protected function getRulesFor(string $key, array $additionalRules = []): array
     {
-        return array_merge(Config::get("validation.{$key}"), $additionalRules);
+        return array_merge(Config::get("rules.{$key}"), $additionalRules);
     }
 }

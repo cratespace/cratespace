@@ -34,25 +34,39 @@ class SpaceOrderController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function store(PlaceOrderRequest $request, Space $space)
+    public function __invoke(PlaceOrderRequest $request, Space $space)
     {
-        $order = $space->placeOrder($request->except('payment_token'));
+        $order = $space->placeOrder($request->validated());
 
         try {
-            $this->paymentGateway->charge($order->total, $request->payment_token);
+            $this->paymentGateway->charge($order, $this->generateToken($request));
         } catch (PaymentFailedException $exception) {
-            $order->delete();
+            $order->cancel();
 
             throw $exception;
         }
 
-        if ($request->wantsJson()) {
-            return response($order, 201);
-        }
+        return $request->wantsJson()
+            ? $this->successJson($order->toArray(), 201)
+            : $this->success(
+                route('orders.confirmation', [
+                    'confirmationNumber' => $order->confirmation_number,
+                ]),
+                'Order successfully processed.'
+            );
+    }
 
-        return $this->success(
-            'public.commons.thank-you',
-            'Order successfully processed.'
+    /**
+     * Generate payment token for charge.
+     *
+     * @param \App\Http\Requests\PlaceOrderRequest $request
+     *
+     * @return string
+     */
+    protected function generateToken(PlaceOrderRequest $request): string
+    {
+        return $request->payment_token ?? $this->paymentGateway->generateToken(
+            $request->getCardDetails()
         );
     }
 }

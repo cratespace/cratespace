@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
 use App\Http\Requests\Traits\AuthorizesRequest;
 
@@ -26,6 +27,11 @@ class UpdateOrderStatusRequest extends FormRequest
      */
     public function rules()
     {
-        return ['status' => 'required', 'string'];
+        return [
+            'status' => [
+                'required', 'string',
+                Rule::in(config('defaults.orders.statuses')),
+            ],
+        ];
     }
 }

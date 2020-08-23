@@ -20,18 +20,17 @@ class DailyReportTest extends TestCase
         for ($i = 0; $i < 24; ++$i) {
             create(Space::class, [
                 'user_id' => $user->id,
-                'created_at' => Carbon::now()->subHours(rand(0, 24)),
-            ]);
+                'created_at' => Carbon::now()->subHours($i),
+            ], rand(1, 10));
         }
 
         $graph = new DailyReport($query);
         $graphData = $graph->make();
 
-        foreach ($graphData as $time => $count) {
-            $this->assertEquals(
-                Space::whereTime('created_at', '=', Carbon::parse($time))->count(),
-                $count
-            );
-        }
+        $this->assertCount(24, $graphData);
+        $this->assertInstanceOf(
+            Carbon::class,
+            Carbon::parse(collect($graphData)->keys()->first())
+        );
     }
 }

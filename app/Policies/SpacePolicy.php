@@ -20,6 +20,20 @@ class SpacePolicy
      */
     public function manage(User $user, Space $space)
     {
-        return $user->is($space->user);
+        return $user->is($space->user) || $user->hasRole('admin');
+    }
+
+    /**
+     * Determine whether the user can delete the model.
+     *
+     * @param \App\Models\User  $user
+     * @param \App\Models\Space $space
+     *
+     * @return mixed
+     */
+    public function delete(User $user, Space $space)
+    {
+        return ($user->is($space->user) && !$space->hasOrder()) ||
+            $user->hasRole('admin');
     }
 }

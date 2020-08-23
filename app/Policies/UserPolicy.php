@@ -32,6 +32,8 @@ class UserPolicy
      */
     protected function isOwner(User $user, User $model): bool
     {
-        return $user->is($model) && $user->hasAbility('edit_user_settings');
+        return $user->is($model) &&
+            $user->hasAbility('edit_user_settings') ||
+            $user->hasRole('admin');
     }
 }

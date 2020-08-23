@@ -10,9 +10,19 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', 'SpacesListingController');
 
 /*
+ * Privacy Page...
+ */
+Route::get('/privacy', 'GeneralPagesController@privacy');
+
+/*
+ * Terms & Conditions Page...
+ */
+Route::get('/terms-conditions', 'GeneralPagesController@terms');
+
+/*
  * Place Order for Space Route...
  */
-Route::post('/spaces/{space}/orders', 'SpaceOrderController@store')
+Route::post('/spaces/{space}/orders', 'SpaceOrderController')
     ->name('spaces.orders');
 
 /*
@@ -20,3 +30,9 @@ Route::post('/spaces/{space}/orders', 'SpaceOrderController@store')
  */
 Route::get('/spaces/{space}/checkout', 'CheckoutController@show')
     ->name('checkout');
+
+/*
+ * Order Completion Confirmation Route...
+ */
+Route::get('/orders/{confirmationNumber}', 'OrderConfirmationController')
+    ->name('orders.confirmation');

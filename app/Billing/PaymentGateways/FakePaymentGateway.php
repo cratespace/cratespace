@@ -2,92 +2,70 @@
 
 namespace App\Billing\PaymentGateways;
 
-use Closure;
-use Illuminate\Support\Str;
+use App\Models\Order;
+use InvalidArgumentException;
+use App\Billing\Charges\Charge;
+use Illuminate\Support\Facades\Crypt;
 use App\Exceptions\PaymentFailedException;
 use App\Contracts\Billing\PaymentGateway as PaymentGatewayContract;
 
 class FakePaymentGateway extends PaymentGateway implements PaymentGatewayContract
 {
     /**
-     * Test credit card number.
-     */
-    public const TEST_CARD_NUMBER = '4242424242424242';
-
-    /**
-     * List of fake payment tokens.
+     * Payment token prefix.
      *
-     * @var \Illuminate\Support\Collection
+     * @param string $key
      */
-    protected $tokens;
+    protected $prefix = 'fake-tok_';
 
     /**
-     * Call back to run as a hook before the first charge.
+     * Get total amount the customer is charged.
      *
-     * @var \Closure
+     * @return int
      */
-    protected $beforeFirstChargeCallback;
-
-    /**
-     * Create new instance of fake payment gateway.
-     */
-    public function __construct()
+    public function total(): int
     {
-        $this->tokens = collect();
-
-        parent::__construct();
+        return $this->total;
     }
 
     /**
      * Charge the customer with the given amount.
      *
-     * @param int    $amount
-     * @param string $paymentToken
+     * @param \App\Models\Order $order
+     * @param string            $paymentToken
      *
      * @return void
      */
-    public function charge(int $amount, string $paymentToken): void
+    public function charge(Order $order, string $paymentToken): void
     {
-        if ($this->beforeFirstChargeCallback !== null) {
-            $callback = $this->beforeFirstChargeCallback;
+        $this->runBeforeChargesCallback();
 
-            $this->beforeFirstChargeCallback = null;
-
-            call_user_func_array($callback, [$this]);
+        if (!$this->matches($paymentToken)) {
+            throw new PaymentFailedException("Token {$paymentToken} is invalid", $order->total);
         }
 
-        if (!$this->tokens->has($paymentToken)) {
-            throw new PaymentFailedException('Invalid payment token received', $amount);
-        }
+        $this->total = $order->total;
 
-        $this->charges[] = $amount;
-
-        $this->totalCharges = $this->charges->sum();
+        $this->saveChargeDetails($order, $paymentToken);
     }
 
     /**
-     * Generate fake payment token for testing.
+     * Generate payment token.
+     *
+     * @param array $card
      *
      * @return string
      */
-    public function getValidTestToken($cardNumber = self::TEST_CARD_NUMBER)
+    public function generateToken(array $card): string
     {
-        $token = 'fake-tok_' . Str::random(24);
+        if (is_null($card['number'])) {
+            throw new InvalidArgumentException('Card number not found');
+        }
 
-        $this->tokens[$token] = $cardNumber;
+        $token = $this->prefix . Crypt::encryptString($card['number']);
+
+        $this->tokens[$token] = $card['number'];
 
         return $token;
-    }
-
-    /**
-     * Set a call back to run as a hook before the first charge.
-     *
-     * @param \Closure $callback
-     *
-     * @return void
-     */
-    public function beforeFirstCharge(Closure $callback): void
-    {
-        $this->beforeFirstChargeCallback = $callback;
     }
 }

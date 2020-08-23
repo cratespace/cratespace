@@ -2,7 +2,34 @@
 
 return [
     /*
-     * Default/Admin User Details
+     * App Billing Configurations.
+     */
+    'billing' => [
+        /*
+         * Billing Units.
+         */
+        'currency' => env('APP_CURRENCY'),
+        'currency_locale' => env('APP_CURRENCY_LOCALE'),
+        'transaction-description' => 'Cratespace test purchase.',
+
+        /*
+         * Default Chargeable Amounts.
+         */
+        'charges' => [
+            'service' => 0.03,
+            'tax' => 0.01,
+        ],
+
+        /*
+         * Charges Calculation Classes.
+         */
+        'calculations' => [
+            // \App\Billing\Charges\Calculations\VATCalculation::class
+        ],
+    ],
+
+    /*
+     * Default/Admin User Details.
      */
     'user' => [
         'username' => 'Thavarshan',
@@ -20,25 +47,72 @@ return [
         ],
     ],
 
+    /*
+     * Default Business Details of Default User.
+     */
     'business' => [
         'name' => 'Cratespace',
         'slug' => 'cratespace',
-        'description' => 'Nullam id dolor id nibh ultricies vehicula ut id elit.',
-        'street' => '22 Auburn Side',
-        'city' => 'Sri Lanka',
-        'state' => 'Western',
+        'description' => 'This is mine.',
+        'street' => '59 Martin Road',
+        'city' => 'Jaffna',
+        'state' => 'Northern',
         'country' => 'Sri Lanka',
-        'postcode' => 13500,
+        'postcode' => 40000,
         'email' => 'tjthavarshan@gmail.com',
-        'phone' => '775018794',
+        'phone' => '775018795',
     ],
 
-    'statuses' => [
-        'Pending',
-        'Approved',
-        'Rejected',
-        'Shipped',
-        'Delivered',
-        'Completed',
+    /*
+     * Default Support Agent Module Details.
+     */
+    'support-agents' => [
+        'max-tickets' => 10,
+    ],
+
+    /*
+     * Default Space Module Details.
+     */
+    'spaces' => [
+        'types' => [
+            'Local',
+            'International',
+        ],
+
+        'statuses' => [
+            'Available',
+            'Ordered',
+            'Expired',
+        ],
+    ],
+
+    /*
+     * Default Order Placement & Management Details.
+     */
+    'orders' => [
+        'statuses' => [
+            'Pending',
+            'Approved',
+            'Shipped',
+            'Delivered',
+            'Rejected',
+        ],
+    ],
+
+    /*
+     * Default Support Ticket Management Details.
+     */
+    'tickets' => [
+        'statuses' => [
+            'Open',
+            'Pending',
+            'Closed',
+        ],
+
+        'priorities' => [
+            'Low',
+            'Medium',
+            'High',
+        ],
     ],
 ];

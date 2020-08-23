@@ -15,19 +15,17 @@ class DummyDataSeeder extends Seeder
     public function run()
     {
         create(Space::class, ['user_id' => 1], 20)->each(function ($space) {
-            $service = $space->getPriceInCents() * config('charges.service');
+            // $service = $space->getPriceInCents() * config('charges.service');
 
-            for ($i = 0; $i < 8; ++$i) {
-                create(Order::class, [
-                    'user_id' => 1,
-                    'space_id' => $space->id,
-                    'price' => $space->getPriceInCents(),
-                    'tax' => $space->getTaxInCents(),
-                    'service' => $service,
-                    'total' => $space->getPriceInCents() + $space->getTaxInCents() + $service,
-                    'created_at' => Carbon::now()->subDays($i),
-                ], rand(1, 12));
-            }
-        });
+            // create(Order::class, [
+            //     'user_id' => 1,
+            //     'space_id' => $space->id,
+            //     'price' => $space->getPriceInCents(),
+            //     'tax' => $space->getTaxInCents(),
+            //     'service' => $service,
+            //     'total' => $space->getPriceInCents() + $space->getTaxInCents() + $service,
+            //     'created_at' => Carbon::now()->subDays(rand(1, 10)),
+            // ]);
+        }, 20);
     }
 }

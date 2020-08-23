@@ -2,10 +2,19 @@
 
 namespace App\Billing\Charges;
 
-use App\Contracts\Billing\Charges;
+use RuntimeException;
+use Illuminate\Pipeline\Pipeline;
+use Illuminate\Support\Collection;
 use App\Contracts\Models\Priceable;
+use App\Contracts\Billing\Calculation;
+use App\Billing\Charges\Calculations\TaxCalculation;
+use App\Billing\Charges\Calculations\PriceCalculation;
+use App\Billing\Charges\Calculations\TotalCalculation;
+use App\Billing\Charges\Calculations\ServiceCalculation;
+use App\Billing\Charges\Calculations\SubTotalCalculation;
+use App\Contracts\Support\Calculator as CalculatorContract;
 
-class Calculator
+class Calculator implements CalculatorContract
 {
     /**
      * Instance of resource model adhering to "Priceable" interface.
@@ -15,14 +24,16 @@ class Calculator
     protected $resource;
 
     /**
-     * List of all chrages to be applied to final amount.
+     * List of all charges to be applied to final amount.
      *
      * @var array
      */
-    protected $charges = [
-        'price' => SubTotalCharges::class,
-        'service' => ServiceCharges::class,
-        'tax' => TaxCharges::class,
+    protected $calculations = [
+        'price' => PriceCalculation::class,
+        'subtotal' => SubTotalCalculation::class,
+        'service' => ServiceCalculation::class,
+        'tax' => TaxCalculation::class,
+        'total' => TotalCalculation::class,
     ];
 
     /**
@@ -33,87 +44,71 @@ class Calculator
     protected $amounts = [];
 
     /**
-     * Create new billing charges amount calculator.
+     * Create new instance of charges calculator.
      *
      * @param \App\Contracts\Models\Priceable $resource
      */
     public function __construct(Priceable $resource)
     {
         $this->resource = $resource;
+        $this->amounts = collect();
     }
 
     /**
-     * Calculates all applicable charges.
+     * Perform calculations.
      *
-     * @return array
+     * @return mixed
      */
-    public function calculateCharges(): array
+    public function calculate()
     {
-        foreach ($this->getCharges() as $chargeName => $charge) {
-            $resource = $this->getResource();
+        (new Pipeline(app()))->send($this->resourceCharges())
+            ->through($this->calculations)
+            ->via('handle')
+            ->then(function ($amounts) {
+                $this->saveAmountsToCache($this->amounts = $amounts);
+            });
+    }
 
-            $this->amounts[$chargeName] = resolve($charge)->apply(
-                ...$this->getPriceableAmounts()
-            );
+    /**
+     * Resolve calculation service.
+     *
+     * @param string $service
+     *
+     * @return \App\Contracts\Billing\Calculation
+     */
+    protected function resolveCalculationService(string $service): Calculation
+    {
+        $service = resolve($service);
+
+        if (!$service instanceof Calculation) {
+            $service = class_basename($service);
+
+            throw new RuntimeException("Class {$service} is not a valid charge calculations service");
         }
 
-        $this->amounts['total'] = array_sum($this->amounts);
-
-        $this->saveAmountsToCache();
-
-        return $this->amounts;
+        return $service;
     }
 
     /**
-     * Get all pricing amounts including tax for the given resource.
+     * Save calculated charges to pipeline.
      *
-     * @return array
-     */
-    protected function getPriceableAmounts(): array
-    {
-        return [$this->getPriceAmount(), $this->getTaxAmount()];
-    }
-
-    /**
-     * Get price amount in cents.
-     *
-     * @return int
-     */
-    protected function getPriceAmount(): int
-    {
-        return $this->getChargeAmountInCents($this->getResource()->price);
-    }
-
-    /**
-     * Get tax amount in cents.
-     *
-     * @return int
-     */
-    protected function getTaxAmount(): int
-    {
-        return $this->getChargeAmountInCents($this->getResource()->tax ?? 0);
-    }
-
-    /**
-     * Get chargable amount in cents.
-     *
-     * @param $amount
-     *
-     * @return int
-     */
-    protected function getChargeAmountInCents($amount): int
-    {
-        return $this->getResource()->getChargeAmountInCents($amount);
-    }
-
-    /**
-     * Save calculated charges to cache.
+     * @param array $amounts
      *
      * @return void
      */
-    protected function saveAmountsToCache(): void
+    protected function saveAmountsToCache(array $amounts): void
     {
-        cache()->put('charges', $this->amounts);
+        cache()->put('charges', $amounts);
+    }
+
+    /**
+     * Get calculated charge amounts.
+     *
+     * @return array
+     */
+    public function amounts(): array
+    {
+        return $this->amounts;
     }
 
     /**
@@ -121,18 +116,29 @@ class Calculator
      *
      * @return \App\Contracts\Models\Priceable
      */
-    public function getResource()
+    public function resource()
     {
         return $this->resource;
     }
 
     /**
-     * Get list of all charges to be applied to final amount.
+     * All amounts of the resource to be summed up for the total charge amount.
      *
      * @return array
      */
-    public function getCharges(): array
+    public function resourceCharges(): array
     {
-        return $this->charges;
+        return $this->resource()->getCharges();
+    }
+
+    /**
+     * Get list of all charges to be applied to final amount.
+     *
+     * @return \Illuminate\Support\Collection
+     */
+    public function calculations(): Collection
+    {
+        return collect($this->calculations)
+            ->merge(config('defaults.billing.charges.calculations'));
     }
 }

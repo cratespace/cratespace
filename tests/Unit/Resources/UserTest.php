@@ -117,6 +117,8 @@ class UserTest extends TestCase
     /** @test */
     public function a_user_has_an_account()
     {
+        $this->withoutExceptionHandling();
+
         $this->post(route('register'), $this->getUserDetails())->assertRedirect('/home');
 
         $this->assertInstanceOf(Business::class, user()->business);

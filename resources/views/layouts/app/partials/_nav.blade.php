@@ -1,26 +1,32 @@
 <nav class="bg-gray-800">
     <div class="container">
         <div class="h-16 flex justify-between items-center border-b border-gray-700">
-            <a class="block flex-shrink-0 h-8 w-8" href="/" title="{{ config('app.name') }}">
-                <img class="h-8 w-8" src="{{ asset('img/logo.png') }}" alt="{{ config('app.name') }}">
+            <a class="block flex-shrink-0 h-8 w-auto" href="/" title="{{ config('app.name') }}">
+                <img class="h-8 w-auto" src="{{ asset('img/logo-light.png') }}" alt="{{ config('app.name') }}">
             </a>
 
             <div class="ml-10 flex flex-1 items-center justify-end md:justify-between">
                 <ul class="hidden md:flex items-center">
                     <li>
-                        <a class="block px-3 py-2 rounded-lg text-sm font-medium text-gray-300 hover:text-white hover:bg-gray-700 hover:bg-opacity-50 focus:text-gray-600 active:text-gray-600" href="/home">{{ __('Dashboard') }}</a>
+                        <a class="{{ is_active('home', 'bg-gray-700 bg-opacity-50') }} block px-3 py-2 rounded-lg text-sm font-medium text-gray-300 hover:text-white hover:bg-gray-700 hover:bg-opacity-50 focus:text-white active:text-gray-600" href="/home">{{ __('Dashboard') }}</a>
                     </li>
 
                     <li class="ml-6">
-                        <a class="block px-3 py-2 rounded-lg text-sm font-medium text-gray-300 hover:text-white hover:bg-gray-700 hover:bg-opacity-50 focus:text-white active:text-white" href="/orders">{{ __('Orders') }}</a>
+                        <a class="{{ is_active('orders*', 'bg-gray-700 bg-opacity-50') }} block px-3 py-2 rounded-lg text-sm font-medium text-gray-300 hover:text-white hover:bg-gray-700 hover:bg-opacity-50 focus:text-white active:text-white" href="{{ route('orders.index') }}">{{ __('Orders') }}</a>
+                    </li>
+
+                    <li class="dropdown ml-6">
+                        <a class="{{ is_active('spaces*', 'bg-gray-700 bg-opacity-50') }} block px-3 py-2 rounded-lg text-sm font-medium text-gray-300 hover:text-white hover:bg-gray-700 hover:bg-opacity-50 focus:text-white active:text-white dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{ __('Spaces') }}</a>
+
+                        <div class="mt-3 dropdown-menu rounded-lg shadow-lg" aria-labelledby="dropdownMenuLink">
+                            <a class="dropdown-item text-sm font-medium text-gray-600 hover:text-gray-700 focus:text-white active:text-white py-2" href="{{ route('spaces.index') }}">{{ __('All spaces') }}</a>
+
+                            <a class="dropdown-item text-sm font-medium text-gray-600 hover:text-gray-700 focus:text-white active:text-white py-2" href="{{ route('spaces.create') }}">{{ __('New space') }}</a>
+                        </div>
                     </li>
 
                     <li class="ml-6">
-                        <a class="block px-3 py-2 rounded-lg text-sm font-medium text-gray-300 hover:text-white hover:bg-gray-700 hover:bg-opacity-50 focus:text-white active:text-white" href="/spaces">{{ __('Spaces') }}</a>
-                    </li>
-
-                    <li class="ml-6">
-                        <a class="block px-3 py-2 rounded-lg text-sm font-medium text-gray-300 hover:text-white hover:bg-gray-700 hover:bg-opacity-50 focus:text-white active:text-white" href="/support">{{ __('Support') }}</a>
+                        <a class="{{ is_active('support*', 'bg-gray-700 bg-opacity-50') }} block px-3 py-2 rounded-lg text-sm font-medium text-gray-300 hover:text-white hover:bg-gray-700 hover:bg-opacity-50 focus:text-white active:text-white" href="/support">{{ __('Support') }}</a>
                     </li>
                 </ul>
 

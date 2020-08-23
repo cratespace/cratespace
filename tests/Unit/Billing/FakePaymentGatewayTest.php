@@ -2,60 +2,68 @@
 
 namespace Tests\Unit\Billing;
 
-use PHPUnit\Framework\TestCase;
-use App\Exceptions\PaymentFailedException;
+use Tests\TestCase;
+use App\Models\Order;
+use App\Models\Space;
+use App\Models\Charge;
 use App\Billing\PaymentGateways\FakePaymentGateway;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class FakePaymentGatewayTest extends TestCase
 {
-    /** @test */
-    public function charges_with_a_valid_payment_token_are_successful()
+    use PaymentGatewayContractTest;
+
+    /**
+     * Bind payment gateway to service container.
+     */
+    protected function getPaymentGateway()
     {
-        $paymentGateway = new FakePaymentGateway();
-
-        $paymentGateway->charge(2500, $paymentGateway->getValidTestToken());
-
-        $this->assertEquals(2500, $paymentGateway->totalCharges());
+        $this->paymentGateway = new FakePaymentGateway();
+        $this->app->instance(PaymentGateway::class, $this->paymentGateway);
     }
 
-    /** @test */
-    public function it_has_a_test_card_number()
+    /**
+     * Get last charge details from Stripe.
+     *
+     * @param \App\models\Order $order
+     * @param null              $chargeDetails
+     *
+     * @return \Stripe\Charge
+     */
+    protected function getLastCharge(Order $order, $chargeDetails = null)
     {
-        $this->assertEquals(FakePaymentGateway::TEST_CARD_NUMBER, 4242424242424242);
-    }
-
-    /** @test */
-    public function charges_with_an_invalid_payment_token_fail()
-    {
-        try {
-            $paymentGateway = new FakePaymentGateway();
-            $paymentGateway->charge(2500, 'invalid-payment-token');
-        } catch (PaymentFailedException $e) {
-            $this->assertEquals(2500, $e->chargedAmount());
-            $this->assertInstanceOf(PaymentFailedException::class, $e);
-
-            return;
-        }
-
-        $this->fail();
+        return Charge::where('order_id', $order->id)->first();
     }
 
     /** @test */
     public function It_can_run_a_hook_before_the_first_charge()
     {
+        $user = $this->signIn();
+        $space = create(Space::class, [
+            'user_id' => $user->id,
+            'price' => 3250,
+            'tax' => 162.5,
+        ]);
         $paymentGateway = new FakePaymentGateway();
         $timesCallbackRan = 0;
 
-        $paymentGateway->beforeFirstCharge(function ($paymentGateway) use (&$timesCallbackRan) {
-            $paymentGateway->charge(1200, $paymentGateway->getValidTestToken());
+        $paymentGateway->beforeFirstCharge(function ($paymentGateway) use (&$timesCallbackRan, $space) {
+            try {
+                $this->calculateCharges($space);
+                $firstOrder = $space->placeOrder($this->orderDetails());
+                $paymentGateway->charge($firstOrder, $paymentGateway->generateToken($this->getCardDetails()));
+            } catch (HttpException $e) {
+                ++$timesCallbackRan;
+                $this->assertEquals(0, $paymentGateway->total());
 
-            ++$timesCallbackRan;
-
-            $this->assertEquals(1200, $paymentGateway->totalCharges());
+                return;
+            }
         });
 
-        $paymentGateway->charge(1200, $paymentGateway->getValidTestToken());
+        $this->calculateCharges($space);
+        $secondOrder = $space->placeOrder($this->orderDetails());
+        $paymentGateway->charge($secondOrder, $paymentGateway->generateToken($this->getCardDetails()));
         $this->assertEquals(1, $timesCallbackRan);
-        $this->assertEquals(2400, $paymentGateway->totalCharges());
+        $this->assertEquals($secondOrder->total, $paymentGateway->total());
     }
 }
