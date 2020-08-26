@@ -87,9 +87,9 @@
                                 </div>
 
                                 <div>
-                                    <label class="btn btn-secondary inline-flex cursor-pointer">
+                                    <label class="btn btn-secondary inline-flex leading-8 px-3 cursor-pointer">
                                         <span class="inline-flex items-center">
-                                            <span class="text-base">&uarr;</span> <span class="ml-2 text-gray-700 text-sm font-semibold">{{ __('Upload a file') }}</span>
+                                            <span class="text-base">&uarr;</span> <span class="ml-2 text-gray-700 text-xs font-semibold">{{ __('Upload a file') }}</span>
                                         </span>
 
                                         <input type="file" class="hidden inline-block" name="attachement" id="attachement">

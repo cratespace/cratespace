@@ -14,15 +14,15 @@
     </div>
 </div>
 
-<hr class="my-6">
+<hr class="my-8">
 
 @include('business.spaces.sections._basic', ['space' => $space])
 
-<hr class="my-6">
+<hr class="my-8">
 
 @include('business.spaces.sections._shipping', ['space' => $space])
 
-<hr class="my-6">
+<hr class="my-8">
 
 <div class="flex items-center justify-end">
     <a href="{{ route('spaces.index') }}" class="btn btn-secondary" type="submit">Cancel</a>

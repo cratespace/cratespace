@@ -23,19 +23,6 @@ class TicketPolicy
     }
 
     /**
-     * Determine whether the user can view the model.
-     *
-     * @param \App\Models\User   $user
-     * @param \App\Models\Ticket $ticket
-     *
-     * @return mixed
-     */
-    public function view(User $user, Ticket $ticket)
-    {
-        return $user->is($ticket->user) || $this->ticketBelongsToAgent($user, $ticket);
-    }
-
-    /**
      * Determine whether the user can delete the model.
      *
      * @param \App\Models\User   $user
@@ -45,20 +32,8 @@ class TicketPolicy
      */
     public function delete(User $user, Ticket $ticket)
     {
-        return $this->ticketBelongsToAgent($user, $ticket);
-    }
-
-    /**
-     * Determine if the given ticket is handled by the given agent.
-     *
-     * @param \App\Models\User   $user
-     * @param \App\Models\Ticket $ticket
-     *
-     * @return bool
-     */
-    protected function ticketBelongsToAgent(User $user, Ticket $ticket): bool
-    {
-        return ($user->hasRole('support-agent') && $user->is($ticket->agent)) ||
+        return ($user->hasRole('support-agent') &&
+            $user->is($ticket->agent)) ||
             $user->hasRole('admin');
     }
 }

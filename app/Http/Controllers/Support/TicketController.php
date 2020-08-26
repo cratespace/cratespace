@@ -5,11 +5,11 @@ namespace App\Http\Controllers\Support;
 use App\Models\Ticket;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\SupportTicketRequest;
-use App\Http\Controllers\Support\Concerns\CreatesNewCustomer;
+use App\Http\Controllers\Support\Concerns\CreatesNewSupportTicketCustomer;
 
 class TicketController extends Controller
 {
-    use CreatesNewCustomer;
+    use CreatesNewSupportTicketCustomer;
 
     /**
      * Display a listing of the resource.

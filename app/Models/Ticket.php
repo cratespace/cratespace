@@ -97,7 +97,7 @@ class Ticket extends Model
     {
         $reply = $this->replies()->create($data);
 
-        // event(new TicketReceivedNewReply($reply));
+        event(new TicketReceivedNewReply($reply));
 
         return $reply;
     }
