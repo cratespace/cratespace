@@ -1,14 +1,23 @@
-<div>
-    <div class="text-blue-600 font-semibold text-sm">{{ '#' . $order->confirmation_number }}</div>
-    <h4><span class="font-normal">Arrives</span> {{ $order->space->arrives_at->format('D, M j') }}</h4>
-</div>
+<span class="text-xs">Order Confirmation Number:</span>
 
-<div class="mt-8">
-    <order-status></order-status>
-</div>
+<div class="text-blue-600 font-semibold">{{ '#' . $order->confirmation_number }}</div>
+
+@if ($order->status === 'Rejected')
+    <h4 class="mt-4 text-red-600"><span class="font-normal">Your order has been rejected</span></h4>
+
+    <p class="mt-1 text-gray-700">
+        You will be provided with a full refund very soon. If at least two days have passed and you still have not received your refund please <a href="mailto:{{ config('defaults.support.email') }}">contact us</a>.
+    </p>
+@else
+    <h4><span class="font-normal">Arrives</span> {{ $order->space->arrives_at->format('D, M j') }}</h4>
+
+    <div class="mt-8">
+        <order-status :order="{{ $order }}"></order-status>
+    </div>
+@endif
 
 <div class="mt-6">
-    <div class="text-sm">
+    <div class="text-xs text-gray-500">
         Tracking information will be available in 24 hours. Tracking system is real-time and does not require the web page to be reloaded.
     </div>
 </div>

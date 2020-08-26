@@ -53,6 +53,7 @@ Vue.component("flash", require("./components/Flash.vue").default);
 Vue.component("checkout", require("./components/Checkout.vue").default);
 Vue.component("hashids-input", require("./components/HashIdsInput.vue").default);
 Vue.component("order-status", require("./components/OrderStatus.vue").default);
+Vue.component("order-update-status", require("./components/OrderUpdateStatus.vue").default);
 
 const app = new Vue({
     el: '#app',

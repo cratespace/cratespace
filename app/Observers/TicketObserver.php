@@ -77,7 +77,7 @@ class TicketObserver
         $supportAgents = User::all()
             ->filter(function ($agent) {
                 return $agent->hasRole('support-agent') &&
-                    $agent->tickets->count() <= config('defaults.support-agents.max-tickets');
+                    $agent->tickets->count() <= config('defaults.support.support-agents.max-tickets');
             });
 
         if (!$supportAgents->isEmpty()) {

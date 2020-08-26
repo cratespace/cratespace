@@ -7,7 +7,7 @@
         <div class="mt-2 flex items-center justify-between text-sm font-medium">
             <span class="text-gray-800">Order placed</span>
             <span v-for="label in Object.keys(labels)">
-                <span :class="label === progressLabel || label === 'Processing' ? 'text-blue-500' : 'text-gray-500'">{{ label }}</span>
+                <span :class="label === progressLabel ? 'text-blue-500' : 'text-gray-500'">{{ label }}</span>
             </span>
         </div>
     </div>
@@ -15,20 +15,25 @@
 
 <script>
     export default {
+        props: ['order'],
+
         data() {
             return {
                 progress: 31,
                 progressLabel: null,
                 labels: {
-                    'Processing': 31,
-                    'Approved': 54,
-                    'Shipped': 67,
+                    'Pending': 31,
+                    'Approved': 52,
+                    'Shipped': 74,
                     'Delivered': 100,
                 }
             }
         },
 
         mounted() {
+            this.progress = this.labels[this.order.status];
+            this.progressLabel = this.order.status;
+
             Echo.channel('order-tracker')
                 .listen('OrderStatusUpdatedEvent', (event) => {
                     this.progressLabel = event.order.status;
