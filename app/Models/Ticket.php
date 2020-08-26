@@ -83,7 +83,7 @@ class Ticket extends Model
      */
     public function replies()
     {
-        return $this->hasMany(Reply::class, 'ticket_id')->latest();
+        return $this->hasMany(Reply::class);
     }
 
     /**

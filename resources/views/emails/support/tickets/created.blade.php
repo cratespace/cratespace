@@ -1,7 +1,7 @@
 @component('mail::message')
 # New Support Ticket Created
 
-## Hi {{ $ticket->name }},
+## Hi {{ $ticket->customer->name }},
 
 We've received your support ticket request, one of our service team representatives will contact you within the next 24 Hrs.
 
