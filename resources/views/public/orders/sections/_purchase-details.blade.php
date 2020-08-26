@@ -58,7 +58,7 @@
             </div>
 
             <div class="text-gray-800">
-                <time datetime="{{ $space->departs_at }}">{{ $space->departs_at->format('M j, g:ia') }}</time>
+                <time datetime="{{ $order->space->departs_at }}">{{ $order->space->departs_at->format('M j, g:ia') }}</time>
             </div>
 
             <div>from <span class="text-gray-800">{{ $order->space->origin }}</span></div>
@@ -72,7 +72,7 @@
             </div>
 
             <div class="text-gray-800">
-                <time datetime="{{ $space->arrives_at }}">{{ $space->arrives_at->format('M j, g:ia') }}</time>
+                <time datetime="{{ $order->space->arrives_at }}">{{ $order->space->arrives_at->format('M j, g:ia') }}</time>
             </div>
 
             <div>to <span class="text-gray-800">{{ $order->space->destination }}</span></div>

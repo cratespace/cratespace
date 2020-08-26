@@ -39,7 +39,7 @@ class ReplyTest extends TestCase
     }
 
     /** @test */
-    public function it_knows_if_who_it_belongs_to()
+    public function it_knows_who_it_belongs_to()
     {
         $replyOfCustomer = create(Reply::class, ['agent_id' => null]);
         $this->assertTrue($replyOfCustomer->by()->is($replyOfCustomer->customer));

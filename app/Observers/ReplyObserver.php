@@ -16,7 +16,7 @@ class ReplyObserver
      */
     public function creating(Reply $reply)
     {
-        if (is_null(request()->agent_id)) {
+        if (is_null(request()->agent_id) && is_null($reply->agent_id)) {
             $reply->customer_id = $reply->ticket->customer_id;
         }
     }
