@@ -135,17 +135,7 @@
                     </div>
 
                     <div class="mt-8">
-                        <div class="progress rounded-full overflow-hidden">
-                            <div class="progress-bar progress-bar-striped progress-bar-animated rounded-full" role="progressbar" style="width: 30%" aria-valuenow="30" aria-valuemin="0" aria-valuemax="30"></div>
-                        </div>
-
-                        <div class="mt-2 flex items-center justify-between text-sm font-medium">
-                            <span class="text-gray-800">Order placed</span>
-                            <span class="text-gray-800">Processing</span>
-                            <span class="text-gray-800">Approved</span>
-                            <span class="text-gray-800">Shipped</span>
-                            <span class="text-green-500">Delivered</span>
-                        </div>
+                        <order-status></order-status>
                     </div>
 
                     <div class="mt-6">

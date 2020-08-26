@@ -1,4 +1,6 @@
-import VueApexCharts from 'vue-apexcharts'
+import VueApexCharts from 'vue-apexcharts';
+import Echo from 'laravel-echo';
+import Pusher from 'pusher-js';
 
 window._ = require('lodash');
 
@@ -10,6 +12,25 @@ try {
     require('bootstrap');
 } catch (e) {}
 
+flatpickr('.datepicker', {
+    dateFormat: 'Y-m-d',
+    altInput: true,
+    altFormat: 'j M Y',
+    ariaDateFormat: 'Y-m-d',
+    enableTime: false
+});
+
+// window.addEventListener('contextmenu', function(e) {
+//     e.preventDefault();
+// }, false);
+
+window.Echo = new Echo({
+    broadcaster: 'pusher',
+    key: '1b4599a5ad1bd431131c',
+    cluster: 'us2',
+    forceTLS: true,
+    encrypted: true
+});
 
 window.axios = require('axios');
 
@@ -31,19 +52,8 @@ Vue.component("image-upload-form", require("./components/ImageUploadForm.vue").d
 Vue.component("flash", require("./components/Flash.vue").default);
 Vue.component("checkout", require("./components/Checkout.vue").default);
 Vue.component("hashids-input", require("./components/HashIdsInput.vue").default);
+Vue.component("order-status", require("./components/OrderStatus.vue").default);
 
 const app = new Vue({
     el: '#app',
 });
-
-flatpickr('.datepicker', {
-    dateFormat: 'Y-m-d',
-    altInput: true,
-    altFormat: 'j M Y',
-    ariaDateFormat: 'Y-m-d',
-    enableTime: false
-});
-
-// window.addEventListener('contextmenu', function(e) {
-//     e.preventDefault();
-// }, false);
