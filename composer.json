@@ -27,7 +27,6 @@
         "laravel/tinker": "^2.0",
         "laravel/ui": "^2.1",
         "moneyphp/money": "^3.3",
-        "nunomaduro/phpinsights": "^1.14",
         "pusher/pusher-php-server": "^4.1",
         "stevebauman/location": "^5.1",
         "stevebauman/purify": "^3.0",
