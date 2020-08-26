@@ -3,14 +3,17 @@
 namespace App\Models;
 
 use InvalidArgumentException;
+use App\Models\Traits\Mailable;
 use App\Models\Traits\Filterable;
 use App\Models\Traits\Redirectable;
+use App\Mail\TicketStatusUpdatedMail;
 use App\Events\TicketReceivedNewReply;
 use App\Models\Concerns\ManagesStatus;
 use Illuminate\Database\Eloquent\Model;
 
 class Ticket extends Model
 {
+    use Mailable;
     use ManagesStatus;
     use Redirectable;
     use Filterable;
@@ -100,5 +103,19 @@ class Ticket extends Model
         event(new TicketReceivedNewReply($reply));
 
         return $reply;
+    }
+
+    /**
+     * Update ticket status.
+     *
+     * @param string $status
+     *
+     * @return void
+     */
+    public function updateStatus(string $status): void
+    {
+        $this->mark($status);
+
+        $this->mail(TicketStatusUpdatedMail::class, $this->customer->email);
     }
 }

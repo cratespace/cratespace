@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Traits\Mailable;
 use App\Models\Traits\Filterable;
 use App\Models\Traits\Presentable;
 use App\Models\Traits\Redirectable;
@@ -10,6 +11,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Order extends Model
 {
+    use Mailable;
     use Presentable;
     use Filterable;
     use Redirectable;

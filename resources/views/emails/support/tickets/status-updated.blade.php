@@ -1,9 +1,9 @@
 @component('mail::message')
-# New Support Ticket Created
+# Support Ticket Status Updated
 
 ## Hi {{ $ticket->customer->name }},
 
-We've received your support ticket request, one of our service team representatives will contact you within the next 24 Hrs.
+Your support request is now {{ strtolower($ticket->status) }}.
 
 You can track your ticket status by clicking the button below.
 

@@ -73,9 +73,9 @@ class TicketController extends Controller
      */
     public function update(SupportTicketRequest $request, Ticket $ticket)
     {
-        $this->authorize('view', $ticket);
-
-        $ticket->update($request->validated());
+        $request->has('status')
+            ? $ticket->updateStatus($request->status)
+            : $ticket->update($request->validated());
 
         return $this->success($ticket->path);
     }
