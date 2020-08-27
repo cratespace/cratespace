@@ -47,6 +47,8 @@ class AppServiceProvider extends ServiceProvider
     {
         $this->bootObservers();
 
+        $this->bootHttpSchema();
+
         Paginator::useTailwind();
 
         $this->extendCustomValidators();
@@ -75,6 +77,18 @@ class AppServiceProvider extends ServiceProvider
     {
         foreach ($this->observers as $model => $observer) {
             $model::observe($observer);
+        }
+    }
+
+    /**
+     * Force application to use HTTPS.
+     *
+     * @return void
+     */
+    protected function bootHttpSchema(): void
+    {
+        if ($this->app->isProduction()) {
+            app('url')->forceScheme('https');
         }
     }
 
