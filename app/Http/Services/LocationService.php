@@ -45,9 +45,9 @@ class LocationService extends Service
      *
      * @return string
      */
-    public function getCountry(): ?string
+    public function getCountry(): string
     {
-        return $this->get()->countryName ?? null;
+        return optional($this->get())->countryName ?? $this->getDefaults()['country'];
     }
 
     /**
@@ -55,9 +55,9 @@ class LocationService extends Service
      *
      * @return string
      */
-    public function getCountryCode(): ?string
+    public function getCountryCode(): string
     {
-        return $this->get()->countryCode ?? null;
+        return optional($this->get())->countryCode ?? $this->getDefaults()['code'];
     }
 
     /**
@@ -88,5 +88,15 @@ class LocationService extends Service
     protected function getIpService(): IpService
     {
         return $this->ipService;
+    }
+
+    /**
+     * Get default location configurations.
+     *
+     * @return array
+     */
+    public function getDefaults(): array
+    {
+        return config('location.fallback');
     }
 }

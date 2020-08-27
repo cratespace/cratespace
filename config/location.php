@@ -116,6 +116,7 @@ return [
     'fallback' => [
         'ip' => '122.255.0.0', // Sri Lankan IP,
         'country' => 'Sri Lanka',
+        'code' => 'SL',
     ],
 
     'blacklist' => [],

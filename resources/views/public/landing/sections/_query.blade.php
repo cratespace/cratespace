@@ -4,7 +4,7 @@
             <div class="col-12">
                 <div class="flex items-center justify-between">
                     <div class="text-sm">
-                        Showing spaces from <span class="font-semibold text-blue-500">{{ Location::getCountry() ?? 'Sri Lanka' }}</span>
+                        Showing spaces from <span class="font-semibold text-blue-500">{{ Location::getCountry() }}</span>
                     </div>
 
                     <div class="text-sm text-center">
@@ -27,6 +27,10 @@
                         @if (request('arrives_at'))
                             <span class="inline-block bg-blue-100 rounded-full px-3 py-1 text-sm font-medium text-blue-800 mr-2">{{ Carbon\Carbon::parse(request('arrives_at'))->format('F j, Y') }}</span>
                         @endif
+                    </div>
+
+                    <div class="text-sm">
+                        <a href="/" class="btn bg-gray-200 shadow-none text-gray-600 hover:text-gray-700 focus:text-gray-700">Reset search</a>
                     </div>
                 </div>
             </div>

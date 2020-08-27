@@ -48,9 +48,9 @@ class SpaceFilter extends Filter
      *
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    protected function departs_at(Carbon $date): Builder
+    protected function departs_at(string $date): Builder
     {
-        return $this->builder->whereDate('departs_at', '=', $date);
+        return $this->builder->whereDate('departs_at', 'like', Carbon::parse($date));
     }
 
     /**
@@ -60,9 +60,9 @@ class SpaceFilter extends Filter
      *
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    protected function arrives_at(Carbon $date): Builder
+    protected function arrives_at(string $date): Builder
     {
-        return $this->builder->whereDate('arrives_at', '=', $date);
+        return $this->builder->whereDate('arrives_at', 'like', Carbon::parse($date));
     }
 
     /**
