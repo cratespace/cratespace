@@ -3,14 +3,17 @@
 namespace App\Models;
 
 use InvalidArgumentException;
+use App\Models\Traits\Mailable;
 use App\Models\Traits\Filterable;
 use App\Models\Traits\Redirectable;
+use App\Mail\TicketStatusUpdatedMail;
 use App\Events\TicketReceivedNewReply;
 use App\Models\Concerns\ManagesStatus;
 use Illuminate\Database\Eloquent\Model;
 
 class Ticket extends Model
 {
+    use Mailable;
     use ManagesStatus;
     use Redirectable;
     use Filterable;
@@ -83,7 +86,7 @@ class Ticket extends Model
      */
     public function replies()
     {
-        return $this->hasMany(Reply::class, 'ticket_id')->latest();
+        return $this->hasMany(Reply::class);
     }
 
     /**
@@ -97,8 +100,22 @@ class Ticket extends Model
     {
         $reply = $this->replies()->create($data);
 
-        // event(new TicketReceivedNewReply($reply));
+        event(new TicketReceivedNewReply($reply));
 
         return $reply;
+    }
+
+    /**
+     * Update ticket status.
+     *
+     * @param string $status
+     *
+     * @return void
+     */
+    public function updateStatus(string $status): void
+    {
+        $this->mark($status);
+
+        $this->mail(TicketStatusUpdatedMail::class, $this->customer->email);
     }
 }

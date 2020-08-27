@@ -24,7 +24,7 @@ class TicketReplyController extends Controller
 
         $ticket->addReply($request->validated());
 
-        return $this->success($ticket->path());
+        return $this->success($ticket->path);
     }
 
     /**

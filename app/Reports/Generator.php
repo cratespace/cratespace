@@ -59,7 +59,9 @@ class Generator implements GeneratorContract
         if (isset($this->options['report'])) {
             $report = $this->options['report'];
 
-            return new $report($this->getReportQueryBuilder());
+            return is_string($report)
+                ? new $report($this->getReportQueryBuilder())
+                : $report;
         }
 
         throw new OptionsNotSetException('Report type not set');

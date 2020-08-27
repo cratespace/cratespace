@@ -12,29 +12,8 @@
             </div>
 
             <div>
-                <div class="dropdown">
-                    <a class="btn btn-secondary inline-flex items-center dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <span class="mr-2">{{ $order->status }}</span>
-                        <x:heroicon-o-chevron-down class="w-4 h-4"/>
-                    </a>
-
-                    <div class="mt-3 dropdown-menu dropdown-menu-right rounded-lg shadow-lg" aria-labelledby="dropdownMenuLink">
-                        @foreach (config('defaults.orders.statuses') as $status)
-                            @if ($order->status !== $status)
-                                <a class="dropdown-item text-sm font-medium text-gray-600 hover:text-gray-700 focus:text-white active:text-white py-2" href="{{ route('orders.update', $order) }}" onclick="event.preventDefault(); document.getElementById('order-update-form').submit();">
-                                    {{ $status }}
-                                </a>
-
-                                <form id="order-update-form" action="{{ route('orders.update', $order) }}" method="POST" style="display: none;">
-                                    @csrf
-
-                                    @method('PUT')
-
-                                    <input type="hidden" name="status" value="{{ $status }}">
-                                </form>
-                            @endif
-                        @endforeach
-                    </div>
+                <div>
+                    <order-update-status :order="{{ $order }}" :statuses="{{ json_encode(config('defaults.orders.statuses')) }}" ></order-update-status>
                 </div>
             </div>
         </div>

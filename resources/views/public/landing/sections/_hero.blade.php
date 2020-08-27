@@ -92,7 +92,7 @@
                         <div class="row mt-4">
                             <div class="col-md-6 mb-4 md:mb-0">
                                 <label class="relative block">
-                                    <input type="text" name="departs_at" id="departs_at" value="{{ old('departsAt') ?? ($departsAt ?? null) }}" placeholder="{{ __('Departs') }}" autocomplete="departs_at" class="datepicker form-input block w-full pl-12 mt-1 @error('departsAt') is-invalid @enderror">
+                                    <input type="datetime-local" name="departs_at" id="departs_at" value="{{ old('departsAt') ?? (request('departs_at') ?? null) }}" placeholder="{{ __('Departs') }}" autocomplete="departs_at" class="datetime form-input block w-full pl-12 mt-1 @error('departsAt') is-invalid @enderror">
 
                                     <div class="absolute inset-y-0 flex items-center px-3">
                                         <x:heroicon-o-calendar class="w-6 h-6 text-gray-400"/>
@@ -108,7 +108,7 @@
 
                             <div class="col-md-6">
                                 <label class="relative block">
-                                    <input type="text" name="arrives_at" id="arrives_at" value="{{ old('arrivesAt') ?? ($arrivesAt ?? null) }}" placeholder="{{ __('Arrives') }}" autocomplete="arrives_at" class="datepicker form-input block w-full pl-12 mt-1 @error('arrivesAt') is-invalid @enderror">
+                                    <input type="datetime-local" name="arrives_at" id="arrives_at" value="{{ old('arrivesAt') ?? (request('arrives_at') ?? null) }}" placeholder="{{ __('Arrives') }}" autocomplete="arrives_at" class="datetime form-input block w-full pl-12 mt-1 @error('arrivesAt') is-invalid @enderror">
 
                                     <div class="absolute inset-y-0 flex items-center px-3">
                                         <x:heroicon-o-calendar class="w-6 h-6 text-gray-400"/>
@@ -132,3 +132,18 @@
         </div>
     </div>
 </section>
+
+@push('scripts')
+    <script>
+        $(document).ready(function () {
+            $('.datetime').flatpickr({
+                dateFormat: 'Y-m-d',
+                altInput: true,
+                altFormat: 'j M Y',
+                ariaDateFormat: 'Y-m-d',
+                enableTime: false,
+                minDate: Date.now()
+            });
+        });
+    </script>
+@endpush

@@ -2,6 +2,8 @@
 
 namespace App\Http\Requests;
 
+use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Foundation\Http\FormRequest;
 use App\Http\Requests\Traits\AuthorizesRequest;
 use App\Http\Requests\Traits\HasValidationRules;
@@ -18,6 +20,10 @@ class SupportTicketRequest extends FormRequest
      */
     public function authorize()
     {
+        if ($this->has('status')) {
+            return Gate::allows('viewAny', $this->ticket);
+        }
+
         return true;
     }
 
@@ -28,6 +34,10 @@ class SupportTicketRequest extends FormRequest
      */
     public function rules()
     {
+        if ($this->has('status')) {
+            return ['status' => Rule::in(config('defaults.tickets.statuses'))];
+        }
+
         return $this->getRulesFor('ticket');
     }
 }

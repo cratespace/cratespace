@@ -80,6 +80,7 @@ return [
         'subject' => ['required', 'string', 'max:255'],
         'description' => ['required', 'string'],
         'attachment' => ['nullable', 'image'],
+        'customer_id' => ['nullable', 'integer'],
     ],
 
     /*
@@ -87,6 +88,8 @@ return [
      */
     'reply' => [
         'body' => ['required', 'spamfree'],
+        'customer_id' => ['nullable', 'integer'],
+        'agent_id' => ['nullable', 'integer'],
     ],
 
     /*

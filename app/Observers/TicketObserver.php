@@ -6,7 +6,6 @@ use Exception;
 use App\Models\User;
 use App\Models\Ticket;
 use App\Mail\NewTicketCreatedMail;
-use Illuminate\Support\Facades\Mail;
 use App\Notifications\NewTicketAssigned;
 use App\Observers\Traits\GeneratesHashids;
 use App\Exceptions\AgentNotAvailableException;
@@ -44,25 +43,11 @@ class TicketObserver
     {
         $this->generateHashCode($ticket);
 
-        Mail::to($ticket->customer->email)->send(
-            new NewTicketCreatedMail($ticket)
-        );
+        $ticket->mail(NewTicketCreatedMail::class, $ticket->customer->email);
 
         if (!is_null($ticket->agent_id)) {
             $ticket->agent->notify(new NewTicketAssigned($ticket));
         }
-    }
-
-    /**
-     * Handle the ticket "updated" event.
-     *
-     * @param \App\Models\Ticket $ticket
-     *
-     * @return void
-     */
-    public function updated(Ticket $ticket): void
-    {
-        // Mail::send(new TicketStatusUpdatedEvent($ticket));
     }
 
     /**
@@ -77,7 +62,7 @@ class TicketObserver
         $supportAgents = User::all()
             ->filter(function ($agent) {
                 return $agent->hasRole('support-agent') &&
-                    $agent->tickets->count() <= config('defaults.support-agents.max-tickets');
+                    $agent->tickets->count() <= config('defaults.support.support-agents.max-tickets');
             });
 
         if (!$supportAgents->isEmpty()) {

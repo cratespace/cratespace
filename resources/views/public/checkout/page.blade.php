@@ -4,9 +4,13 @@
     <section class="py-16 bg-white lg:bg-transparent">
         <div class="container">
             <div class="row">
-                @include('public.checkout.sections._summary')
+                <div class="col-lg-5 mb-6 xl:mb-0 flex items-center">
+                    @include('public.checkout.sections._summary')
+                </div>
 
-                @include('public.checkout.sections._form')
+                <div class="col-xl-6 col-lg-7 mb-6 bg-gray-200 sm:bg-transparent py-5 sm:py-0 xl:mb-0 offset-xl-1">
+                    @include('public.checkout.sections._form')
+                </div>
             </div>
         </div>
     </section>

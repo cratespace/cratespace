@@ -16,6 +16,13 @@ class Reply extends Model
     protected $guarded = [];
 
     /**
+     * The relations to eager load on every query.
+     *
+     * @var array
+     */
+    protected $with = ['customer', 'agent'];
+
+    /**
      * Get the customer the reply belongs to.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
