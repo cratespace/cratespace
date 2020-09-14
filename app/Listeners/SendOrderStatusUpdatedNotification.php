@@ -3,7 +3,6 @@
 namespace App\Listeners;
 
 use App\Mail\OrderStatusUpdatedMail;
-use Illuminate\Support\Facades\Mail;
 use App\Events\OrderStatusUpdatedEvent;
 
 class SendOrderStatusUpdatedNotification
@@ -17,8 +16,6 @@ class SendOrderStatusUpdatedNotification
      */
     public function handle(OrderStatusUpdatedEvent $event)
     {
-        Mail::to($event->order->email)->send(
-            new OrderStatusUpdatedMail($event->order)
-        );
+        $event->order->mail(OrderStatusUpdatedMail::class);
     }
 }

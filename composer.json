@@ -10,6 +10,7 @@
     "license": "proprietary",
     "require": {
         "php": "^7.3.0",
+        "ext-intl" : "*",
         "ext-gmp": "*",
         "ext-json": "*",
         "ext-mbstring": "*",
@@ -27,6 +28,7 @@
         "laravel/tinker": "^2.0",
         "laravel/ui": "^2.1",
         "moneyphp/money": "^3.3",
+        "pusher/pusher-php-server": "^4.1",
         "stevebauman/location": "^5.1",
         "stevebauman/purify": "^3.0",
         "stripe/stripe-php": "^7.45"

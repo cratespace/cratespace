@@ -26,6 +26,14 @@ Route::group([
      * Support Ticket Resource Routes...
      */
     Route::resource('/tickets/replies', 'Support\TicketReplyController', [
-        'except' => ['edit'],
+        'only' => ['update', 'destroy'],
     ]);
+
+    /*
+     * Create New Reply Routes...
+     */
+    Route::post(
+        '/tickets/{ticket}/replies',
+        'Support\TicketReplyController@store'
+    )->name('replies.store');
 });

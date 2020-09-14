@@ -25,7 +25,7 @@ class OrderPresenter extends Presenter
      */
     public function tax(): string
     {
-        return $this->formatMoney($this->model->tax);
+        return $this->formatMoney($this->model->tax + $this->model->space->tax);
     }
 
     /**

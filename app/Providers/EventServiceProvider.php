@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\Events\OrderPlacedEvent;
 use Illuminate\Support\Facades\Event;
+use App\Events\TicketReceivedNewReply;
 use Illuminate\Auth\Events\Registered;
 use App\Events\OrderStatusUpdatedEvent;
 use App\Events\SuccessfullyChargedEvent;
@@ -42,6 +43,9 @@ class EventServiceProvider extends ServiceProvider
         OrderStatusUpdatedEvent::class => [
             SendOrderStatusUpdatedNotification::class,
         ],
+
+        // For support request customer.
+        TicketReceivedNewReply::class => [],
     ];
 
     /**

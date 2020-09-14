@@ -107,9 +107,7 @@ class Space extends Model implements Priceable
 
         $this->update(['reserved_at' => now()]);
 
-        $order = $this->order()->create($data);
-
-        return $order;
+        return $this->order()->create($data);
     }
 
     /**

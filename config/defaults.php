@@ -64,10 +64,20 @@ return [
     ],
 
     /*
-     * Default Support Agent Module Details.
+     * Default Support Module Details.
      */
-    'support-agents' => [
-        'max-tickets' => 10,
+    'support' => [
+        /*
+         * Default Support Email.
+         */
+        'email' => 'help@cratespace.biz',
+
+        /*
+         * Default Support Agent Module Details.
+         */
+        'support-agents' => [
+            'max-tickets' => 10,
+        ],
     ],
 
     /*

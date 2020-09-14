@@ -4,7 +4,6 @@ namespace App\Listeners;
 
 use App\Mail\OrderPlacedMail;
 use App\Events\OrderPlacedEvent;
-use Illuminate\Support\Facades\Mail;
 
 class SendOrderPlacedNotification
 {
@@ -17,8 +16,6 @@ class SendOrderPlacedNotification
      */
     public function handle(OrderPlacedEvent $event)
     {
-        Mail::to($event->order->email)->send(
-            new OrderPlacedMail($event->order)
-        );
+        $event->order->mail(OrderPlacedMail::class);
     }
 }

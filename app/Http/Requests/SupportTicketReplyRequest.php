@@ -20,7 +20,7 @@ class SupportTicketReplyRequest extends FormRequest
     public function authorize()
     {
         if ($this->ticket) {
-            Gate::allow('view', $this->ticket);
+            Gate::allows('view', $this->ticket);
         }
 
         return true;

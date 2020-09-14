@@ -25,6 +25,7 @@ class OrderPresenterTest extends TestCase
         ]);
 
         $presentableTotal = Formatter::money($total);
+        $presentableTax = Formatter::money($order->tax + $space->tax);
         $presentableSubTotal = Formatter::money($subtotal);
         $presentablePrice = Formatter::money($price);
 
@@ -34,7 +35,7 @@ class OrderPresenterTest extends TestCase
         $this->assertTrue(is_string($order->present()->subtotal));
         $this->assertEquals($presentablePrice, $order->present()->price);
         $this->assertTrue(is_string($order->present()->price));
-        $this->assertEquals('$0.00', $order->present()->tax);
+        $this->assertEquals($presentableTax, $order->present()->tax);
         $this->assertTrue(is_string($order->present()->tax));
     }
 }
