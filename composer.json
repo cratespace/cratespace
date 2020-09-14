@@ -10,7 +10,7 @@
     "license": "proprietary",
     "require": {
         "php": "^7.3.0",
-        "ext-intl" : "*",
+        "ext-intl": "*",
         "ext-gmp": "*",
         "ext-json": "*",
         "ext-mbstring": "*",
