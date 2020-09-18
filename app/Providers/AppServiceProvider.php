@@ -10,6 +10,7 @@ use App\Observers\OrderObserver;
 use App\Observers\ReplyObserver;
 use App\Observers\SpaceObserver;
 use App\Observers\TicketObserver;
+use Illuminate\Support\Facades\URL;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Validator;
@@ -52,6 +53,8 @@ class AppServiceProvider extends ServiceProvider
         Paginator::useTailwind();
 
         $this->extendCustomValidators();
+
+        $this->useAppropriateScheme();
     }
 
     /**
@@ -100,5 +103,17 @@ class AppServiceProvider extends ServiceProvider
     protected function extendCustomValidators(): void
     {
         Validator::extend('spamfree', 'App\Rules\SpamFree@passes');
+    }
+
+    /**
+     * Force app to use HTTPS scheme in production mode.
+     *
+     * @return void
+     */
+    protected function useAppropriateScheme(): void
+    {
+        if ($this->app->isProduction()) {
+            URL::forceScheme('https');
+        }
     }
 }
