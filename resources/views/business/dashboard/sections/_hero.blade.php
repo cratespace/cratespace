@@ -44,11 +44,9 @@
 
                         <div class="mt-2 leading-none">
                             <div class="ml-2 leading-none flex items-center md:justify-end whitespace-no-wrap">
-                                <svg class="flex-shrink-0 h-5 w-5 text-green-500" viewBox="0 0 20 20" fill="currentColor">
-                                    <path fill-rule="evenodd" d="M12 7a1 1 0 110-2h5a1 1 0 011 1v5a1 1 0 11-2 0V8.414l-4.293 4.293a1 1 0 01-1.414 0L8 10.414l-4.293 4.293a1 1 0 01-1.414-1.414l5-5a1 1 0 011.414 0L11 10.586 14.586 7H12z" clip-rule="evenodd"/>
-                                </svg>
+                                <x:heroicon-o-trending-down class="flex-shrink-0 h-5 w-5 text-red-500"/>
 
-                                <span class="text-sm text-white ml-1">11% <span class="text-gray-400">since last month</span></span>
+                                <span class="text-sm text-white ml-1">0% <span class="text-gray-400">since last month</span></span>
                             </div>
 
                             <a href="#" class="text-xs text-blue-300 hover:text-blue-400">View credit balance <span>&rarr;</span></a>
