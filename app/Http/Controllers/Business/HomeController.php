@@ -57,9 +57,8 @@ class HomeController extends Controller
             'limit' => null,
         ]);
 
-        return $generator->generate()
-            ->keyBy(function ($count, $date) {
-                return Carbon::parse($date)->format('M j');
-            });
+        return $generator->generate()->keyBy(function ($count, $date) {
+            return Carbon::parse($date)->format('M j');
+        });
     }
 }
