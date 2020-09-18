@@ -19,6 +19,6 @@ class RedirectableTraitTest extends TestCase
                 return 'mocked';
             });
 
-        $this->assertEquals('http://localhost/mocks/1', $mockModel->path);
+        $this->assertEquals(config('app.url') . '/mocks/1', $mockModel->path);
     }
 }
