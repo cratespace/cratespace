@@ -88,10 +88,10 @@
             "@php artisan key:generate --ansi"
         ],
         "test": [
-            "vendor/bin/phpunit --verbose --color=always"
+            "vendor/bin/phpunit --testdox --verbose --color=always"
         ],
         "test-offline": [
-            "vendor/bin/phpunit --verbose --color=always --exclude-group network"
+            "vendor/bin/phpunit --testdox --verbose --color=always --exclude-group network"
         ]
     }
 }
