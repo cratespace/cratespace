@@ -1,4 +1,4 @@
-name: GitHub
+name: Integration Tests
 
 on:
   push:
@@ -11,13 +11,13 @@ jobs:
 
     strategy:
       matrix:
-        php: [7.4, 7.3]
-        laravel: [7.*]
+        php: [7.4]
+        laravel: [8.*]
         dependency-version: [prefer-lowest, prefer-stable]
-        os: [ubuntu-latest]
+        os: [ubuntu-latest, macos-latest]
         include:
-          - laravel: 7.*
-            testbench: 5.*
+          - laravel: 8.*
+            testbench: 6.*
           - php: 7.4
             dependency-version: prefer-lowest
             additional-deps: '"mockery/mockery:>=1.2.3"'
@@ -38,7 +38,7 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php }}
-          extensions: dom, mbstring, zip
+          extensions: dom, mbstring, zip, gmp, intl, json, openssl, fileinfo
           coverage: none
 
       - uses: actions/checkout@v2
