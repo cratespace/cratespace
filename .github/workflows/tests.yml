@@ -38,7 +38,7 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php }}
-          extensions: dom, mbstring, zip, gmp, intl, json, openssl
+          extensions: dom, mbstring, zip, gmp, intl, json, openssl, fileinfo
           coverage: none
 
       - uses: actions/checkout@v2
