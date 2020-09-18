@@ -11,7 +11,6 @@ use App\Observers\ReplyObserver;
 use App\Observers\SpaceObserver;
 use App\Observers\TicketObserver;
 use Illuminate\Support\Facades\URL;
-use Illuminate\Pagination\Paginator;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Validator;
 
@@ -47,13 +46,8 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->bootObservers();
-
         $this->bootHttpSchema();
-
-        Paginator::useTailwind();
-
         $this->extendCustomValidators();
-
         $this->useAppropriateScheme();
     }
 
@@ -64,7 +58,6 @@ class AppServiceProvider extends ServiceProvider
     {
         $this->app->singleton(Parsedown::class, function () {
             $parsedown = new \Parsedown();
-
             $parsedown->setSafeMode(true);
 
             return $parsedown;
