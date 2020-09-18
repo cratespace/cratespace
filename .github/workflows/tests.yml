@@ -34,8 +34,8 @@ jobs:
           path: ~/.composer/cache/files
           key: dependencies-php-${{ matrix.php }}-composer-${{ hashFiles('composer.json') }}
 
-      - name: Setup PHP
-        uses: shivammathur/setup-php@v2
+      - name: Setup PHP Action
+        uses: shivammathur/setup-php@2.5.0
         with:
           php-version: ${{ matrix.php }}
           extensions: dom, mbstring, zip, gmp, intl, json, openssl, fileinfo
