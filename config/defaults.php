@@ -45,6 +45,11 @@ return [
                 'new-order', 'cancel-order', 'newsletter',
             ],
         ],
+
+        /*
+         * Default Storage Disk For User Profile Picture Files.
+         */
+        'profile_photo_disk' => 'public',
     ],
 
     /*

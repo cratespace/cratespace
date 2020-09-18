@@ -2,10 +2,13 @@
 
 namespace App\Models;
 
+use App\Models\Traits\HasProfilePhoto;
 use Illuminate\Database\Eloquent\Model;
 
 class Customer extends Model
 {
+    use HasProfilePhoto;
+
     /**
      * The attributes that are mass assignable.
      *
@@ -20,7 +23,7 @@ class Customer extends Model
      */
     public function user()
     {
-        if (!is_null($this->user_id)) {
+        if (! is_null($this->user_id)) {
             return $this->belongsTo(User::class, 'user_id');
         }
     }

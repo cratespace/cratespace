@@ -2,11 +2,11 @@
 
 namespace App\Models;
 
-use App\Models\Traits\HasImage;
 use App\Models\Traits\Indexable;
 use App\Models\Casts\SettingsCast;
 use App\Models\Traits\Presentable;
 use App\Models\Traits\Redirectable;
+use App\Models\Traits\HasProfilePhoto;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use App\Models\Concerns\ManagesRolesAndAbilities;
@@ -15,7 +15,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 class User extends Authenticatable implements MustVerifyEmail
 {
     use Notifiable;
-    use HasImage;
+    use HasProfilePhoto;
     use ManagesRolesAndAbilities;
     use Presentable;
     use Indexable;
@@ -34,8 +34,12 @@ class User extends Authenticatable implements MustVerifyEmail
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'phone', 'password', 'username',
-        'image', 'settings',
+        'name',
+        'email',
+        'phone',
+        'password',
+        'username',
+        'settings',
     ];
 
     /**
@@ -44,7 +48,8 @@ class User extends Authenticatable implements MustVerifyEmail
      * @var array
      */
     protected $hidden = [
-        'password', 'remember_token',
+        'password',
+        'remember_token',
     ];
 
     /**
@@ -55,6 +60,15 @@ class User extends Authenticatable implements MustVerifyEmail
     protected $casts = [
         'email_verified_at' => 'datetime',
         'settings' => SettingsCast::class,
+    ];
+
+    /**
+     * The accessors to append to the model's array form.
+     *
+     * @var array
+     */
+    protected $appends = [
+        'profile_photo_url',
     ];
 
     /**
