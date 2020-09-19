@@ -28,7 +28,7 @@
         "resolve-url-loader": "^2.3.1",
         "sass": "^1.26.10",
         "sass-loader": "^8.0.0",
-        "tailwindcss": "^1.6.2",
+        "tailwindcss": "^1.8.7",
         "vue": "^2.6.11",
         "vue-apexcharts": "^1.6.0",
         "vue-stripe-elements-plus": "^0.3.0",
