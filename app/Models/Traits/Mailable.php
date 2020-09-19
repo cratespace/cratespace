@@ -22,7 +22,7 @@ trait Mailable
         $email = $this->email ?? ($emailAddress ?: null);
 
         if (is_null($email)) {
-            throw new NoEmailAddressSetException('No email address has been specified.');
+            throw new NoEmailAddressSetException('An email address has not been specified.');
         }
 
         Mail::to($email)->send($this->resolveMailable($mailable));
@@ -39,7 +39,7 @@ trait Mailable
     {
         $mailable = new $mailable($this);
 
-        if (!$mailable instanceof MailableContract) {
+        if (! $mailable instanceof MailableContract) {
             throw new RuntimeException("{$mailable} is not a valid mailable.");
         }
 
