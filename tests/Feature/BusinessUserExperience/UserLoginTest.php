@@ -12,6 +12,8 @@ class UserLoginTest extends TestCase
     /** @test */
     public function logging_in_with_valid_credentials()
     {
+        $this->withoutExceptionHandling();
+
         $user = create(User::class, [
             'email' => 'john@doe.com',
             'password' => Hash::make('supersecretpassword'),

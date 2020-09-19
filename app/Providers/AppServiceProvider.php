@@ -11,8 +11,10 @@ use App\Observers\ReplyObserver;
 use App\Observers\SpaceObserver;
 use App\Observers\TicketObserver;
 use Illuminate\Support\Facades\URL;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Contracts\Auth\StatefulGuard;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -36,6 +38,7 @@ class AppServiceProvider extends ServiceProvider
     public function register()
     {
         $this->registerMarkdownParser();
+        $this->registerStatefulGuard();
     }
 
     /**
@@ -61,6 +64,18 @@ class AppServiceProvider extends ServiceProvider
             $parsedown->setSafeMode(true);
 
             return $parsedown;
+        });
+    }
+
+    /**
+     * Register stateful guard.
+     *
+     * @return void
+     */
+    protected function registerStatefulGuard(): void
+    {
+        $this->app->bind(StatefulGuard::class, function () {
+            return Auth::guard('web');
         });
     }
 
