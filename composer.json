@@ -9,7 +9,7 @@
     ],
     "license": "proprietary",
     "require": {
-        "php": "^7.4.9 || ^8.0",
+        "php": "^7.4.9",
         "ext-fileinfo": "*",
         "ext-gmp": "*",
         "ext-intl": "*",
@@ -90,10 +90,10 @@
             "@php artisan key:generate --ansi"
         ],
         "test": [
-            "vendor/bin/phpunit --testdox --verbose --color=always"
+            "vendor/bin/phpunit --testdox --verbose --color=always --coverage-text"
         ],
         "test-offline": [
-            "vendor/bin/phpunit --testdox --verbose --color=always --exclude-group network"
+            "vendor/bin/phpunit --testdox --verbose --color=always --coverage-text --exclude-group network"
         ]
     }
 }
