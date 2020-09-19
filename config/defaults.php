@@ -45,12 +45,15 @@ return [
                 'new-order', 'cancel-order', 'newsletter',
             ],
         ],
-
-        /*
-         * Default Storage Disk For User Profile Picture Files.
-         */
-        'profile_photo_disk' => 'public',
+        'profile_photo_path' => null,
+        'two_factor_secret' => null,
+        'two_factor_recovery_codes' => null,
     ],
+
+    /*
+     * Default Storage Disk For User Profile Picture Files.
+     */
+    'profile_photo_disk' => 'public',
 
     /*
      * Default Business Details of Default User.

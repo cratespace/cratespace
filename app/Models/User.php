@@ -40,6 +40,9 @@ class User extends Authenticatable implements MustVerifyEmail
         'password',
         'username',
         'settings',
+        'profile_photo_path',
+        'two_factor_secret',
+        'two_factor_recovery_codes',
     ];
 
     /**

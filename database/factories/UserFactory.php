@@ -21,5 +21,8 @@ $factory->define(User::class, function (Faker $faker) {
                 'new-order', 'cancel-order', 'newsletter',
             ],
         ],
+        'profile_photo_path' => null,
+        'two_factor_secret' => null,
+        'two_factor_recovery_codes' => null,
     ];
 });

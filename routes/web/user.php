@@ -1,8 +1,7 @@
 <?php
 
-declare(strict_types=1);
-
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Auth\ResetPasswordController;
 
 /*
  * User Account/Profile Resource Route...
@@ -14,5 +13,5 @@ Route::resource('/users', 'Auth\ProfileController');
  */
 Route::put(
     '/users/{user}/update/password',
-    'Auth\ResetPasswordController@update'
+    [ResetPasswordController::class, '@update']
 )->name('users.password');

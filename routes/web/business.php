@@ -1,8 +1,8 @@
 <?php
 
-declare(strict_types=1);
-
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Business\HomeController;
+use App\Http\Controllers\Business\OrderController;
 
 /*
  * Authenticated Business Customer Routes...
@@ -13,7 +13,7 @@ Route::group([
     /*
      * Business Customer Dashboard Route...
      */
-    Route::get('/home', 'Business\HomeController@index')->name('home');
+    Route::get('/home', [HomeController::class, 'index'])->name('home');
 
     /*
      * Order Resource Routes...
@@ -25,7 +25,7 @@ Route::group([
     /*
      * Search Orders Route...
      */
-    Route::get('/orders/search', 'Business\OrderController@index');
+    Route::get('/orders/search', [OrderController::class, '@index']);
 
     /*
      * Space Resource Routes...

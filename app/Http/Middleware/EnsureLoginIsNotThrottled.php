@@ -46,7 +46,7 @@ class EnsureLoginIsNotThrottled
 
         event(new Lockout($request));
 
-        return $this->lockOutResponse();
+        return $this->lockOutResponse($request);
     }
 
     /**

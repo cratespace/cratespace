@@ -51,7 +51,7 @@ class ViewCheckoutPageTest extends TestCase
     }
 
     /** @test */
-    public function customers_can_see_the_relavant_sharges_calculated()
+    public function customers_can_see_the_relavant_charges_calculated()
     {
         $space = create(Space::class);
 
@@ -95,6 +95,8 @@ class ViewCheckoutPageTest extends TestCase
     /** @test */
     public function space_details_are_removed_from_cache_if_checkout_process_is_canceled()
     {
+        $this->withoutExceptionHandling();
+
         $space = create(Space::class);
 
         $this->get("/spaces/{$space->code}/checkout")->assertStatus(200);
@@ -113,6 +115,6 @@ class ViewCheckoutPageTest extends TestCase
 
         $_SERVER['REMOTE_ADDR'] = null;
 
-        $this->assertTrue(!cache()->has('charges'));
+        $this->assertTrue(! cache()->has('charges'));
     }
 }
