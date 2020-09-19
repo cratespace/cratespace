@@ -42,7 +42,7 @@ Cratespace uses PHPUnit for testing. To clone cratespace into your local machine
 ```bash
 git clone git@github.com:cratespace/cratespace.git
 cd cratespace && composer install && npm install && npm run dev
-vendor/bin/phpunit
+composer test
 ```
 
 ## Authors
