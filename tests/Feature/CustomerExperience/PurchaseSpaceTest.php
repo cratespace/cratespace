@@ -37,6 +37,8 @@ class PurchaseSpaceTest extends TestCase
     /** @test */
     public function a_customer_can_purchase_a_space()
     {
+        $this->withoutExceptionHandling();
+
         $user = $this->signIn();
         $space = create(Space::class, [
             'user_id' => $user->id,

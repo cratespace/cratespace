@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 use App\Models\Order;
 use App\Mail\OrderPlacedMail;
 use Illuminate\Support\Facades\Route;

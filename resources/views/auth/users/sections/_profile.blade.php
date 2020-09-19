@@ -19,7 +19,7 @@
                 @method('PUT')
 
                 <div class="mb-8">
-                    <image-upload-form image="{{ $user->image }}" route="/" label="Photo"></image-upload-form>
+                    <image-upload-form image="{{ $user->profile_photo_url }}" route="/" label="Photo"></image-upload-form>
                 </div>
 
                 <div class="row">

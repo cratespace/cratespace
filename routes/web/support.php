@@ -1,8 +1,7 @@
 <?php
 
-declare(strict_types=1);
-
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Support\TicketReplyController;
 
 /*
  * Customer/Client Support Routes...
@@ -34,6 +33,6 @@ Route::group([
      */
     Route::post(
         '/tickets/{ticket}/replies',
-        'Support\TicketReplyController@store'
+        [TicketReplyController::class, 'store']
     )->name('replies.store');
 });

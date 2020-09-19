@@ -10,12 +10,13 @@
     "license": "proprietary",
     "require": {
         "php": "^7.4.9 || ^8.0",
+        "ext-fileinfo": "*",
         "ext-gmp": "*",
         "ext-intl": "*",
         "ext-json": "*",
         "ext-mbstring": "*",
         "ext-openssl": "*",
-        "ext-fileinfo": "*",
+        "bacon/bacon-qr-code": "^2.0",
         "blade-ui-kit/blade-heroicons": "^0.2.2",
         "blade-ui-kit/blade-icons": "^0.4.5",
         "doctrine/dbal": "^2.10",
@@ -30,6 +31,7 @@
         "laravel/tinker": "^2.4",
         "laravel/ui": "^3.0",
         "moneyphp/money": "^3.3",
+        "pragmarx/google2fa": "^8.0",
         "pusher/pusher-php-server": "^4.1",
         "stevebauman/location": "^5.2",
         "stevebauman/purify": "^3.0",
@@ -88,10 +90,10 @@
             "@php artisan key:generate --ansi"
         ],
         "test": [
-            "vendor/bin/phpunit --verbose --color=always"
+            "vendor/bin/phpunit --testdox --verbose --color=always"
         ],
         "test-offline": [
-            "vendor/bin/phpunit --verbose --color=always --exclude-group network"
+            "vendor/bin/phpunit --testdox --verbose --color=always --exclude-group network"
         ]
     }
 }

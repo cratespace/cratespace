@@ -1,5 +1,7 @@
 <?php
 
+use App\Providers\RouteServiceProvider;
+
 return [
     /*
     |--------------------------------------------------------------------------
@@ -124,4 +126,13 @@ return [
      * Responsibilities to perform when creating a new user account.
      */
     'responsibilities' => [],
+
+    /*
+     * Authentication Attempt Rate Limiters.
+     */
+    'limiters' => [
+        'login' => null,
+    ],
+
+    'home' => RouteServiceProvider::HOME,
 ];
