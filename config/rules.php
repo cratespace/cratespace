@@ -1,5 +1,6 @@
 <?php
 
+use App\Rules\Password;
 use Illuminate\Validation\Rule;
 
 /*
@@ -120,6 +121,6 @@ return [
         'business' => ['required', 'string', 'max:255'],
         'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
         'phone' => ['required', 'string', 'min:9'],
-        'password' => ['required', 'string', 'min:8', 'confirmed'],
+        'password' => ['required', 'string', new Password(), 'confirmed'],
     ],
 ];
