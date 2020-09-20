@@ -1,8 +1,8 @@
 <?php
 
-declare(strict_types=1);
+use Illuminate\Support\Facades\DB;
 
-if (!function_exists('user')) {
+if (! function_exists('user')) {
     /**
      * Get the authenticated user and/or attributes.
      *
@@ -12,7 +12,7 @@ if (!function_exists('user')) {
      */
     function user(?string $attribute = null)
     {
-        if (!is_null($attribute)) {
+        if (! is_null($attribute)) {
             return auth()->user()->{$attribute};
         }
 
@@ -20,7 +20,7 @@ if (!function_exists('user')) {
     }
 }
 
-if (!function_exists('is_active')) {
+if (! function_exists('is_active')) {
     /**
      * Determine if the given route is active path.
      *
@@ -36,5 +36,19 @@ if (!function_exists('is_active')) {
             'Request::is',
             (array) $path
         ) ? $active : $default;
+    }
+}
+
+if (! function_exists('db_driver')) {
+    /**
+     * Get current database driver.
+     *
+     * @return string
+     */
+    function db_driver(): string
+    {
+        return DB::connection()
+            ->getPDO()
+            ->getAttribute(PDO::ATTR_DRIVER_NAME);
     }
 }
