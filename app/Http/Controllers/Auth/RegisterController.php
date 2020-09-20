@@ -8,12 +8,12 @@ use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
-use App\Http\Controllers\Auth\Concerns\CreatesNewUser;
+use App\Http\Controllers\Auth\Concerns\CreatesNewUsers;
 
 class RegisterController extends Controller
 {
     use RegistersUsers;
-    use CreatesNewUser;
+    use CreatesNewUsers;
 
     /**
      * Where to redirect users after registration.
@@ -47,13 +47,14 @@ class RegisterController extends Controller
     /**
      * Create a new user instance after a valid registration.
      *
-     * @param array $data
+     * @param CreateNewUser $creator
+     * @param array         $data
      *
-     * @return \App\User
+     * @return \App\Models\User
      */
-    protected function create(array $data)
+    protected function create(CreateNewUser $creator, array $data)
     {
-        return $this->createNewUser($data);
+        return $creator->create($data);
     }
 
     /**

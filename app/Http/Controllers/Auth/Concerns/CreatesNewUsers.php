@@ -2,10 +2,9 @@
 
 namespace App\Http\Controllers\Auth\Concerns;
 
-use App\Auth\User;
-use App\Models\User as UserModel;
+use App\Models\User;
 
-trait CreatesNewUser
+trait CreatesNewUsers
 {
     /**
      * Create new user account.
@@ -14,8 +13,7 @@ trait CreatesNewUser
      *
      * @return \App\Models\User
      */
-    protected function createNewUser(array $data): UserModel
+    protected function createNewUser(array $data): User
     {
-        return (new User())->new($data);
     }
 }
