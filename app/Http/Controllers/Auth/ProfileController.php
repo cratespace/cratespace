@@ -25,7 +25,7 @@ class ProfileController extends Controller
 
         return view('auth.users.edit', [
             'user' => $user->load('business'),
-            'sessions' => $this->sessions($request),
+            'sessions' => $user->sessions($request),
         ]);
     }
 
