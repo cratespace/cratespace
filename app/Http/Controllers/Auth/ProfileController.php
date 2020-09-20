@@ -3,6 +3,9 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Models\User;
+use App\Auth\DeleteUser;
+use Jenssegers\Agent\Agent;
+use Illuminate\Http\Request;
 use App\Http\Requests\UserRequest;
 use App\Http\Controllers\Controller;
 
@@ -11,17 +14,19 @@ class ProfileController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param \App\Models\User $user
+     * @param \Illuminate\Http\Request $request
+     * @param \App\Models\User         $user
      *
      * @return \Illuminate\Http\Response
      */
-    public function edit()
+    public function edit(Request $request, User $user)
     {
         $this->authorize('manage', $user = user());
 
-        $user = $user->load('business');
-
-        return view('auth.users.edit', compact('user'));
+        return view('auth.users.edit', [
+            'user' => $user->load('business'),
+            'sessions' => $this->sessions($request),
+        ]);
     }
 
     /**
@@ -46,7 +51,26 @@ class ProfileController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function destroy(User $user)
+    public function destroy(User $user, StatefulGuard $auth)
     {
+        app(DeleteUser::class)->delete($user->fresh());
+
+        $auth->logout();
+
+        return redirect('/', 409);
+    }
+
+    /**
+     * Create a new agent instance from the given session.
+     *
+     * @param mixed $session
+     *
+     * @return \Jenssegers\Agent\Agent
+     */
+    protected function createAgent($session): Agent
+    {
+        return tap(new Agent(), function ($agent) use ($session) {
+            $agent->setUserAgent($session->user_agent);
+        });
     }
 }
