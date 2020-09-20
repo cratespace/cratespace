@@ -33,6 +33,8 @@ class UserSettingsTest extends TestCase
         $this->get("/users/{$customerUser->username}/edit")
             ->assertStatus(403);
 
+        $this->withoutExceptionHandling();
+
         $business = Role::firstOrCreate([
             'title' => 'business',
             'label' => 'Business',

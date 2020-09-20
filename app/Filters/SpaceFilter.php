@@ -50,7 +50,11 @@ class SpaceFilter extends Filter
      */
     protected function departs_at(string $date): Builder
     {
-        return $this->builder->whereDate('departs_at', 'like', Carbon::parse($date));
+        return $this->builder->whereDate(
+            'departs_at',
+            $this->getComparisonOperator(),
+            Carbon::parse($date)
+        );
     }
 
     /**
@@ -62,7 +66,11 @@ class SpaceFilter extends Filter
      */
     protected function arrives_at(string $date): Builder
     {
-        return $this->builder->whereDate('arrives_at', 'like', Carbon::parse($date));
+        return $this->builder->whereDate(
+            'arrives_at',
+            $this->getComparisonOperator(),
+            Carbon::parse($date)
+        );
     }
 
     /**
@@ -110,5 +118,15 @@ class SpaceFilter extends Filter
 
                 break;
         }
+    }
+
+    /**
+     * Get appropriate query statement comparison operator according to current database driver.
+     *
+     * @return string
+     */
+    protected function getComparisonOperator(): string
+    {
+        return db_driver() === 'pgsql' ? '=' : 'like';
     }
 }

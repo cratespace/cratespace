@@ -2,7 +2,9 @@
 
 namespace App\Auth\TwoFactorAuthentication;
 
-class DisableTwoFactorAuthentication
+use Illuminate\Support\Collection;
+
+class GenerateNewRecoveryCodes
 {
     /**
      * Disable two factor authentication for the user.
@@ -14,8 +16,9 @@ class DisableTwoFactorAuthentication
     public function __invoke($user): void
     {
         $user->forceFill([
-            'two_factor_secret' => null,
-            'two_factor_recovery_codes' => null,
+            'two_factor_recovery_codes' => encrypt(json_encode(Collection::times(8, function () {
+                return RecoveryCode::generate();
+            })->all())),
         ])->save();
     }
 }

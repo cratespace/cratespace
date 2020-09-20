@@ -141,6 +141,55 @@ class AuthenticateUserTest extends TestCase
 
         $response->assertRedirect('/home');
     }
+
+    /** @test */
+    public function two_factor_challenge_can_be_passed_via_recovery_code()
+    {
+        app('config')->set('auth.providers.users.model', TestTwoFactorAuthenticationSessionUser::class);
+
+        $user = TestTwoFactorAuthenticationSessionUser::forceCreate([
+            'name' => 'Thavarshan',
+            'username' => 'Thavarshan',
+            'email' => 'tjthavarshan@gmail.com',
+            'password' => bcrypt('secret'),
+            'two_factor_recovery_codes' => encrypt(json_encode(['invalid-code', 'valid-code'])),
+        ]);
+
+        $response = $this->withSession([
+            'login.id' => $user->id,
+            'login.remember' => false,
+        ])->withoutExceptionHandling()->post('/two-factor-challenge', [
+            'recovery_code' => 'valid-code',
+        ]);
+
+        $response->assertRedirect('/home');
+        $this->assertNotNull(Auth::getUser());
+        $this->assertNotContains('valid-code', json_decode(decrypt($user->fresh()->two_factor_recovery_codes), true));
+    }
+
+    /** @test */
+    public function two_factor_challenge_can_fail_via_recovery_code()
+    {
+        app('config')->set('auth.providers.users.model', TestTwoFactorAuthenticationSessionUser::class);
+
+        $user = TestTwoFactorAuthenticationSessionUser::forceCreate([
+            'name' => 'Thavarshan',
+            'username' => 'Thavarshan',
+            'email' => 'tjthavarshan@gmail.com',
+            'password' => bcrypt('secret'),
+            'two_factor_recovery_codes' => encrypt(json_encode(['invalid-code', 'valid-code'])),
+        ]);
+
+        $response = $this->withSession([
+            'login.id' => $user->id,
+            'login.remember' => false,
+        ])->withoutExceptionHandling()->post('/two-factor-challenge', [
+            'recovery_code' => 'missing-code',
+        ]);
+
+        $response->assertRedirect('/login');
+        $this->assertNull(Auth::getUser());
+    }
 }
 
 class TestAuthenticationSessionUser extends User

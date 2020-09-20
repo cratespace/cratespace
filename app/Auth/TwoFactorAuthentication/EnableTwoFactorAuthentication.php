@@ -3,7 +3,6 @@
 namespace App\Auth\TwoFactorAuthentication;
 
 use Illuminate\Support\Collection;
-use Illuminate\Contracts\Auth\Authenticatable;
 use App\Contracts\Auth\TwoFactorAuthenticationProvider;
 
 class EnableTwoFactorAuthentication
@@ -30,11 +29,11 @@ class EnableTwoFactorAuthentication
     /**
      * Enable two factor authentication for the user.
      *
-     * @param \Illuminate\Contracts\Auth\Authenticatable $user
+     * @param mixed $user
      *
      * @return void
      */
-    public function __invoke(Authenticatable $user): void
+    public function __invoke($user): void
     {
         $user->forceFill([
             'two_factor_secret' => encrypt($this->provider->generateSecretKey()),

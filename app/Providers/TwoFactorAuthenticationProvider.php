@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use PragmaRX\Google2FA\Google2FA;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Contracts\Foundation\Application;
 use App\Contracts\Auth\TwoFactorAuthenticationProvider as TwoFactorAuthenticationProviderContract;
 
 class TwoFactorAuthenticationProvider extends ServiceProvider implements TwoFactorAuthenticationProviderContract
@@ -22,9 +23,21 @@ class TwoFactorAuthenticationProvider extends ServiceProvider implements TwoFact
      *
      * @return void
      */
-    public function __construct(Google2FA $engine)
+    public function __construct(Application $app)
     {
-        $this->engine = $engine;
+        parent::__construct($app);
+
+        $this->engine = $this->app->make(Google2FA::class);
+    }
+
+    /**
+     * Register services.
+     *
+     * @return void
+     */
+    public function register()
+    {
+        $this->app->instance(TwoFactorAuthenticationProviderContract::class, $this);
     }
 
     /**

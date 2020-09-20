@@ -7,6 +7,7 @@ use App\Models\Casts\SettingsCast;
 use App\Models\Traits\Presentable;
 use App\Models\Traits\Redirectable;
 use App\Models\Traits\HasProfilePhoto;
+use App\Models\Concerns\ManagesSessions;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use App\Models\Concerns\ManagesRolesAndAbilities;
@@ -20,6 +21,7 @@ class User extends Authenticatable implements MustVerifyEmail
     use Presentable;
     use Indexable;
     use Redirectable;
+    use ManagesSessions;
 
     /**
      * Preferred route key name.
