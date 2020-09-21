@@ -12,6 +12,8 @@ class NewUserRegistrationTest extends TestCase
     /** @test */
     public function a_new_logistics_business_can_create_an_account()
     {
+        $this->withoutExceptionHandling();
+
         $userDetails = [
             'name' => 'John Vox Doe',
             'email' => 'john.vodo@sunnyside.com',

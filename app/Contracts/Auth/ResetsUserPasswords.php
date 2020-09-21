@@ -1,11 +1,10 @@
 <?php
 
-namespace App\Auth\Actions;
+namespace App\Contracts\Auth;
 
 use App\Models\User;
-use App\Contracts\Auth\ResetsUserPasswords;
 
-class ResetUserPassword implements ResetsUserPasswords
+interface ResetsUserPasswords
 {
     /**
      * Validate and reset the user's forgotten password.
@@ -15,7 +14,5 @@ class ResetUserPassword implements ResetsUserPasswords
      *
      * @return void
      */
-    public function reset(User $user, array $data): void
-    {
-    }
+    public function reset(User $user, array $data): void;
 }
