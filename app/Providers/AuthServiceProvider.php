@@ -20,9 +20,12 @@ use App\Auth\Actions\UpdateUserProfile;
 use App\Contracts\Auth\CreatesNewUsers;
 use App\Auth\Actions\UpdateUserPassword;
 use App\Contracts\Auth\UpdatesUserProfile;
+use App\Auth\Actions\UpdateBusinessProfile;
 use App\Contracts\Auth\ResetsUserPasswords;
 use App\Contracts\Auth\UpdatesUserPasswords;
 use Illuminate\Contracts\Auth\StatefulGuard;
+use App\Http\Controllers\Auth\ProfileController;
+use App\Http\Controllers\Business\BusinessController;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 
 class AuthServiceProvider extends ServiceProvider
@@ -51,22 +54,6 @@ class AuthServiceProvider extends ServiceProvider
     }
 
     /**
-     * Register any authentication / authorization services.
-     *
-     * @return void
-     */
-    public function boot()
-    {
-        $this->registerPolicies();
-
-        Gate::before(function (User $user, string $ability) {
-            if ($user->abilities()->contains($ability)) {
-                return true;
-            }
-        });
-    }
-
-    /**
      * Register stateful guard.
      *
      * @return void
@@ -86,9 +73,32 @@ class AuthServiceProvider extends ServiceProvider
     protected function registerAuthActions(): void
     {
         $this->app->singleton(CreatesNewUsers::class, CreateNewUser::class);
-        $this->app->singleton(UpdatesUserProfile::class, UpdateUserProfile::class);
         $this->app->singleton(UpdatesUserPasswords::class, UpdateUserPassword::class);
         $this->app->singleton(ResetsUserPasswords::class, ResetUserPassword::class);
         $this->app->singleton(DeletesUsers::class, DeleteUser::class);
+
+        $this->app->when(ProfileController::class)
+            ->needs(UpdatesUserProfile::class)
+            ->give(UpdateUserProfile::class);
+
+        $this->app->when(BusinessController::class)
+            ->needs(UpdatesUserProfile::class)
+            ->give(UpdateBusinessProfile::class);
+    }
+
+    /**
+     * Register any authentication / authorization services.
+     *
+     * @return void
+     */
+    public function boot()
+    {
+        $this->registerPolicies();
+
+        Gate::before(function (User $user, string $ability) {
+            if ($user->abilities()->contains($ability)) {
+                return true;
+            }
+        });
     }
 }

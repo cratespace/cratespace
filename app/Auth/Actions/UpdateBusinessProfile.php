@@ -6,7 +6,7 @@ use App\Models\User;
 use App\Contracts\Auth\UpdatesUserProfile;
 use App\Auth\Actions\Traits\HasEmailVerification;
 
-class UpdateUserProfile implements UpdatesUserProfile
+class UpdateBusinessProfile implements UpdatesUserProfile
 {
     use HasEmailVerification;
 
@@ -20,17 +20,20 @@ class UpdateUserProfile implements UpdatesUserProfile
      */
     public function update(User $user, array $data): void
     {
-        $this->verifyEmail($user, $data['email']);
+        $business = $user->business;
 
-        if (isset($data['photo'])) {
-            $user->updateProfilePhoto($data['photo']);
-        }
+        $this->verifyEmail($user, $user->email);
 
-        $user->forceFill([
+        $business->update([
             'name' => $data['name'],
-            'username' => $data['username'],
+            'description' => $data['description'] ?? null,
+            'street' => $data['street'],
             'email' => $data['email'],
             'phone' => $data['phone'],
-        ])->save();
+            'city' => $data['city'],
+            'state' => $data['state'],
+            'country' => $data['country'],
+            'postcode' => $data['postcode'],
+        ]);
     }
 }
