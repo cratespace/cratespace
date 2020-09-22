@@ -3,10 +3,13 @@
 namespace App\Auth\Actions;
 
 use App\Models\User;
+use App\Auth\Actions\Traits\UpdatesPassword;
 use App\Contracts\Auth\UpdatesUserPasswords;
 
 class UpdateUserPassword implements UpdatesUserPasswords
 {
+    use UpdatesPassword;
+
     /**
      * Validate and update the user's password.
      *
@@ -17,5 +20,6 @@ class UpdateUserPassword implements UpdatesUserPasswords
      */
     public function update(User $user, array $data): void
     {
+        $this->updatePassword($user, $data['password']);
     }
 }
