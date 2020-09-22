@@ -2,8 +2,6 @@
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Auth\RecoveryCodeController;
-use App\Http\Controllers\Auth\TwoFactorAuthenticationController;
 
 Auth::routes(['verify' => true]);
 
@@ -28,26 +26,26 @@ Route::group([
 ], function (): void {
     Route::post(
         '/two-factor-authentication',
-        [TwoFactorAuthenticationController::class, 'store']
+        'Auth\TwoFactorAuthenticationController@store'
     );
 
     Route::delete(
         '/two-factor-authentication',
-        [TwoFactorAuthenticationController::class, 'destroy']
+        'Auth\TwoFactorAuthenticationController@destroy'
     );
 
     Route::get(
         '/two-factor-qr-code',
-        [TwoFactorQrCodeController::class, 'show']
+        'Auth\TwoFactorAuthenticationController@show'
     );
 
     Route::get(
         '/two-factor-recovery-codes',
-        [RecoveryCodeController::class, 'index']
+        'Auth\RecoveryCodeController@index'
     );
 
     Route::post(
         '/two-factor-recovery-codes',
-        [RecoveryCodeController::class, 'store']
+        'Auth\RecoveryCodeController@store'
     );
 });
