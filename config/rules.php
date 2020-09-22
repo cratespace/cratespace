@@ -16,6 +16,7 @@ return [
         'business' => ['nullable', 'string', 'max:255'],
         'email' => ['required', 'string', 'email', 'max:255'],
         'phone' => ['required', 'string', 'min:9'],
+        'settings' => ['nullable', 'array'],
     ],
 
     /*
