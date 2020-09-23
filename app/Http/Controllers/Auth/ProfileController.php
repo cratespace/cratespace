@@ -3,14 +3,32 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Models\User;
-use App\Auth\DeleteUser;
-use Jenssegers\Agent\Agent;
 use Illuminate\Http\Request;
 use App\Http\Requests\UserRequest;
+use App\Contracts\Auth\DeletesUsers;
 use App\Http\Controllers\Controller;
+use App\Contracts\Auth\UpdatesUserProfile;
+use Illuminate\Contracts\Auth\StatefulGuard;
 
 class ProfileController extends Controller
 {
+    /**
+     * Instance of user profile manager.
+     *
+     * @var \App\Contracts\Auth\UpdatesUserProfile
+     */
+    protected $updater;
+
+    /**
+     * Create new instance 0f user profile controller.
+     *
+     * @param \App\Contracts\Auth\UpdatesUserProfile $updater
+     */
+    public function __construct(UpdatesUserProfile $updater)
+    {
+        $this->updater = $updater;
+    }
+
     /**
      * Show the form for editing the specified resource.
      *
@@ -32,14 +50,18 @@ class ProfileController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param \Illuminate\Http\Request $request
-     * @param \App\Models\User         $user
+     * @param \App\Contracts\Auth\UpdatesUserProfile $updater
+     * @param \Illuminate\Http\Request               $request
      *
      * @return \Illuminate\Http\Response
      */
-    public function update(UserRequest $request, User $user)
+    public function update(User $user, UserRequest $request)
     {
-        $user->update($request->validated());
+        $this->updater->update($user, $request->validated());
+
+        if ($request->wantsJson()) {
+            return response($user->fresh(), 201);
+        }
 
         return $this->success(url()->previous());
     }
@@ -47,30 +69,18 @@ class ProfileController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param \App\Models\User $user
+     * @param \App\Contracts\Auth\DeletesUsers         $deletor
+     * @param \App\Models\User                         $user
+     * @param \Illuminate\Contracts\Auth\StatefulGuard $auth
      *
      * @return \Illuminate\Http\Response
      */
-    public function destroy(User $user, StatefulGuard $auth)
+    public function destroy(DeletesUsers $deletor, User $user, StatefulGuard $auth)
     {
-        app(DeleteUser::class)->delete($user->fresh());
+        $deletor->delete($user->fresh());
 
         $auth->logout();
 
         return redirect('/', 409);
-    }
-
-    /**
-     * Create a new agent instance from the given session.
-     *
-     * @param mixed $session
-     *
-     * @return \Jenssegers\Agent\Agent
-     */
-    protected function createAgent($session): Agent
-    {
-        return tap(new Agent(), function ($agent) use ($session) {
-            $agent->setUserAgent($session->user_agent);
-        });
     }
 }

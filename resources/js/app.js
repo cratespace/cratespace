@@ -38,6 +38,9 @@ Vue.config.productionTip = false;
 
 Vue.use(VueApexCharts);
 
+// User Settings Components
+Vue.component("profile", require("./components/settings/Profile.vue").default);
+
 Vue.component('apexchart', VueApexCharts);
 Vue.component('graph', require('./components/Graph.vue').default);
 Vue.component("image-upload-form", require("./components/ImageUploadForm.vue").default);

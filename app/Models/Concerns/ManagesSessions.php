@@ -3,6 +3,7 @@
 namespace App\Models\Concerns;
 
 use Carbon\Carbon;
+use Jenssegers\Agent\Agent;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
@@ -40,6 +41,20 @@ trait ManagesSessions
                 'is_current_device' => $session->id === $request->session()->getId(),
                 'last_active' => Carbon::createFromTimestamp($session->last_activity)->diffForHumans(),
             ];
+        });
+    }
+
+    /**
+     * Create a new agent instance from the given session.
+     *
+     * @param mixed $session
+     *
+     * @return \Jenssegers\Agent\Agent
+     */
+    protected function createAgent($session): Agent
+    {
+        return tap(new Agent(), function (Agent $agent) use ($session) {
+            $agent->setUserAgent($session->user_agent);
         });
     }
 }

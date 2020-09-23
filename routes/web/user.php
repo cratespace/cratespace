@@ -1,8 +1,6 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Auth\ResetPasswordController;
-use App\Http\Controllers\Auth\OtherBrowserSessionsController;
 
 Route::group(['middleware' => ['auth', 'verified']], function (): void {
     /*
@@ -15,7 +13,7 @@ Route::group(['middleware' => ['auth', 'verified']], function (): void {
      */
     Route::put(
         '/users/{user}/update/password',
-        [ResetPasswordController::class, '@update']
+        'Auth\ResetPasswordController@update'
     )->name('users.password');
 
     /*
@@ -23,7 +21,7 @@ Route::group(['middleware' => ['auth', 'verified']], function (): void {
      */
     Route::delete(
         '/user/other-browser-sessions',
-        [OtherBrowserSessionsController::class, 'destroy']
+        'Auth\OtherBrowserSessionsController@destroy'
     )->name('other-browser-sessions.destroy');
 
     /*
@@ -31,6 +29,6 @@ Route::group(['middleware' => ['auth', 'verified']], function (): void {
      */
     Route::delete(
         '/user/profile-photo',
-        [ProfilePhotoController::class, 'destroy']
+        'Auth\ProfilePhotoController@destroy'
     )->name('current-user-photo.destroy');
 });

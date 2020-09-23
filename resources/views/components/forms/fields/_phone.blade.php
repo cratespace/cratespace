@@ -1,4 +1,3 @@
-
 <div>
     <label for="phone" class="block">
         <span class="text-gray-700 text-sm font-semibold">{{ $label ?? 'Phone' }}</span>
