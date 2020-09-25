@@ -40,7 +40,7 @@ jobs:
           php-version: ${{ matrix.php }}
           extensions: dom, mbstring, zip, gmp, intl, json, openssl, fileinfo
           coverage: pcov
-          tools: php-cs-fixer, phpunit
+          tools: phpunit
 
       - uses: actions/checkout@v2
       - name: Copy .env
