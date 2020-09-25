@@ -14,7 +14,7 @@ jobs:
         php: [7.4]
         laravel: [8.*]
         dependency-version: [prefer-lowest, prefer-stable]
-        os: [ubuntu-latest, macos-latest]
+        os: [ubuntu-latest]
         include:
           - laravel: 8.*
             testbench: 6.*
@@ -39,7 +39,8 @@ jobs:
         with:
           php-version: ${{ matrix.php }}
           extensions: dom, mbstring, zip, gmp, intl, json, openssl, fileinfo
-          coverage: none
+          coverage: pcov
+          tools: php-cs-fixer, phpunit
 
       - uses: actions/checkout@v2
       - name: Copy .env
