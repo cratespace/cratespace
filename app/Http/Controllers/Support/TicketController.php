@@ -5,12 +5,9 @@ namespace App\Http\Controllers\Support;
 use App\Models\Ticket;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\SupportTicketRequest;
-use App\Http\Controllers\Support\Concerns\CreatesNewSupportTicketCustomer;
 
 class TicketController extends Controller
 {
-    use CreatesNewSupportTicketCustomer;
-
     /**
      * Display a listing of the resource.
      *
@@ -44,9 +41,7 @@ class TicketController extends Controller
      */
     public function store(SupportTicketRequest $request)
     {
-        $ticket = $this->getCustomer($request)
-            ->tickets()
-            ->create($request->validated());
+        $ticket = user()->tickets()->create($request->validated());
 
         return $this->success($ticket->path);
     }

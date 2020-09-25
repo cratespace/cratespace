@@ -18,7 +18,7 @@
 
         <div class="ml-6 text-lg text-gray-700">
             <div>
-                <h6 class="font-semibold text-gray-800 text-base">{{ $ticket->customer->name }}</h6>
+                <h6 class="font-semibold text-gray-800 text-base">{{ $ticket->user->name }}</h6>
 
                 <span class="text-sm text-gray-500">{{ $ticket->updated_at->diffForHumans() }}</span>
             </div>

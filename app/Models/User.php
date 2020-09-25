@@ -107,6 +107,16 @@ class User extends Authenticatable implements MustVerifyEmail
     }
 
     /**
+     * Get all orders associated with the user.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function orders()
+    {
+        return $this->hasMany(Order::class)->latest();
+    }
+
+    /**
      * Get all support tickets assigned to the user.
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
@@ -116,6 +126,8 @@ class User extends Authenticatable implements MustVerifyEmail
         if ($this->hasRole('support-agent')) {
             return $this->hasMany(Ticket::class, 'agent_id');
         }
+
+        return $this->hasMany(Ticket::class, 'user_id')->latest();
     }
 
     /**
@@ -128,5 +140,7 @@ class User extends Authenticatable implements MustVerifyEmail
         if ($this->hasRole('support-agent')) {
             return $this->hasMany(Reply::class, 'agent_id')->latest();
         }
+
+        return $this->hasMany(Reply::class, 'user_id')->latest();
     }
 }

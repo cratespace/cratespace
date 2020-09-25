@@ -20,16 +20,16 @@ class Reply extends Model
      *
      * @var array
      */
-    protected $with = ['customer', 'agent'];
+    protected $with = ['user', 'agent'];
 
     /**
-     * Get the customer the reply belongs to.
+     * Get the user the reply belongs to.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function customer()
+    public function user()
     {
-        return $this->belongsTo(Customer::class, 'customer_id');
+        return $this->belongsTo(User::class, 'user_id');
     }
 
     /**
@@ -59,7 +59,7 @@ class Reply extends Model
      */
     public function by()
     {
-        return $this->customer ?? $this->agent;
+        return $this->user ?? $this->agent;
     }
 
     /**

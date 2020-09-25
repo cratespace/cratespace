@@ -1,13 +1,13 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Support\TicketReplyController;
 
 /*
  * Customer/Client Support Routes...
  */
 Route::group([
     'prefix' => 'support',
+    'middleware' => 'auth',
 ], function (): void {
     /*
      * Support Landing Page...
@@ -33,6 +33,6 @@ Route::group([
      */
     Route::post(
         '/tickets/{ticket}/replies',
-        [TicketReplyController::class, 'store']
+        'Support\TicketReplyController@store'
     )->name('replies.store');
 });
