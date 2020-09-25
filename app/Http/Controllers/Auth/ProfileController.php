@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests\UserRequest;
 use App\Contracts\Auth\DeletesUsers;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\DeleteUserRequest;
 use App\Contracts\Auth\UpdatesUserProfile;
 use Illuminate\Contracts\Auth\StatefulGuard;
 
@@ -43,7 +44,7 @@ class ProfileController extends Controller
 
         return view('auth.users.edit', [
             'user' => $user->load('business'),
-            'sessions' => $user->sessions($request),
+            'sessions' => $user->sessions($request)->all(),
         ]);
     }
 
@@ -70,17 +71,22 @@ class ProfileController extends Controller
      * Remove the specified resource from storage.
      *
      * @param \App\Contracts\Auth\DeletesUsers         $deletor
-     * @param \App\Models\User                         $user
+     * @param \App\Http\Requests\DeleteUserRequest     $request
      * @param \Illuminate\Contracts\Auth\StatefulGuard $auth
+     * @param \App\Models\User                         $user
      *
      * @return \Illuminate\Http\Response
      */
-    public function destroy(DeletesUsers $deletor, User $user, StatefulGuard $auth)
+    public function destroy(DeletesUsers $deletor, DeleteUserRequest $request, StatefulGuard $auth, User $user)
     {
-        $deletor->delete($user->fresh());
+        $deletor->delete($user);
 
         $auth->logout();
 
-        return redirect('/', 409);
+        if ($request->wantsJson()) {
+            return $this->successJson('/', 409);
+        }
+
+        return $this->success(url('/'));
     }
 }
