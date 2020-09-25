@@ -33,7 +33,7 @@
                                 </a>
                             </div>
 
-                            <a href="#" class="text-xs text-blue-300 hover:text-blue-400">Edit profile <span>&rarr;</span></a>
+                            <a href="{{ route('users.edit', user()) }}" class="text-xs text-blue-300 hover:text-blue-400">Edit profile <span>&rarr;</span></a>
                         </div>
                     </div>
 

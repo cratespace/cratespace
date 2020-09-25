@@ -39,6 +39,10 @@
 
             <hr class="my-6">
 
+            @include('auth.users.sections._sessions', ['sessions' => $sessions])
+
+            <hr class="my-6">
+
             @include('auth.users.sections._security', ['user' => $user])
         </div>
     </section>

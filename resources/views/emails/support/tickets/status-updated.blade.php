@@ -1,7 +1,7 @@
 @component('mail::message')
 # Support Ticket Status Updated
 
-## Hi {{ $ticket->customer->name }},
+## Hi {{ $ticket->user->name }},
 
 Your support request is now {{ strtolower($ticket->status) }}.
 

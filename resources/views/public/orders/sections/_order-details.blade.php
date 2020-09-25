@@ -38,7 +38,7 @@
             </div>
 
             <div class="mt-4">
-                Billed to card ending with <span class="ml-1 font-mono tracking-widest rounded-lg px-2 py-1 bg-gray-200 text-sm font-medim">**** **** **** {{ $order->charge->card_last_four }}</span>
+                Billed to card ending with <span class="ml-1 font-mono tracking-widest rounded-lg px-2 py-1 bg-gray-200 text-sm font-medim">**** **** **** {{ optional($order->charge)->card_last_four }}</span>
             </div>
         </p>
     </div>
