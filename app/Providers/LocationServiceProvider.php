@@ -29,6 +29,8 @@ class LocationServiceProvider extends ServiceProvider
         $this->app->singleton('ip', function ($app) {
             return new IpService($app['request']);
         });
+
+        $this->app->instance(IpService::class, $this->app['ip']);
     }
 
     /**

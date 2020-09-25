@@ -84,6 +84,6 @@ class LoginRateLimiter
      */
     protected function throttleKey(Request $request): string
     {
-        return Str::lower($request->input('email')) . '|' . $request->ip();
+        return Str::lower($request->input('email')) . '|' . app('ip')->get();
     }
 }
