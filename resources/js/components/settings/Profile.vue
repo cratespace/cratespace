@@ -2,7 +2,7 @@
     <form method="POST" enctype="multipart/form-data">
         <div>
             <div class="mb-8">
-                <image-upload-form :image="user.profile_photo_url" route="/" label="Photo"></image-upload-form>
+                <imageUploadForm :image="user.profile_photo_url" route="/" label="Photo" />
             </div>
 
             <div class="row">
