@@ -39,8 +39,7 @@ jobs:
         with:
           php-version: ${{ matrix.php }}
           extensions: dom, mbstring, zip, gmp, intl, json, openssl, fileinfo
-          coverage: pcov
-          tools: phpunit
+          coverage: none
 
       - uses: actions/checkout@v2
       - name: Copy .env
@@ -57,10 +56,10 @@ jobs:
 
       - name: Create Database
         run: |
-          mkdir -p database
+          [ -d database ] || mkdir -p database
           touch database/database.sqlite
 
-      - name: Execute tests (Unit and Feature Tests) via PHPUnit
+      - name: Execute tests (Unit and Feature tests) via PHPUnit
         env:
           DB_CONNECTION: sqlite
           DB_DATABASE: database/database.sqlite
