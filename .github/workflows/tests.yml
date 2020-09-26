@@ -41,7 +41,7 @@ jobs:
           extensions: dom, mbstring, zip, gmp, intl, json, openssl, fileinfo
           coverage: none
 
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v2.3.3
       - name: Copy .env
         run: php -r "file_exists('.env') || copy('.env.example', '.env');"
 
@@ -56,6 +56,7 @@ jobs:
 
       - name: Create Database
         run: |
+          rm -rf database
           mkdir -p database
           touch database/database.sqlite
 
