@@ -66,6 +66,8 @@ jobs:
         run: |
           ./vendor/bin/phpunit --version
           ./vendor/bin/phpunit
+        env:
+          STRIPE_SECRET_KEY: ${{ secrets.STRIPE_SECRET_KEY }}
 
       - name: Run security checks
         run: |
