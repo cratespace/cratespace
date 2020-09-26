@@ -123,7 +123,7 @@ trait PaymentGatewayContractTest
      */
     protected function determineNetworkConnectionForStripeTests(): void
     {
-        if (! $this->isConnected() || class_basename($this) === 'StripePaymentGatewayTest') {
+        if (! $this->isConnected() && class_basename($this) === 'StripePaymentGatewayTest') {
             $this->markTestSkipped('An Internet connection is not available.');
         }
     }
