@@ -1,6 +1,8 @@
 name: Integration Tests
 
-on: [push]
+on:
+  push:
+  pull_request:
 
 jobs:
   tests:
@@ -20,7 +22,7 @@ jobs:
         options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
 
     steps:
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v2.3.3
 
       - name: Verify MySQL connection
         run: |
@@ -29,7 +31,7 @@ jobs:
           mysql --host 127.0.0.1 --port ${{ job.services.mysql.ports['3306'] }} -uuser -psecret -e "SHOW DATABASES"
 
       - name: Cache composer dependencies
-        uses: actions/cache@v1
+        uses: actions/cache@v2.1.1
         with:
           path: vendor
           key: composer-${{ hashFiles('composer.lock') }}
@@ -37,8 +39,9 @@ jobs:
       - name: Install dependencies
         run: |
           php --version
-          composer config "http-basic.nova.laravel.com" "${{ secrets.NOVA_USERNAME }}" "${{ secrets.NOVA_PASSWORD }}"
-          composer install -n --prefer-dist
+          composer install --no-progress --no-suggest --prefer-dist --optimize-autoloader
+          npm install
+          npm run production
 
       - name: Boot Laravel application
         run: |
@@ -52,7 +55,7 @@ jobs:
           php artisan migrate:fresh --seed
 
       - name: Cache yarn dependencies
-        uses: actions/cache@v1
+        uses: actions/cache@v2.1.1
         with:
           path: node_modules
           key: yarn-${{ hashFiles('yarn.lock') }}
