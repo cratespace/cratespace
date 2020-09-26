@@ -23,7 +23,9 @@
     <x-slot name="rightMenu">
         <x-dropdowns._normal :extraClasses="'md:hidden'">
             <x-slot name="button">
-                <x:heroicon-o-menu class="w-6 h-6 text-white"/>
+                <span class="shadow-none px-0 h-8 w-8 flex items-center justify-center rounded-full overflow-hidden">
+                    <x:heroicon-o-menu class="w-6 h-6 text-white"/>
+                </span>
             </x-slot>
 
             <x-slot name="menu">

@@ -18,19 +18,21 @@
 
                 <div class="mt-4 md:mt-0 col-lg-6 offset-lg-2 col-md-8 col-md-6">
                     <div class="flex justify-center md:justify-end items-center">
-                        <div class="dropdown">
-                            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <span class="text-sm">Show: <span class="font-bold text-gray-800">{{ request('status') ?? 'All' }}</span></span>
-                            </button>
+                        <x-dropdowns._normal>
+                            <x-slot name="button">
+                                <span class="btn btn-secondary">
+                                    <span class="text-sm">Show: <span class="font-bold text-gray-800">{{ request('status') ?? 'All' }}</span></span>
+                                </span>
+                            </x-slot>
 
-                            <div class="mt-3 dropdown-menu dropdown-menu-right rounded-lg shadow-lg" aria-labelledby="dropdownMenuButton">
+                            <x-slot name="menu">
                                 <a class="dropdown-item text-sm font-medium text-gray-600 focus:text-white active:text-white py-2 @if (request('status') === null) active hover:text-white @else hover:text-gray-700 @endif" href="{{ route($resourceName . '.index') }}">All</a>
 
                                 @foreach ($statuses as $status)
                                     <a class="dropdown-item text-sm font-medium text-gray-600 focus:text-white active:text-white py-2 @if (request('status') === $status) active hover:text-white @else hover:text-gray-700 @endif" href="{{ route($resourceName . '.index', ['status' => $status]) }}">{{ $status }}</a>
                                 @endforeach
-                            </div>
-                        </div>
+                            </x-slot>
+                        </x-dropdowns>
 
                         <form class="ml-4 w-80 relative" action="{{ route($resourceName . '.index') }}" method="GET">
                             <input type="text" name="search" id="search" class="pl-10 form-input w-full block bg-gray-100" placeholder="Search..." value="{{ old('search', request('search')) }}" required autocomplete="search">
