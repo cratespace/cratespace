@@ -64,4 +64,4 @@ jobs:
           DB_DATABASE: database/database.sqlite
           STRIPE_SECRET_KEY: ${{ secrets.STRIPE_SECRET_KEY }}
 
-        run: composer test
+        run: vendor/bin/phpunit --verbose
