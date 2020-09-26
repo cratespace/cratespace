@@ -1,4 +1,4 @@
-name: Tests
+name: Integration Tests
 
 on: [push]
 
@@ -63,11 +63,9 @@ jobs:
           yarn && yarn dev
 
       - name: Run tests
-        run: |
-          ./vendor/bin/phpunit --version
-          ./vendor/bin/phpunit
         env:
           STRIPE_SECRET_KEY: ${{ secrets.STRIPE_SECRET_KEY }}
+        run: ./vendor/bin/phpunit --version
 
       - name: Run security checks
         run: |
