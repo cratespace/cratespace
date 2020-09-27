@@ -125,7 +125,7 @@ class InstallCommand extends Command
      */
     protected function migrateDatabaseWithFreshCredentials($credentials)
     {
-        $seed = $this->confirm('Do you wish to seed the database with default user and dummy data?', false);
+        $seed = $this->confirm('Do you want to seed the database with default user and dummy data?', false);
 
         foreach ($credentials as $key => $value) {
             $configKey = strtolower(str_replace('DB_', '', $key));
