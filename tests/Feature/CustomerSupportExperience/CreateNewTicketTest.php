@@ -15,17 +15,25 @@ use Illuminate\Support\Facades\Notification;
 class CreateNewTicketTest extends TestCase implements Postable
 {
     /** @test */
-    public function customers_can_visit_create_new_ticket_page()
+    public function only_users_can_visit_create_new_ticket_page()
     {
+        $this->get('support/tickets/create')
+            ->assertStatus(302)
+            ->assertRedirect('/login');
+
+        $this->signIn();
+
         $this->get('support/tickets/create')
             ->assertStatus(200)
             ->assertSee('Contact support');
     }
 
     /** @test */
-    public function customers_can_create_new_ticket()
+    public function users_can_create_new_ticket()
     {
         $this->withoutExceptionHandling();
+
+        $this->signIn();
 
         $ticketAttributes = [
             'name' => $this->faker->name,
@@ -44,8 +52,7 @@ class CreateNewTicketTest extends TestCase implements Postable
         tap($ticket, function ($ticket) use ($response) {
             $response->assertStatus(200)
                 ->assertSee($ticket->code)
-                ->assertSee($ticket->name)
-                ->assertSee($ticket->email)
+                ->assertSee($ticket->user->name)
                 ->assertSee($ticket->subject)
                 ->assertSee($ticket->body)
                 ->assertSee($ticket->updated_at->diffForHumans());
@@ -117,7 +124,7 @@ class CreateNewTicketTest extends TestCase implements Postable
     }
 
     /** @test */
-    public function an_email_is_sent_to_the_customer_after_ticket_is_created()
+    public function an_email_is_sent_to_the_user_after_ticket_is_created()
     {
         Mail::fake();
         Mail::assertNothingSent();
@@ -125,7 +132,7 @@ class CreateNewTicketTest extends TestCase implements Postable
         $ticket = create(Ticket::class, ['agent_id' => null]);
 
         Mail::assertQueued(NewTicketCreatedMail::class, function ($mail) use ($ticket) {
-            return $mail->hasTo($ticket->customer->email);
+            return $mail->hasTo($ticket->user->email);
         });
     }
 

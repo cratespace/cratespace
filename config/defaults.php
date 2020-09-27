@@ -53,7 +53,7 @@ return [
     /*
      * Default Storage Disk For User Profile Picture Files.
      */
-    'profile_photo_disk' => 'public',
+    'profile_photo_disk' => 'public', // public, S3
 
     /*
      * Default Business Details of Default User.

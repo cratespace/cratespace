@@ -51,11 +51,7 @@ class CreateNewUser implements CreatesNewUsers
      */
     protected function createBusiness(array $data): CreateNewUser
     {
-        $this->user->business()->create([
-            'user_id' => $this->user->id,
-            'name' => $data['business'],
-            'slug' => Str::slug($data['business']),
-        ]);
+        $this->user->business()->create(['name' => $data['business']]);
 
         return $this;
     }
@@ -81,19 +77,19 @@ class CreateNewUser implements CreatesNewUsers
      */
     protected function assignRolesAndAbilities(): CreateNewUser
     {
-        $customerRole = Role::firstOrCreate([
+        $businessRole = Role::firstOrCreate([
             'title' => 'business',
             'label' => 'Business',
         ]);
 
-        $purchaseSpace = Ability::firstOrCreate([
+        $manageBusiness = Ability::firstOrCreate([
             'title' => 'manage data',
             'label' => 'Manage data',
         ]);
 
-        $customerRole->allowTo($purchaseSpace);
+        $businessRole->allowTo($manageBusiness);
 
-        $this->user->assignRole($customerRole);
+        $this->user->assignRole($businessRole);
 
         return $this;
     }

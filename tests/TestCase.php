@@ -3,6 +3,7 @@
 namespace Tests;
 
 use Illuminate\Testing\TestResponse;
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
@@ -28,6 +29,8 @@ abstract class TestCase extends BaseTestCase
     protected function setUp(): void
     {
         parent::setUp();
+
+        Schema::enableForeignKeyConstraints();
 
         $this->registerMacros();
     }

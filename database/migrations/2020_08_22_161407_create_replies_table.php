@@ -19,9 +19,9 @@ class CreateRepliesTable extends Migration
             $table->foreignId('ticket_id')
                 ->constrained('tickets')
                 ->onDelete('cascade');
-            $table->foreignId('customer_id')
+            $table->foreignId('user_id')
                 ->nullable()
-                ->constrained('customers')
+                ->constrained('users')
                 ->onDelete('cascade');
             $table->foreignId('agent_id')
                 ->nullable()

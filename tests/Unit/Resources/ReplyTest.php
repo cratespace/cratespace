@@ -6,16 +6,15 @@ use Carbon\Carbon;
 use Tests\TestCase;
 use App\Models\User;
 use App\Models\Reply;
-use App\Models\Customer;
 
 class ReplyTest extends TestCase
 {
     /** @test */
-    public function it_belongs_to_a_customer()
+    public function it_belongs_to_a_user()
     {
         $reply = create(Reply::class);
 
-        $this->assertInstanceOf(Customer::class, $reply->customer);
+        $this->assertInstanceOf(User::class, $reply->user);
     }
 
     /** @test */
@@ -41,13 +40,13 @@ class ReplyTest extends TestCase
     /** @test */
     public function it_knows_who_it_belongs_to()
     {
-        $replyOfCustomer = create(Reply::class, ['agent_id' => null]);
-        $this->assertTrue($replyOfCustomer->by()->is($replyOfCustomer->customer));
-        $this->assertFalse($replyOfCustomer->by()->is($replyOfCustomer->agent));
+        $replyOfUser = create(Reply::class, ['agent_id' => null]);
+        $this->assertTrue($replyOfUser->by()->is($replyOfUser->user));
+        $this->assertFalse($replyOfUser->by()->is($replyOfUser->agent));
 
-        $replyOfAgent = create(Reply::class, ['customer_id' => null]);
+        $replyOfAgent = create(Reply::class, ['user_id' => null]);
         $this->assertTrue($replyOfAgent->by()->is($replyOfAgent->agent));
-        $this->assertFalse($replyOfAgent->by()->is($replyOfAgent->customer));
+        $this->assertFalse($replyOfAgent->by()->is($replyOfAgent->user));
     }
 
     /** @test */

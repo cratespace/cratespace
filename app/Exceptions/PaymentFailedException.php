@@ -2,9 +2,9 @@
 
 namespace App\Exceptions;
 
-use RuntimeException;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 
-class PaymentFailedException extends RuntimeException
+class PaymentFailedException extends HttpException
 {
     /**
      * Total amount charged to customer.
@@ -23,7 +23,7 @@ class PaymentFailedException extends RuntimeException
     {
         $this->amount = $amount;
 
-        parent::__construct($message);
+        parent::__construct(422, $message, null, [], 0);
     }
 
     /**
@@ -35,7 +35,10 @@ class PaymentFailedException extends RuntimeException
      */
     public function render($request)
     {
-        return response(['message' => $this->getMessage()], 422);
+        return response(
+            ['message' => $this->getMessage()],
+            $this->getStatusCode()
+        );
     }
 
     /**

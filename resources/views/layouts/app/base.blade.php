@@ -7,3 +7,5 @@
 
     @include('layouts.app.partials._footer')
 @endsection
+
+@stack('modals')

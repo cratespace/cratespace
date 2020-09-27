@@ -43,9 +43,9 @@ class TicketObserver
     {
         $this->generateHashCode($ticket);
 
-        $ticket->mail(NewTicketCreatedMail::class, $ticket->customer->email);
+        $ticket->mail(NewTicketCreatedMail::class, $ticket->user->email);
 
-        if (!is_null($ticket->agent_id)) {
+        if (! is_null($ticket->agent_id)) {
             $ticket->agent->notify(new NewTicketAssigned($ticket));
         }
     }
@@ -65,7 +65,7 @@ class TicketObserver
                     $agent->tickets->count() <= config('defaults.support.support-agents.max-tickets');
             });
 
-        if (!$supportAgents->isEmpty()) {
+        if (! $supportAgents->isEmpty()) {
             return $ticket->agent_id = $supportAgents->random()->id;
         }
 

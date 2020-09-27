@@ -100,7 +100,7 @@
     </div>
 </section>
 
-@if (! $spaces->isEmpty())
+@if (! $spaces->isEmpty() && $spaces->hasPages())
     <section class="py-8 bg-gray-100">
         <div class="container">
             <div class="row">

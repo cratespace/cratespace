@@ -7,7 +7,6 @@ use Tests\TestCase;
 use App\Models\Role;
 use App\Models\User;
 use App\Models\Ticket;
-use App\Models\Customer;
 use InvalidArgumentException;
 use Illuminate\Database\Eloquent\Collection;
 
@@ -24,7 +23,7 @@ class TicketTest extends TestCase
     {
         $ticket = create(Ticket::class);
         $reply = $ticket->addReply([
-            'customer_id' => create(Customer::class)->id,
+            'user_id' => create(User::class)->id,
             'agent_id' => null,
             'body' => $this->faker->sentence,
         ]);
@@ -34,11 +33,11 @@ class TicketTest extends TestCase
     }
 
     /** @test */
-    public function it_belongs_to_a_customer()
+    public function it_belongs_to_a_user()
     {
         $ticket = create(Ticket::class);
 
-        $this->assertInstanceOf(Customer::class, $ticket->customer);
+        $this->assertInstanceOf(User::class, $ticket->user);
     }
 
     /** @test */
@@ -105,7 +104,7 @@ class TicketTest extends TestCase
             'priority' => $ticket->priority,
             'description' => $ticket->description,
             'attachment' => null,
-            'customer_id' => $ticket->customer->id,
+            'user_id' => $ticket->user->id,
             'agent_id' => $ticket->agent->id,
         ]);
     }

@@ -11,7 +11,7 @@ use App\Mail\TicketStatusUpdatedMail;
 class UpdateTicketStatusTest extends TestCase
 {
     /** @test */
-    public function an_email_is_sent_to_the_customer_after_ticket_status_is_updated()
+    public function an_email_is_sent_to_the_user_after_ticket_status_is_updated()
     {
         Mail::fake();
         Mail::assertNothingSent();
@@ -29,7 +29,7 @@ class UpdateTicketStatusTest extends TestCase
         $this->assertEquals('Closed', $ticket->refresh()->status);
 
         Mail::assertQueued(TicketStatusUpdatedMail::class, function ($mail) use ($ticket) {
-            return $mail->hasTo($ticket->customer->email);
+            return $mail->hasTo($ticket->user->email);
         });
     }
 }

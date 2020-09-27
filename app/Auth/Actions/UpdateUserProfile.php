@@ -26,11 +26,6 @@ class UpdateUserProfile implements UpdatesUserProfile
             $user->updateProfilePhoto($data['photo']);
         }
 
-        $user->forceFill([
-            'name' => $data['name'],
-            'username' => $data['username'],
-            'email' => $data['email'],
-            'phone' => $data['phone'],
-        ])->save();
+        $user->update($data);
     }
 }

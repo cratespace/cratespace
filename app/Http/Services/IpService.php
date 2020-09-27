@@ -55,6 +55,16 @@ class IpService extends Service
     }
 
     /**
+     * Retrieve IP of user.
+     *
+     * @return string
+     */
+    public function getIp(): string
+    {
+        return $this->get();
+    }
+
+    /**
      * Validate given IP address.
      *
      * @param string $ip

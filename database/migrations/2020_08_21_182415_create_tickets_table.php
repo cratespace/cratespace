@@ -24,8 +24,8 @@ class CreateTicketsTable extends Migration
             $table->string('priority')->default('Low'); // Low, Medium, High
             $table->text('description')->nullable();
             $table->text('attachment')->nullable();
-            $table->foreignId('customer_id')
-                ->constrained('customers');
+            $table->foreignId('user_id')
+                ->constrained('users');
             $table->foreignId('agent_id')
                 ->nullable()
                 ->constrained('users');

@@ -24,16 +24,6 @@ class UpdateBusinessProfile implements UpdatesUserProfile
 
         $this->verifyEmail($user, $user->email);
 
-        $business->update([
-            'name' => $data['name'],
-            'description' => $data['description'] ?? null,
-            'street' => $data['street'],
-            'email' => $data['email'],
-            'phone' => $data['phone'],
-            'city' => $data['city'],
-            'state' => $data['state'],
-            'country' => $data['country'],
-            'postcode' => $data['postcode'],
-        ]);
+        $business->update($data);
     }
 }

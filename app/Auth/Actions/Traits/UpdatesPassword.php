@@ -17,6 +17,6 @@ trait UpdatesPassword
      */
     public function updatePassword(User $user, string $password): void
     {
-        $user->forceFill(['password' => Hash::make($data['password'])])->save();
+        $user->forceFill(['password' => Hash::make($password)])->save();
     }
 }

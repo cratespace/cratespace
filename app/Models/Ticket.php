@@ -38,7 +38,7 @@ class Ticket extends Model
         'description',
         'attachment',
         'agent_id',
-        'customer_id',
+        'user_id',
     ];
 
     /**
@@ -64,9 +64,9 @@ class Ticket extends Model
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function customer()
+    public function user()
     {
-        return $this->belongsTo(Customer::class, 'customer_id');
+        return $this->belongsTo(User::class, 'user_id');
     }
 
     /**
@@ -116,6 +116,6 @@ class Ticket extends Model
     {
         $this->mark($status);
 
-        $this->mail(TicketStatusUpdatedMail::class, $this->customer->email);
+        $this->mail(TicketStatusUpdatedMail::class, $this->user->email);
     }
 }
