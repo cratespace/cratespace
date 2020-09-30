@@ -20,13 +20,13 @@
 
                 <div class="row">
                     <div class="col-md-7 mb-6">
-                        <label for="old_password" class="block">
+                        <label for="current_password" class="block">
                             <span class="text-sm mb-2 font-semibold">{{ __('Current password') }}</span>
 
-                            <input id="old-password" type="password" class="form-input mt-1 block w-full @error('old_password') is-invalid @enderror" name="old_password" placeholder="">
+                            <input id="old-password" type="password" class="form-input mt-1 block w-full @error('current_password') is-invalid @enderror" name="current_password" placeholder="">
                         </label>
 
-                        @error('old_password')
+                        @error('current_password')
                             <span class="text-sm block mt-2 text-red-500" role="alert">
                                 {{ $message }}
                             </span>
