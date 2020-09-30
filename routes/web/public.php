@@ -1,8 +1,6 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\CheckoutController;
-use App\Http\Controllers\GeneralPagesController;
 
 /*
  * Landing Page & Spaces Listing Page...
@@ -12,12 +10,12 @@ Route::get('/', 'SpacesListingController');
 /*
  * Privacy Page...
  */
-Route::get('/privacy', [GeneralPagesController::class, 'privacy']);
+Route::get('/privacy', 'GeneralPagesController@privacy');
 
 /*
  * Terms & Conditions Page...
  */
-Route::get('/terms-conditions', [GeneralPagesController::class, 'terms']);
+Route::get('/terms-conditions', 'GeneralPagesController@terms');
 
 /*
  * Place Order for Space Route...
@@ -28,7 +26,7 @@ Route::post('/spaces/{space}/orders', 'SpaceOrderController')
 /*
  * Checkout Page...
  */
-Route::get('/spaces/{space}/checkout', [CheckoutController::class, 'show'])
+Route::get('/spaces/{space}/checkout', 'CheckoutController')
     ->name('checkout');
 
 /*
