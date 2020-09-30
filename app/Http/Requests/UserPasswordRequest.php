@@ -2,7 +2,6 @@
 
 namespace App\Http\Requests;
 
-use App\Rules\CurrentPasswordCheck;
 use Illuminate\Foundation\Http\FormRequest;
 use App\Http\Requests\Traits\AuthorizesRequest;
 use App\Http\Requests\Traits\HasValidationRules;
@@ -30,9 +29,7 @@ class UserPasswordRequest extends FormRequest
     public function rules()
     {
         return $this->getRulesFor('user-password', [
-            'old_password' => [
-                'required', 'string', 'min:8', new CurrentPasswordCheck(),
-            ],
+            'current_password' => ['required', 'string'],
         ]);
     }
 }

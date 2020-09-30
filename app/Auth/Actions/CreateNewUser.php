@@ -4,20 +4,13 @@ namespace App\Auth\Actions;
 
 use App\Models\Role;
 use App\Models\User;
-use App\Models\Ability;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use App\Contracts\Auth\CreatesNewUsers;
 
 class CreateNewUser implements CreatesNewUsers
 {
-    /**
-     * Instance of new user being created.
-     *
-     * @var \App\Models\User
-     */
-    protected $user;
-
     /**
      * Validate and create a newly registered user.
      *
@@ -27,19 +20,33 @@ class CreateNewUser implements CreatesNewUsers
      */
     public function create(array $data): User
     {
-        $this->user = User::create([
+        return DB::transaction(function () use ($data) {
+            return tap($this->createUser($data), function (User $user) use ($data) {
+                $this->createBusiness($user, $data);
+
+                $this->createFinancialAccount($user);
+
+                // $this->assignRolesAndAbilities($user);
+            });
+        });
+    }
+
+    /**
+     * Create new user profile.
+     *
+     * @param array $data
+     *
+     * @return \App\Models\User
+     */
+    protected function createUser(array $data): User
+    {
+        return User::create([
             'name' => $data['name'],
             'email' => $data['email'],
             'phone' => $data['phone'],
             'username' => $this->makeUsername($data['name']),
             'password' => Hash::make($data['password']),
         ]);
-
-        $this->createBusiness($data)
-            ->createFinancialAccount($data)
-            ->assignRolesAndAbilities();
-
-        return $this->user;
     }
 
     /**
@@ -47,13 +54,11 @@ class CreateNewUser implements CreatesNewUsers
      *
      * @param array $data
      *
-     * @return \App\Auth\Actions\CreateNewUser
+     * @return void
      */
-    protected function createBusiness(array $data): CreateNewUser
+    protected function createBusiness(User $user, array $data): void
     {
-        $this->user->business()->create(['name' => $data['business']]);
-
-        return $this;
+        $user->business()->create(['name' => $data['business']]);
     }
 
     /**
@@ -61,37 +66,25 @@ class CreateNewUser implements CreatesNewUsers
      *
      * @param array $data
      *
-     * @return \App\Auth\Actions\CreateNewUser
+     * @return void
      */
-    protected function createFinancialAccount(array $data): CreateNewUser
+    protected function createFinancialAccount(User $user): void
     {
-        $this->user->account()->create(['user_id' => $this->user->id]);
-
-        return $this;
+        $user->account()->create(['user_id' => $user->id]);
     }
 
     /**
      * Create and assign customer role.
      *
-     * @return \App\Auth\Actions\CreateNewUser
+     * @return void
      */
-    protected function assignRolesAndAbilities(): CreateNewUser
+    protected function assignRolesAndAbilities($user): void
     {
-        $businessRole = Role::firstOrCreate([
-            'title' => 'business',
-            'label' => 'Business',
+        $developer = Role::createAndAssign('developer', 'Developer', [
+            'create', 'read', 'update',
         ]);
 
-        $manageBusiness = Ability::firstOrCreate([
-            'title' => 'manage data',
-            'label' => 'Manage data',
-        ]);
-
-        $businessRole->allowTo($manageBusiness);
-
-        $this->user->assignRole($businessRole);
-
-        return $this;
+        $user->assignRole($developer);
     }
 
     /**
