@@ -45,21 +45,32 @@ class Calculator implements CalculatorContract
 
     /**
      * Create new instance of charges calculator.
+     */
+    public function __construct()
+    {
+        $this->amounts = collect();
+    }
+
+    /**
+     * Set resource the calculations will be based on.
      *
      * @param \App\Contracts\Models\Priceable $resource
+     *
+     * @return \App\Contracts\Support\Calculator
      */
-    public function __construct(Priceable $resource)
+    public function setResource(Priceable $resource): CalculatorContract
     {
         $this->resource = $resource;
-        $this->amounts = collect();
+
+        return $this;
     }
 
     /**
      * Perform calculations.
      *
-     * @return mixed
+     * @return \\App\Contracts\Support\Calculator
      */
-    public function calculate()
+    public function calculate(): CalculatorContract
     {
         (new Pipeline(app()))->send($this->resourceCharges())
             ->through($this->calculations)
@@ -67,6 +78,8 @@ class Calculator implements CalculatorContract
             ->then(function ($amounts) {
                 $this->saveAmountsToCache($this->amounts = $amounts);
             });
+
+        return $this;
     }
 
     /**
@@ -80,7 +93,7 @@ class Calculator implements CalculatorContract
     {
         $service = resolve($service);
 
-        if (!$service instanceof Calculation) {
+        if (! $service instanceof Calculation) {
             $service = class_basename($service);
 
             throw new RuntimeException("Class {$service} is not a valid charge calculations service");
@@ -138,7 +151,8 @@ class Calculator implements CalculatorContract
      */
     public function calculations(): Collection
     {
-        return collect($this->calculations)
-            ->merge(config('defaults.billing.charges.calculations'));
+        return collect($this->calculations)->merge(
+            config('defaults.billing.charges.calculations')
+        );
     }
 }
