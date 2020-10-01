@@ -23,8 +23,7 @@ return [
      * User Password Reset Inputs Rules
      */
     'user-password' => [
-        'password' => ['required', 'string', 'min:8', 'confirmed', 'different:old_password'],
-        'password_confirmation' => ['required', 'string', 'min:8'],
+        'password' => ['required', 'string', new Password(), 'confirmed'],
     ],
 
     /*

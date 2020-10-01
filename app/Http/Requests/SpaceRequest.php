@@ -32,10 +32,22 @@ class SpaceRequest extends FormRequest
      */
     public function rules()
     {
-        $additionalRules = !is_null($this->space)
+        $additionalRules = ! is_null($this->space)
             ? ['code' => ['unique:spaces,code', 'exists:spaces']]
             : [];
 
         return $this->getRulesFor('space', $additionalRules);
+    }
+
+    /**
+     * Filter out null values from validated data.
+     *
+     * @return array
+     */
+    public function validatedWithoutNulls(): array
+    {
+        return array_filter($this->validated(), function ($value) {
+            return $value !== null;
+        });
     }
 }

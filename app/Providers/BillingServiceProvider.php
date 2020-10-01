@@ -2,9 +2,13 @@
 
 namespace App\Providers;
 
+use App\Billing\Charges\Calculator;
 use Illuminate\Support\ServiceProvider;
+use App\Billing\Actions\CalculateCharges;
 use App\Contracts\Billing\PaymentGateway;
+use App\Contracts\Billing\CalculatesCharges;
 use App\Billing\PaymentGateways\StripePaymentGateway;
+use App\Contracts\Support\Calculator as CalculatorContract;
 
 class BillingServiceProvider extends ServiceProvider
 {
@@ -16,6 +20,7 @@ class BillingServiceProvider extends ServiceProvider
     public function register()
     {
         $this->registerPaymentGateways();
+        $this->registerChargeCalculator();
     }
 
     /**
@@ -30,5 +35,16 @@ class BillingServiceProvider extends ServiceProvider
         });
 
         $this->app->bind(PaymentGateway::class, StripePaymentGateway::class);
+    }
+
+    /**
+     * Register resource charge calculator.
+     *
+     * @return void
+     */
+    protected function registerChargeCalculator(): void
+    {
+        $this->app->singleton(CalculatorContract::class, Calculator::class);
+        $this->app->singleton(CalculatesCharges::class, CalculateCharges::class);
     }
 }

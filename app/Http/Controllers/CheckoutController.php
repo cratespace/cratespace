@@ -3,61 +3,23 @@
 namespace App\Http\Controllers;
 
 use App\Models\Space;
-use App\Support\Formatter;
-use App\Contracts\Billing\PaymentGateway;
-use App\Billing\Charges\Calculator as ChargesCalculator;
+use App\Contracts\Billing\CalculatesCharges;
 
 class CheckoutController extends Controller
 {
     /**
-     * Instance of payment gateway.
-     *
-     * @var \App\Billing\FakePaymentGateway
-     */
-    protected $paymentGateway;
-
-    /**
-     * Create new controller instance.
-     *
-     * @param \App\Contracts\Billing\PaymentGateway $paymentGateway
-     */
-    public function __construct(PaymentGateway $paymentGateway)
-    {
-        $this->paymentGateway = $paymentGateway;
-    }
-
-    /**
      * Show checkout page.
+     *
+     * @param \App\Contracts\Billing\CalculatesCharges
+     * @param \pp\Models\Space
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function show(Space $space)
+    public function __invoke(CalculatesCharges $calculator, Space $space)
     {
         return view('public.checkout.page', [
             'space' => $space,
-            'charges' => $this->calculateCharges($space),
+            'charges' => $calculator->calculate($space),
         ]);
-    }
-
-    /**
-     * Calculate charges of customer purchase.
-     *
-     * @param \App\Models\Space $space
-     *
-     * @return array
-     */
-    protected function calculateCharges(Space $space): array
-    {
-        $charges = [];
-
-        $chargesCalculator = new ChargesCalculator($space);
-
-        $chargesCalculator->calculate();
-
-        foreach ($chargesCalculator->amounts() as $name => $amount) {
-            $charges[$name] = Formatter::money((int) $amount);
-        }
-
-        return $charges;
     }
 }

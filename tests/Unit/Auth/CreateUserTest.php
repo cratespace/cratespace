@@ -25,7 +25,6 @@ class CreateUserTest extends TestCase
         $this->assertEquals('Sunny Side Exporters', $user->business->name);
         $this->assertTrue($user->account->exists());
         $this->assertEquals(0, $user->account->credit);
-        $this->assertTrue($user->hasRole('business'));
         $this->assertDatabaseHas('users', [
             'name' => 'John Vox Doe',
             'email' => 'john.vodo@sunnyside.com',

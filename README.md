@@ -42,13 +42,19 @@ Cratespace uses PHPUnit for testing. To clone cratespace into your local machine
 Cratespace Test Suite uses network connection to run some tests.
 
 ```bash
+# Clone the repository.
 git clone git@github.com:cratespace/cratespace.git
+
+# Install and compile dependencies.
 cd cratespace && composer install && npm install && npm run dev
+
+# Run automated installation process.
+php artisan cs:install
 
 # To run all tests including tests that require a working network connection.
 composer test
 
-# To run only offline tests
+# To run only offline tests.
 composer test-offline
 ```
 

@@ -14,7 +14,8 @@ class ChargeCalculatorTest extends TestCase
     public function it_can_be_instantiated()
     {
         $resource = new PriceableResourceMock();
-        $caculator = new Calculator($resource);
+        $caculator = new Calculator();
+        $caculator->setResource($resource);
 
         $this->assertInstanceOf(CalculatorContract::class, $caculator);
         $this->assertInstanceOf(Priceable::class, $caculator->resource());
@@ -23,7 +24,9 @@ class ChargeCalculatorTest extends TestCase
     /** @test */
     public function it_can_get_charges_of_provided_resource()
     {
-        $caculator = $this->getCalculator(new PriceableResourceMock());
+        $resource = new PriceableResourceMock();
+        $caculator = new Calculator();
+        $caculator->setResource($resource);
 
         $this->assertEquals(['price' => 10, 'tax' => 2], $caculator->resourceCharges());
     }
@@ -31,8 +34,9 @@ class ChargeCalculatorTest extends TestCase
     /** @test */
     public function it_can_calculate_charges_of_provided_resource()
     {
-        $caculator = $this->getCalculator(new PriceableResourceMock());
-        $caculator->calculate();
+        $resource = new PriceableResourceMock();
+        $caculator = new Calculator();
+        $caculator->setResource($resource)->calculate();
 
         $this->assertEquals(
             [

@@ -3,92 +3,49 @@
 namespace Tests\Feature\UserProfileSettings;
 
 use Tests\TestCase;
-use App\Models\Role;
 use App\Models\User;
-use App\Models\Ability;
 
 class UserSettingsTest extends TestCase
 {
     /** @test */
     public function a_user_is_allowed_to_view_respective_settings_page()
     {
-        $customer = Role::firstOrCreate([
-            'title' => 'customer',
-            'label' => 'Customer',
-        ]);
+        $user = $this->signIn();
 
-        $purchaseSpaces = Ability::firstOrCreate([
-            'title' => 'purchase_spaces',
-            'label' => 'Purchase spaces',
-        ]);
+        auth()->logout();
 
-        $customer->allowTo($purchaseSpaces);
+        $this->get("/users/{$user->username}/edit")->assertStatus(302);
 
-        $customerUser = create(User::class);
+        $this->signIn($user);
 
-        $customerUser->assignRole($customer);
-
-        $this->signIn($customerUser);
-
-        $this->get("/users/{$customerUser->username}/edit")
-            ->assertStatus(403);
-
-        $this->withoutExceptionHandling();
-
-        $business = Role::firstOrCreate([
-            'title' => 'business',
-            'label' => 'Business',
-        ]);
-
-        $viewSettings = Ability::firstOrCreate([
-            'title' => 'edit_user_settings',
-            'label' => 'Edit user settings',
-        ]);
-
-        $business->allowTo($viewSettings);
-
-        $businessUser = create(User::class);
-
-        $businessUser->assignRole($business);
-
-        $this->signIn($businessUser);
-
-        $this->get("/users/{$businessUser->username}/edit")
+        $this->get("/users/{$user->username}/edit")
             ->assertStatus(200)
-            ->assertSee($businessUser->name);
+            ->assertSee($user->name);
     }
 
     /** @test */
     public function only_users_with_permission_can_edit_respective_settings()
     {
-        $business = Role::firstOrCreate([
-            'title' => 'business',
-            'label' => 'Business',
-        ]);
+        $randomUser = create(User::class);
+        $user = $this->signIn();
 
-        $viewSettings = Ability::firstOrCreate([
-            'title' => 'edit_user_settings',
-            'label' => 'Edit user settings',
-        ]);
+        $this->assertNotEquals(auth()->user()->name, $randomUser->name);
+        $this->assertEquals(auth()->user()->name, $user->name);
 
-        $business->allowTo($viewSettings);
-
-        $businessUser = create(User::class);
-
-        $businessUser->assignRole($business);
-
-        $this->signIn($businessUser);
-
-        $this->assertEquals(auth()->user()->name, $businessUser->name);
-
-        $response = $this->put("/users/{$businessUser->username}", [
+        $this->actingAs($user)->put("/users/{$randomUser->username}", [
             'name' => 'John Doe',
             'username' => $this->faker->unique()->userName,
             'email' => $this->faker->unique()->safeEmail,
             'phone' => $this->faker->phoneNumber,
-        ]);
+        ])->assertStatus(403);
 
-        $response->assertSessionHasNoErrors();
-        $this->assertEquals(auth()->user()->refresh()->name, $businessUser->refresh()->name);
+        $this->actingAs($user)->put("/users/{$user->username}", [
+            'name' => 'John Doe',
+            'username' => $this->faker->unique()->userName,
+            'email' => $this->faker->unique()->safeEmail,
+            'phone' => $this->faker->phoneNumber,
+        ])->assertSessionHasNoErrors();
+
+        $this->assertEquals(auth()->user()->refresh()->name, $user->refresh()->name);
     }
 }

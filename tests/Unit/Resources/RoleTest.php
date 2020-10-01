@@ -37,4 +37,25 @@ class RoleTest extends TestCase
 
         $this->assertTrue($role->abilities->contains($ability));
     }
+
+    /** @test */
+    public function it_can_assign_abilities_imediately_after_being_created()
+    {
+        $role = Role::createAndAssign(
+            'admin',
+            'Administrator',
+            $abilities = [
+                'create',
+                'read',
+                'update',
+                'delete',
+            ]
+        );
+
+        foreach ($abilities as $ability) {
+            $this->assertTrue(
+                collect($role->abilities)->pluck('title')->contains($ability)
+            );
+        }
+    }
 }

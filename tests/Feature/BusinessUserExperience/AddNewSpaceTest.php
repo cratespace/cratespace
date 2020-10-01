@@ -204,6 +204,8 @@ class AddNewSpaceTest extends TestCase implements Postable
     /** @test */
     public function uid_or_hascode_is_optional()
     {
+        $this->withoutExceptionHandling();
+
         $response = $this->actingAs($user = create(User::class))
             ->from('/spaces/create')
             ->post('/spaces', $this->validParameters([
@@ -211,7 +213,7 @@ class AddNewSpaceTest extends TestCase implements Postable
             ]));
 
         tap(Space::first(), function ($space) use ($response, $user) {
-            $response->assertRedirect('/spaces');
+            $response->assertRedirect($space->path);
 
             $this->assertTrue($space->user->is($user));
             $this->assertNotNull($space->code);
@@ -228,7 +230,7 @@ class AddNewSpaceTest extends TestCase implements Postable
             ]));
 
         tap(Space::first(), function ($space) use ($response, $user) {
-            $response->assertRedirect('/spaces');
+            $response->assertRedirect($space->path);
 
             $this->assertTrue($space->user->is($user));
             $this->assertNull($space->note);
@@ -387,7 +389,7 @@ class AddNewSpaceTest extends TestCase implements Postable
             ]));
 
         tap(Space::first(), function ($space) use ($response, $user) {
-            $response->assertRedirect('/spaces');
+            $response->assertRedirect($space->path);
 
             $this->assertTrue($space->user->is($user));
             $this->assertNull($space->tax);
