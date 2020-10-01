@@ -91,10 +91,10 @@
             "@php artisan key:generate --ansi"
         ],
         "test": [
-            "vendor/bin/phpunit --testdox --verbose --color=always --coverage-text"
+            "vendor/bin/phpunit --verbose --color=always --coverage-text"
         ],
         "test-offline": [
-            "vendor/bin/phpunit --testdox --verbose --color=always --coverage-text --exclude-group network"
+            "vendor/bin/phpunit --verbose --color=always --coverage-text --exclude-group network"
         ]
     }
 }

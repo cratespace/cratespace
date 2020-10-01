@@ -26,11 +26,9 @@ class SpaceController extends Controller
             $request->search
         )->paginate($request->perPage ?? 10);
 
-        if ($request->wantsJson()) {
-            return $resource;
-        }
-
-        return view('business.spaces.index', compact('resource'));
+        return $request->wantsJson()
+            ? $this->successJson($resource, 200)
+            : view('business.spaces.index', compact('resource'));
     }
 
     /**
@@ -40,14 +38,16 @@ class SpaceController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function show(Space $space)
+    public function show(Request $request, Space $space)
     {
         $this->authorize('delete', $space);
 
-        return view('business.spaces.show', [
-            'space' => $space,
-            'order' => $space->order ?: null,
-        ]);
+        return $request->wantsJson()
+            ? $this->successJson($space->load(['order']), 200)
+            : view('business.spaces.show', [
+                'space' => $space,
+                'order' => $space->order ?: null,
+            ]);
     }
 
     /**
@@ -71,11 +71,9 @@ class SpaceController extends Controller
     {
         $space = user()->spaces()->create($request->validated());
 
-        if ($request->wantsJson()) {
-            return $this->successJson($space, 201);
-        }
-
-        return $this->success(route('spaces.index'));
+        return $request->wantsJson()
+            ? $this->successJson($space, 201)
+            : $this->success($space->path);
     }
 
     /**
@@ -102,13 +100,11 @@ class SpaceController extends Controller
      */
     public function update(SpaceRequest $request, Space $space)
     {
-        $space->update($request->validated());
+        $space->update($request->validatedWithoutNulls());
 
-        if ($request->wantsJson()) {
-            return $this->successJson($space->fresh(), 201);
-        }
-
-        return $this->success(route('spaces.index'));
+        return $request->wantsJson()
+            ? $this->successJson($space->fresh(), 201)
+            : $this->success($space->fresh()->path);
     }
 
     /**
@@ -124,10 +120,8 @@ class SpaceController extends Controller
 
         $space->delete();
 
-        if ($request->wantsJson()) {
-            return $this->successJson([], 204);
-        }
-
-        return $this->success(route('spaces.index'));
+        return $request->wantsJson()
+            ? $this->successJson([], 204)
+            : $this->success(route('spaces.index'));
     }
 }

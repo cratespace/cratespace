@@ -52,6 +52,7 @@ class HomeController extends Controller
     protected function generateReport(): Collection
     {
         $generator = new Generator('orders', true);
+
         $generator->setOptions([
             'report' => WeeklyReport::class,
             'limit' => null,

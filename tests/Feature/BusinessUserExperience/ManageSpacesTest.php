@@ -69,7 +69,7 @@ class ManageSpacesTest extends TestCase implements Postable
 
         $this->put('/spaces/' . $spaceOfUser->code, $edittedSpaceAttributes)
             ->assertStatus(302)
-            ->assertRedirect('/spaces');
+            ->assertRedirect($spaceOfUser->fresh()->path);
 
         $response = $this->get('/spaces');
 
@@ -264,10 +264,10 @@ class ManageSpacesTest extends TestCase implements Postable
             ]));
 
         tap(Space::first(), function ($space) use ($response, $user) {
-            $response->assertRedirect('/spaces');
+            $response->assertRedirect($space->fresh()->path);
 
             $this->assertTrue($space->user->is($user));
-            $this->assertNull($space->note);
+            $this->assertNotNull($space->note);
         });
     }
 
@@ -432,7 +432,7 @@ class ManageSpacesTest extends TestCase implements Postable
 
         $response = $this->actingAs($user)
             ->from('/spaces/create')
-            ->post('/spaces', $this->validParameters([
+            ->put("/spaces/{$space->code}", $this->validParameters([
                 'price' => 'not valid price',
             ]));
 
@@ -443,17 +443,19 @@ class ManageSpacesTest extends TestCase implements Postable
     /** @test */
     public function tax_is_optional()
     {
+        $this->withoutExceptionHandling();
+
         $user = $this->signIn();
         $space = create(Space::class, ['user_id' => $user->id]);
 
         $response = $this->actingAs($user)
             ->from('/spaces/create')
-            ->post('/spaces', $this->validParameters([
+            ->put("/spaces/{$space->code}", $this->validParameters([
                 'tax' => '',
             ]));
 
         tap(Space::first(), function ($space) use ($response, $user) {
-            $response->assertRedirect('/spaces');
+            $response->assertRedirect($space->fresh()->path);
 
             $this->assertTrue($space->user->is($user));
             // Tax already set on "space-create"
@@ -469,7 +471,7 @@ class ManageSpacesTest extends TestCase implements Postable
 
         $response = $this->actingAs($user)
             ->from('/spaces/create')
-            ->post('/spaces', $this->validParameters([
+            ->put("/spaces/{$space->code}", $this->validParameters([
                 'tax' => 'not valid tax',
             ]));
 

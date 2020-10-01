@@ -18,10 +18,14 @@ class OrderController extends Controller
      */
     public function index(Request $request, OrderFilter $filters)
     {
-        return view('business.orders.index', [
-            'resource' => OrderQuery::ForBusiness($filters, $request->search)
-                ->paginate($request->perPage ?? 10),
-        ]);
+        $resource = OrderQuery::ForBusiness(
+            $filters,
+            $request->search
+        )->paginate($request->perPage ?? 10);
+
+        return $request->wantsJson()
+            ? $this->successJson($resource, 201)
+            : view('business.orders.index', compact('resource'));
     }
 
     /**
@@ -36,11 +40,9 @@ class OrderController extends Controller
     {
         $order->update(['status' => $request->status]);
 
-        if ($request->wantsJson()) {
-            return response($order->fresh(), 201);
-        }
-
-        return redirect()->back();
+        return $request->wantsJson()
+            ? $this->successJson($order->fresh(), 201)
+            : $this->success($order->space->path);
     }
 
     /**
@@ -56,10 +58,8 @@ class OrderController extends Controller
 
         $order->delete();
 
-        if ($request->wantsJson()) {
-            return response([], 204);
-        }
-
-        return redirect()->route('orders.index');
+        return $request->wantsJson()
+            ? $this->successJson([], 204)
+            : $this->success(route('orders.index'));
     }
 }
