@@ -12,10 +12,10 @@ use Illuminate\Database\Eloquent\Model;
 
 class Space extends Model implements Priceable
 {
-    use DetectsStatus;
-    use Filterable;
-    use Presentable;
-    use Redirectable;
+    use DetectsStatus,
+        Filterable,
+        Presentable,
+        Redirectable;
 
     /**
      * The accessors to append to the model's array form.
@@ -103,7 +103,7 @@ class Space extends Model implements Priceable
      */
     public function placeOrder(array $data): Order
     {
-        abort_if(!$this->isAvailable(), 422);
+        abort_if(! $this->isAvailable(), 422);
 
         $this->update(['reserved_at' => now()]);
 

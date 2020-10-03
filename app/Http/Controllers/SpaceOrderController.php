@@ -40,10 +40,10 @@ class SpaceOrderController extends Controller
 
         try {
             $this->paymentGateway->charge($order, $this->generateToken($request));
-        } catch (PaymentFailedException $exception) {
+        } catch (PaymentFailedException $e) {
             $order->cancel();
 
-            throw $exception;
+            throw $e;
         }
 
         return $request->wantsJson()
