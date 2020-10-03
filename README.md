@@ -25,8 +25,14 @@ Clone the repository to get started. If you do not have the required permissions
 * If you want use Redis as your cache driver you need to install the Redis Server. You can either use homebrew on a Mac or compile from source (https://redis.io/topics/quickstart).
 
 ```bash
+# Clone project.
 git clone git@github.com:cratespace/cratespace.git
+
+# Install dependencies.
 cd cratespace && composer install && npm install && npm run dev
+
+# Install application.
+php artisan cs:install
 ```
 
 Next, boot up a server and visit cratespace landing page. If using a tool like Laravel Valet, of course the URL will default to `http://cratespace.test`. 
