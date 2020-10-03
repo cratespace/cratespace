@@ -6,7 +6,17 @@ Route::group(['middleware' => ['auth', 'verified']], function (): void {
     /*
      * User Account/Profile Resource Route...
      */
-    Route::resource('/users', 'Auth\ProfileController');
+    Route::resource('/users', 'Auth\ProfileController', [
+        'only' => ['edit', 'update', 'destroy'],
+    ]);
+
+    /*
+     * User Business Resource Route...
+     */
+    Route::put(
+        '/users/{user}/business',
+        'Auth\BusinessProfileController@update'
+    )->name('users.business');
 
     /*
      * User Password Reset Route.

@@ -52,7 +52,7 @@ class ProfileController extends Controller
      * Update the specified resource in storage.
      *
      * @param \App\Contracts\Auth\UpdatesUserProfile $updater
-     * @param \Illuminate\Http\Request               $request
+     * @param \App\Http\Requests\UserRequest         $request
      *
      * @return \Illuminate\Http\Response
      */

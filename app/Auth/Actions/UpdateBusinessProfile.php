@@ -20,10 +20,8 @@ class UpdateBusinessProfile implements UpdatesUserProfile
      */
     public function update(User $user, array $data): void
     {
-        $business = $user->business;
-
         $this->verifyEmail($user, $user->email);
 
-        $business->update($data);
+        $user->business->update($data);
     }
 }

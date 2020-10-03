@@ -40,6 +40,7 @@ Vue.use(VueApexCharts);
 
 // User Settings Components
 Vue.component("profile", require("./components/settings/Profile.vue").default);
+Vue.component("business", require("./components/settings/Business.vue").default);
 
 Vue.component('apexchart', VueApexCharts);
 Vue.component('graph', require('./components/Graph.vue').default);

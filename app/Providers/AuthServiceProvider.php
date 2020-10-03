@@ -25,7 +25,7 @@ use App\Contracts\Auth\ResetsUserPasswords;
 use App\Contracts\Auth\UpdatesUserPasswords;
 use Illuminate\Contracts\Auth\StatefulGuard;
 use App\Http\Controllers\Auth\ProfileController;
-use App\Http\Controllers\Business\BusinessController;
+use App\Http\Controllers\Auth\BusinessProfileController;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 
 class AuthServiceProvider extends ServiceProvider
@@ -81,7 +81,7 @@ class AuthServiceProvider extends ServiceProvider
             ->needs(UpdatesUserProfile::class)
             ->give(UpdateUserProfile::class);
 
-        $this->app->when(BusinessController::class)
+        $this->app->when(BusinessProfileController::class)
             ->needs(UpdatesUserProfile::class)
             ->give(UpdateBusinessProfile::class);
     }
