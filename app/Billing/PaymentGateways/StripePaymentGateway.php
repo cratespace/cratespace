@@ -7,7 +7,6 @@ use App\Models\Charge;
 use Stripe\StripeClient;
 use Stripe\Service\ChargeService;
 use Stripe\Charge as StripeCharge;
-use App\Exceptions\PaymentFailedException;
 use Stripe\Exception\InvalidRequestException;
 use App\Billing\PaymentGateways\Validators\FormatValidator;
 use App\Billing\PaymentGateways\Validators\TokenExistenceValidator;
@@ -71,16 +70,16 @@ class StripePaymentGateway extends PaymentGateway implements PaymentGatewayContr
     {
         $this->runBeforeChargesCallback();
 
-        if (!$this->matches($paymentToken)) {
-            throw new PaymentFailedException("Token {$paymentToken} is invalid", $order->total);
+        if (! $this->matches($paymentToken)) {
+            $this->handlePaymentFailure("Token {$paymentToken} is invalid", $order->total);
         }
 
         try {
             $stripeCharge = $this->getStripeCharges()->create([
                 'amount' => $this->total = $order->total,
-                'currency' => config('defaults.billing.currency'),
+                'currency' => $this->getBillingConfigurations()['currency'],
                 'source' => $paymentToken,
-                'description' => config('defaults.billing.transaction-description'),
+                'description' => $this->getBillingConfigurations()['transaction-description'],
             ]);
 
             $this->saveChargeDetails(
@@ -89,7 +88,7 @@ class StripePaymentGateway extends PaymentGateway implements PaymentGatewayContr
                 $this->prepareChargeData($stripeCharge)
             );
         } catch (InvalidRequestException $e) {
-            throw new PaymentFailedException($e->getMessage(), $order->total);
+            $this->handlePaymentFailure($e->getMessage(), $order->total);
         }
     }
 
