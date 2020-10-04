@@ -22,17 +22,4 @@ class OrderPolicy
     {
         return $user->is($order->user) || $user->hasRole('admin');
     }
-
-    /**
-     * Determine whether the user can delete the model.
-     *
-     * @param \App\Models\User  $user
-     * @param \App\Models\Order $order
-     *
-     * @return mixed
-     */
-    public function delete(User $user, Order $order)
-    {
-        return $user->is($order->user) || $user->hasRole('admin');
-    }
 }
