@@ -44,7 +44,7 @@ class PlaceOrderTest extends TestCase
             'tax' => 162.5,
         ]);
         $this->calculateCharges($space);
-        $order = $space->placeOrder($this->orderDetails());
+        $order = $this->createNewOrder($space);
 
         $this->paymentGateway->charge($order, $this->paymentGateway->generateToken($this->getCardDetails()));
 

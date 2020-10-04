@@ -5,10 +5,9 @@ namespace Tests\Unit\Resources;
 use Carbon\Carbon;
 use Tests\TestCase;
 use App\Models\User;
-use App\Models\Order;
 use App\Models\Space;
+use App\Actions\CreateNewOrder;
 use App\Models\Values\ScheduleValue;
-use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class SpaceTest extends TestCase
 {
@@ -80,36 +79,11 @@ class SpaceTest extends TestCase
     }
 
     /** @test */
-    public function it_can_place_an_order_for_itself()
-    {
-        $space = create(Space::class);
-        $this->calculateCharges($space);
-        $space->placeOrder($this->orderDetails());
-
-        $this->assertNotNull($space->order);
-        $this->assertInstanceOf(Order::class, $space->order);
-        $this->assertEquals('john@example.com', $space->order->email);
-    }
-
-    /** @test */
-    public function it_can_place_an_order_for_itself_only_if_it_is_available()
-    {
-        $this->expectException(HttpException::class);
-
-        $orderedSpace = create(Space::class);
-        $this->calculateCharges($orderedSpace);
-        $orderedSpace->placeOrder(make(Order::class)->toArray());
-
-        $expiredSpace = create(Space::class, ['departs_at' => Carbon::now()->subMonth()]);
-        $expiredSpace->placeOrder(make(Order::class)->toArray());
-    }
-
-    /** @test */
     public function it_can_release_it_self_from_an_order()
     {
         $space = create(Space::class);
         $this->calculateCharges($space);
-        $space->placeOrder(make(Order::class)->toArray());
+        $this->createNewOrder($space);
 
         $this->assertTrue($space->hasOrder());
         $this->assertFalse($space->isAvailable());
@@ -126,7 +100,7 @@ class SpaceTest extends TestCase
         $expiredSpace = create(Space::class, ['departs_at' => Carbon::now()->subMonth()]);
         $orderedSpace = create(Space::class);
         $this->calculateCharges($orderedSpace);
-        $order = $orderedSpace->placeOrder($this->orderDetails());
+        (new CreateNewOrder())->create($orderedSpace, $this->orderDetails());
 
         $this->assertTrue($availableSpace->isAvailable());
         $this->assertFalse($expiredSpace->isAvailable());

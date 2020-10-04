@@ -21,7 +21,7 @@ class BasePaymentGatewayTest extends TestCase
             'tax' => 162.5,
         ]);
         $this->calculateCharges($space);
-        $order = $space->placeOrder($this->orderDetails());
+        $order = $this->createNewOrder($space);
 
         $paymentGateway = new MockPaymentGateway();
         $token = $paymentGateway->generateToken($this->getCardDetails());
@@ -38,7 +38,7 @@ class BasePaymentGatewayTest extends TestCase
     {
         $space = create(Space::class, ['price' => 3250, 'tax' => 162.5]);
         $this->calculateCharges($space);
-        $order = $space->placeOrder($this->orderDetails());
+        $order = $this->createNewOrder($space);
 
         $paymentGateway = new MockPaymentGateway();
         $token = $paymentGateway->generateToken($this->getCardDetails());

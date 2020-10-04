@@ -6,6 +6,7 @@ use App\Models\Space;
 use App\Http\Requests\PlaceOrderRequest;
 use App\Contracts\Billing\PaymentGateway;
 use App\Exceptions\PaymentFailedException;
+use App\Contracts\Actions\CreatesNewOrders;
 
 class SpaceOrderController extends Controller
 {
@@ -29,14 +30,15 @@ class SpaceOrderController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param \App\Http\Requests\PlaceOrderRequest $request
-     * @param \App\Models\Space                    $space
+     * @param \App\Http\Requests\PlaceOrderRequest    $request
+     * @param \App\Contracts\Actions\CreatesNewOrders $creator
+     * @param \App\Models\Space                       $space
      *
      * @return \Illuminate\Http\Response
      */
-    public function __invoke(PlaceOrderRequest $request, Space $space)
+    public function __invoke(PlaceOrderRequest $request, CreatesNewOrders $creator, Space $space)
     {
-        $order = $space->placeOrder($request->validated());
+        $order = $creator->create($space, $request->validated());
 
         try {
             $this->paymentGateway->charge($order, $this->generateToken($request));
