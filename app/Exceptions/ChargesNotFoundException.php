@@ -4,6 +4,6 @@ namespace App\Exceptions;
 
 use Exception;
 
-class ChargesNotFountException extends Exception
+class ChargesNotFoundException extends Exception
 {
 }

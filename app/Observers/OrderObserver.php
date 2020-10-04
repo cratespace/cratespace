@@ -6,7 +6,7 @@ use App\Models\Order;
 use App\Support\UidGenerator;
 use Illuminate\Support\Facades\Schema;
 use App\Events\OrderStatusUpdatedEvent;
-use App\Exceptions\ChargesNotFountException;
+use App\Exceptions\ChargesNotFoundException;
 
 class OrderObserver
 {
@@ -66,7 +66,7 @@ class OrderObserver
      */
     protected function setBusinessRelation(): OrderObserver
     {
-        if (!$this->attributeIsNull($this->order->user_id)) {
+        if (! $this->attributeIsNull($this->order->user_id)) {
             return $this;
         }
 
@@ -96,7 +96,7 @@ class OrderObserver
      */
     protected function generateConfirmationNumber(): OrderObserver
     {
-        if (!$this->attributeIsNull($this->order->confirmation_number)) {
+        if (! $this->attributeIsNull($this->order->confirmation_number)) {
             return $this;
         }
 
@@ -119,7 +119,7 @@ class OrderObserver
      */
     protected function calculateCharges(): OrderObserver
     {
-        if (!$this->attributeIsNull($this->order->total)) {
+        if (! $this->attributeIsNull($this->order->total)) {
             return $this;
         }
 
@@ -143,13 +143,13 @@ class OrderObserver
             return cache()->get('charges');
         }
 
-        throw new ChargesNotFountException('Charges have not been calculated');
+        throw new ChargesNotFoundException('Charges have not been calculated');
     }
 
     /**
      * Determine if given attribute is null.
      *
-     * @param \object|array|string|int $attribute
+     * @param mixed $attribute
      *
      * @return bool
      */
