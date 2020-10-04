@@ -41,7 +41,7 @@ trait PaymentGatewayContractTest
     {
         $space = create(Space::class, ['price' => 3250, 'tax' => 162.5]);
         $this->calculateCharges($space);
-        $order = $space->placeOrder($this->orderDetails());
+        $order = $this->createNewOrder($space);
 
         Event::fake();
 
@@ -66,7 +66,7 @@ trait PaymentGatewayContractTest
             'tax' => 162.5,
         ]);
         $this->calculateCharges($space);
-        $order = $space->placeOrder($this->orderDetails());
+        $order = $this->createNewOrder($space);
 
         $this->paymentGateway->charge($order, $this->paymentGateway->generateToken($this->getCardDetails()));
 
@@ -98,7 +98,7 @@ trait PaymentGatewayContractTest
             'tax' => 162.5,
         ]);
         $this->calculateCharges($space);
-        $order = $space->placeOrder($this->orderDetails());
+        $order = $this->createNewOrder($space);
 
         try {
             $this->paymentGateway->charge($order, 'invalid-payment-token');

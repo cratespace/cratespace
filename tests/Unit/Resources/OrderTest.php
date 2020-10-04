@@ -75,7 +75,7 @@ class OrderTest extends TestCase
             'tax' => 162.5,
         ]);
         $this->calculateCharges($space);
-        $order = $space->placeOrder($this->orderDetails());
+        $order = $this->createNewOrder($space);
         $chargeDetails = $order->saveChargeDetails([
             'amount' => $order->total,
             'card_last_four' => '4242',
@@ -105,7 +105,7 @@ class OrderTest extends TestCase
             'tax' => 162.5,
         ]);
         $this->calculateCharges($space);
-        $order = $space->placeOrder($this->orderDetails());
+        $order = $this->createNewOrder($space);
 
         return [$order, $space];
     }

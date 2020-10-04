@@ -117,9 +117,7 @@ class PurchaseSpaceTest extends TestCase
     public function customer_cannot_purchase_an_expired_or_ordered_space()
     {
         $expiredSpace = create(Space::class, ['departs_at' => Carbon::now()->subMonth()]);
-        $orderedSpace = create(Space::class);
-        $this->calculateCharges($orderedSpace);
-        $orderedSpace->placeOrder($this->orderDetails());
+        $orderedSpace = create(Space::class, ['reserved_at' => Carbon::now()->subDay()]);
 
         $response = $this->orderSpace($expiredSpace, $this->orderDetails([
             'payment_token' => $this->paymentGateway->generateToken($this->getCardDetails()),
