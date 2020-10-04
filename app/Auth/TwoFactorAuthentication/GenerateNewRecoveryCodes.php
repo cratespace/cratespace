@@ -3,6 +3,7 @@
 namespace App\Auth\TwoFactorAuthentication;
 
 use Illuminate\Support\Collection;
+use Facades\App\Auth\TwoFactorAuthentication\RecoveryCode;
 
 class GenerateNewRecoveryCodes
 {

@@ -3,16 +3,34 @@
 namespace App\Auth\TwoFactorAuthentication;
 
 use Illuminate\Support\Str;
+use App\Contracts\Support\Generator;
 
-class RecoveryCode
+class RecoveryCode implements Generator
 {
     /**
-     * Generate a new recovery code.
+     * Array of generator options.
      *
-     * @return string
+     * @var array
      */
-    public static function generate()
+    protected $options = [];
+
+    /**
+     * Generate a desired result.
+     *
+     * @return mixed
+     */
+    public function generate()
     {
         return Str::random(10) . '-' . Str::random(10);
+    }
+
+    /**
+     * Set generator options.
+     *
+     * @param array $options
+     */
+    public function setOptions(array $options = []): void
+    {
+        $this->options = $options;
     }
 }
