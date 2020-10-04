@@ -34,12 +34,15 @@ class ManageSpacesTest extends TestCase implements Postable
 
         Auth::logout();
 
+        $this->getJson($space->path)->assertStatus(401);
+
         $this->get($space->path)
             ->assertStatus(302)
             ->assertRedirect('/login');
 
         $this->signIn($user);
 
+        $this->getJson($space->path)->assertStatus(200);
         $this->get($space->path)->assertStatus(200);
     }
 

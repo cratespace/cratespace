@@ -40,10 +40,10 @@ class SpaceController extends Controller
      */
     public function show(Request $request, Space $space)
     {
-        $this->authorize('delete', $space);
+        $this->authorize('manage', $space);
 
         return $request->wantsJson()
-            ? $this->successJson($space->load(['order']), 200)
+            ? $this->successJson($space->load(['order'])->toArray(), 200)
             : view('business.spaces.show', [
                 'space' => $space,
                 'order' => $space->order ?: null,
