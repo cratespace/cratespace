@@ -20,8 +20,8 @@
 <!-- - Create space -->
 <!-- - Store space -->
 <!-- - Show space -->
-- Edit space
-- Update space
+<!-- - Edit space -->
+<!-- - Update space -->
 - Delete space
 - Order listing
 - Show order

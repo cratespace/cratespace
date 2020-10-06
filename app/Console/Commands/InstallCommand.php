@@ -60,7 +60,7 @@ class InstallCommand extends Command
      *
      * @return void
      */
-    protected function updateEnvironmentFile($updatedValues)
+    protected function updateEnvironmentFile(array $updatedValues): void
     {
         $envFile = $this->laravel->environmentFilePath();
 

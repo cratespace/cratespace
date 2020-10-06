@@ -7,6 +7,7 @@ Contains information about all end points and respective response of said endpoi
 ## Contents
 
 ### Public API
+
 - Space listings
 - Checkout
 - Place order
@@ -14,6 +15,7 @@ Contains information about all end points and respective response of said endpoi
 - Order confirmation
 
 ### Authentication API
+
 - Login
 - Register
 - Password reset request
@@ -22,6 +24,7 @@ Contains information about all end points and respective response of said endpoi
 - Two Factor Authentication recovery code
 
 ### Business API
+
 - Space listings
 - Create space
 - Store space
@@ -35,6 +38,7 @@ Contains information about all end points and respective response of said endpoi
 - Update order
 
 ### Business User API
+
 - Show profile
 - Edit profile details
     + Profile details
