@@ -2,6 +2,7 @@
 
 namespace App\Auth\Actions;
 
+use Throwable;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
 use App\Contracts\Auth\DeletesUsers;
@@ -17,14 +18,18 @@ class DeleteUser implements DeletesUsers
      */
     public function delete(User $user): void
     {
-        DB::transaction(function () use ($user) {
-            $this->deleteUserResources($user);
+        dispatch(function () use ($user) {
+            DB::transaction(function () use ($user) {
+                $this->deleteUserResources($user);
 
-            $this->deleteUserSupportThreads($user);
+                $this->deleteUserSupportThreads($user);
 
-            $this->deleteUserProfiles($user);
+                $this->deleteUserProfiles($user);
 
-            $user->delete();
+                $user->delete();
+            }, 2);
+        })->catch(function (Throwable $e) use ($user) {
+            app('log')->error($e->getMessage());
         });
     }
 
@@ -37,15 +42,13 @@ class DeleteUser implements DeletesUsers
      */
     protected function deleteUserResources(User $user): void
     {
-        DB::transaction(function () use ($user) {
-            $user->orders->each(function ($order) {
-                $order->charge()->delete();
-            });
-
-            $user->orders()->delete();
-
-            $user->spaces()->delete();
+        $user->orders->each(function ($order) {
+            $order->charge()->delete();
         });
+
+        $user->orders()->delete();
+
+        $user->spaces()->delete();
     }
 
     /**
@@ -57,10 +60,8 @@ class DeleteUser implements DeletesUsers
      */
     protected function deleteUserSupportThreads(User $user): void
     {
-        DB::transaction(function () use ($user) {
-            $user->tickets()->each(function ($ticket) {
-                $ticket->replies()->delete();
-            });
+        $user->tickets()->each(function ($ticket) {
+            $ticket->replies()->delete();
         });
     }
 
