@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Password;
 use App\Contracts\Auth\ResetsUserPasswords;
-use Illuminate\Foundation\Auth\RedirectsUsers;
+use App\Http\Requests\ResetPasswordRequest;
 use Illuminate\Validation\ValidationException;
 
 trait ResetsPasswords
@@ -25,26 +25,23 @@ trait ResetsPasswords
      */
     public function showResetForm(Request $request)
     {
-        $token = $request->route()->parameter('token');
-
-        return view('auth.passwords.reset')->with(
-            ['token' => $token, 'email' => $request->email]
-        );
+        return view('auth.passwords.reset', [
+            'token' => $request->route()->parameter('token'),
+            'email' => $request->email,
+        ]);
     }
 
     /**
      * Reset the given user's password.
      *
      * @param \App\Contracts\Auth\ResetsUserPasswords $resetor
-     * @param \Illuminate\Http\Request                $request
+     * @param \App\Http\Requests\ResetPasswordRequest $request
      *
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Http\JsonResponse
      */
-    public function reset(ResetsUserPasswords $resetor, Request $request)
+    public function reset(ResetsUserPasswords $resetor, ResetPasswordRequest $request)
     {
-        $request->validate($this->rules(), $this->validationErrorMessages());
-
-        $response = $this->broker()->reset(
+        $response = Password::broker()->reset(
             $this->credentials($request),
             function ($user, $password) use ($resetor) {
                 $resetor->reset($user, $password);
@@ -54,30 +51,6 @@ trait ResetsPasswords
         return $response == Password::PASSWORD_RESET
             ? $this->sendResetResponse($request, $response)
             : $this->sendResetFailedResponse($request, $response);
-    }
-
-    /**
-     * Get the password reset validation rules.
-     *
-     * @return array
-     */
-    protected function rules()
-    {
-        return [
-            'token' => 'required',
-            'email' => 'required|email',
-            'password' => 'required|confirmed|min:8',
-        ];
-    }
-
-    /**
-     * Get the password reset validation error messages.
-     *
-     * @return array
-     */
-    protected function validationErrorMessages()
-    {
-        return [];
     }
 
     /**
@@ -133,15 +106,5 @@ trait ResetsPasswords
         return redirect()->back()
             ->withInput($request->only('email'))
             ->withErrors(['email' => trans($response)]);
-    }
-
-    /**
-     * Get the broker to be used during password reset.
-     *
-     * @return \Illuminate\Contracts\Auth\PasswordBroker
-     */
-    public function broker()
-    {
-        return Password::broker();
     }
 }

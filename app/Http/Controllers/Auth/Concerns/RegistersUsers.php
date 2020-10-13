@@ -7,7 +7,6 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Auth\Events\Registered;
 use App\Contracts\Auth\CreatesNewUsers;
-use Illuminate\Foundation\Auth\RedirectsUsers;
 
 trait RegistersUsers
 {

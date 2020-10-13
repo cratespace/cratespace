@@ -43,7 +43,7 @@ jobs:
           npm install
           npm run production
 
-      - name: Boot Laravel application
+      - name: Boot application
         run: |
           cp .env.github .env
           php artisan key:generate
@@ -68,7 +68,7 @@ jobs:
       - name: Run tests
         env:
           STRIPE_SECRET_KEY: ${{ secrets.STRIPE_SECRET_KEY }}
-        run: ./vendor/bin/phpunit --version
+        run: ./vendor/bin/phpunit --verbose
 
       - name: Run security checks
         run: |

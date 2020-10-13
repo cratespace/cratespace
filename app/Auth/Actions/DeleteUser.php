@@ -19,18 +19,32 @@ class DeleteUser implements DeletesUsers
     public function delete(User $user): void
     {
         dispatch(function () use ($user) {
-            DB::transaction(function () use ($user) {
-                $this->deleteUserResources($user);
-
-                $this->deleteUserSupportThreads($user);
-
-                $this->deleteUserProfiles($user);
-
-                $user->delete();
-            }, 2);
+            $this->executeDeletionProcess($user);
         })->catch(function (Throwable $e) use ($user) {
-            app('log')->error($e->getMessage());
+            app('log')->error($e->getMessage(), [
+                'user' => $user,
+            ]);
         });
+    }
+
+    /**
+     * Perform user entity deletion process.
+     *
+     * @param \App\Models\User $user
+     *
+     * @return void
+     */
+    protected function executeDeletionProcess(User $user): void
+    {
+        DB::transaction(function () use ($user) {
+            $this->deleteUserResources($user);
+
+            $this->deleteUserSupportThreads($user);
+
+            $this->deleteUserProfiles($user);
+
+            $user->delete();
+        }, 2);
     }
 
     /**
