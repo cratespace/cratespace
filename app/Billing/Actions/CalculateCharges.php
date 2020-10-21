@@ -27,6 +27,8 @@ class CalculateCharges implements CalculatesCharges
      * Create new instance of charges calculator.
      *
      * @param \App\Contracts\Support\Calculator $calculator
+     *
+     * @return void
      */
     public function __construct(Calculator $calculator)
     {

@@ -36,7 +36,7 @@ class CreateNewOrder implements CreatesNewOrders
     /**
      * Generate a unique confirmation number.
      *
-     * @return \string
+     * @return string
      */
     protected function generateConfirmationNumber(): string
     {

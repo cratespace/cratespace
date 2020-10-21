@@ -45,6 +45,8 @@ class Calculator implements CalculatorContract
 
     /**
      * Create new instance of charges calculator.
+     *
+     * @return void
      */
     public function __construct()
     {
@@ -68,7 +70,7 @@ class Calculator implements CalculatorContract
     /**
      * Perform calculations.
      *
-     * @return \\App\Contracts\Support\Calculator
+     * @return \App\Contracts\Support\Calculator
      */
     public function calculate(): CalculatorContract
     {
@@ -96,7 +98,7 @@ class Calculator implements CalculatorContract
         if (! $service instanceof Calculation) {
             $service = class_basename($service);
 
-            throw new RuntimeException("Class {$service} is not a valid charge calculations service");
+            throw new RuntimeException("Class [$service] is not a valid charge calculations service");
         }
 
         return $service;
