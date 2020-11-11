@@ -22,6 +22,10 @@ class StripePaymentGatewayTest extends TestCase
      */
     protected function getPaymentGateway()
     {
+        if (! env('STRIPE_SECRET_KEY')) {
+            $this->markTestSkipped('Stripe secret key not set.');
+        }
+
         $this->paymentGateway = new StripePaymentGateway(env('STRIPE_SECRET_KEY'));
         $this->app->instance(PaymentGateway::class, $this->paymentGateway);
     }
