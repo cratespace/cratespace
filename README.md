@@ -29,7 +29,7 @@ Clone the repository to get started. If you do not have the required permissions
 git clone git@github.com:cratespace/cratespace.git
 
 # Install dependencies.
-cd cratespace && composer install && npm install && npm run dev
+cd cratespace && bash bin/setup
 
 # Install application.
 php artisan cs:install
