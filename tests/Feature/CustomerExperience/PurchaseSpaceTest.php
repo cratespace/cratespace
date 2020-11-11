@@ -71,7 +71,7 @@ class PurchaseSpaceTest extends TestCase
             'payment_token' => $this->paymentGateway->generateToken($this->getCardDetails()),
         ]);
 
-        $this->assertValidationError($response, 'email');
+        $response->assertStatus(422)->assertSessionMissing('email');
     }
 
     /** @test */
@@ -84,7 +84,7 @@ class PurchaseSpaceTest extends TestCase
             'payment_token' => $this->paymentGateway->generateToken($this->getCardDetails()),
         ]));
 
-        $this->assertValidationError($response, 'email');
+        $response->assertStatus(422)->assertSessionMissing('email');
     }
 
     /** @test */
@@ -96,7 +96,7 @@ class PurchaseSpaceTest extends TestCase
             'payment_token' => 'invalid-payment-token',
         ]));
 
-        $this->assertValidationError($response, 'payment_token');
+        $response->assertStatus(422)->assertSessionMissing('payment_token');
     }
 
     /** @test */

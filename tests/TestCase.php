@@ -2,7 +2,6 @@
 
 namespace Tests;
 
-use Illuminate\Testing\TestResponse;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -33,18 +32,5 @@ abstract class TestCase extends BaseTestCase
         Schema::enableForeignKeyConstraints();
 
         $this->registerMacros();
-    }
-
-    /**
-     * Assert that a validation exception is thrown.
-     *
-     * @param \Illuminate\Testing\TestResponse $response
-     * @param string                           $key
-     *
-     * @return \Illuminate\Testing\TestResponse
-     */
-    public function assertValidationError(TestResponse $response, string $key)
-    {
-        return $response->assertStatus(422)->assertSessionMissing($key);
     }
 }
