@@ -4,7 +4,7 @@ on:
   push:
   pull_request:
   schedule:
-    - cron: '0 0 * * *'
+    - cron: '0 0 * * sun'
 
 jobs:
   linux_tests:
@@ -60,6 +60,7 @@ jobs:
       - name: Execute tests
         run: vendor/bin/phpunit --verbose
         env:
+          STRIPE_SECRET_KEY: ${{ secrets.STRIPE_SECRET_KEY }}
           DB_PORT: ${{ job.services.mysql.ports[3306] }}
           DB_USERNAME: root
 
@@ -101,4 +102,6 @@ jobs:
           command: composer update --${{ matrix.stability }} --prefer-dist --no-interaction --no-progress
 
       - name: Execute tests
+        env:
+          STRIPE_SECRET_KEY: ${{ secrets.STRIPE_SECRET_KEY }}
         run: vendor/bin/phpunit --verbose
