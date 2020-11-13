@@ -81,17 +81,29 @@ class Space extends Model implements Priceable
     }
 
     /**
+     * Reserve space for order.
+     *
+     * @return void
+     */
+    public function reserve(): void
+    {
+        $this->update(['reserved_at' => now()]);
+    }
+
+    /**
      * Release space from order.
      *
-     * @return bool|null
+     * @return void
      */
-    public function release(): ?bool
+    public function release(): void
     {
-        if ($this->order()->exists()) {
-            $this->order->delete();
+        if (! $this->order()->exists()) {
+            return;
         }
 
-        return $this->update(['reserved_at' => null]);
+        $this->order->delete();
+
+        $this->update(['reserved_at' => null]);
     }
 
     /**

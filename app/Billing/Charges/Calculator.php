@@ -77,7 +77,7 @@ class Calculator implements CalculatorContract
         (new Pipeline(app()))->send($this->resourceCharges())
             ->through($this->calculations)
             ->via('handle')
-            ->then(function ($amounts) {
+            ->then(function (array $amounts) {
                 $this->saveAmountsToCache($this->amounts = $amounts);
             });
 
@@ -131,7 +131,7 @@ class Calculator implements CalculatorContract
      *
      * @return \App\Contracts\Models\Priceable
      */
-    public function resource()
+    public function resource(): Priceable
     {
         return $this->resource;
     }

@@ -24,7 +24,7 @@ class CreateNewOrder implements CreatesNewOrders
         abort_unless($space->isAvailable(), 422);
 
         return DB::transaction(function () use ($space, $data) {
-            $space->update(['reserved_at' => now()]);
+            $space->reserve();
 
             return $space->order()->create(array_merge($data, [
                 'user_id' => $space->user_id,

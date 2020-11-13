@@ -23,8 +23,30 @@ jobs:
           - 33306:3306
         options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
 
+    strategy:
+        fail-fast: true
+        matrix:
+          php: [7.4, 8.0]
+          stability: [prefer-lowest, prefer-stable]
+
+    name: PHP ${{ matrix.php }} - ${{ matrix.stability }}
+
     steps:
       - uses: actions/checkout@v2.3.3
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite, gd, fileinfo, gmp, intl, json, openssl
+          tools: composer:v2
+          coverage: none
+
+      - name: Setup Memcached
+        uses: niden/actions-memcached@v7
+
+      - name: Setup problem matchers
+        run: echo "::add-matcher::${{ runner.tool_cache }}/phpunit.json"
 
       - name: Verify MySQL connection
         run: |
