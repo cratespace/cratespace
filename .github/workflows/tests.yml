@@ -1,4 +1,4 @@
-name: Unit & Integration Tests
+name: Integration Tests
 
 on:
   push:
@@ -7,101 +7,88 @@ on:
     - cron: '0 0 * * sun'
 
 jobs:
-  linux_tests:
-
+  tests:
+    name: Run Cratespace Integration Tests
     runs-on: ubuntu-latest
+
     services:
       mysql:
         image: mysql:5.7
         env:
-          MYSQL_ALLOW_EMPTY_PASSWORD: yes
-          MYSQL_DATABASE: forge
+          MYSQL_DATABASE: database_ci
+          MYSQL_USER: user
+          MYSQL_PASSWORD: secret
+          MYSQL_ROOT_PASSWORD: secretroot
         ports:
           - 33306:3306
         options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
-      redis:
-        image: redis:5.0
-        ports:
-          - 6379:6379
-        options: --entrypoint redis-server
-    strategy:
-      fail-fast: true
-      matrix:
-        php: [7.4, 8.0]
-        stability: [prefer-lowest, prefer-stable]
-
-    name: PHP ${{ matrix.php }} - ${{ matrix.stability }}
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
+      - uses: actions/checkout@v2.3.3
 
-      - name: Setup PHP
+      - name: Setup PHP with pecl extension
         uses: shivammathur/setup-php@v2
         with:
-          php-version: ${{ matrix.php }}
-          extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite, gd
-          tools: composer:v2
-          coverage: none
+          php-version: '7.4'
+          tools: pecl
+          extensions: swoole, fileinfo, gmp, intl, json, mbstring, openssl, dom, curl, libxml, zip, pcntl, pdo, sqlite, pdo_sqlite, gd
 
-      - name: Setup Memcached
-        uses: niden/actions-memcached@v7
-
-      - name: Setup problem matchers
-        run: echo "::add-matcher::${{ runner.tool_cache }}/phpunit.json"
-
-      - name: Install dependencies
-        uses: nick-invision/retry@v1
-        with:
-          timeout_minutes: 5
-          max_attempts: 5
-          command: composer update --${{ matrix.stability }} --prefer-dist --no-interaction --no-progress
-
-      - name: Execute tests
-        run: vendor/bin/phpunit --verbose
-        env:
-          STRIPE_SECRET_KEY: ${{ secrets.STRIPE_SECRET_KEY }}
-          DB_PORT: ${{ job.services.mysql.ports[3306] }}
-          DB_USERNAME: root
-
-  windows_tests:
-
-    runs-on: windows-latest
-    strategy:
-      fail-fast: true
-      matrix:
-        php: [7.4, 8.0]
-        stability: [prefer-lowest, prefer-stable]
-
-    name: PHP ${{ matrix.php }} - ${{ matrix.stability }} - Windows
-
-    steps:
-      - name: Set git to use LF
+      - name: Verify MySQL connection
         run: |
-          git config --global core.autocrlf false
-          git config --global core.eol lf
-      - name: Checkout code
-        uses: actions/checkout@v2
+          mysql --version
+          sudo apt-get install -y mysql-client
+          mysql --host 127.0.0.1 --port ${{ job.services.mysql.ports['3306'] }} -uuser -psecret -e "SHOW DATABASES"
 
-      - name: Setup PHP
-        uses: shivammathur/setup-php@v2
+      - name: Cache composer dependencies
+        uses: actions/cache@v2.1.1
         with:
-          php-version: ${{ matrix.php }}
-          extensions: dom, curl, libxml, mbstring, zip, pdo, sqlite, pdo_sqlite, gd, pdo_mysql, fileinfo, ftp
-          tools: composer:v2
-          coverage: none
-
-      - name: Setup problem matchers
-        run: echo "::add-matcher::${{ runner.tool_cache }}/phpunit.json"
+          path: vendor
+          key: composer-${{ hashFiles('composer.lock') }}
 
       - name: Install dependencies
-        uses: nick-invision/retry@v1
-        with:
-          timeout_minutes: 5
-          max_attempts: 5
-          command: composer update --${{ matrix.stability }} --prefer-dist --no-interaction --no-progress
+        run: |
+          php --version
+          composer install --no-progress --no-suggest --prefer-dist --optimize-autoloader
+          npm install
+          npm run production
 
-      - name: Execute tests
+      - name: Boot application
+        run: |
+          cp .env.github .env
+          php artisan key:generate
+          php artisan --version
+
+      - name: Migrate database
+        run: |
+          mysql --version
+          php artisan migrate:fresh --seed
+
+      - name: Cache yarn dependencies
+        uses: actions/cache@v2.1.1
+        with:
+          path: node_modules
+          key: yarn-${{ hashFiles('yarn.lock') }}
+
+      - name: Run yarn
+        run: |
+          yarn --version
+          yarn && yarn dev
+
+      - name: Run tests
         env:
           STRIPE_SECRET_KEY: ${{ secrets.STRIPE_SECRET_KEY }}
-        run: vendor/bin/phpunit --verbose
+        run: ./vendor/bin/phpunit --verbose
+
+      - name: Run security checks
+        run: |
+          test -d security-checker || git clone https://github.com/sensiolabs/security-checker.git
+          cd security-checker
+          composer install
+          php security-checker security:check ../composer.lock
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@master
+        if: failure()
+        with:
+          name: Logs
+          path: ./storage/logs
