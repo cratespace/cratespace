@@ -30,8 +30,9 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: '7.4'
-          tools: pecl
+          tools: pecl, php-cs-fixer, phpunit, composer:v2
           extensions: swoole, fileinfo, gmp, intl, json, mbstring, openssl, dom, curl, libxml, zip, pcntl, pdo, sqlite, pdo_sqlite, gd
+          coverage: pcov
 
       - name: Verify MySQL connection
         run: |
