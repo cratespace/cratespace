@@ -39,9 +39,13 @@
 
             <hr class="my-6">
 
-            @include('auth.users.sections._sessions', ['sessions' => $sessions])
+            @if (config('session.driver') === 'database')
 
-            <hr class="my-6">
+                @include('auth.users.sections._sessions', ['sessions' => $sessions])
+
+                <hr class="my-6">
+
+            @endif
 
             @include('auth.users.sections._security', ['user' => $user])
         </div>

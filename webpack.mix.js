@@ -1,5 +1,4 @@
 const mix = require('laravel-mix');
-const tailwindcss = require('tailwindcss');
 
 mix.js('resources/js/app.js', 'public/js')
   .sourceMaps()
@@ -7,7 +6,7 @@ mix.js('resources/js/app.js', 'public/js')
   .sourceMaps()
   .options({
     processCssUrls: false,
-    postCss: [tailwindcss()],
+    postCss: [require('tailwindcss')],
   })
   .browserSync('cratespace.test')
   .version();

@@ -12,30 +12,30 @@
     "devDependencies": {
         "@tailwindcss/custom-forms": "^0.2.1",
         "@tailwindcss/typography": "^0.2.0",
-        "apexcharts": "^3.22.0",
+        "apexcharts": "^3.22.2",
         "axios": "^0.19",
-        "bootstrap": "^4.5.0",
-        "browser-sync": "^2.26.10",
+        "bootstrap": "^4.5.3",
+        "browser-sync": "^2.26.13",
         "browser-sync-webpack-plugin": "^2.2.2",
         "cross-env": "^7.0",
         "flatpickr": "^4.6.6",
-        "hashids": "^2.2.1",
+        "hashids": "^2.2.2",
         "jquery": "^3.2",
-        "laravel-mix": "^5.0.5",
+        "laravel-mix": "^5.0.9",
         "lodash": "^4.17.20",
         "moment": "^2.29.1",
         "popper.js": "^1.16.1",
-        "resolve-url-loader": "^2.3.1",
-        "sass": "^1.26.12",
+        "resolve-url-loader": "^3.1.2",
+        "sass": "^1.29.0",
         "sass-loader": "^8.0.0",
-        "tailwindcss": "^1.8.11",
+        "tailwindcss": "^1.9.6",
         "vue": "^2.6.12",
         "vue-apexcharts": "^1.6.0",
         "vue-stripe-elements-plus": "^0.3.0",
         "vue-template-compiler": "^2.6.12"
     },
     "dependencies": {
-        "laravel-echo": "^1.8.1",
-        "pusher-js": "^7.0.0"
+        "laravel-echo": "^1.9.0",
+        "pusher-js": "^7.0.1"
     }
 }
