@@ -3,6 +3,8 @@ name: Integration Tests
 on:
   push:
   pull_request:
+  schedule:
+    - cron: '0 0 * * sun'
 
 jobs:
   tests:
@@ -24,6 +26,14 @@ jobs:
     steps:
       - uses: actions/checkout@v2.3.3
 
+      - name: Setup PHP with pecl extension
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '7.4'
+          tools: pecl, php-cs-fixer, phpunit, composer:v2
+          extensions: swoole, fileinfo, gmp, intl, json, mbstring, openssl, dom, curl, libxml, zip, pcntl, pdo, sqlite, pdo_sqlite, gd
+          coverage: pcov
+
       - name: Verify MySQL connection
         run: |
           mysql --version
@@ -43,7 +53,7 @@ jobs:
           npm install
           npm run production
 
-      - name: Boot Laravel application
+      - name: Boot application
         run: |
           cp .env.github .env
           php artisan key:generate
@@ -68,7 +78,7 @@ jobs:
       - name: Run tests
         env:
           STRIPE_SECRET_KEY: ${{ secrets.STRIPE_SECRET_KEY }}
-        run: ./vendor/bin/phpunit --version
+        run: ./vendor/bin/phpunit --verbose
 
       - name: Run security checks
         run: |

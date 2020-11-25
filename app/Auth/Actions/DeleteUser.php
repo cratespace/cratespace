@@ -2,6 +2,7 @@
 
 namespace App\Auth\Actions;
 
+use Throwable;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
 use App\Contracts\Auth\DeletesUsers;
@@ -17,6 +18,24 @@ class DeleteUser implements DeletesUsers
      */
     public function delete(User $user): void
     {
+        dispatch(function () use ($user) {
+            $this->executeDeletionProcess($user);
+        })->catch(function (Throwable $e) use ($user) {
+            app('log')->error($e->getMessage(), [
+                'user' => $user,
+            ]);
+        });
+    }
+
+    /**
+     * Perform user entity deletion process.
+     *
+     * @param \App\Models\User $user
+     *
+     * @return void
+     */
+    protected function executeDeletionProcess(User $user): void
+    {
         DB::transaction(function () use ($user) {
             $this->deleteUserResources($user);
 
@@ -25,7 +44,7 @@ class DeleteUser implements DeletesUsers
             $this->deleteUserProfiles($user);
 
             $user->delete();
-        });
+        }, 2);
     }
 
     /**
@@ -37,15 +56,13 @@ class DeleteUser implements DeletesUsers
      */
     protected function deleteUserResources(User $user): void
     {
-        DB::transaction(function () use ($user) {
-            $user->orders->each(function ($order) {
-                $order->charge()->delete();
-            });
-
-            $user->orders()->delete();
-
-            $user->spaces()->delete();
+        $user->orders->each(function ($order) {
+            $order->charge()->delete();
         });
+
+        $user->orders()->delete();
+
+        $user->spaces()->delete();
     }
 
     /**
@@ -57,10 +74,8 @@ class DeleteUser implements DeletesUsers
      */
     protected function deleteUserSupportThreads(User $user): void
     {
-        DB::transaction(function () use ($user) {
-            $user->tickets()->each(function ($ticket) {
-                $ticket->replies()->delete();
-            });
+        $user->tickets()->each(function ($ticket) {
+            $ticket->replies()->delete();
         });
     }
 

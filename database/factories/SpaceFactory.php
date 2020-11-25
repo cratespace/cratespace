@@ -4,6 +4,7 @@
 
 use App\Models\User;
 use App\Models\Space;
+use App\Models\Account;
 use App\Models\Business;
 use Illuminate\Support\Str;
 use Faker\Generator as Faker;
@@ -14,6 +15,10 @@ $factory->define(Space::class, function (Faker $faker) {
     $business = create(Business::class, [
         'user_id' => $user->id,
         'country' => 'Sri Lanka',
+    ]);
+
+    create(Account::class, [
+        'user_id' => $user->id,
     ]);
 
     $price = rand(100, 900);

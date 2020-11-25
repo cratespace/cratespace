@@ -10,9 +10,9 @@ interface ResetsUserPasswords
      * Validate and reset the user's forgotten password.
      *
      * @param \App\Models\User $user
-     * @param array            $data
+     * @param string           $password
      *
      * @return void
      */
-    public function reset(User $user, array $data): void;
+    public function reset(User $user, string $password): void;
 }

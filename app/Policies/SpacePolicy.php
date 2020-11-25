@@ -33,7 +33,7 @@ class SpacePolicy
      */
     public function delete(User $user, Space $space)
     {
-        return ($user->is($space->user) && !$space->hasOrder()) ||
+        return ($user->is($space->user) && ! $space->hasOrder()) ||
             $user->hasRole('admin');
     }
 }

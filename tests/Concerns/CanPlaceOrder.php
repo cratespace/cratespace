@@ -3,9 +3,40 @@
 namespace Tests\Concerns;
 
 use App\Models\Space;
+use App\Actions\CreateNewOrder;
+use App\Contracts\Actions\CreatesNewOrders;
 
 trait CanPlaceOrder
 {
+    /**
+     * Create new order.
+     *
+     * @param \App\Models\Space $space
+     * @param array|null        $data
+     *
+     * @return \App\Models\Order
+     */
+    protected function createNewOrder(Space $space, ?array $data = null)
+    {
+        $data = $data ?? $this->orderDetails($this->getCardDetails());
+
+        return $this->orderCreator()->create($space, $data);
+    }
+
+    /**
+     * Get instance of order creator action class.
+     *
+     * @return \App\Contracts\Actions\CreatesNewOrders
+     */
+    protected function orderCreator(): CreatesNewOrders
+    {
+        if (app()->bound(CreatesNewOrders::class)) {
+            return app()->make(CreateNewOrder::class);
+        }
+
+        return app()->make(CreateNewOrder::class);
+    }
+
     /**
      * Fake a JSON post request to purchase/order a space.
      *

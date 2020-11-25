@@ -50,7 +50,7 @@ class FakePaymentGatewayTest extends TestCase
         $paymentGateway->beforeFirstCharge(function ($paymentGateway) use (&$timesCallbackRan, $space) {
             try {
                 $this->calculateCharges($space);
-                $firstOrder = $space->placeOrder($this->orderDetails());
+                $firstOrder = $this->createNewOrder($space);
                 $paymentGateway->charge($firstOrder, $paymentGateway->generateToken($this->getCardDetails()));
             } catch (HttpException $e) {
                 ++$timesCallbackRan;
@@ -61,7 +61,7 @@ class FakePaymentGatewayTest extends TestCase
         });
 
         $this->calculateCharges($space);
-        $secondOrder = $space->placeOrder($this->orderDetails());
+        $secondOrder = $this->createNewOrder($space);
         $paymentGateway->charge($secondOrder, $paymentGateway->generateToken($this->getCardDetails()));
         $this->assertEquals(1, $timesCallbackRan);
         $this->assertEquals($secondOrder->total, $paymentGateway->total());

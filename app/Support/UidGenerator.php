@@ -58,7 +58,10 @@ class UidGenerator implements Generator
      */
     public function orderConfirmationNumber(): string
     {
-        return substr(str_shuffle(str_repeat($this->characterPool, self::CHARACTER_LENGTH)), 0, self::CHARACTER_LENGTH);
+        return substr(str_shuffle(str_repeat(
+            $this->characterPool,
+            self::CHARACTER_LENGTH
+        )), 0, self::CHARACTER_LENGTH);
     }
 
     /**

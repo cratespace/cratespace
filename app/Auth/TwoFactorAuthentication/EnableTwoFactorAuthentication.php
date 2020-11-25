@@ -4,6 +4,7 @@ namespace App\Auth\TwoFactorAuthentication;
 
 use Illuminate\Support\Collection;
 use App\Contracts\Auth\TwoFactorAuthenticationProvider;
+use Facades\App\Auth\TwoFactorAuthentication\RecoveryCode;
 
 class EnableTwoFactorAuthentication
 {

@@ -45,6 +45,8 @@ class Calculator implements CalculatorContract
 
     /**
      * Create new instance of charges calculator.
+     *
+     * @return void
      */
     public function __construct()
     {
@@ -68,14 +70,14 @@ class Calculator implements CalculatorContract
     /**
      * Perform calculations.
      *
-     * @return \\App\Contracts\Support\Calculator
+     * @return \App\Contracts\Support\Calculator
      */
     public function calculate(): CalculatorContract
     {
         (new Pipeline(app()))->send($this->resourceCharges())
             ->through($this->calculations)
             ->via('handle')
-            ->then(function ($amounts) {
+            ->then(function (array $amounts) {
                 $this->saveAmountsToCache($this->amounts = $amounts);
             });
 
@@ -96,7 +98,7 @@ class Calculator implements CalculatorContract
         if (! $service instanceof Calculation) {
             $service = class_basename($service);
 
-            throw new RuntimeException("Class {$service} is not a valid charge calculations service");
+            throw new RuntimeException("Class [$service] is not a valid charge calculations service");
         }
 
         return $service;
@@ -129,7 +131,7 @@ class Calculator implements CalculatorContract
      *
      * @return \App\Contracts\Models\Priceable
      */
-    public function resource()
+    public function resource(): Priceable
     {
         return $this->resource;
     }

@@ -2,14 +2,11 @@
 
 namespace App\Http\Controllers\Auth\Concerns;
 
-use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Password;
-use Illuminate\Auth\Events\PasswordReset;
-use Illuminate\Foundation\Auth\RedirectsUsers;
+use App\Contracts\Auth\ResetsUserPasswords;
+use App\Http\Requests\ResetPasswordRequest;
 use Illuminate\Validation\ValidationException;
 
 trait ResetsPasswords
@@ -28,35 +25,32 @@ trait ResetsPasswords
      */
     public function showResetForm(Request $request)
     {
-        $token = $request->route()->parameter('token');
+        return view('auth.passwords.reset', [
+            'token' => $request->route()->parameter('token'),
+            'email' => $request->email,
+        ]);
+    }
 
-        return view('auth.passwords.reset')->with(
-            ['token' => $token, 'email' => $request->email]
+    /**
+     * Reset the given user's password.
+     *
+     * @param \App\Contracts\Auth\ResetsUserPasswords $resetor
+     * @param \App\Http\Requests\ResetPasswordRequest $request
+     *
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Http\JsonResponse
+     */
+    public function reset(ResetsUserPasswords $resetor, ResetPasswordRequest $request)
+    {
+        $response = Password::broker()->reset(
+            $this->credentials($request),
+            function ($user, $password) use ($resetor) {
+                $resetor->reset($user, $password);
+            }
         );
-    }
 
-    /**
-     * Get the password reset validation rules.
-     *
-     * @return array
-     */
-    protected function rules()
-    {
-        return [
-            'token' => 'required',
-            'email' => 'required|email',
-            'password' => 'required|confirmed|min:8',
-        ];
-    }
-
-    /**
-     * Get the password reset validation error messages.
-     *
-     * @return array
-     */
-    protected function validationErrorMessages()
-    {
-        return [];
+        return $response == Password::PASSWORD_RESET
+            ? $this->sendResetResponse($request, $response)
+            : $this->sendResetFailedResponse($request, $response);
     }
 
     /**
@@ -74,40 +68,6 @@ trait ResetsPasswords
             'password_confirmation',
             'token'
         );
-    }
-
-    /**
-     * Reset the given user's password.
-     *
-     * @param \Illuminate\Contracts\Auth\CanResetPassword $user
-     * @param string                                      $password
-     *
-     * @return void
-     */
-    protected function resetPassword($user, $password)
-    {
-        $this->setUserPassword($user, $password);
-
-        $user->setRememberToken(Str::random(60));
-
-        $user->save();
-
-        event(new PasswordReset($user));
-
-        $this->guard()->login($user);
-    }
-
-    /**
-     * Set the user's password.
-     *
-     * @param \Illuminate\Contracts\Auth\CanResetPassword $user
-     * @param string                                      $password
-     *
-     * @return void
-     */
-    protected function setUserPassword($user, $password)
-    {
-        $user->password = Hash::make($password);
     }
 
     /**
@@ -146,25 +106,5 @@ trait ResetsPasswords
         return redirect()->back()
             ->withInput($request->only('email'))
             ->withErrors(['email' => trans($response)]);
-    }
-
-    /**
-     * Get the broker to be used during password reset.
-     *
-     * @return \Illuminate\Contracts\Auth\PasswordBroker
-     */
-    public function broker()
-    {
-        return Password::broker();
-    }
-
-    /**
-     * Get the guard to be used during password reset.
-     *
-     * @return \Illuminate\Contracts\Auth\StatefulGuard
-     */
-    protected function guard()
-    {
-        return Auth::guard();
     }
 }

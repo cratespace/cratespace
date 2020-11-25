@@ -29,7 +29,7 @@ Clone the repository to get started. If you do not have the required permissions
 git clone git@github.com:cratespace/cratespace.git
 
 # Install dependencies.
-cd cratespace && composer install && npm install && npm run dev
+cd cratespace && bash bin/setup
 
 # Install application.
 php artisan cs:install
@@ -52,7 +52,7 @@ Cratespace Test Suite uses network connection to run some tests.
 git clone git@github.com:cratespace/cratespace.git
 
 # Install and compile dependencies.
-cd cratespace && composer install && npm install && npm run dev
+cd cratespace && bash bin/setup
 
 # Run automated installation process.
 php artisan cs:install

@@ -10,7 +10,6 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Contracts\Auth\StatefulGuard;
 use App\Http\Middleware\AttemptToAuthenticate;
 use Illuminate\Contracts\Auth\Authenticatable;
-use Illuminate\Foundation\Auth\RedirectsUsers;
 use Symfony\Component\HttpFoundation\Response;
 use App\Http\Middleware\EnsureLoginIsNotThrottled;
 use App\Http\Middleware\PrepareAuthenticatedSession;

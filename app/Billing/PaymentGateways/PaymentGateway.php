@@ -7,6 +7,7 @@ use App\Models\Order;
 use App\Models\Charge;
 use App\Events\OrderPlacedEvent;
 use App\Events\SuccessfullyChargedEvent;
+use App\Exceptions\PaymentFailedException;
 use App\Billing\PaymentGateways\Validators\CardValidator;
 use App\Billing\PaymentGateways\Validators\FormatValidator;
 use App\Billing\PaymentGateways\Validators\TokenExistenceValidator;
@@ -160,7 +161,7 @@ abstract class PaymentGateway
                 $validator = app()->make($validator);
             }
 
-            if (!$validator->validate($token, ['gateway' => $this])) {
+            if (! $validator->validate($token, ['gateway' => $this])) {
                 return false;
             }
         }
@@ -184,5 +185,30 @@ abstract class PaymentGateway
             CardValidator::class,
             TokenExistenceValidator::class,
         ];
+    }
+
+    /**
+     * Get default configurations of billing operations.
+     *
+     * @return array
+     */
+    protected function getBillingConfigurations(): array
+    {
+        return config('defaults.billing');
+    }
+
+    /**
+     * Throw payment failed exception.
+     *
+     * @param string|null $message
+     * @param int|null    $amount
+     *
+     * @return void
+     *
+     * @throws \App\Exceptions\PaymentFailedException
+     */
+    protected function handlePaymentFailure(?string $message = null, ?int $amount = null): void
+    {
+        throw new PaymentFailedException($message, $amount);
     }
 }

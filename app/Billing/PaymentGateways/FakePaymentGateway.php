@@ -6,7 +6,6 @@ use App\Models\Order;
 use InvalidArgumentException;
 use App\Billing\Charges\Charge;
 use Illuminate\Support\Facades\Crypt;
-use App\Exceptions\PaymentFailedException;
 use App\Contracts\Billing\PaymentGateway as PaymentGatewayContract;
 
 class FakePaymentGateway extends PaymentGateway implements PaymentGatewayContract
@@ -40,8 +39,8 @@ class FakePaymentGateway extends PaymentGateway implements PaymentGatewayContrac
     {
         $this->runBeforeChargesCallback();
 
-        if (!$this->matches($paymentToken)) {
-            throw new PaymentFailedException("Token {$paymentToken} is invalid", $order->total);
+        if (! $this->matches($paymentToken)) {
+            $this->handlePaymentFailure("Token {$paymentToken} is invalid", $order->total);
         }
 
         $this->total = $order->total;

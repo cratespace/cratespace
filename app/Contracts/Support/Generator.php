@@ -7,7 +7,7 @@ interface Generator
     /**
      * Generate a desired result.
      *
-     * @return \object|string|array|int
+     * @return mixed
      */
     public function generate();
 

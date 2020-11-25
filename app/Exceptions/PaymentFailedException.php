@@ -17,9 +17,9 @@ class PaymentFailedException extends HttpException
      * Create new instance of payment failed exception.
      *
      * @param string|null $message
-     * @param int         $amount
+     * @param int|null    $amount
      */
-    public function __construct(?string $message = null, int $amount)
+    public function __construct(?string $message = null, ?int $amount = null)
     {
         $this->amount = $amount;
 
@@ -44,9 +44,9 @@ class PaymentFailedException extends HttpException
     /**
      * Get total amount charged by payment gateway.
      *
-     * @return int
+     * @return int|null
      */
-    public function chargedAmount(): int
+    public function chargedAmount(): ?int
     {
         return $this->amount;
     }

@@ -13,7 +13,7 @@ class ChargeTest extends TestCase
     {
         $space = create(Space::class);
         $this->calculateCharges($space);
-        $order = $space->placeOrder($this->orderDetails());
+        $order = $this->createNewOrder($space);
         $charge = $order->charge()->create([
             'amount' => $order->total,
             'card_last_four' => '4242',
