@@ -1,33 +1,18 @@
 <?php
 
-if (! app()->isProduction()) {
-    /**
-     * Public Routes...
-     */
-    require 'web/tests.php';
-}
+use Illuminate\Support\Facades\Route;
 
 /*
- * Public Routes...
- */
-require 'web/public.php';
+|--------------------------------------------------------------------------
+| Web Routes
+|--------------------------------------------------------------------------
+|
+| Here is where you can register web routes for your application. These
+| routes are loaded by the RouteServiceProvider within a group which
+| contains the "web" middleware group. Now create something great!
+|
+*/
 
-/*
- * Authentication Routes...
- */
-require 'web/auth.php';
-
-/*
- * Business Customer Routes...
- */
-require 'web/business.php';
-
-/*
- * Customer Support Routes...
- */
-require 'web/support.php';
-
-/*
- * User Routes...
- */
-require 'web/user.php';
+Route::get('/', function () {
+    return view('welcome');
+});

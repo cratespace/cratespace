@@ -2,33 +2,14 @@
 
 namespace App\Models;
 
-use App\Models\Traits\Indexable;
-use App\Models\Casts\SettingsCast;
-use App\Models\Traits\Presentable;
-use App\Models\Traits\Redirectable;
-use App\Models\Traits\HasProfilePhoto;
-use App\Models\Concerns\ManagesSessions;
-use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
-use App\Models\Concerns\ManagesRolesAndAbilities;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
 
-class User extends Authenticatable implements MustVerifyEmail
+class User extends Authenticatable
 {
-    use Notifiable;
-    use HasProfilePhoto;
-    use ManagesRolesAndAbilities;
-    use Presentable;
-    use Indexable;
-    use Redirectable;
-    use ManagesSessions;
-
-    /**
-     * Preferred route key name.
-     *
-     * @var string
-     */
-    protected static $routeKey = 'username';
+    use HasFactory, Notifiable;
 
     /**
      * The attributes that are mass assignable.
@@ -38,13 +19,7 @@ class User extends Authenticatable implements MustVerifyEmail
     protected $fillable = [
         'name',
         'email',
-        'phone',
         'password',
-        'username',
-        'settings',
-        'profile_photo_path',
-        'two_factor_secret',
-        'two_factor_recovery_codes',
     ];
 
     /**
@@ -64,83 +39,5 @@ class User extends Authenticatable implements MustVerifyEmail
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
-        'settings' => SettingsCast::class,
     ];
-
-    /**
-     * The accessors to append to the model's array form.
-     *
-     * @var array
-     */
-    protected $appends = [
-        'profile_photo_url',
-    ];
-
-    /**
-     * Get the user's business details.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasOne
-     */
-    public function business()
-    {
-        return $this->hasOne(Business::class, 'user_id');
-    }
-
-    /**
-     * Get the user's account details.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasOne
-     */
-    public function account()
-    {
-        return $this->hasOne(Account::class, 'user_id');
-    }
-
-    /**
-     * Get all spaces associated with the user.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
-    public function spaces()
-    {
-        return $this->hasMany(Space::class)->latest();
-    }
-
-    /**
-     * Get all orders associated with the user.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
-    public function orders()
-    {
-        return $this->hasMany(Order::class)->latest();
-    }
-
-    /**
-     * Get all support tickets assigned to the user.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
-    public function tickets()
-    {
-        if ($this->hasRole('support-agent')) {
-            return $this->hasMany(Ticket::class, 'agent_id');
-        }
-
-        return $this->hasMany(Ticket::class, 'user_id')->latest();
-    }
-
-    /**
-     * Get all replies associated with the support ticket.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
-    public function replies()
-    {
-        if ($this->hasRole('support-agent')) {
-            return $this->hasMany(Reply::class, 'agent_id')->latest();
-        }
-
-        return $this->hasMany(Reply::class, 'user_id')->latest();
-    }
 }

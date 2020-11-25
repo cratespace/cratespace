@@ -1,71 +1,61 @@
-# Cratespace
+<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400"></a></p>
 
-![GitHub](https://github.com/cratespace/cratespace/workflows/GitHub/badge.svg)
+<p align="center">
+<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
+<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
+<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
+<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
+</p>
 
-### What is Cratespace?
+## About Laravel
 
-Cratespace is a cloud-based web application that provides a platform for logistics services to market small freight spaces that are available during shipping.
+Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
 
-### What does Cratespace offer?
+- [Simple, fast routing engine](https://laravel.com/docs/routing).
+- [Powerful dependency injection container](https://laravel.com/docs/container).
+- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
+- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
+- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
+- [Robust background job processing](https://laravel.com/docs/queues).
+- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
 
-Cratespace offers a place for logistics services to manage and market small freight spaces that become available when shipping freight containers are partially loaded with cargo during shipping.
+Laravel is accessible, powerful, and provides tools required for large, robust applications.
 
-### Who is Cratespace for?
+## Learning Laravel
 
-The business is mostly focused towards logistics services and customers who require just a small amount of space to ship goods.
+Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
 
-## Development
+If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 1500 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
 
-### Installing
+## Laravel Sponsors
 
-Clone the repository to get started. If you do not have the required permissions, please contact <tjthavarshan@gmail.com>.
+We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
 
-* To run this project, you must have PHP 7.4 installed.
-* You should setup a host on your web server for your local domain. For this you could also configure Laravel Homestead or Valet. 
-* If you want use Redis as your cache driver you need to install the Redis Server. You can either use homebrew on a Mac or compile from source (https://redis.io/topics/quickstart).
+### Premium Partners
 
-```bash
-# Clone project.
-git clone git@github.com:cratespace/cratespace.git
+- **[Vehikl](https://vehikl.com/)**
+- **[Tighten Co.](https://tighten.co)**
+- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
+- **[64 Robots](https://64robots.com)**
+- **[Cubet Techno Labs](https://cubettech.com)**
+- **[Cyber-Duck](https://cyber-duck.co.uk)**
+- **[Many](https://www.many.co.uk)**
+- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
+- **[DevSquad](https://devsquad.com)**
+- **[OP.GG](https://op.gg)**
 
-# Install dependencies.
-cd cratespace && bash bin/setup
+## Contributing
 
-# Install application.
-php artisan cs:install
-```
+Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
 
-Next, boot up a server and visit cratespace landing page. If using a tool like Laravel Valet, of course the URL will default to `http://cratespace.test`. 
+## Code of Conduct
 
-1. Visit: `http://cratespace.test/login` to sign in as an administrator.
-2. Edit `config/auth.php`, and add any email address that should be marked as an administrator under `administrators` key.
-3. Visit: `http://cratespace.test/admin/dashboard` to get started on the metrics.
+In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
 
-## Running tests
+## Security Vulnerabilities
 
-Cratespace uses PHPUnit for testing. To clone cratespace into your local machine and run tests, simply open up your preferred terminal application, navigate into cratespace project root directory and run the following command.
+If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
 
-Cratespace Test Suite uses network connection to run some tests.
+## License
 
-```bash
-# Clone the repository.
-git clone git@github.com:cratespace/cratespace.git
-
-# Install and compile dependencies.
-cd cratespace && bash bin/setup
-
-# Run automated installation process.
-php artisan cs:install
-
-# To run all tests including tests that require a working network connection.
-composer test
-
-# To run only offline tests.
-composer test-offline
-```
-
-## Authors
-
-* **Thavarshan Thayananthajothy** - *Initial work* - [Thavarshan](https://github.com/Thavarshan)
-
-See also the list of [contributors](https://github.com/Thavarshan/cratespace/contributors) who participated in this project.
+The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
