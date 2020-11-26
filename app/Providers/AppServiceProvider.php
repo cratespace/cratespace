@@ -13,7 +13,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
     }
 
     /**
@@ -23,6 +22,18 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+        $this->setHttpSchema();
+    }
+
+    /**
+     * Force application to use HTTPS.
+     *
+     * @return void
+     */
+    protected function setHttpSchema(): void
+    {
+        if ($this->app->isProduction()) {
+            $this->app['url']->forceScheme('https');
+        }
     }
 }

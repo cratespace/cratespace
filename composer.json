@@ -1,17 +1,23 @@
 {
-    "name": "laravel/laravel",
+    "name": "cratespace/cratespace",
     "type": "project",
-    "description": "The Laravel Framework.",
+    "description": "Freight space sales platform.",
     "keywords": [
-        "framework",
-        "laravel"
+        "freight", "space", "cratespace"
     ],
-    "license": "MIT",
+    "license": "proprietary",
     "require": {
-        "php": "^7.3|^8.0",
+        "php": "^7.4|^8.0",
+        "ext-fileinfo": "*",
+        "ext-gmp": "*",
+        "ext-intl": "*",
+        "ext-json": "*",
+        "ext-mbstring": "*",
+        "ext-openssl": "*",
         "fideloper/proxy": "^4.4",
         "fruitcake/laravel-cors": "^2.0",
         "guzzlehttp/guzzle": "^7.0.1",
+        "laravel/fortify": "^1.7",
         "laravel/framework": "^8.12",
         "laravel/tinker": "^2.5"
     },
@@ -42,7 +48,10 @@
     "autoload-dev": {
         "psr-4": {
             "Tests\\": "tests/"
-        }
+        },
+        "files": [
+            "tests/Support/helpers.php"
+        ]
     },
     "minimum-stability": "dev",
     "prefer-stable": true,
@@ -56,6 +65,12 @@
         ],
         "post-create-project-cmd": [
             "@php artisan key:generate --ansi"
+        ],
+        "test": [
+            "vendor/bin/phpunit --verbose --color=always --coverage-text"
+        ],
+        "test-offline": [
+            "vendor/bin/phpunit --verbose --color=always --coverage-text --exclude-group network"
         ]
     }
 }
