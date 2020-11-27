@@ -19,7 +19,7 @@ trait Mailable
      */
     public function mail(string $mailable, ?string $emailAddress = null): void
     {
-        $email = $this->email ?? ($emailAddress ?: null);
+        $email = $this->email ?? $emailAddress;
 
         if (is_null($email)) {
             throw new NoEmailAddressSetException('An email address has not been specified.');
@@ -39,7 +39,7 @@ trait Mailable
     {
         $mailable = new $mailable($this);
 
-        if (! $mailable instanceof MailableContract) {
+        if (!$mailable instanceof MailableContract) {
             throw new RuntimeException("{$mailable} is not a valid mailable.");
         }
 

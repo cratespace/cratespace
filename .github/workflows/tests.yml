@@ -15,21 +15,28 @@ jobs:
       mysql:
         image: mysql:5.7
         env:
-          MYSQL_DATABASE: database_ci
-          MYSQL_USER: user
-          MYSQL_PASSWORD: secret
-          MYSQL_ROOT_PASSWORD: secretroot
+          MYSQL_ALLOW_EMPTY_PASSWORD: yes
+          MYSQL_DATABASE: cratespace
         ports:
           - 33306:3306
         options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
 
+    strategy:
+      fail-fast: true
+      matrix:
+        php: [7.4, 8.0]
+        stability: [prefer-stable]
+
+    name: PHP ${{ matrix.php }} - ${{ matrix.stability }}
+
     steps:
+      - name: Checkout code
       - uses: actions/checkout@v2.3.3
 
       - name: Setup PHP with pecl extension
         uses: shivammathur/setup-php@v2
         with:
-          php-version: '7.4'
+          php-version: ${{ matrix.php }}
           tools: pecl, php-cs-fixer, phpunit, composer:v2
           extensions: swoole, fileinfo, gmp, intl, json, mbstring, openssl, dom, curl, libxml, zip, pcntl, pdo, sqlite, pdo_sqlite, gd
           coverage: pcov
@@ -38,7 +45,7 @@ jobs:
         run: |
           mysql --version
           sudo apt-get install -y mysql-client
-          mysql --host 127.0.0.1 --port ${{ job.services.mysql.ports['3306'] }} -uuser -psecret -e "SHOW DATABASES"
+          mysql --host 127.0.0.1 --port ${{ job.services.mysql.ports['3306'] }} -uroot -e "SHOW DATABASES"
 
       - name: Cache composer dependencies
         uses: actions/cache@v2.1.1
@@ -55,7 +62,7 @@ jobs:
 
       - name: Boot application
         run: |
-          cp .env.github .env
+          cp .env.example .env
           php artisan key:generate
           php artisan --version
 
@@ -78,7 +85,7 @@ jobs:
       - name: Run tests
         env:
           STRIPE_SECRET_KEY: ${{ secrets.STRIPE_SECRET_KEY }}
-        run: ./vendor/bin/phpunit --verbose
+        run: composer test
 
       - name: Run security checks
         run: |

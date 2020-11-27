@@ -2,15 +2,18 @@
 
 namespace App\Models;
 
+use App\Models\Traits\Mailable;
 use App\Models\Traits\Redirectable;
 use App\Models\Traits\HasProfilePhoto;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Fortify\TwoFactorAuthenticatable;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
-class User extends Authenticatable
+class User extends Authenticatable implements MustVerifyEmail
 {
+    use Mailable;
     use HasFactory;
     use Notifiable;
     use Redirectable;

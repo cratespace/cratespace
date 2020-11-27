@@ -1,5 +1,8 @@
 module.exports = {
-  purge: ['./storage/framework/views/*.php', './resources/views/**/*.blade.php'],
+  purge: [
+    './storage/framework/views/*.php',
+    './resources/views/**/*.blade.php'
+  ],
 
   theme: {
     customForms: theme => ({
@@ -73,7 +76,7 @@ module.exports = {
   },
 
   plugins: [
-    require('@tailwindcss/custom-forms'),
+    require('@tailwindcss/forms'),
     require('@tailwindcss/typography')
   ],
 }
