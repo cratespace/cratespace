@@ -32,6 +32,6 @@ class DeleteUserTest extends TestCase
 
         $this->actingAs($user)->deleteJson('/user/' . $user->username, [
             'password' => 'lordButtHead',
-        ])->assertStatus(409);
+        ])->assertStatus(204);
     }
 }

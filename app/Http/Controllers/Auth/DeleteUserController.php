@@ -32,7 +32,7 @@ class DeleteUserController extends Controller
         $auth->logout();
 
         if ($request->wantsJson()) {
-            return response('', 409);
+            return response('', 204);
         }
 
         return redirect('/')->with('status', 'user-account-deleted');

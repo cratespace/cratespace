@@ -31,7 +31,7 @@ class CreateNewUserTest extends TestCase implements Postable
     {
         Event::fake([Registered::class]);
 
-        $this->post('/register', $this->validParameters())->assertRedirect('/home');
+        $response = $this->postJson('/register', $this->validParameters());
 
         Event::assertDispatched(Registered::class);
     }

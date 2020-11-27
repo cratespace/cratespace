@@ -7,7 +7,7 @@ use App\Models\User;
 use Tests\Contracts\Postable;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
-class UpdateUserDetailsTest extends TestCase implements Postable
+class UpdateUserInformationTest extends TestCase implements Postable
 {
     use RefreshDatabase;
 
