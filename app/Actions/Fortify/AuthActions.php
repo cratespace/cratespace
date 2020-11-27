@@ -2,31 +2,33 @@
 
 namespace App\Actions\Fortify;
 
-use App\Contracts\Auth\ValidatesInputs;
+use Illuminate\Support\Facades\Validator;
+use App\Http\Requests\Concerns\InteractsWithRules;
 
 abstract class AuthActions
 {
+    use InteractsWithRules;
+
     /**
      * Validate given input data against relevant rules.
      *
-     * @param string $entity
-     * @param array  $input
-     * @param array  $additionalRules
+     * @param string      $entity
+     * @param array       $input
+     * @param array       $additionalRules
+     * @param string|null $bag
      *
      * @return array
      */
-    public function validate(string $entity, array $input, array $additionalRules = []): array
+    public function validate(string $entity, array $input, array $additionalRules = [], ?string $bag = null): array
     {
-        return $this->getValidator()->validate($entity, $input, $additionalRules);
-    }
+        $validator = Validator::make($input, $this->getRules(
+            $entity, $additionalRules
+        ));
 
-    /**
-     * Get input data validator.
-     *
-     * @return \App\Contracts\Auth\ValidatesInputs
-     */
-    protected function getValidator(): ValidatesInputs
-    {
-        return new ValidateInput();
+        if (!is_null($bag)) {
+            return $validator->validateWithBag($bag);
+        }
+
+        return $validator->validate();
     }
 }

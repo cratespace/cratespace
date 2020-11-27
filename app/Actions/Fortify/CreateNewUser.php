@@ -82,6 +82,12 @@ class CreateNewUser extends AuthActions implements CreatesNewUsers
      */
     protected function makeUsername(string $name): string
     {
+        if (Str::contains($name, '.')) {
+            [$title, $fullName] = explode('.', $name);
+
+            $name = $fullName;
+        }
+
         [$firstName, $lastName] = explode(' ', $name);
 
         $count = User::where('username', 'like', '%' . $firstName . '%')->count();

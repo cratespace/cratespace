@@ -12,4 +12,11 @@ return [
         'phone' => ['required', 'string', 'min:9'],
         'password' => ['required', 'string', new Password(), 'confirmed'],
     ],
+
+    'user' => [
+        'name' => ['required', 'string', 'max:255'],
+        'username' => ['required', 'string', 'max:255', Rule::unique(User::class)],
+        'email' => ['required', 'string', 'email', 'max:255', Rule::unique(User::class)],
+        'phone' => ['required', 'string', 'min:9'],
+    ],
 ];
