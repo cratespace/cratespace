@@ -3,9 +3,12 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use App\Http\Requests\Concerns\ValidatesInput;
 
 class LoginRequest extends FormRequest
 {
+    use ValidatesInput;
+
     /**
      * Determine if the user is authorized to make this request.
      *
@@ -23,9 +26,6 @@ class LoginRequest extends FormRequest
      */
     public function rules()
     {
-        return [
-            config('auth.defaults.username') => ['required', 'string'],
-            'password' => ['required', 'string'],
-        ];
+        return $this->getRulesFor('signin');
     }
 }

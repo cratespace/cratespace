@@ -7,7 +7,7 @@ use App\Auth\RecoveryCode;
 use BaconQrCode\Renderer\Color\Rgb;
 use BaconQrCode\Renderer\ImageRenderer;
 use BaconQrCode\Renderer\RendererStyle\Fill;
-use App\Contracts\Auth\TwoFactorAuthentication;
+use App\Contracts\Auth\TwoFactorAuthenticator;
 use BaconQrCode\Renderer\Image\SvgImageBackEnd;
 use BaconQrCode\Renderer\RendererStyle\RendererStyle;
 
@@ -65,7 +65,7 @@ trait TwoFactorAuthenticatable
      */
     public function twoFactorQrCodeUrl(): string
     {
-        return app(TwoFactorAuthentication::class)->qrCodeUrl(
+        return app(TwoFactorAuthenticator::class)->qrCodeUrl(
             config('app.name'),
             $this->email,
             decrypt($this->two_factor_secret)

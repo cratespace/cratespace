@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\Auth\Login;
+use App\Auth\Authenticator;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use App\Http\Requests\LoginRequest;
 use App\Http\Controllers\Controller;
-use App\Contracts\Auth\Authenticator;
 use Illuminate\Contracts\Auth\StatefulGuard;
+use App\Contracts\Auth\Authenticator as AuthenticatorContract;
 
 class AuthenticatedSessionController extends Controller
 {
@@ -32,7 +32,7 @@ class AuthenticatedSessionController extends Controller
      * @param \App\Contracts\Auth\Authenticator        $authenticator
      * @param \Illuminate\Contracts\Auth\StatefulGuard $guard
      */
-    public function __construct(Authenticator $authenticator, StatefulGuard $guard)
+    public function __construct(AuthenticatorContract $authenticator, StatefulGuard $guard)
     {
         $this->authenticator = $authenticator;
         $this->guard = $guard;

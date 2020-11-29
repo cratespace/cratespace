@@ -4,13 +4,16 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Contracts\Auth\StatefulGuard;
+use App\Contracts\Auth\TwoFactorAuthenticator;
+use App\Http\Requests\Concerns\ValidatesInput;
 use Illuminate\Validation\ValidationException;
 use Symfony\Component\HttpFoundation\Response;
-use App\Contracts\Auth\TwoFactorAuthentication;
 use Illuminate\Http\Exceptions\HttpResponseException;
 
 class TwoFactorLoginRequest extends FormRequest
 {
+    use ValidatesInput;
+
     /**
      * The user attempting the two factor challenge.
      *
@@ -42,10 +45,7 @@ class TwoFactorLoginRequest extends FormRequest
      */
     public function rules()
     {
-        return [
-            'code' => 'nullable|string',
-            'recovery_code' => 'nullable|string',
-        ];
+        return $this->getRulesFor('tfa_signin');
     }
 
     /**
@@ -55,7 +55,7 @@ class TwoFactorLoginRequest extends FormRequest
      */
     public function hasValidCode(): bool
     {
-        return $this->code && app(TwoFactorAuthentication::class)->verify(
+        return $this->code && app(TwoFactorAuthenticator::class)->verify(
             decrypt($this->challengedUser()->two_factor_secret), $this->code
         );
     }

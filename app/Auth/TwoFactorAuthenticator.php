@@ -3,9 +3,9 @@
 namespace App\Auth;
 
 use PragmaRX\Google2FA\Google2FA;
-use App\Contracts\Auth\TwoFactorAuthentication as TwoFactorAuthenticationContract;
+use App\Contracts\Auth\TwoFactorAuthenticator as TwoFactorAuthenticatorContract;
 
-class TwoFactorAuthentication implements TwoFactorAuthenticationContract
+class TwoFactorAuthenticator implements TwoFactorAuthenticatorContract
 {
     /**
      * The underlying library providing two factor authentication helper services.

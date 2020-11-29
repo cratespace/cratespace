@@ -2,14 +2,14 @@
 
 namespace App\Providers;
 
-use App\Auth\Login;
+use App\Auth\Authenticator;
 use App\Auth\Actions\CreateNewUser;
+use App\Auth\TwoFactorAuthenticator;
 use Illuminate\Support\Facades\Auth;
-use App\Auth\TwoFactorAuthentication;
-use App\Contracts\Auth\Authenticator;
 use App\Contracts\Auth\CreatesNewUsers;
 use Illuminate\Contracts\Auth\StatefulGuard;
-use App\Contracts\Auth\TwoFactorAuthentication as TwoFactorAuthenticationContract;
+use App\Contracts\Auth\Authenticator as AuthenticatorContract;
+use App\Contracts\Auth\TwoFactorAuthenticator as TwoFactorAuthenticatorContract;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 
 class AuthServiceProvider extends ServiceProvider
@@ -28,8 +28,8 @@ class AuthServiceProvider extends ServiceProvider
      */
     protected static array $authenticators = [
         CreatesNewUsers::class => CreateNewUser::class,
-        Authenticator::class => Login::class,
-        TwoFactorAuthenticationContract::class => TwoFactorAuthentication::class,
+        AuthenticatorContract::class => Authenticator::class,
+        TwoFactorAuthenticatorContract::class => TwoFactorAuthenticator::class,
     ];
 
     /**

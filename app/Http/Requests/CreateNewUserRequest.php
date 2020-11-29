@@ -3,12 +3,13 @@
 namespace App\Http\Requests;
 
 use App\Models\User;
-use App\Rules\Password;
-use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
+use App\Http\Requests\Concerns\ValidatesInput;
 
 class CreateNewUserRequest extends FormRequest
 {
+    use ValidatesInput;
+
     /**
      * Determine if the user is authorized to make this request.
      *
@@ -26,12 +27,6 @@ class CreateNewUserRequest extends FormRequest
      */
     public function rules()
     {
-        return [
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'email', 'string', 'max:255', Rule::unique(User::class)],
-            'phone' => ['required', 'string'],
-            'business' => ['required', 'string', 'max:255'],
-            'password' => ['required', 'string', new Password(), 'confirmed'],
-        ];
+        return $this->getRulesFor('signup');
     }
 }

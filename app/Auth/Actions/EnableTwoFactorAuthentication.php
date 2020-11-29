@@ -4,25 +4,25 @@ namespace App\Auth\Actions;
 
 use App\Auth\RecoveryCode;
 use Illuminate\Support\Collection;
-use App\Contracts\Auth\TwoFactorAuthentication;
+use App\Contracts\Auth\TwoFactorAuthenticator;
 
 class EnableTwoFactorAuthentication
 {
     /**
      * The two factor authentication authenticator.
      *
-     * @var \App\Contracts\Auth\TwoFactorAuthentication
+     * @var \App\Contracts\Auth\TwoFactorAuthenticator
      */
-    protected TwoFactorAuthentication $authenticator;
+    protected TwoFactorAuthenticator $authenticator;
 
     /**
      * Create a new action instance.
      *
-     * @param \App\Contracts\Auth\TwoFactorAuthentication $authenticator
+     * @param \App\Contracts\Auth\TwoFactorAuthenticator $authenticator
      *
      * @return void
      */
-    public function __construct(TwoFactorAuthentication $authenticator)
+    public function __construct(TwoFactorAuthenticator $authenticator)
     {
         $this->authenticator = $authenticator;
     }

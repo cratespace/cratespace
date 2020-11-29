@@ -8,13 +8,13 @@ use App\Guards\LoginRateLimiter;
 use Illuminate\Auth\Events\Failed;
 use Illuminate\Auth\Events\Lockout;
 use Illuminate\Support\Facades\Hash;
-use App\Contracts\Auth\Authenticator;
 use Illuminate\Contracts\Auth\StatefulGuard;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Validation\ValidationException;
+use App\Contracts\Auth\Authenticator as AuthenticatorContract;
 use Symfony\Component\HttpFoundation\Response as SymfonyResponse;
 
-class Login implements Authenticator
+class Authenticator implements AuthenticatorContract
 {
     /**
      * The guard implementation.
