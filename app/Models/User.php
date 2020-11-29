@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Models\Traits\HasProfilePhoto;
 use Illuminate\Notifications\Notifiable;
+use App\Models\Traits\TwoFactorAuthenticatable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
@@ -12,6 +13,7 @@ class User extends Authenticatable
     use HasFactory;
     use Notifiable;
     use HasProfilePhoto;
+    use TwoFactorAuthenticatable;
 
     /**
      * Preferred route key name.

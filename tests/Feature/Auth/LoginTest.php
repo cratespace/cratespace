@@ -43,7 +43,7 @@ class LoginTest extends TestCase
     /** @test */
     public function a_validation_exception_is_returned_on_failure()
     {
-        $user = create(User::class, [
+        create(User::class, [
             'email' => 'james@silverman.com',
             'password' => bcrypt('monster'),
         ]);
@@ -60,6 +60,11 @@ class LoginTest extends TestCase
     /** @test */
     public function login_attempts_are_throttled()
     {
+        create(User::class, [
+            'email' => 'james@silverman.com',
+            'password' => bcrypt('monster'),
+        ]);
+
         $this->mock(LoginRateLimiter::class, function ($mock) {
             $mock->shouldReceive('tooManyAttempts')->andReturn(true);
             $mock->shouldReceive('availableIn')->andReturn(10);
@@ -98,5 +103,39 @@ class LoginTest extends TestCase
 
         $response->assertStatus(204);
         $this->assertNull(Auth::guard()->getUser());
+    }
+
+    /** @test */
+    public function a_user_is_redirected_to_challenge_when_using_two_factor_authentication()
+    {
+        create(User::class, [
+            'email' => 'james@silverman.com',
+            'password' => bcrypt('monster'),
+            'two_factor_secret' => 'test-secret',
+        ]);
+
+        $response = $this->withoutExceptionHandling()->post('/signin', [
+            'email' => 'james@silverman.com',
+            'password' => 'monster',
+        ]);
+
+        $response->assertRedirect('/tfa-challenge');
+    }
+
+    /** @test */
+    public function a_user_can_authenticate_when_two_factor_challenge_is_disabled()
+    {
+        create(User::class, [
+            'email' => 'james@silverman.com',
+            'password' => bcrypt('monster'),
+            'two_factor_secret' => null,
+        ]);
+
+        $response = $this->withoutExceptionHandling()->post('/signin', [
+            'email' => 'james@silverman.com',
+            'password' => 'monster',
+        ]);
+
+        $response->assertRedirect('/home');
     }
 }

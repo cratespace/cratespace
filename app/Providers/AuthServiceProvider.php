@@ -5,9 +5,11 @@ namespace App\Providers;
 use App\Auth\Login;
 use App\Auth\Actions\CreateNewUser;
 use Illuminate\Support\Facades\Auth;
+use App\Auth\TwoFactorAuthentication;
 use App\Contracts\Auth\Authenticator;
 use App\Contracts\Auth\CreatesNewUsers;
 use Illuminate\Contracts\Auth\StatefulGuard;
+use App\Contracts\Auth\TwoFactorAuthentication as TwoFactorAuthenticationContract;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 
 class AuthServiceProvider extends ServiceProvider
@@ -63,7 +65,11 @@ class AuthServiceProvider extends ServiceProvider
      */
     protected function registerAuthenticators(): void
     {
-        $this->app->singleton(Authenticator::class, Login::class);
         $this->app->singleton(CreatesNewUsers::class, CreateNewUser::class);
+        $this->app->singleton(Authenticator::class, Login::class);
+        $this->app->singleton(
+            TwoFactorAuthentication::class,
+            TwoFactorAuthenticationContract::class
+        );
     }
 }

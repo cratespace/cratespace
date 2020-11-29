@@ -7,8 +7,10 @@ use Illuminate\Http\Response;
 use App\Guards\LoginRateLimiter;
 use Illuminate\Auth\Events\Failed;
 use Illuminate\Auth\Events\Lockout;
+use Illuminate\Support\Facades\Hash;
 use App\Contracts\Auth\Authenticator;
 use Illuminate\Contracts\Auth\StatefulGuard;
+use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Validation\ValidationException;
 use Symfony\Component\HttpFoundation\Response as SymfonyResponse;
 
@@ -29,7 +31,7 @@ class Login implements Authenticator
     protected LoginRateLimiter $limiter;
 
     /**
-     * Create a new controller instance.
+     * Create a new user session authenticator instance.
      *
      * @param \Illuminate\Contracts\Auth\StatefulGuard $guard
      * @param \App\Guards\LoginRateLimiter             $limiter
@@ -110,15 +112,51 @@ class Login implements Authenticator
     }
 
     /**
-     * Fire the failed authentication attempt event with the given arguments.
+     * Attempt to validate the incoming credentials.
      *
      * @param \Illuminate\Http\Request $request
      *
+     * @return \Illuminate\Contracts\Auth\Authenticatable
+     */
+    public function validateCredentials(Request $request): Authenticatable
+    {
+        return tap($this->findUser($request), function (Authenticatable $user) use ($request) {
+            if (!$user || !Hash::check($request->password, $user->password)) {
+                $this->fireFailedEvent($request, $user);
+
+                $this->throwFailedAuthenticationException($request);
+            }
+        });
+    }
+
+    /**
+     * Find user trying to attempting to authenticate.
+     *
+     * @param \Illuminate\Http\Request $request
+     *
+     * @return \Illuminate\Contracts\Auth\Authenticatable
+     */
+    protected function findUser(Request $request): Authenticatable
+    {
+        $model = $this->guard->getProvider()->getModel();
+
+        return $model::where(
+            $this->username(),
+            $request->{$this->username()}
+        )->first();
+    }
+
+    /**
+     * Fire the failed authentication attempt event with the given arguments.
+     *
+     * @param \Illuminate\Http\Request                        $request
+     * @param \Illuminate\Contracts\Auth\Authenticatable|null $user
+     *
      * @return void
      */
-    protected function fireFailedEvent(Request $request): void
+    protected function fireFailedEvent(Request $request, ?Authenticatable $user = null)
     {
-        event(new Failed('web', null, [
+        event(new Failed('web', $user, [
             $this->username() => $request->{$this->username()},
             'password' => $request->password,
         ]));

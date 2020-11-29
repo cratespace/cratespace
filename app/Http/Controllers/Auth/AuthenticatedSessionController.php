@@ -15,9 +15,16 @@ class AuthenticatedSessionController extends Controller
     /**
      * User session authenticator.
      *
-     * @var \App\Auth\Login
+     * @var \App\Contracts\Auth\Authenticator
      */
-    protected Login $authenticator;
+    protected Authenticator $authenticator;
+
+    /**
+     * The guard implementation.
+     *
+     * @var \Illuminate\Contracts\Auth\StatefulGuard
+     */
+    protected StatefulGuard $guard;
 
     /**
      * Create new controller instance.

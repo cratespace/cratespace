@@ -18,7 +18,7 @@ return [
     'defaults' => [
         'guard' => 'web',
         'passwords' => 'users',
-        'username' => AuthServiceProvider::USERNAME,
+        'username' => env('AUTH_USERNAME', AuthServiceProvider::USERNAME),
         'home' => RouteServiceProvider::HOME,
     ],
 
@@ -103,6 +103,16 @@ return [
             'expire' => 60,
             'throttle' => 60,
         ],
+    ],
+
+    'attributes' => [
+        'passwords' => 'users',
+        'username' => env('AUTH_USERNAME', AuthServiceProvider::USERNAME),
+        'email' => 'email',
+    ],
+
+    'limiters' => [
+        'login' => null,
     ],
 
     /*
