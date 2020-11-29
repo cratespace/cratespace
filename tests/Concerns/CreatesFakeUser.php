@@ -2,9 +2,7 @@
 
 namespace Tests\Concerns;
 
-use App\Models\Role;
 use App\Models\User;
-use App\Models\Ability;
 use App\Models\Account;
 use App\Models\Business;
 
@@ -15,7 +13,7 @@ trait CreatesFakeUser
      *
      * @var \App\Models\User
      */
-    protected $user;
+    protected User $user;
 
     /**
      * Mock authenticated user.
@@ -24,63 +22,40 @@ trait CreatesFakeUser
      *
      * @return \App\Models\User
      */
-    protected function signIn($user = null): User
+    protected function signIn(?User $user = null): User
     {
-        $this->user = $user ?: create(User::class);
+        $user ?? create(User::class);
 
-        $this->createBusiness()
-            ->createFinancialAccount()
-            ->assignRolesAndAbilities()
-            ->actingAs($this->user);
+        $this->createBusiness($user);
 
-        return $this->user;
+        $this->createCreditAccount($user);
+
+        $this->actingAs($user);
+
+        return $user;
     }
 
     /**
      * Create a fake business profile for the user.
      *
-     * @return \Tests\TestCase
+     * @param \App\Models\User
+     *
+     * @return void
      */
-    protected function createBusiness()
+    protected function createBusiness(User $user): void
     {
         create(Business::class, ['user_id' => $this->user->id]);
-
-        return $this;
     }
 
     /**
      * Create a fake financial account for the user.
      *
-     * @return \Tests\TestCase
+     * @param \App\Models\User
+     *
+     * @return void
      */
-    protected function createFinancialAccount()
+    protected function createCreditAccount(User $user): void
     {
         create(Account::class, ['user_id' => $this->user->id]);
-
-        return $this;
-    }
-
-    /**
-     * Create and assign customer role.
-     *
-     * @return \Tests\TestCase
-     */
-    protected function assignRolesAndAbilities()
-    {
-        $customerRole = Role::firstOrCreate([
-            'title' => 'customer',
-            'label' => 'Customer',
-        ]);
-
-        $purchaseSpace = Ability::firstOrCreate([
-            'title' => 'purchase_spaces',
-            'label' => 'Purchase spaces',
-        ]);
-
-        $customerRole->allowTo($purchaseSpace);
-
-        $this->user->assignRole($customerRole);
-
-        return $this;
     }
 }
