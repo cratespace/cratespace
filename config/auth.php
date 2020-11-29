@@ -117,7 +117,7 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Password Confirmation Timeout
+    | Password Confirmation
     |--------------------------------------------------------------------------
     |
     | Here you may define the amount of seconds before a password confirmation
@@ -125,6 +125,7 @@ return [
     | confirmation screen. By default, the timeout lasts for three hours.
     |
     */
+    'password_confirmation' => env('AUTH_CONFIRM_PASSWORD', false),
 
     'password_timeout' => 10800,
 ];

@@ -27,12 +27,13 @@ Route::group([
 ], function (): void {
     Route::post('/signout', [AuthenticatedSessionController::class, 'destroy'])->name('signout');
 
+    Route::get('/confirm-password', [ConfirmablePasswordController::class, 'show'])->name('password.confirm');
+    Route::get('/confirmed-password-status', [ConfirmedPasswordStatusController::class, 'show'])->name('password.confirmation');
+
     Route::group([
         'prefix' => 'user',
-        'middleware' => ['auth'],
+        'middleware' => config('auth.password_confirmation') ? ['auth', 'password.confirm'] : ['auth'],
     ], function (): void {
-        Route::get('/confirm-password', [ConfirmablePasswordController::class, 'show'])->name('password.confirm');
-        Route::get('/confirmed-password-status', [ConfirmedPasswordStatusController::class, 'show'])->name('password.confirmation');
         Route::post('/tfa', [TwoFactorAuthenticationController::class, 'store']);
         Route::delete('/tfa', [TwoFactorAuthenticationController::class, 'destroy']);
         Route::get('/tfa-qr-code', [TwoFactorQrCodeController::class, 'show']);
