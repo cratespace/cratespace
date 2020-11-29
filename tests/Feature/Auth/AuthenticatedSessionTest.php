@@ -6,12 +6,13 @@ use Mockery as m;
 use Tests\TestCase;
 use App\Models\User;
 use App\Guards\LoginRateLimiter;
+use PragmaRX\Google2FA\Google2FA;
 use Illuminate\Support\Facades\Auth;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
-class LoginTest extends TestCase
+class AuthenticatedSessionTest extends TestCase
 {
     use RefreshDatabase;
 
@@ -137,5 +138,69 @@ class LoginTest extends TestCase
         ]);
 
         $response->assertRedirect('/home');
+    }
+
+    /** @test */
+    public function two_factor_challenge_can_be_passed_via_code()
+    {
+        $tfaEngine = app(Google2FA::class);
+        $userSecret = $tfaEngine->generateSecretKey();
+        $validOtp = $tfaEngine->getCurrentOtp($userSecret);
+
+        $user = create(User::class, [
+            'email' => 'james@silverman.com',
+            'password' => bcrypt('monster'),
+            'two_factor_secret' => encrypt($userSecret),
+        ]);
+
+        $response = $this->withSession([
+            'login.id' => $user->id,
+            'login.remember' => false,
+        ])->withoutExceptionHandling()->post('/tfa-challenge', [
+            'code' => $validOtp,
+        ]);
+
+        $response->assertRedirect('/home');
+    }
+
+    /** @test */
+    public function two_factor_challenge_can_be_passed_via_recovery_code()
+    {
+        $user = create(User::class, [
+            'email' => 'james@silverman.com',
+            'password' => bcrypt('monster'),
+            'two_factor_recovery_codes' => encrypt(json_encode(['invalid-code', 'valid-code'])),
+        ]);
+
+        $response = $this->withSession([
+            'login.id' => $user->id,
+            'login.remember' => false,
+        ])->withoutExceptionHandling()->post('/tfa-challenge', [
+            'recovery_code' => 'valid-code',
+        ]);
+
+        $response->assertRedirect('/home');
+        $this->assertNotNull(Auth::getUser());
+        $this->assertNotContains('valid-code', json_decode(decrypt($user->fresh()->two_factor_recovery_codes), true));
+    }
+
+    /** @test */
+    public function two_factor_challenge_can_fail_via_recovery_code()
+    {
+        $user = create(User::class, [
+            'email' => 'james@silverman.com',
+            'password' => bcrypt('monster'),
+            'two_factor_recovery_codes' => encrypt(json_encode(['invalid-code', 'valid-code'])),
+        ]);
+
+        $response = $this->withSession([
+            'login.id' => $user->id,
+            'login.remember' => false,
+        ])->withoutExceptionHandling()->post('/tfa-challenge', [
+            'recovery_code' => 'missing-code',
+        ]);
+
+        $response->assertRedirect('/signin');
+        $this->assertNull(Auth::getUser());
     }
 }

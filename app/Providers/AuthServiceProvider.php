@@ -22,6 +22,17 @@ class AuthServiceProvider extends ServiceProvider
     public const USERNAME = 'email';
 
     /**
+     * User authentication classes.
+     *
+     * @var array
+     */
+    protected static array $authenticators = [
+        CreatesNewUsers::class => CreateNewUser::class,
+        Authenticator::class => Login::class,
+        TwoFactorAuthenticationContract::class => TwoFactorAuthentication::class,
+    ];
+
+    /**
      * The policy mappings for the application.
      *
      * @var array
@@ -65,11 +76,8 @@ class AuthServiceProvider extends ServiceProvider
      */
     protected function registerAuthenticators(): void
     {
-        $this->app->singleton(CreatesNewUsers::class, CreateNewUser::class);
-        $this->app->singleton(Authenticator::class, Login::class);
-        $this->app->singleton(
-            TwoFactorAuthentication::class,
-            TwoFactorAuthenticationContract::class
-        );
+        foreach (static::$authenticators as $abstract => $concrete) {
+            $this->app->singleton($abstract, $concrete);
+        }
     }
 }

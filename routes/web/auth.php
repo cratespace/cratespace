@@ -9,8 +9,9 @@ Route::group([
     'middleware' => 'guest',
 ], function (): void {
     Route::get('/signin', [AuthenticatedSessionController::class, 'create'])->name('signin');
-    Route::get('/tfa-challenge', [TwoFactorAuthenticatedSessionController::class, 'create'])->name('tfa.signin');
     Route::middleware('auth.tfa')->post('/signin', [AuthenticatedSessionController::class, 'store']);
+    Route::get('/tfa-challenge', [TwoFactorAuthenticatedSessionController::class, 'create'])->name('tfa.signin');
+    Route::post('/tfa-challenge', [TwoFactorAuthenticatedSessionController::class, 'store']);
 
     Route::get('/signup', [RegisteredUserController::class, 'create'])->name('signup');
     Route::post('/signup', [RegisteredUserController::class, 'store']);

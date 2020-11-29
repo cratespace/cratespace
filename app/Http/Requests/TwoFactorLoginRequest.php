@@ -112,7 +112,7 @@ class TwoFactorLoginRequest extends FormRequest
             throw ValidationException::withMessages(['code' => [$message]]);
         }
 
-        return redirect()->route('login')->withErrors(['email' => $message]);
+        return redirect()->route('signin')->withErrors(['email' => $message]);
     }
 
     /**

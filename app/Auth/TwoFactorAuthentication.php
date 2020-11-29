@@ -45,7 +45,7 @@ class TwoFactorAuthentication implements TwoFactorAuthenticationContract
      *
      * @return string
      */
-    public function qrCodeUrl(string $companyName, string $companyEmail, string $secret): bool
+    public function qrCodeUrl(string $companyName, string $companyEmail, string $secret): string
     {
         return $this->engine->getQRCodeUrl($companyName, $companyEmail, $secret);
     }
