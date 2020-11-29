@@ -3,7 +3,6 @@
 namespace App\Auth\Actions;
 
 use App\Auth\RecoveryCode;
-use Laravel\Fortify\RecoveryCode;
 use Illuminate\Support\Collection;
 use App\Contracts\Auth\TwoFactorAuthentication;
 

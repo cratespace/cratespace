@@ -1,8 +1,13 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Auth\RecoveryCodeController;
 use App\Http\Controllers\Auth\RegisteredUserController;
+use App\Http\Controllers\Auth\TwoFactorQrCodeController;
+use App\Http\Controllers\Auth\ConfirmablePasswordController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
+use App\Http\Controllers\Auth\ConfirmedPasswordStatusController;
+use App\Http\Controllers\Auth\TwoFactorAuthenticationController;
 use App\Http\Controllers\Auth\TwoFactorAuthenticatedSessionController;
 
 Route::group([
@@ -21,4 +26,17 @@ Route::group([
     'middleware' => 'auth',
 ], function (): void {
     Route::post('/signout', [AuthenticatedSessionController::class, 'destroy'])->name('signout');
+
+    Route::group([
+        'prefix' => 'user',
+        'middleware' => ['auth'],
+    ], function (): void {
+        Route::get('/confirm-password', [ConfirmablePasswordController::class, 'show'])->name('password.confirm');
+        Route::get('/confirmed-password-status', [ConfirmedPasswordStatusController::class, 'show'])->name('password.confirmation');
+        Route::post('/tfa', [TwoFactorAuthenticationController::class, 'store']);
+        Route::delete('/tfa', [TwoFactorAuthenticationController::class, 'destroy']);
+        Route::get('/tfa-qr-code', [TwoFactorQrCodeController::class, 'show']);
+        Route::get('/tfa-recovery-codes', [RecoveryCodeController::class, 'index']);
+        Route::post('/tfa-recovery-codes', [RecoveryCodeController::class, 'store']);
+    });
 });
