@@ -17,8 +17,10 @@ class ConfirmPassword
      */
     public function __invoke(StatefulGuard $guard, $user, ?string $password = null)
     {
+        $username = config('auth.defaults.username');
+
         return $guard->validate([
-            $username => $user->{config('auth.defaults..username')},
+            $username => $user->{$username},
             'password' => $password,
         ]);
     }

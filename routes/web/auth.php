@@ -27,8 +27,13 @@ Route::group([
 ], function (): void {
     Route::post('/signout', [AuthenticatedSessionController::class, 'destroy'])->name('signout');
 
-    Route::get('/confirm-password', [ConfirmablePasswordController::class, 'show'])->name('password.confirm');
-    Route::get('/confirmed-password-status', [ConfirmedPasswordStatusController::class, 'show'])->name('password.confirmation');
+    Route::group([
+        'prefix' => 'user',
+    ], function (): void {
+        Route::get('/confirm-password', [ConfirmablePasswordController::class, 'show'])->name('password.confirm');
+        Route::post('/confirm-password', [ConfirmablePasswordController::class, 'store']);
+        Route::get('/confirmed-password-status', [ConfirmedPasswordStatusController::class, 'show'])->name('password.confirmation');
+    });
 
     Route::group([
         'prefix' => 'user',
