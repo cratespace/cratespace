@@ -11,7 +11,7 @@ interface CreatesNewUsers
      *
      * @param array $data
      *
-     * @return mixed
+     * @return \App\Models\User
      */
     public function create(array $data): User;
 }

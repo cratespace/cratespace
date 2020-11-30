@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Auth\PasswordController;
 use App\Http\Controllers\Auth\RecoveryCodeController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Auth\TwoFactorQrCodeController;
@@ -30,6 +31,7 @@ Route::group([
     Route::group([
         'prefix' => 'user',
     ], function (): void {
+        Route::put('/password', [PasswordController::class, 'update'])->name('user-password.update');
         Route::get('/confirm-password', [ConfirmablePasswordController::class, 'show'])->name('password.confirm');
         Route::post('/confirm-password', [ConfirmablePasswordController::class, 'store']);
         Route::get('/confirmed-password-status', [ConfirmedPasswordStatusController::class, 'show'])->name('password.confirmation');

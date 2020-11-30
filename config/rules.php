@@ -25,4 +25,9 @@ return [
         'code' => ['nullable', 'string'],
         'recovery_code' => ['nullable', 'string'],
     ],
+
+    'update_password' => [
+        'current_password' => ['required', 'string'],
+        'password' => ['required', 'string', new Password(), 'confirmed'],
+    ],
 ];

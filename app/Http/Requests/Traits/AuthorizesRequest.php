@@ -11,7 +11,7 @@ trait AuthorizesRequest
      */
     protected function authenticated(): bool
     {
-        return auth()->check() && $this->user()->is(user());
+        return auth()->check() && $this->user()->is(auth()->user());
     }
 
     /**

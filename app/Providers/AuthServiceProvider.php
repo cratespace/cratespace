@@ -7,6 +7,8 @@ use App\Auth\Actions\CreateNewUser;
 use App\Auth\TwoFactorAuthenticator;
 use Illuminate\Support\Facades\Auth;
 use App\Contracts\Auth\CreatesNewUsers;
+use App\Auth\Actions\UpdateUserPassword;
+use App\Contracts\Auth\UpdatesUserPasswords;
 use Illuminate\Contracts\Auth\StatefulGuard;
 use App\Contracts\Auth\Authenticator as AuthenticatorContract;
 use App\Contracts\Auth\TwoFactorAuthenticator as TwoFactorAuthenticatorContract;
@@ -30,6 +32,7 @@ class AuthServiceProvider extends ServiceProvider
         CreatesNewUsers::class => CreateNewUser::class,
         AuthenticatorContract::class => Authenticator::class,
         TwoFactorAuthenticatorContract::class => TwoFactorAuthenticator::class,
+        UpdatesUserPasswords::class => UpdateUserPassword::class,
     ];
 
     /**
