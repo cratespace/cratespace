@@ -12,6 +12,11 @@ use Illuminate\Contracts\Auth\Authenticatable;
 
 class ResetPasswordTest extends TestCase
 {
+    public function tearDown(): void
+    {
+        m::close();
+    }
+
     /** @test */
     public function only_authorized_users_can_view_new_password_view()
     {

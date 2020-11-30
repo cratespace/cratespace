@@ -16,7 +16,6 @@ function installProject() {
 function installDependencies() {
     printf "Installing dependencies\n"
     COMPOSER_MEMORY_LIMIT=-1 composer install
-    printf "Dependencies have been installed\n"
 }
 
 function prepareProjectFiles() {

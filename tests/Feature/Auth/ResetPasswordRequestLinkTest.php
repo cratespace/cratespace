@@ -9,6 +9,11 @@ use Illuminate\Contracts\Auth\PasswordBroker;
 
 class ResetPasswordRequestLinkTest extends TestCase
 {
+    public function tearDown(): void
+    {
+        m::close();
+    }
+
     /** @test */
     public function a_user_can_see_reset_link_request_view()
     {

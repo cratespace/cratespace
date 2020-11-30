@@ -25,7 +25,8 @@
         "laravel/tinker": "^2.5",
         "pragmarx/google2fa": "^7.0|^8.0",
         "symfony/console": "^5.1",
-        "symfony/process": "^5.1"
+        "symfony/process": "^5.1",
+        "stevebauman/location": "^5.2"
     },
     "require-dev": {
         "facade/ignition": "^2.5",

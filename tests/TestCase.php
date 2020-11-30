@@ -8,13 +8,13 @@ use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
 
 abstract class TestCase extends BaseTestCase
 {
-    use CreatesApplication;
     use WithFaker;
+    use CreatesApplication;
 
+    use Concerns\HasMacros;
     use Concerns\CreatesFakeUser;
     use Concerns\ChecksForInternet;
     use Concerns\TestsProtectedQualities;
-    use Concerns\HasMacros;
 
     /**
      * Setup test suite.

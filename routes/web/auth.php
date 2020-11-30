@@ -9,6 +9,7 @@ use App\Http\Controllers\Auth\TwoFactorQrCodeController;
 use App\Http\Controllers\Auth\PasswordResetLinkController;
 use App\Http\Controllers\Auth\ConfirmablePasswordController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
+use App\Http\Controllers\Auth\OtherBrowserSessionsController;
 use App\Http\Controllers\Auth\ConfirmedPasswordStatusController;
 use App\Http\Controllers\Auth\TwoFactorAuthenticationController;
 use App\Http\Controllers\Auth\TwoFactorAuthenticatedSessionController;
@@ -47,6 +48,9 @@ Route::group([
         Route::get('/confirm-password', [ConfirmablePasswordController::class, 'show'])->name('password.confirm');
         Route::post('/confirm-password', [ConfirmablePasswordController::class, 'store']);
         Route::get('/confirmed-password-status', [ConfirmedPasswordStatusController::class, 'show'])->name('password.confirmation');
+
+        // Other Browser Sessions Route...
+        Route::delete('/other-browser-sessions', [OtherBrowserSessionsController::class, 'destroy'])->name('other-browser-sessions.destroy');
     });
 
     Route::group([
