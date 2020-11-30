@@ -59,7 +59,7 @@ class AuthenticatedSessionController extends Controller
      */
     public function store(LoginRequest $request)
     {
-        $this->authenticator->handle($request);
+        $this->authenticator->authenticate($request);
 
         return $request->wantsJson()
             ? response()->json(['two_factor' => false])

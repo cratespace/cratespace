@@ -13,5 +13,5 @@ interface Authenticator
      *
      * @return mixed
      */
-    public function handle(Request $request);
+    public function authenticate(Request $request);
 }

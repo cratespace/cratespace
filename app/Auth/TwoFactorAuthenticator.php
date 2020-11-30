@@ -2,10 +2,12 @@
 
 namespace App\Auth;
 
+use Illuminate\Http\Request;
 use PragmaRX\Google2FA\Google2FA;
+use App\Contracts\Auth\Authenticator as AuthenticatorContract;
 use App\Contracts\Auth\TwoFactorAuthenticator as TwoFactorAuthenticatorContract;
 
-class TwoFactorAuthenticator implements TwoFactorAuthenticatorContract
+class TwoFactorAuthenticator implements AuthenticatorContract, TwoFactorAuthenticatorContract
 {
     /**
      * The underlying library providing two factor authentication helper services.
@@ -24,6 +26,17 @@ class TwoFactorAuthenticator implements TwoFactorAuthenticatorContract
     public function __construct(Google2FA $engine)
     {
         $this->engine = $engine;
+    }
+
+    /**
+     * Handle given login request.
+     *
+     * @param \Illuminate\Http\Request $request
+     *
+     * @return mixed
+     */
+    public function authenticate(Request $request)
+    {
     }
 
     /**

@@ -51,7 +51,7 @@ class Authenticator implements AuthenticatorContract
      *
      * @return void
      */
-    public function handle(Request $request): void
+    public function authenticate(Request $request): void
     {
         $this->ensureLoginIsNotThrottled($request);
 
