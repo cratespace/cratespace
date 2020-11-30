@@ -2,23 +2,23 @@
 
 namespace App\Auth\Actions;
 
-use App\Contracts\Auth\UpdatesUserPasswords;
+use App\Contracts\Auth\ResetsUserPasswords;
 use App\Auth\Actions\Concerns\UpdatesPassword;
 use Illuminate\Contracts\Auth\Authenticatable;
 
-class UpdateUserPassword implements UpdatesUserPasswords
+class ResetUserPassword implements ResetsUserPasswords
 {
     use UpdatesPassword;
 
     /**
-     * Validate and update the user's password.
+     * Validate and reset the user's forgotten password.
      *
      * @param \Illuminate\Contracts\Auth\Authenticatable $user
      * @param array                                      $data
      *
      * @return void
      */
-    public function update(Authenticatable $user, array $data): void
+    public function reset(Authenticatable $user, array $data): void
     {
         $this->updatePassword($user, $data['password']);
     }

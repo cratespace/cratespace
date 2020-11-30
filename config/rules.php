@@ -30,4 +30,10 @@ return [
         'current_password' => ['required', 'string'],
         'password' => ['required', 'string', new Password(), 'confirmed'],
     ],
+
+    'new_password' => [
+        'token' => 'required',
+        'email' => ['required', 'email'],
+        'password' => ['required', 'string', new Password(), 'confirmed'],
+    ],
 ];
