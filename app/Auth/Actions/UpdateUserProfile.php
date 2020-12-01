@@ -3,6 +3,7 @@
 namespace App\Auth\Actions;
 
 use App\Contracts\Auth\UpdatesUserProfiles;
+use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 
 class UpdateUserProfile implements UpdatesUserProfiles
@@ -23,35 +24,30 @@ class UpdateUserProfile implements UpdatesUserProfiles
 
         if ($data['email'] !== $user->email &&
             $user instanceof MustVerifyEmail) {
-            $this->updateVerifiedUser($user, $data);
+            $this->updateInformation($user, $data, true);
+
+            $user->sendEmailVerificationNotification();
         } else {
-            $user->forceFill([
-                'name' => $data['name'],
-                'username' => $data['username'],
-                'email' => $data['email'],
-                'phone' => $data['phone'],
-            ])->save();
+            $this->updateInformation($user, $data, false);
         }
     }
 
     /**
-     * Update the given verified user's profile information.
+     * Update the given user's profile information.
      *
      * @param \Illuminate\Contracts\Auth\Authenticatable $user
      * @param array                                      $data
+     * @param bool                                       $verified
      *
      * @return void
      */
-    protected function updateVerifiedUser(Authenticatable $user, array $data): void
+    protected function updateInformation(Authenticatable $user, array $data, bool $verified = true): void
     {
-        $user->forceFill([
+        $user->forceFill(array_merge([
             'name' => $data['name'],
             'username' => $data['username'],
             'phone' => $data['phone'],
             'email' => $data['email'],
-            'email_verified_at' => null,
-        ])->save();
-
-        $user->sendEmailVerificationNotification();
+        ], $verified ? ['email_verified_at' => null] : []))->save();
     }
 }
