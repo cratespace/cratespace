@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Symfony\Component\HttpFoundation\Response;
 
 class TwoFactorQrCodeController extends Controller
 {
@@ -14,7 +15,7 @@ class TwoFactorQrCodeController extends Controller
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function show(Request $request)
+    public function show(Request $request): Response
     {
         return response()->json([
             'svg' => $request->user()->twoFactorQrCodeSvg(),

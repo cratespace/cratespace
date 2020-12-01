@@ -11,7 +11,7 @@ class ResetUserPassword implements ResetsUserPasswords
     use UpdatesPassword;
 
     /**
-     * Validate and reset the user's forgotten password.
+     * Reset the user's forgotten password.
      *
      * @param \Illuminate\Contracts\Auth\Authenticatable $user
      * @param array                                      $data

@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Auth;
 
-use Illuminate\Http\JsonResponse;
+use Illuminate\Contracts\View\View;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Password;
 use App\Http\Requests\NewPasswordRequest;
@@ -11,6 +11,7 @@ use App\Contracts\Auth\ResetsUserPasswords;
 use Illuminate\Contracts\Auth\StatefulGuard;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Validation\ValidationException;
+use Symfony\Component\HttpFoundation\Response;
 use App\Http\Controllers\Auth\Traits\HasBroker;
 
 class NewPasswordController extends Controller
@@ -41,9 +42,9 @@ class NewPasswordController extends Controller
      *
      * @param \Illuminate\Http\Request $request
      *
-     * @return \Laravel\Fortify\Contracts\ResetPasswordViewResponse
+     * @return \Illuminate\Contracts\View\View
      */
-    public function create()
+    public function create(): View
     {
         return view('auth.reset-password');
     }
@@ -53,9 +54,9 @@ class NewPasswordController extends Controller
      *
      * @param \Illuminate\Http\Request $request
      *
-     * @return \Illuminate\Contracts\Support\Responsable
+     * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function store(NewPasswordRequest $request, ResetsUserPasswords $resetor)
+    public function store(NewPasswordRequest $request, ResetsUserPasswords $resetor): Response
     {
         $status = $this->broker()->reset(
             $request->only('email', 'password', 'password_confirmation', 'token'),
@@ -68,7 +69,7 @@ class NewPasswordController extends Controller
 
         if ($status == Password::PASSWORD_RESET) {
             return $request->wantsJson()
-                ? new JsonResponse(['message' => trans($status)], 200)
+                ? response()->json(['message' => trans($status)])
                 : redirect()->route('signin')->with('status', trans($status));
         }
 

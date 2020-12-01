@@ -21,12 +21,17 @@ class CreateUsersTable extends Migration
             $table->string('phone', 50)->nullable();
             $table->timestamp('email_verified_at')->nullable();
             $table->text('profile_photo_path')->nullable();
-            $table->string('password')->unique();
             $table->text('two_factor_secret')->nullable();
             $table->text('two_factor_recovery_codes')->nullable();
             $table->json('settings')->nullable();
             $table->rememberToken();
             $table->timestamps();
+
+            if (app()->isProduction()) {
+                $table->string('password')->unique();
+            } else {
+                $table->string('password');
+            }
         });
     }
 

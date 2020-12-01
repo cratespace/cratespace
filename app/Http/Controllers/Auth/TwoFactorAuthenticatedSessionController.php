@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers\Auth;
 
-use Illuminate\Http\JsonResponse;
+use Illuminate\Contracts\View\View;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\TwoFactorLoginRequest;
 use Illuminate\Contracts\Auth\StatefulGuard;
+use Symfony\Component\HttpFoundation\Response;
 
 class TwoFactorAuthenticatedSessionController extends Controller
 {
@@ -31,9 +32,9 @@ class TwoFactorAuthenticatedSessionController extends Controller
     /**
      * Show the two factor authentication challenge view.
      *
-     * @return \Illuminate\View\View
+     * @return \Illuminate\Contracts\View\View
      */
-    public function create()
+    public function create(): View
     {
         return view('auth.tfa-challenge');
     }
@@ -41,11 +42,11 @@ class TwoFactorAuthenticatedSessionController extends Controller
     /**
      * Attempt to authenticate a new session using the two factor authentication code.
      *
-     * @param \Laravel\Fortify\Http\Requests\TwoFactorLoginRequest $request
+     * @param \App\Http\Requests\TwoFactorLoginRequest $request
      *
-     * @return mixed
+     * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function store(TwoFactorLoginRequest $request)
+    public function store(TwoFactorLoginRequest $request): Response
     {
         $user = $request->challengedUser();
 
@@ -58,7 +59,7 @@ class TwoFactorAuthenticatedSessionController extends Controller
         $this->guard->login($user, $request->remember());
 
         return $request->wantsJson()
-            ? new JsonResponse('', 204)
+            ? response()->json('', 204)
             : redirect()->intended(config('auth.defaults.home'));
     }
 }

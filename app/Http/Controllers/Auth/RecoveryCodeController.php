@@ -3,9 +3,9 @@
 namespace App\Http\Controllers\Auth;
 
 use Illuminate\Http\Request;
-use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
 use App\Auth\Actions\GenerateNewRecoveryCodes;
+use Symfony\Component\HttpFoundation\Response;
 
 class RecoveryCodeController extends Controller
 {
@@ -14,9 +14,9 @@ class RecoveryCodeController extends Controller
      *
      * @param \Illuminate\Http\Request $request
      *
-     * @return \Illuminate\Http\Response
+     * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function index(Request $request)
+    public function index(Request $request): Response
     {
         if (!$request->user()->two_factor_secret ||
             !$request->user()->two_factor_recovery_codes) {
@@ -34,14 +34,14 @@ class RecoveryCodeController extends Controller
      * @param \Illuminate\Http\Request                          $request
      * @param \Laravel\Fortify\Actions\GenerateNewRecoveryCodes $generate
      *
-     * @return \Illuminate\Http\Response
+     * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function store(Request $request, GenerateNewRecoveryCodes $generate)
+    public function store(Request $request, GenerateNewRecoveryCodes $generate): Response
     {
         $generate($request->user());
 
         return $request->wantsJson()
-            ? new JsonResponse('', 200)
+            ? response()->json()
             : back()->with('status', 'recovery-codes-generated');
     }
 }

@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers\Auth;
 
-use Illuminate\Http\JsonResponse;
+use Illuminate\Contracts\View\View;
 use App\Http\Controllers\Controller;
 use Illuminate\Auth\Events\Registered;
 use App\Contracts\Auth\CreatesNewUsers;
 use App\Http\Requests\CreateNewUserRequest;
 use Illuminate\Contracts\Auth\StatefulGuard;
+use Symfony\Component\HttpFoundation\Response;
 
 class RegisteredUserController extends Controller
 {
@@ -35,9 +36,9 @@ class RegisteredUserController extends Controller
      *
      * @param \Illuminate\Http\Request $request
      *
-     * @return \Illuminate\View\View
+     * @return \Illuminate\Contracts\View\View
      */
-    public function create()
+    public function create(): View
     {
         return view('auth.register');
     }
@@ -48,9 +49,9 @@ class RegisteredUserController extends Controller
      * @param \Illuminate\Http\Request       $request
      * @param \App\Contracts\CreatesNewUsers $creator
      *
-     * @return \Illuminate\Http\Response
+     * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function store(CreateNewUserRequest $request, CreatesNewUsers $creator)
+    public function store(CreateNewUserRequest $request, CreatesNewUsers $creator): Response
     {
         event(new Registered(
             $user = $creator->create($request->validated())
@@ -59,7 +60,7 @@ class RegisteredUserController extends Controller
         $this->guard->login($user);
 
         return $request->wantsJson()
-            ? new JsonResponse('', 201)
+            ? response()->json('', 201)
             : redirect(config('auth.defaults.home'));
     }
 }

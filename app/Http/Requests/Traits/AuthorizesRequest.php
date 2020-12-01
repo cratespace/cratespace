@@ -2,6 +2,8 @@
 
 namespace App\Http\Requests\Traits;
 
+use Illuminate\Database\Eloquent\Model;
+
 trait AuthorizesRequest
 {
     /**
@@ -21,7 +23,7 @@ trait AuthorizesRequest
      *
      * @return bool
      */
-    protected function resourceBelongsToUser($resource): bool
+    protected function resourceBelongsToUser(Model $resource): bool
     {
         return $this->authenticated() && $this->user()->is($resource->user);
     }
@@ -33,7 +35,7 @@ trait AuthorizesRequest
      *
      * @return bool
      */
-    protected function resourceIsAvailable($resource): bool
+    protected function resourceIsAvailable(Model $resource): bool
     {
         return $resource->isAvailable();
     }

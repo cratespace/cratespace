@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Auth;
 
 use Illuminate\Http\Request;
-use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
 
 class ProfilePhotoController extends Controller
@@ -20,7 +19,7 @@ class ProfilePhotoController extends Controller
         $request->user()->deleteProfilePhoto();
 
         return $request->wantsJson()
-            ? new JsonResponse('', 204)
-            : back(303)->with('status', trans('Profile photo deleted'));
+            ? response()->json('', 204)
+            : back(303)->with('status', 'profile-photo-deleted');
     }
 }

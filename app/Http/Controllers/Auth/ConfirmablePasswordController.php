@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use Illuminate\Http\Request;
-use Illuminate\Http\JsonResponse;
+use Illuminate\Contracts\View\View;
 use App\Http\Controllers\Controller;
 use App\Auth\Actions\ConfirmPassword;
 use Illuminate\Contracts\Auth\StatefulGuard;
@@ -36,9 +36,9 @@ class ConfirmablePasswordController extends Controller
      *
      * @param \Illuminate\Http\Request $request
      *
-     * @return \Laravel\Fortify\Contracts\ConfirmPasswordViewResponse
+     * @return \Illuminate\Contracts\View\View
      */
-    public function show(Request $request)
+    public function show(Request $request): View
     {
         return view('auth.confirm-password');
     }
@@ -50,7 +50,7 @@ class ConfirmablePasswordController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Responsable
      */
-    public function store(Request $request)
+    public function store(Request $request): Response
     {
         $confirmed = app(ConfirmPassword::class)(
             $this->guard, $request->user(), $request->input('password')
@@ -75,7 +75,7 @@ class ConfirmablePasswordController extends Controller
     protected function passwordConfirmedResponse(Request $request): Response
     {
         return $request->wantsJson()
-            ? new JsonResponse('', 201)
+            ? response()->json('', 201)
             : redirect()->intended(config('auth.defaults.home'));
     }
 

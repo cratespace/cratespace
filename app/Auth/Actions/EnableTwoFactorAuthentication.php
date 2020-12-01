@@ -2,6 +2,7 @@
 
 namespace App\Auth\Actions;
 
+use App\Models\User;
 use App\Auth\RecoveryCode;
 use Illuminate\Support\Collection;
 use App\Contracts\Auth\TwoFactorAuthenticator;
@@ -30,11 +31,11 @@ class EnableTwoFactorAuthentication
     /**
      * Enable two factor authentication for the user.
      *
-     * @param mixed $user
+     * @param \App\Models\User $user
      *
      * @return void
      */
-    public function __invoke($user)
+    public function __invoke(User $user)
     {
         $user->forceFill([
             'two_factor_secret' => encrypt($this->authenticator->generateSecretKey()),

@@ -3,8 +3,8 @@
 namespace Tests\Unit\Models;
 
 use Tests\TestCase;
+use Tests\Unit\Models\Fixtures\Mock;
 use Illuminate\Support\Facades\Route;
-use Tests\Unit\Resources\fixtures\Mock;
 
 class RedirectableTraitTest extends TestCase
 {

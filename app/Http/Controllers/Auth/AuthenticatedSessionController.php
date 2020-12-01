@@ -4,10 +4,11 @@ namespace App\Http\Controllers\Auth;
 
 use App\Auth\Authenticator;
 use Illuminate\Http\Request;
-use Illuminate\Http\JsonResponse;
 use App\Http\Requests\LoginRequest;
+use Illuminate\Contracts\View\View;
 use App\Http\Controllers\Controller;
 use Illuminate\Contracts\Auth\StatefulGuard;
+use Symfony\Component\HttpFoundation\Response;
 use App\Contracts\Auth\Authenticator as AuthenticatorContract;
 
 class AuthenticatedSessionController extends Controller
@@ -43,9 +44,9 @@ class AuthenticatedSessionController extends Controller
      *
      * @param \Illuminate\Http\Request $request
      *
-     * @return \Illuminate\View\View
+     * @return \Illuminate\Contracts\View\View
      */
-    public function create(Request $request)
+    public function create(Request $request): View
     {
         return view('auth.login');
     }
@@ -55,9 +56,9 @@ class AuthenticatedSessionController extends Controller
      *
      * @param \App\Http\Requests\LoginRequest
      *
-     * @return \Illuminate\Http\Response
+     * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function store(LoginRequest $request)
+    public function store(LoginRequest $request): Response
     {
         $this->authenticator->authenticate($request);
 
@@ -71,9 +72,9 @@ class AuthenticatedSessionController extends Controller
      *
      * @param \Illuminate\Http\Request $request
      *
-     * @return \Illuminate\Http\Response
+     * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function destroy(Request $request)
+    public function destroy(Request $request): Response
     {
         $this->guard->logout();
 
@@ -82,7 +83,7 @@ class AuthenticatedSessionController extends Controller
         $request->session()->regenerateToken();
 
         return $request->wantsJson()
-            ? new JsonResponse('', 204)
+            ? response()->json('', 204)
             : redirect('/');
     }
 }

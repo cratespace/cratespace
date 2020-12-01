@@ -29,13 +29,13 @@ class TwoFactorAuthenticator implements AuthenticatorContract, TwoFactorAuthenti
     }
 
     /**
-     * Handle given login request.
+     * Authenticate given login request.
      *
      * @param \Illuminate\Http\Request $request
      *
-     * @return mixed
+     * @return void
      */
-    public function authenticate(Request $request)
+    public function authenticate(Request $request): void
     {
     }
 

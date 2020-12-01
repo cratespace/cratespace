@@ -2,6 +2,7 @@
 
 namespace App\Auth\Actions;
 
+use App\Models\User;
 use App\Auth\RecoveryCode;
 use Illuminate\Support\Collection;
 
@@ -10,11 +11,11 @@ class GenerateNewRecoveryCodes
     /**
      * Generate new recovery codes for the user.
      *
-     * @param mixed $user
+     * @param \App\Models\User $user
      *
      * @return void
      */
-    public function __invoke($user)
+    public function __invoke(User $user)
     {
         $user->forceFill([
             'two_factor_recovery_codes' => encrypt(json_encode(Collection::times(8, function () {

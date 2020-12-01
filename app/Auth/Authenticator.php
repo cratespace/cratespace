@@ -45,7 +45,7 @@ class Authenticator implements AuthenticatorContract
     }
 
     /**
-     * Handle given login request.
+     * Authenticate given login request.
      *
      * @param \Illuminate\Http\Request $request
      *

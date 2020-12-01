@@ -11,7 +11,7 @@ class UpdateUserPassword implements UpdatesUserPasswords
     use UpdatesPassword;
 
     /**
-     * Validate and update the user's password.
+     * update the user's password.
      *
      * @param \Illuminate\Contracts\Auth\Authenticatable $user
      * @param array                                      $data

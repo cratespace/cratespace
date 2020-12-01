@@ -2,16 +2,18 @@
 
 namespace App\Auth\Actions;
 
+use App\Models\User;
+
 class DisableTwoFactorAuthentication
 {
     /**
      * Disable two factor authentication for the user.
      *
-     * @param mixed $user
+     * @param \App\Models\User $user
      *
      * @return void
      */
-    public function __invoke($user)
+    public function __invoke(User $user)
     {
         $user->forceFill([
             'two_factor_secret' => null,

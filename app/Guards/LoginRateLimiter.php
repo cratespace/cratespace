@@ -13,7 +13,7 @@ class LoginRateLimiter
      *
      * @var \Illuminate\Cache\RateLimiter
      */
-    protected $limiter;
+    protected RateLimiter $limiter;
 
     /**
      * Create a new login rate limiter instance.
@@ -46,7 +46,7 @@ class LoginRateLimiter
      *
      * @return bool
      */
-    public function tooManyAttempts(Request $request)
+    public function tooManyAttempts(Request $request): bool
     {
         return $this->limiter->tooManyAttempts($this->throttleKey($request), 5);
     }
@@ -58,7 +58,7 @@ class LoginRateLimiter
      *
      * @return void
      */
-    public function increment(Request $request)
+    public function increment(Request $request): void
     {
         $this->limiter->hit($this->throttleKey($request), 60);
     }
@@ -70,7 +70,7 @@ class LoginRateLimiter
      *
      * @return int
      */
-    public function availableIn(Request $request)
+    public function availableIn(Request $request): int
     {
         return $this->limiter->availableIn($this->throttleKey($request));
     }
@@ -82,7 +82,7 @@ class LoginRateLimiter
      *
      * @return void
      */
-    public function clear(Request $request)
+    public function clear(Request $request): void
     {
         $this->limiter->clear($this->throttleKey($request));
     }
@@ -94,7 +94,7 @@ class LoginRateLimiter
      *
      * @return string
      */
-    protected function throttleKey(Request $request)
+    protected function throttleKey(Request $request): string
     {
         return Str::lower($request->input(config('auth.defaults.username'))) . '|' . $request->ip();
     }

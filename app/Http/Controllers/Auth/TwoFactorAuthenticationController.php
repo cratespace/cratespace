@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\Auth;
 
 use Illuminate\Http\Request;
-use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
+use Symfony\Component\HttpFoundation\Response;
 use App\Auth\Actions\EnableTwoFactorAuthentication;
 use App\Auth\Actions\DisableTwoFactorAuthentication;
 
@@ -18,12 +18,12 @@ class TwoFactorAuthenticationController extends Controller
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function store(Request $request, EnableTwoFactorAuthentication $enable)
+    public function store(Request $request, EnableTwoFactorAuthentication $enable): Response
     {
         $enable($request->user());
 
         return $request->wantsJson()
-            ? new JsonResponse('', 200)
+            ? response()->json()
             : back()->with('status', 'two-factor-authentication-enabled');
     }
 
@@ -40,7 +40,7 @@ class TwoFactorAuthenticationController extends Controller
         $disable($request->user());
 
         return $request->wantsJson()
-            ? new JsonResponse('', 200)
+            ? response()->json()
             : back()->with('status', 'two-factor-authentication-disabled');
     }
 }

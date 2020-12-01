@@ -3,11 +3,12 @@
 namespace App\Http\Controllers\Auth;
 
 use Illuminate\Http\Request;
-use Illuminate\Http\JsonResponse;
+use Illuminate\Contracts\View\View;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Password;
 use App\Http\Requests\ResetPasswordRequest;
 use Illuminate\Validation\ValidationException;
+use Symfony\Component\HttpFoundation\Response;
 use App\Http\Controllers\Auth\Traits\HasBroker;
 
 class PasswordResetLinkController extends Controller
@@ -17,11 +18,9 @@ class PasswordResetLinkController extends Controller
     /**
      * Show the reset password link request view.
      *
-     * @param \Illuminate\Http\Request $request
-     *
-     * @return \Laravel\Fortify\Contracts\RequestPasswordResetLinkViewResponse
+     * @return \Illuminate\Contracts\View\View
      */
-    public function create()
+    public function create(): View
     {
         return view('auth.reset-password-request');
     }
@@ -31,15 +30,15 @@ class PasswordResetLinkController extends Controller
      *
      * @param \Illuminate\Http\Request $request
      *
-     * @return \Illuminate\Contracts\Support\Responsable
+     * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function store(ResetPasswordRequest $request)
+    public function store(ResetPasswordRequest $request): Response
     {
         $status = $this->broker()->sendResetLink($request->only('email'));
 
         if ($status == Password::RESET_LINK_SENT) {
             return $request->wantsJson()
-                ? new JsonResponse(['message' => trans($status)], 200)
+                ? response()->json(['message' => trans($status)], 200)
                 : back()->with('status', trans($status));
         }
 

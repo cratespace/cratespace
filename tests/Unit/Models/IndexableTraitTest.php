@@ -3,7 +3,7 @@
 namespace Tests\Unit\Models;
 
 use Tests\TestCase;
-use Tests\Unit\Resources\fixtures\Mock;
+use Tests\Unit\Models\Fixtures\Mock;
 
 class IndexableTraitTest extends TestCase
 {

@@ -120,7 +120,7 @@ class TwoFactorLoginRequest extends FormRequest
      *
      * @return bool
      */
-    public function remember()
+    public function remember(): bool
     {
         if (!$this->remember) {
             $this->remember = $this->session()->pull('login.remember', false);
