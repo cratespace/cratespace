@@ -12,35 +12,35 @@ class Password implements Rule
      *
      * @var int
      */
-    protected $length = 8;
+    protected int $length = 8;
 
     /**
      * Indicates if the password must contain one uppercase character.
      *
      * @var bool
      */
-    protected $requireUppercase = false;
+    protected bool $requireUppercase = false;
 
     /**
      * Indicates if the password must contain one numeric digit.
      *
      * @var bool
      */
-    protected $requireNumeric = false;
+    protected bool $requireNumeric = false;
 
     /**
      * Indicates if the password must contain one special character.
      *
      * @var bool
      */
-    protected $requireSpecialCharacter = false;
+    protected bool $requireSpecialCharacter = false;
 
     /**
      * The message that should be used when validation fails.
      *
      * @var string
      */
-    protected $message;
+    protected string $message;
 
     /**
      * Determine if the validation rule passes.
@@ -133,9 +133,9 @@ class Password implements Rule
      *
      * @param int $length
      *
-     * @return $this
+     * @return \App\Rules\Password
      */
-    public function length(int $length)
+    public function length(int $length): Password
     {
         $this->length = $length;
 
@@ -145,9 +145,9 @@ class Password implements Rule
     /**
      * Indicate that at least one uppercase character is required.
      *
-     * @return $this
+     * @return \App\Rules\Password
      */
-    public function requireUppercase()
+    public function requireUppercase(): Password
     {
         $this->requireUppercase = true;
 
@@ -157,9 +157,9 @@ class Password implements Rule
     /**
      * Indicate that at least one numeric digit is required.
      *
-     * @return $this
+     * @return \App\Rules\Password
      */
-    public function requireNumeric()
+    public function requireNumeric(): Password
     {
         $this->requireNumeric = true;
 
@@ -169,9 +169,9 @@ class Password implements Rule
     /**
      * Indicate that at least one special character is required.
      *
-     * @return $this
+     * @return \App\Rules\Password
      */
-    public function requireSpecialCharacter()
+    public function requireSpecialCharacter(): Password
     {
         $this->requireSpecialCharacter = true;
 
@@ -183,9 +183,9 @@ class Password implements Rule
      *
      * @param string $message
      *
-     * @return $this
+     * @return \App\Rules\Password
      */
-    public function withMessage(string $message)
+    public function withMessage(string $message): Password
     {
         $this->message = $message;
 

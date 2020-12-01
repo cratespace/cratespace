@@ -39,7 +39,7 @@ trait Mailable
     {
         $mailable = new $mailable($this);
 
-        if (! $mailable instanceof MailableContract) {
+        if (!$mailable instanceof MailableContract) {
             throw new RuntimeException("{$mailable} is not a valid mailable.");
         }
 
