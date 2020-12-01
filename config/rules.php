@@ -33,7 +33,16 @@ return [
 
     'new_password' => [
         'token' => 'required',
-        'email' => ['required', 'email'],
+        'email' => ['required', 'email', 'string'],
         'password' => ['required', 'string', new Password(), 'confirmed'],
+    ],
+
+    'user_profile' => [
+        'name' => ['required', 'string', 'max:255'],
+        'email' => ['required', 'email', 'string'],
+        'username' => ['required', 'string', 'max:255'],
+        'phone' => ['required', 'string', 'min:9'],
+        'settings' => ['nullable', 'array'],
+        'photo' => ['nullable', 'image', 'max:1024'],
     ],
 ];

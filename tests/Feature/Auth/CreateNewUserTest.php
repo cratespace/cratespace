@@ -21,6 +21,8 @@ class CreateNewUserTest extends TestCase
     /** @test */
     public function a_user_account_can_be_created()
     {
+        $this->withoutExceptionHandling();
+
         $response = $this->post('/signup', [
             'name' => $this->faker->name,
             'business' => $this->faker->company,

@@ -3,7 +3,6 @@
 namespace App\Auth;
 
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 use App\Guards\LoginRateLimiter;
 use Illuminate\Auth\Events\Failed;
 use Illuminate\Auth\Events\Lockout;
@@ -11,8 +10,8 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Contracts\Auth\StatefulGuard;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Validation\ValidationException;
+use Symfony\Component\HttpFoundation\Response;
 use App\Contracts\Auth\Authenticator as AuthenticatorContract;
-use Symfony\Component\HttpFoundation\Response as SymfonyResponse;
 
 class Authenticator implements AuthenticatorContract
 {
@@ -73,10 +72,32 @@ class Authenticator implements AuthenticatorContract
      */
     protected function attemptToAuthenticate(Request $request): bool
     {
+        $this->checkAccountStatus($request);
+
         return $this->guard->attempt(
             $request->only($this->username(), 'password'),
             $request->filled('remember')
         );
+    }
+
+    /**
+     * Determine if the user account is locked.
+     *
+     * @param \Illuminate\Http\Request $request
+     *
+     * @return void
+     *
+     * @throws \Illuminate\Validation\ValidationException
+     */
+    protected function checkAccountStatus(Request $request)
+    {
+        tap($this->findUser($request), function (Authenticatable $user) use ($request) {
+            if ($user->locked) {
+                $this->fireFailedEvent($request);
+
+                throw ValidationException::withMessages([$this->username() => [trans('auth.locked')]]);
+            }
+        });
     }
 
     /**
@@ -100,15 +121,27 @@ class Authenticator implements AuthenticatorContract
      *
      * @param \Illuminate\Https\Request $request
      *
-     * @return mixed
+     * @return \Symfony\Component\HttpFoundation\Response|null
      */
     protected function ensureLoginIsNotThrottled(Request $request)
     {
         if ($this->limiter->tooManyAttempts($request)) {
-            event(new Lockout($request));
-
-            return $this->lockOutResponse($request);
+            return $this->lockOutUser($request);
         }
+    }
+
+    /**
+     * Send lockout response.
+     *
+     * @param \Illuminate\Http\Request $request
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    protected function lockOutUser(Request $request): Response
+    {
+        event(new Lockout($request));
+
+        return $this->lockOutResponse($request);
     }
 
     /**
@@ -169,7 +202,7 @@ class Authenticator implements AuthenticatorContract
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    protected function lockOutResponse(Request $request): SymfonyResponse
+    protected function lockOutResponse(Request $request): Response
     {
         return with($this->limiter->availableIn($request), function ($seconds) {
             throw ValidationException::withMessages([$this->username() => [trans('auth.throttle', ['seconds' => $seconds, 'minutes' => ceil($seconds / 60)])]])->status(Response::HTTP_TOO_MANY_REQUESTS);

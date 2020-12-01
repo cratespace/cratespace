@@ -2,14 +2,20 @@
 
 namespace App\Providers;
 
+use App\Models\User;
 use App\Auth\Authenticator;
+use App\Policies\UserPolicy;
+use App\Auth\Actions\DeleteUser;
 use App\Auth\Actions\CreateNewUser;
 use App\Auth\TwoFactorAuthenticator;
+use App\Contracts\Auth\DeletesUsers;
 use Illuminate\Support\Facades\Auth;
 use App\Auth\Actions\ResetUserPassword;
+use App\Auth\Actions\UpdateUserProfile;
 use App\Contracts\Auth\CreatesNewUsers;
 use App\Auth\Actions\UpdateUserPassword;
 use App\Contracts\Auth\ResetsUserPasswords;
+use App\Contracts\Auth\UpdatesUserProfiles;
 use App\Contracts\Auth\UpdatesUserPasswords;
 use Illuminate\Contracts\Auth\StatefulGuard;
 use App\Contracts\Auth\Authenticator as AuthenticatorContract;
@@ -34,8 +40,10 @@ class AuthServiceProvider extends ServiceProvider
         CreatesNewUsers::class => CreateNewUser::class,
         AuthenticatorContract::class => Authenticator::class,
         TwoFactorAuthenticatorContract::class => TwoFactorAuthenticator::class,
-        UpdatesUserPasswords::class => UpdateUserPassword::class,
         ResetsUserPasswords::class => ResetUserPassword::class,
+        UpdatesUserPasswords::class => UpdateUserPassword::class,
+        UpdatesUserProfiles::class => UpdateUserProfile::class,
+        DeletesUsers::class => DeleteUser::class,
     ];
 
     /**
@@ -44,7 +52,7 @@ class AuthServiceProvider extends ServiceProvider
      * @var array
      */
     protected $policies = [
-        // 'App\Models\Model' => 'App\Policies\ModelPolicy',
+        User::class => UserPolicy::class,
     ];
 
     /**

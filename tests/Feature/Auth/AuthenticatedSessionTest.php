@@ -42,6 +42,24 @@ class AuthenticatedSessionTest extends TestCase
     }
 
     /** @test */
+    public function a_user_with_locked_account_cannot_authenticate()
+    {
+        $user = create(User::class, [
+            'email' => 'james@silverman.com',
+            'password' => bcrypt('monster'),
+            'locked' => true,
+        ]);
+
+        $response = $this->post('/signin', [
+            'email' => 'james@silverman.com',
+            'password' => 'monster',
+        ]);
+
+        $response->assertRedirect('/');
+        $this->assertFalse(auth()->check());
+    }
+
+    /** @test */
     public function a_validation_exception_is_returned_on_failure()
     {
         create(User::class, [

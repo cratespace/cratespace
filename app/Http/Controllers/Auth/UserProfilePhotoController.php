@@ -4,17 +4,18 @@ namespace App\Http\Controllers\Auth;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Symfony\Component\HttpFoundation\Response;
 
-class ProfilePhotoController extends Controller
+class UserProfilePhotoController extends Controller
 {
     /**
      * Delete the current user's profile photo.
      *
      * @param \Illuminate\Http\Request $request
      *
-     * @return \Illuminate\Http\RedirectResponse
+     * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function destroy(Request $request)
+    public function destroy(Request $request): Response
     {
         $request->user()->deleteProfilePhoto();
 
