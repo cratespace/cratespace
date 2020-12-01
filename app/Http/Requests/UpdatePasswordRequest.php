@@ -60,8 +60,7 @@ class UpdatePasswordRequest extends FormRequest
         $validator->after(function ($validator) {
             if (!Hash::check($this->input('current_password'), $this->user()->password)) {
                 $validator->errors()->add(
-                    'current_password',
-                    $this->messages()['current_password']
+                    'current_password', $this->messages()['current_password']
                 );
             }
         })->validateWithBag('updatePassword');

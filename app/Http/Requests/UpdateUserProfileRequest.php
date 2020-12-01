@@ -4,7 +4,9 @@ namespace App\Http\Requests;
 
 use App\Models\User;
 use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\ValidatorContract;
 use App\Http\Requests\Concerns\ValidatesInput;
 use App\Http\Requests\Traits\AuthorizesRequest;
 
@@ -36,5 +38,21 @@ class UpdateUserProfileRequest extends FormRequest
                 Rule::unique('users')->ignore($this->user()->id),
             ],
         ]);
+    }
+
+    /**
+     * Set the Validator instance.
+     *
+     * @param \Illuminate\Contracts\Validation\Validator $validator
+     *
+     * @return \Illuminate\Contracts\Validation\Validator
+     */
+    protected function withValidator(): ValidatorContract
+    {
+        $validator = Validator::make($this->all(), $this->rules());
+
+        $validator->validateWithBag('updateProfileInformation');
+
+        return $validator;
     }
 }
