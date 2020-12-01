@@ -6,9 +6,9 @@ use App\Models\User;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\ValidatorContract;
 use App\Http\Requests\Concerns\ValidatesInput;
 use App\Http\Requests\Traits\AuthorizesRequest;
+use Illuminate\Contracts\Validation\Validator as ValidatorContract;
 
 class UpdateUserProfileRequest extends FormRequest
 {
@@ -22,7 +22,7 @@ class UpdateUserProfileRequest extends FormRequest
      */
     public function authorize()
     {
-        return $this->resourceBelongsToUser($this);
+        return $this->authenticated();
     }
 
     /**

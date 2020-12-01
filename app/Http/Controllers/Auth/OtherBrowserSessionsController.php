@@ -21,6 +21,8 @@ class OtherBrowserSessionsController extends Controller
      */
     public function destroy(OtherBrowserSessionsRequest $request, StatefulGuard $guard): Response
     {
+        $this->authorize('update', $request->user());
+
         $guard->logoutOtherDevices($request->password);
 
         $this->deleteOtherSessionRecords($request);

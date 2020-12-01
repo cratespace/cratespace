@@ -47,7 +47,7 @@ class DeleteUserJob implements ShouldQueue
     public function handle(DeletesUsers $deletor)
     {
         try {
-            $deletor->delete($user);
+            $deletor->delete($this->user);
         } catch (Throwable $e) {
             app('log')->error($e->getMessage(), [
                 'user' => $this->user,

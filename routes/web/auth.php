@@ -2,7 +2,9 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\PasswordController;
+use App\Http\Controllers\Auth\CurrentUserController;
 use App\Http\Controllers\Auth\NewPasswordController;
+use App\Http\Controllers\Auth\UserProfileController;
 use App\Http\Controllers\Auth\RecoveryCodeController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Auth\TwoFactorQrCodeController;
@@ -51,6 +53,11 @@ Route::group([
 
         // Other Browser Sessions Route...
         Route::delete('/other-browser-sessions', [OtherBrowserSessionsController::class, 'destroy'])->name('other-browser-sessions.destroy');
+
+        // User Profile Routes...
+        Route::get('/profile', [UserProfileController::class, 'show'])->name('profile.show');
+        Route::put('/profile', [UserProfileController::class, 'update'])->name('profile.update');
+        Route::delete('/', [CurrentUserController::class, 'destroy'])->name('user.destroy');
     });
 
     Route::group([

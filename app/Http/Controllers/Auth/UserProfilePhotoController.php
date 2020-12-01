@@ -17,6 +17,8 @@ class UserProfilePhotoController extends Controller
      */
     public function destroy(Request $request): Response
     {
+        $this->authorize('update', $request->user());
+
         $request->user()->deleteProfilePhoto();
 
         return $request->wantsJson()

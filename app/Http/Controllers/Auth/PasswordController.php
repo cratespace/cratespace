@@ -19,6 +19,8 @@ class PasswordController extends Controller
      */
     public function update(UpdatePasswordRequest $request, UpdatesUserPasswords $updater): Response
     {
+        $this->authorize('update', $request->user());
+
         $updater->update($request->user(), $request->validated());
 
         return $request->wantsJson()
