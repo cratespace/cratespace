@@ -3,7 +3,7 @@
 namespace App\Auth\Actions;
 
 use App\Models\User;
-use App\Auth\RecoveryCode;
+use App\Codes\RecoveryCode;
 use Illuminate\Support\Collection;
 use App\Contracts\Auth\TwoFactorAuthenticator;
 

@@ -3,7 +3,7 @@
 namespace App\Models\Traits;
 
 use BaconQrCode\Writer;
-use App\Auth\RecoveryCode;
+use App\Codes\RecoveryCode;
 use BaconQrCode\Renderer\Color\Rgb;
 use BaconQrCode\Renderer\ImageRenderer;
 use BaconQrCode\Renderer\RendererStyle\Fill;
