@@ -22,4 +22,16 @@ abstract class Code
      * @return string
      */
     abstract public static function generate(): string;
+
+    /**
+     * Set pool of characters to user when generating codes.
+     *
+     * @param string $characters
+     *
+     * @return void
+     */
+    public function setCharacterPool(string $characters): void
+    {
+        $this->characterPool = $characters;
+    }
 }
