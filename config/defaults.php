@@ -17,5 +17,12 @@ return [
                 'notifications_email' => [],
             ],
         ],
+
+        'permissions' => [
+            'create',
+            'read',
+            'update',
+            'delete',
+        ],
     ],
 ];

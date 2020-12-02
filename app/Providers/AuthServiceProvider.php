@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\Models\User;
 use App\Auth\Authenticator;
+use App\Auth\Api\Permission;
 use App\Policies\UserPolicy;
 use App\Auth\Actions\DeleteUser;
 use App\Auth\Actions\CreateNewUser;
@@ -73,6 +74,8 @@ class AuthServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        $this->configurePermissions();
+
         $this->registerPolicies();
     }
 
@@ -98,5 +101,22 @@ class AuthServiceProvider extends ServiceProvider
         foreach (static::$authenticators as $abstract => $concrete) {
             $this->app->singleton($abstract, $concrete);
         }
+    }
+
+    /**
+     * Configure the permissions that are available within the application.
+     *
+     * @return void
+     */
+    protected function configurePermissions(): void
+    {
+        Permission::defaultApiTokenPermissions(['read']);
+
+        Permission::permissions([
+            'create',
+            'read',
+            'update',
+            'delete',
+        ]);
     }
 }
