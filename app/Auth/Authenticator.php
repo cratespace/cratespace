@@ -75,34 +75,12 @@ class Authenticator implements AuthenticatorContract
      */
     protected function attemptToAuthenticate(Request $request): bool
     {
-        // $this->runBeforeSignIn([$this, $request]);
-
-        $this->checkAccountStatus($request);
+        $this->runBeforeSignIn([$this, $request]);
 
         return $this->guard->attempt(
             $request->only($this->username(), 'password'),
             $request->filled('remember')
         );
-    }
-
-    /**
-     * Determine if the user account is locked.
-     *
-     * @param \Illuminate\Http\Request $request
-     *
-     * @return void
-     *
-     * @throws \Illuminate\Validation\ValidationException
-     */
-    public function checkAccountStatus(Request $request)
-    {
-        tap($this->findUser($request), function (Authenticatable $user) use ($request) {
-            if ($user->isLocked()) {
-                $this->fireFailedEvent($request);
-
-                throw ValidationException::withMessages([$this->username() => [trans('auth.locked')]]);
-            }
-        });
     }
 
     /**
@@ -174,7 +152,7 @@ class Authenticator implements AuthenticatorContract
      *
      * @return \Illuminate\Contracts\Auth\Authenticatable
      */
-    protected function findUser(Request $request): Authenticatable
+    public function findUser(Request $request): Authenticatable
     {
         $model = $this->guard->getProvider()->getModel();
 
@@ -192,7 +170,7 @@ class Authenticator implements AuthenticatorContract
      *
      * @return void
      */
-    protected function fireFailedEvent(Request $request, ?Authenticatable $user = null)
+    public function fireFailedEvent(Request $request, ?Authenticatable $user = null)
     {
         event(new Failed('web', $user, [
             $this->username() => $request->{$this->username()},
@@ -219,7 +197,7 @@ class Authenticator implements AuthenticatorContract
      *
      * @return string
      */
-    protected function username(): string
+    public function username(): string
     {
         return config('auth.defaults.username');
     }

@@ -24,7 +24,7 @@ Route::group([
 ], function (): void {
     // Sign In Routes...
     Route::get('/signin', [AuthenticatedSessionController::class, 'create'])->name('signin');
-    Route::middleware('auth.tfa')->post('/signin', [AuthenticatedSessionController::class, 'store']);
+    Route::middleware(['auth.tfa', 'locked'])->post('/signin', [AuthenticatedSessionController::class, 'store']);
     Route::get('/tfa-challenge', [TwoFactorAuthenticatedSessionController::class, 'create'])->name('tfa.signin');
     Route::post('/tfa-challenge', [TwoFactorAuthenticatedSessionController::class, 'store']);
 

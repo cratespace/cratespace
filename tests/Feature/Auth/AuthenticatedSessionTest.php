@@ -7,7 +7,9 @@ use Tests\TestCase;
 use App\Models\User;
 use App\Guards\LoginRateLimiter;
 use PragmaRX\Google2FA\Google2FA;
+use Illuminate\Auth\Events\Failed;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Event;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -44,6 +46,8 @@ class AuthenticatedSessionTest extends TestCase
     /** @test */
     public function a_user_with_locked_account_cannot_authenticate()
     {
+        Event::fake();
+
         $user = create(User::class, [
             'email' => 'james@silverman.com',
             'password' => bcrypt('monster'),
@@ -54,6 +58,8 @@ class AuthenticatedSessionTest extends TestCase
             'email' => 'james@silverman.com',
             'password' => 'monster',
         ]);
+
+        Event::assertDispatched(Failed::class);
 
         $response->assertRedirect('/');
         $this->assertFalse(auth()->check());
