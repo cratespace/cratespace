@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 
-trait InteractsWithSessions
+trait InteractsWithSession
 {
     /**
      * Get the current sessions.

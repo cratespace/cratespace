@@ -13,7 +13,7 @@ trait CreatesFakeUser
      *
      * @var \App\Models\User
      */
-    protected User $user;
+    protected $user;
 
     /**
      * Mock authenticated user.
@@ -44,7 +44,7 @@ trait CreatesFakeUser
      */
     protected function createBusiness(User $user): void
     {
-        create(Business::class, ['user_id' => $this->user->id]);
+        // create(Business::class, ['user_id' => $user->id]);
     }
 
     /**
@@ -56,6 +56,6 @@ trait CreatesFakeUser
      */
     protected function createCreditAccount(User $user): void
     {
-        create(Account::class, ['user_id' => $this->user->id]);
+        // create(Account::class, ['user_id' => $this->user->id]);
     }
 }
