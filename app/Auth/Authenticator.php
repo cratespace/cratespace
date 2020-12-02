@@ -217,6 +217,6 @@ class Authenticator implements AuthenticatorContract
      */
     protected function username(): string
     {
-        return config('auth.defaults.username');
+        return config('auth.defaults.username', 'email');
     }
 }
