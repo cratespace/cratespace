@@ -22,10 +22,9 @@
         "guzzlehttp/guzzle": "^7.0.1",
         "jenssegers/agent": "^2.6",
         "laravel/framework": "^8.12",
+        "laravel/sanctum": "^2.8",
         "laravel/tinker": "^2.5",
         "pragmarx/google2fa": "^7.0|^8.0",
-        "symfony/console": "^5.1",
-        "symfony/process": "^5.1",
         "stevebauman/location": "^5.2"
     },
     "require-dev": {

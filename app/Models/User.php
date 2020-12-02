@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Laravel\Sanctum\HasApiTokens;
 use App\Models\Traits\HasProfilePhoto;
 use Illuminate\Notifications\Notifiable;
 use App\Models\Concerns\InteractsWithSession;
@@ -13,6 +14,7 @@ class User extends Authenticatable
 {
     use HasFactory;
     use Notifiable;
+    use HasApiTokens;
     use HasProfilePhoto;
     use InteractsWithSession;
     use TwoFactorAuthenticatable;
