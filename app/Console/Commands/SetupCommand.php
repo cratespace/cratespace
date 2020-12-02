@@ -48,6 +48,8 @@ class SetupCommand extends Command
             $this->line('~ Database successfully migrated.');
         }
 
+        $this->call('storage:link');
+
         $this->call('cache:clear');
 
         $this->goodbye();
