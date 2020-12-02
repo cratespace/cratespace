@@ -2,6 +2,7 @@
 
 namespace App\Auth;
 
+use Closure;
 use Illuminate\Http\Request;
 use App\Guards\LoginRateLimiter;
 use Illuminate\Auth\Events\Failed;
@@ -114,6 +115,23 @@ class Authenticator implements AuthenticatorContract
     }
 
     /**
+     * Determine if the user is authorized to sign in to their account.
+     *
+     * @param \Illuminate\Https\Request $request
+     * @param \Closure                  $callback
+     *
+     * @return void
+     */
+    public function authorizationCheck(Request $request, Closure $callback, string $message): void
+    {
+        if (!call_user_func_array($callback, [$user = $this->findUser($request)])) {
+            $this->fireFailedEvent($request, $user);
+
+            throw ValidationException::withMessages([$this->username() => [$message]]);
+        }
+    }
+
+    /**
      * Send lockout response.
      *
      * @param \Illuminate\Http\Request $request
@@ -152,7 +170,7 @@ class Authenticator implements AuthenticatorContract
      *
      * @return \Illuminate\Contracts\Auth\Authenticatable
      */
-    public function findUser(Request $request): Authenticatable
+    protected function findUser(Request $request): Authenticatable
     {
         $model = $this->guard->getProvider()->getModel();
 
@@ -170,7 +188,7 @@ class Authenticator implements AuthenticatorContract
      *
      * @return void
      */
-    public function fireFailedEvent(Request $request, ?Authenticatable $user = null)
+    protected function fireFailedEvent(Request $request, ?Authenticatable $user = null)
     {
         event(new Failed('web', $user, [
             $this->username() => $request->{$this->username()},
@@ -197,7 +215,7 @@ class Authenticator implements AuthenticatorContract
      *
      * @return string
      */
-    public function username(): string
+    protected function username(): string
     {
         return config('auth.defaults.username');
     }

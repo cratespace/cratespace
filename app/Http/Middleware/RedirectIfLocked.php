@@ -6,7 +6,6 @@ use Closure;
 use Illuminate\Http\Request;
 use App\Contracts\Auth\Authenticator;
 use Illuminate\Contracts\Auth\Authenticatable;
-use Illuminate\Validation\ValidationException;
 
 class RedirectIfLocked
 {
@@ -57,12 +56,8 @@ class RedirectIfLocked
      */
     protected function checkAccountStatus(Request $request)
     {
-        tap($this->authenticator->findUser($request), function (Authenticatable $user) use ($request) {
-            if ($user->isLocked()) {
-                $this->authenticator->fireFailedEvent($request, $user);
-
-                throw ValidationException::withMessages([$this->authenticator->username() => [trans('auth.locked')]]);
-            }
-        });
+        $this->authenticator->authorizationCheck($request, function (Authenticatable $user): bool {
+            return !$user->isLocked();
+        }, trans('auth.locked'));
     }
 }
