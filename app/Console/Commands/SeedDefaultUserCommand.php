@@ -4,6 +4,7 @@ namespace App\Console\Commands;
 
 use Throwable;
 use App\Models\User;
+use Illuminate\Support\Str;
 use Illuminate\Console\Command;
 use App\Contracts\Auth\CreatesNewUsers;
 
@@ -47,7 +48,7 @@ class SeedDefaultUserCommand extends Command
 
             User::create($defaults);
 
-            $this->line("Default user created with name '{$defaults['name']}' and password 'alphaxion77'.");
+            $this->line('Default user created.');
 
             return 0;
         }
@@ -79,6 +80,8 @@ class SeedDefaultUserCommand extends Command
             'email' => $this->ask('Email address'),
             'phone' => $this->ask('Phone number'),
             'password' => $this->ask('Password'),
+            'email_verified_at' => now(),
+            'remember_token' => Str::random(10),
         ];
     }
 }
