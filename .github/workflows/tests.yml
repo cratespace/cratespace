@@ -61,7 +61,7 @@ jobs:
 
       - name: Boot application
         run: |
-          cp .env.example .env
+          cp .env.github .env
           php artisan key:generate
           php artisan --version
 
