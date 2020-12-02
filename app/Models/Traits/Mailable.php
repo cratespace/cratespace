@@ -3,8 +3,8 @@
 namespace App\Models\Traits;
 
 use RuntimeException;
+use InvalidArgumentException;
 use Illuminate\Support\Facades\Mail;
-use App\Exceptions\NoEmailAddressSetException;
 use Illuminate\Contracts\Mail\Mailable as MailableContract;
 
 trait Mailable
@@ -22,7 +22,7 @@ trait Mailable
         $email = $this->email ?? ($emailAddress ?: null);
 
         if (is_null($email)) {
-            throw new NoEmailAddressSetException('An email address has not been specified.');
+            throw new InvalidArgumentException('An email address has not been specified.');
         }
 
         Mail::to($email)->send($this->resolveMailable($mailable));
