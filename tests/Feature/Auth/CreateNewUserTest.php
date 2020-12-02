@@ -99,7 +99,7 @@ class CreateNewUserTest extends TestCase implements Postable
     public function validParameters(array $overrides = []): array
     {
         return array_merge([
-            'name' => $this->faker->name,
+            'name' => 'Eugene Krabs',
             'username' => $this->faker->unique()->userName,
             'email' => $this->faker->unique()->safeEmail,
             'phone' => $this->faker->phoneNumber,
