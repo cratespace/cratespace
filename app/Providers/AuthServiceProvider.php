@@ -74,6 +74,12 @@ class AuthServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->registerPolicies();
+
+        $auth = $this->app->make(AuthenticatorContract::class);
+
+        $auth->setBeforeSignIn(function ($request) {
+            dd($request->user());
+        });
     }
 
     protected function registerAuthGuards(): void
