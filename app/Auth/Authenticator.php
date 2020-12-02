@@ -7,6 +7,7 @@ use App\Guards\LoginRateLimiter;
 use Illuminate\Auth\Events\Failed;
 use Illuminate\Auth\Events\Lockout;
 use Illuminate\Support\Facades\Hash;
+use App\Auth\Traits\HasBeforeSignInAction;
 use Illuminate\Contracts\Auth\StatefulGuard;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Validation\ValidationException;
@@ -15,6 +16,8 @@ use App\Contracts\Auth\Authenticator as AuthenticatorContract;
 
 class Authenticator implements AuthenticatorContract
 {
+    use HasBeforeSignInAction;
+
     /**
      * The guard implementation.
      *
@@ -72,6 +75,8 @@ class Authenticator implements AuthenticatorContract
      */
     protected function attemptToAuthenticate(Request $request): bool
     {
+        $this->runBeforeSignIn([$request]);
+
         $this->checkAccountStatus($request);
 
         return $this->guard->attempt(
@@ -92,7 +97,7 @@ class Authenticator implements AuthenticatorContract
     protected function checkAccountStatus(Request $request)
     {
         tap($this->findUser($request), function (Authenticatable $user) use ($request) {
-            if ($user->locked) {
+            if ($user->isLocked()) {
                 $this->fireFailedEvent($request);
 
                 throw ValidationException::withMessages([$this->username() => [trans('auth.locked')]]);

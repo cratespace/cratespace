@@ -71,4 +71,14 @@ class User extends Authenticatable
     protected $appends = [
         'profile_photo_url',
     ];
+
+    /**
+     * Determine if the user's account is locked.
+     *
+     * @return bool
+     */
+    public function isLocked(): bool
+    {
+        return (bool) $this->locked;
+    }
 }
