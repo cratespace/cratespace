@@ -23,7 +23,7 @@ class ResetPasswordRequestLinkTest extends TestCase
     }
 
     /** @test */
-    public function reset_link_can_be_successfully_requested()
+    public function a_reset_link_can_be_successfully_requested()
     {
         Password::shouldReceive('broker')->andReturn($broker = m::mock(PasswordBroker::class));
 
@@ -41,7 +41,7 @@ class ResetPasswordRequestLinkTest extends TestCase
     }
 
     /** @test */
-    public function reset_link_request_can_fail()
+    public function a_reset_link_request_can_fail()
     {
         Password::shouldReceive('broker')->andReturn($broker = m::mock(PasswordBroker::class));
 
@@ -56,7 +56,7 @@ class ResetPasswordRequestLinkTest extends TestCase
     }
 
     /** @test */
-    public function reset_link_request_can_fail_with_json()
+    public function a_reset_link_request_can_fail_with_json()
     {
         Password::shouldReceive('broker')->andReturn($broker = m::mock(PasswordBroker::class));
 

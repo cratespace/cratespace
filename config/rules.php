@@ -27,7 +27,7 @@ return [
     ],
 
     'update_password' => [
-        'current_password' => ['required', 'string'],
+        'current_password' => ['required', 'string', 'password'],
         'password' => ['required', 'string', new Password(), 'confirmed'],
     ],
 

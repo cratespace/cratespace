@@ -2,7 +2,6 @@
 
 namespace App\Http\Requests;
 
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 use App\Http\Requests\Concerns\ValidatesInput;
@@ -46,7 +45,7 @@ class UpdatePasswordRequest extends FormRequest
         ];
     }
 
-    /**
+    /*
      * Set the Validator instance.
      *
      * @param \Illuminate\Contracts\Validation\Validator $validator
@@ -57,13 +56,7 @@ class UpdatePasswordRequest extends FormRequest
     {
         $validator = Validator::make($this->all(), $this->rules());
 
-        $validator->after(function ($validator) {
-            if (!Hash::check($this->input('current_password'), $this->user()->password)) {
-                $validator->errors()->add(
-                    'current_password', $this->messages()['current_password']
-                );
-            }
-        })->validateWithBag('updatePassword');
+        $validator->validateWithBag('updatePassword');
 
         return $validator;
     }

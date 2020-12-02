@@ -26,7 +26,7 @@ class ResetPasswordTest extends TestCase
     }
 
     /** @test */
-    public function password_can_be_reset()
+    public function a_users_password_can_be_reset()
     {
         Password::shouldReceive('broker')->andReturn($broker = m::mock(PasswordBroker::class));
 
@@ -58,7 +58,7 @@ class ResetPasswordTest extends TestCase
         $response->assertRedirect('/signin');
     }
 
-    public function password_reset_can_fail()
+    public function a_user_password_reset_request_can_fail()
     {
         Password::shouldReceive('broker')->andReturn($broker = m::mock(PasswordBroker::class));
 
@@ -80,7 +80,7 @@ class ResetPasswordTest extends TestCase
         $response->assertSessionHasErrors('email');
     }
 
-    public function test_password_reset_can_fail_with_json()
+    public function a_user_password_reset_request_can_fail_with_json()
     {
         Password::shouldReceive('broker')->andReturn($broker = m::mock(PasswordBroker::class));
 

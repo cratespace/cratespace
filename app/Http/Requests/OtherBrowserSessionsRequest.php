@@ -2,7 +2,6 @@
 
 namespace App\Http\Requests;
 
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 use App\Http\Requests\Traits\AuthorizesRequest;
@@ -30,7 +29,7 @@ class OtherBrowserSessionsRequest extends FormRequest
     public function rules()
     {
         return [
-            'password' => ['required', 'string'],
+            'password' => ['required', 'string', 'password'],
         ];
     }
 
@@ -57,14 +56,7 @@ class OtherBrowserSessionsRequest extends FormRequest
     {
         $validator = Validator::make($this->all(), $this->rules());
 
-        $validator->after(function ($validator) {
-            if (!Hash::check($this->input('current_password'), $this->user()->password)) {
-                $validator->errors()->add(
-                    'current_password',
-                    $this->messages()['current_password']
-                );
-            }
-        })->validateWithBag('logoutOtherBrowserSessions');
+        $validator->validateWithBag('logoutOtherBrowserSessions');
 
         return $validator;
     }
