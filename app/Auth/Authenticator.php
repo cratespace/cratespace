@@ -75,7 +75,7 @@ class Authenticator implements AuthenticatorContract
      */
     protected function attemptToAuthenticate(Request $request): bool
     {
-        $this->runBeforeSignIn([$request]);
+        // $this->runBeforeSignIn([$this, $request]);
 
         $this->checkAccountStatus($request);
 
@@ -94,7 +94,7 @@ class Authenticator implements AuthenticatorContract
      *
      * @throws \Illuminate\Validation\ValidationException
      */
-    protected function checkAccountStatus(Request $request)
+    public function checkAccountStatus(Request $request)
     {
         tap($this->findUser($request), function (Authenticatable $user) use ($request) {
             if ($user->isLocked()) {
