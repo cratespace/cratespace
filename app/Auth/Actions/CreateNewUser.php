@@ -21,9 +21,7 @@ class CreateNewUser implements CreatesNewUsers
     {
         return DB::transaction(function () use ($data) {
             return tap($this->createUser($data), function (User $user) use ($data) {
-                // $this->createBusiness($user, $data);
-
-                // $this->createCreditAccount($user);
+                return $user;
             });
         });
     }
@@ -45,32 +43,6 @@ class CreateNewUser implements CreatesNewUsers
             'password' => Hash::make($data['password']),
         ]);
     }
-
-    /**
-     * Create a business profile for the user.
-     *
-     * @param \App\Models\User $user
-     * @param array            $data
-     *
-     * @return void
-     */
-    protected function createBusiness(User $user, array $data): void
-    {
-        $user->business()->create(['name' => $data['business']]);
-    }
-
-    /**
-     * Create finance profile for the user.
-     *
-     * @param \App\Models\User
-     *
-     * @return void
-     */
-    protected function createCreditAccount(User $user): void
-    {
-        $user->account()->create(['user_id' => $user->id]);
-    }
-
     /**
      * Generate unique username from first name.
      *
