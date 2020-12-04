@@ -4,10 +4,9 @@ namespace App\Auth;
 
 use Illuminate\Http\Request;
 use PragmaRX\Google2FA\Google2FA;
-use App\Contracts\Auth\Authenticator as AuthenticatorContract;
 use App\Contracts\Auth\TwoFactorAuthenticator as TwoFactorAuthenticatorContract;
 
-class TwoFactorAuthenticator implements AuthenticatorContract, TwoFactorAuthenticatorContract
+class TwoFactorAuthenticator implements TwoFactorAuthenticatorContract
 {
     /**
      * The underlying library providing two factor authentication helper services.

@@ -11,15 +11,21 @@ use App\Auth\Actions\CreateNewUser;
 use App\Auth\TwoFactorAuthenticator;
 use App\Contracts\Auth\DeletesUsers;
 use Illuminate\Support\Facades\Auth;
+use App\Auth\Actions\AuthenticateUser;
 use App\Auth\Actions\ResetUserPassword;
 use App\Auth\Actions\UpdateUserProfile;
 use App\Contracts\Auth\CreatesNewUsers;
 use App\Auth\Actions\UpdateUserPassword;
+use App\Auth\Middleware\RedirectIfLocked;
+use App\Contracts\Auth\AuthenticatesUsers;
 use App\Contracts\Auth\ResetsUserPasswords;
 use App\Contracts\Auth\UpdatesUserProfiles;
 use App\Contracts\Auth\UpdatesUserPasswords;
 use Illuminate\Contracts\Auth\StatefulGuard;
-use App\Contracts\Auth\Authenticator as AuthenticatorContract;
+use App\Auth\Middleware\AttemptToAuthenticate;
+use App\Auth\Middleware\EnsureLoginIsNotThrottled;
+use App\Auth\Middleware\PrepareAuthenticatedSession;
+use App\Auth\Middleware\RedirectIfTwoFactorAuthenticatable;
 use App\Contracts\Auth\TwoFactorAuthenticator as TwoFactorAuthenticatorContract;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 
@@ -33,18 +39,31 @@ class AuthServiceProvider extends ServiceProvider
     public const USERNAME = 'email';
 
     /**
-     * User authentication classes.
+     * Authenticated user action classes.
      *
      * @var array
      */
-    protected static array $authenticators = [
+    protected static array $authUserActions = [
         CreatesNewUsers::class => CreateNewUser::class,
-        AuthenticatorContract::class => Authenticator::class,
+        AuthenticatesUsers::class => AuthenticateUser::class,
         TwoFactorAuthenticatorContract::class => TwoFactorAuthenticator::class,
         ResetsUserPasswords::class => ResetUserPassword::class,
         UpdatesUserPasswords::class => UpdateUserPassword::class,
         UpdatesUserProfiles::class => UpdateUserProfile::class,
         DeletesUsers::class => DeleteUser::class,
+    ];
+
+    /**
+     * User sign in process actions.
+     *
+     * @var array
+     */
+    public static array $authenticationMiddleware = [
+        EnsureLoginIsNotThrottled::class,
+        RedirectIfLocked::class,
+        RedirectIfTwoFactorAuthenticatable::class,
+        AttemptToAuthenticate::class,
+        PrepareAuthenticatedSession::class,
     ];
 
     /**
@@ -98,7 +117,7 @@ class AuthServiceProvider extends ServiceProvider
      */
     protected function registerAuthenticators(): void
     {
-        foreach (static::$authenticators as $abstract => $concrete) {
+        foreach (static::$authUserActions as $abstract => $concrete) {
             $this->app->singleton($abstract, $concrete);
         }
     }

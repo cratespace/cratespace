@@ -54,7 +54,6 @@ class Kernel extends HttpKernel
      */
     protected $routeMiddleware = [
         'auth' => \App\Http\Middleware\Authenticate::class,
-        'auth.tfa' => \App\Http\Middleware\RedirectIfTwoFactorAuthenticatable::class,
         'auth.basic' => \Illuminate\Auth\Middleware\AuthenticateWithBasicAuth::class,
         'locked' => \App\Http\Middleware\RedirectIfLocked::class,
         'cache.headers' => \Illuminate\Http\Middleware\SetCacheHeaders::class,

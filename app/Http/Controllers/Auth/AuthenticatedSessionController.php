@@ -2,38 +2,37 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\Auth\Authenticator;
 use Illuminate\Http\Request;
-use App\Http\Requests\LoginRequest;
 use Illuminate\Contracts\View\View;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\SignInRequest;
+use App\Contracts\Auth\AuthenticatesUsers;
 use Illuminate\Contracts\Auth\StatefulGuard;
 use Symfony\Component\HttpFoundation\Response;
-use App\Contracts\Auth\Authenticator as AuthenticatorContract;
 
 class AuthenticatedSessionController extends Controller
 {
     /**
      * User session authenticator.
      *
-     * @var \App\Contracts\Auth\Authenticator
+     * @var \App\Contracts\Auth\AuthenticatesUsers
      */
-    protected Authenticator $authenticator;
+    protected $authenticator;
 
     /**
      * The guard implementation.
      *
      * @var \Illuminate\Contracts\Auth\StatefulGuard
      */
-    protected StatefulGuard $guard;
+    protected $guard;
 
     /**
      * Create new controller instance.
      *
-     * @param \App\Contracts\Auth\Authenticator        $authenticator
+     * @param \App\Contracts\Auth\AuthenticatesUsers   $authenticator
      * @param \Illuminate\Contracts\Auth\StatefulGuard $guard
      */
-    public function __construct(AuthenticatorContract $authenticator, StatefulGuard $guard)
+    public function __construct(AuthenticatesUsers $authenticator, StatefulGuard $guard)
     {
         $this->authenticator = $authenticator;
         $this->guard = $guard;
@@ -54,17 +53,19 @@ class AuthenticatedSessionController extends Controller
     /**
      * Attempt to authenticate a new session.
      *
-     * @param \App\Http\Requests\LoginRequest
+     * @param \App\Http\Requests\SignInRequest
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function store(LoginRequest $request): Response
+    public function store(SignInRequest $request): Response
     {
-        $this->authenticator->authenticate($request);
-
-        return $request->wantsJson()
-            ? response()->json(['two_factor' => false])
-            : redirect()->intended(config('auth.defaults.home'));
+        return $this->authenticator
+            ->authenticate($request)
+            ->then(function ($request) {
+                return $request->wantsJson()
+                    ? response()->json(['tfa' => false])
+                    : redirect()->intended(config('auth.defaults.home'));
+            });
     }
 
     /**

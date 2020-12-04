@@ -15,7 +15,7 @@ class TwoFactorAuthenticatedSessionController extends Controller
      *
      * @var \Illuminate\Contracts\Auth\StatefulGuard
      */
-    protected StatefulGuard $guard;
+    protected $guard;
 
     /**
      * Create a new controller instance.

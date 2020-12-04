@@ -5,12 +5,9 @@ namespace Tests\Concerns;
 use App\Models\User;
 use App\Models\Account;
 use App\Models\Business;
-use App\Auth\Traits\HasBeforeSignInAction;
 
 trait CreatesFakeUser
 {
-    use HasBeforeSignInAction;
-
     /**
      * Instance of fake user.
      *
@@ -32,8 +29,6 @@ trait CreatesFakeUser
         $this->createBusiness($user);
 
         $this->createCreditAccount($user);
-
-        $this->runBeforeSignIn();
 
         $this->actingAs($user);
 

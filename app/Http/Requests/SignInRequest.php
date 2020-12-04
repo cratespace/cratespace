@@ -5,7 +5,7 @@ namespace App\Http\Requests;
 use Illuminate\Foundation\Http\FormRequest;
 use App\Http\Requests\Concerns\ValidatesInput;
 
-class LoginRequest extends FormRequest
+class SignInRequest extends FormRequest
 {
     use ValidatesInput;
 

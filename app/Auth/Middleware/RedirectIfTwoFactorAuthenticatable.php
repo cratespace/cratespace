@@ -1,37 +1,18 @@
 <?php
 
-namespace App\Http\Middleware;
+namespace App\Auth\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
-use App\Contracts\Auth\Authenticator;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Symfony\Component\HttpFoundation\Response;
 use App\Models\Traits\TwoFactorAuthenticatable;
 
-class RedirectIfTwoFactorAuthenticatable
+class RedirectIfTwoFactorAuthenticatable extends Authenticator
 {
     /**
-     * User session authenticator.
-     *
-     * @var \App\Contracts\Auth\Authenticator
-     */
-    protected Authenticator $authenticator;
-
-    /**
-     * Create a new middleware instance.
-     *
-     * @param \App\Contracts\Auth\Authenticator $authenticator
-     *
-     * @return void
-     */
-    public function __construct(Authenticator $authenticator)
-    {
-        $this->authenticator = $authenticator;
-    }
-
-    /**
-     * Handle an incoming request.
+     * Handle the incoming request.
      *
      * @param \Illuminate\Http\Request $request
      * @param \Closure                 $next
@@ -40,7 +21,9 @@ class RedirectIfTwoFactorAuthenticatable
      */
     public function handle(Request $request, Closure $next)
     {
-        $user = $this->authenticator->validateCredentials($request);
+        $user = $this->validateCredentials($request, function ($user, $request) {
+            return is_null($user) || Hash::check($request->password, $user->password);
+        });
 
         if (optional($user)->two_factor_secret &&
             in_array(TwoFactorAuthenticatable::class, class_uses_recursive($user))) {
@@ -61,12 +44,12 @@ class RedirectIfTwoFactorAuthenticatable
     protected function twoFactorChallengeResponse(Request $request, Authenticatable $user): Response
     {
         $request->session()->put([
-            'login.id' => $user->getKey(),
-            'login.remember' => $request->filled('remember'),
+            'signin.id' => $user->getKey(),
+            'signin.remember' => $request->filled('remember'),
         ]);
 
         return $request->wantsJson()
-            ? response()->json(['two_factor' => true])
+            ? response()->json(['tfa' => true])
             : redirect()->route('tfa.signin');
     }
 }
