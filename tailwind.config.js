@@ -15,67 +15,24 @@ module.exports = {
             center: true,
         },
 
-        customForms: theme => ({
-            default: {
-                input: {
-                    borderRadius: theme('borderRadius.lg'),
-                    backgroundColor: theme('colors.gray.100'),
-                    '&:focus': {
-                        backgroundColor: theme('colors.white'),
-                    }
-                },
-
-                textarea: {
-                    borderRadius: theme('borderRadius.md'),
-                    backgroundColor: theme('colors.gray.100'),
-                    '&:focus': {
-                        backgroundColor: theme('colors.white'),
-                    }
-                },
-
-                select: {
-                    borderRadius: theme('borderRadius.md'),
-                    boxShadow: theme('boxShadow.none'),
-                    backgroundColor: theme('colors.gray.100'),
-                    '&:focus': {
-                        backgroundColor: theme('colors.white'),
-                    }
-                },
-
-                checkbox: {
-                    backgroundColor: theme('colors.gray.100'),
-                    width: theme('spacing.6'),
-                    height: theme('spacing.6'),
-                },
-
-                radio: {
-                    backgroundColor: theme('colors.gray.100'),
-                    width: theme('spacing.6'),
-                    height: theme('spacing.6'),
-                },
-            },
-        }),
-
-        typography: theme => ({
-            default: {
-                css: {
-                    color: theme('colors.gray.600'),
-                    a: {
-                        color: '#0366D6',
-                        '&:hover': {
-                            color: '#035CC1',
-                        },
-                    },
-                },
-            },
-        }),
-
         extend: {
             fontFamily: {
                 sans: ['Inter', ...defaultTheme.fontFamily.sans],
             },
 
             colors: {
+                gray: {
+                    100: '#F7FAFC',
+                    200: '#EDF2F7',
+                    300: '#E2E8F0',
+                    400: '#CBD5E0',
+                    500: '#A0AEC0',
+                    600: '#718096',
+                    700: '#4A5568',
+                    800: '#2D3748',
+                    900: '#1A202C',
+                },
+
                 blue: {
                     100: '#E6F0FB',
                     200: '#C0D9F5',
