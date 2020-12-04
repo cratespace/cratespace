@@ -10,7 +10,7 @@ use Illuminate\Validation\ValidationException;
 use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Http\Exceptions\HttpResponseException;
 
-class TwoFactorLoginRequest extends FormRequest
+class TwoFactorSignInRequest extends FormRequest
 {
     use ValidatesInput;
 
@@ -89,8 +89,8 @@ class TwoFactorLoginRequest extends FormRequest
 
         $model = app(StatefulGuard::class)->getProvider()->getModel();
 
-        if (!$this->session()->has('login.id') ||
-            !$user = $model::find($this->session()->pull('login.id'))) {
+        if (!$this->session()->has('signin.id') ||
+            !$user = $model::find($this->session()->pull('signin.id'))) {
             throw new HttpResponseException($this->failedTwoFactorLoginResponse());
         }
 
@@ -123,7 +123,7 @@ class TwoFactorLoginRequest extends FormRequest
     public function remember(): bool
     {
         if (!$this->remember) {
-            $this->remember = $this->session()->pull('login.remember', false);
+            $this->remember = $this->session()->pull('signin.remember', false);
         }
 
         return $this->remember;

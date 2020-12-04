@@ -55,7 +55,7 @@ class AuthenticatedSessionTest extends TestCase
             'password' => 'monster',
         ]);
 
-        $response->assertRedirect('/');
+        $response->assertRedirect('/signin');
         $this->assertFalse(auth()->check());
     }
 
@@ -172,8 +172,8 @@ class AuthenticatedSessionTest extends TestCase
         ]);
 
         $response = $this->withSession([
-            'login.id' => $user->id,
-            'login.remember' => false,
+            'signin.id' => $user->id,
+            'signin.remember' => false,
         ])->withoutExceptionHandling()->post('/tfa-challenge', [
             'code' => $validOtp,
         ]);
@@ -191,8 +191,8 @@ class AuthenticatedSessionTest extends TestCase
         ]);
 
         $response = $this->withSession([
-            'login.id' => $user->id,
-            'login.remember' => false,
+            'signin.id' => $user->id,
+            'signin.remember' => false,
         ])->withoutExceptionHandling()->post('/tfa-challenge', [
             'recovery_code' => 'valid-code',
         ]);

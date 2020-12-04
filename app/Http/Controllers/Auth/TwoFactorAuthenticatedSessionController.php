@@ -4,8 +4,8 @@ namespace App\Http\Controllers\Auth;
 
 use Illuminate\Contracts\View\View;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\TwoFactorLoginRequest;
 use Illuminate\Contracts\Auth\StatefulGuard;
+use App\Http\Requests\TwoFactorSignInRequest;
 use Symfony\Component\HttpFoundation\Response;
 
 class TwoFactorAuthenticatedSessionController extends Controller
@@ -42,11 +42,11 @@ class TwoFactorAuthenticatedSessionController extends Controller
     /**
      * Attempt to authenticate a new session using the two factor authentication code.
      *
-     * @param \App\Http\Requests\TwoFactorLoginRequest $request
+     * @param \App\Http\Requests\TwoFactorSignInRequest $request
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function store(TwoFactorLoginRequest $request): Response
+    public function store(TwoFactorSignInRequest $request): Response
     {
         $user = $request->challengedUser();
 

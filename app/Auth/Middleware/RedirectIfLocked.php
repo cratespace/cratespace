@@ -17,12 +17,10 @@ class RedirectIfLocked extends Authenticator
      */
     public function handle(Request $request, Closure $next)
     {
-        $user = $this->validateCredentials($request);
-
-        if ($user->isLocked()) {
+        if (optional($this->validateCredentials($request))->isLocked()) {
             return $request->wantsJson()
-                ? response()->json('Account has been locked.', 401)
-                : back()->with('status', 'Account has been locked.');
+                ? response()->json(trans('auth.locked'), 401)
+                : redirect()->route('signin')->with('status', trans('auth.locked'));
         }
 
         return $next($request);
