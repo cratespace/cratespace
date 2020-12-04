@@ -42,9 +42,9 @@ class ApiTokenController extends Controller
 
         $token = explode('|', $token->plainTextToken, 2)[1];
 
-        $request->wantsJson()
+        return $request->wantsJson()
             ? response()->json($token, 200)
-            : back()->with('flash', copmact('token'));
+            : back()->with('flash', compact('token'));
     }
 
     /**
@@ -55,7 +55,7 @@ class ApiTokenController extends Controller
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function update(Request $request, $tokenId): Response
+    public function update(Request $request, string $tokenId): Response
     {
         $token = $request->user()->tokens()->where('id', $tokenId)->firstOrFail();
 
@@ -63,7 +63,7 @@ class ApiTokenController extends Controller
             'abilities' => Permission::validPermissions($request->input('permissions', [])),
         ])->save();
 
-        $request->wantsJson()
+        return $request->wantsJson()
             ? response()->json('', 200)
             : back();
     }
@@ -80,7 +80,7 @@ class ApiTokenController extends Controller
     {
         $request->user()->tokens()->where('id', $tokenId)->delete();
 
-        $request->wantsJson()
+        return $request->wantsJson()
             ? response()->json('', 204)
             : back();
     }

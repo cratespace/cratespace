@@ -55,12 +55,6 @@ Route::group([
         ->middleware(['throttle:6,1'])
         ->name('verification.send');
 
-    // API Token Routes...
-    Route::get('/api-tokens', [ApiTokenController::class, 'index'])->name('api-tokens.index');
-    Route::post('/api-tokens', [ApiTokenController::class, 'store'])->name('api-tokens.store');
-    Route::put('/api-tokens/{token}', [ApiTokenController::class, 'update'])->name('api-tokens.update');
-    Route::delete('/api-tokens/{token}', [ApiTokenController::class, 'destroy'])->name('api-tokens.destroy');
-
     Route::group([
         'prefix' => 'user',
     ], function (): void {
@@ -77,6 +71,12 @@ Route::group([
         Route::get('/profile', [UserProfileController::class, 'show'])->name('profile.show');
         Route::put('/profile', [UserProfileController::class, 'update'])->name('profile.update');
         Route::delete('/', [CurrentUserController::class, 'destroy'])->name('user.destroy');
+
+        // API Token Routes...
+        Route::get('/api-tokens', [ApiTokenController::class, 'index'])->name('api-tokens.index');
+        Route::post('/api-tokens', [ApiTokenController::class, 'store'])->name('api-tokens.store');
+        Route::put('/api-tokens/{token}', [ApiTokenController::class, 'update'])->name('api-tokens.update');
+        Route::delete('/api-tokens/{token}', [ApiTokenController::class, 'destroy'])->name('api-tokens.destroy');
     });
 
     Route::group([
