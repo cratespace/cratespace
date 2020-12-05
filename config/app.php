@@ -14,6 +14,8 @@ return [
 
     'name' => env('APP_NAME', 'Cratespace'),
 
+    'title' => 'Find the best deals on shipping spaces.',
+
     /*
     |--------------------------------------------------------------------------
     | Application Environment

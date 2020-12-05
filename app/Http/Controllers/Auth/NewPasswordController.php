@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Auth;
 
+use Illuminate\Http\Request;
 use Illuminate\Contracts\View\View;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Password;
@@ -44,9 +45,11 @@ class NewPasswordController extends Controller
      *
      * @return \Illuminate\Contracts\View\View
      */
-    public function create(): View
+    public function create(Request $request): View
     {
-        return view('auth.reset-password');
+        return view('auth.reset-password', [
+            'token' => $request->route('token'),
+        ]);
     }
 
     /**

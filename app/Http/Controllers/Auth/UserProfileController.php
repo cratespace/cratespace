@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Contracts\View\View;
 use App\Http\Controllers\Controller;
@@ -16,15 +15,14 @@ class UserProfileController extends Controller
      * Show the form for editing the specified resource.
      *
      * @param \Illuminate\Http\Request $request
-     * @param \App\Models\User         $user
      *
      * @return \Illuminate\Contracts\View\View
      */
-    public function edit(Request $request, User $user): View
+    public function show(Request $request): View
     {
-        $this->authorize('view', $user);
+        $this->authorize('view', $user = $request->user());
 
-        return view('auth.profile.edit', [
+        return view('profiles.show', [
             'user' => $user,
             'sessions' => $user->sessions($request)->all(),
         ]);
