@@ -9,7 +9,7 @@ window.axios.defaults.withCredentials = true;
 try {
     window.Popper = require('popper.js').default;
 
-    require('bootstrap')
+    require('bootstrap');
 } catch(e) {
     console.log(e);
 }
