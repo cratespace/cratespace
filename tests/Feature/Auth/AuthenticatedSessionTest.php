@@ -5,6 +5,7 @@ namespace Tests\Feature\Auth;
 use Mockery as m;
 use Tests\TestCase;
 use App\Models\User;
+use Tests\Contracts\Postable;
 use App\Guards\LoginRateLimiter;
 use PragmaRX\Google2FA\Google2FA;
 use Illuminate\Support\Facades\Auth;
@@ -12,7 +13,7 @@ use App\Providers\RouteServiceProvider;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
-class AuthenticatedSessionTest extends TestCase
+class AuthenticatedSessionTest extends TestCase implements Postable
 {
     use RefreshDatabase;
 
@@ -32,10 +33,7 @@ class AuthenticatedSessionTest extends TestCase
             'password' => bcrypt('monster'),
         ]);
 
-        $response = $this->withoutExceptionHandling()->post('/signin', [
-            'email' => 'james@silverman.com',
-            'password' => 'monster',
-        ]);
+        $response = $this->post('/signin', $this->validParameters());
 
         $response->assertRedirect(RouteServiceProvider::HOME);
         $this->assertTrue(auth()->user()->is($user));
@@ -50,10 +48,7 @@ class AuthenticatedSessionTest extends TestCase
             'locked' => true,
         ]);
 
-        $response = $this->post('/signin', [
-            'email' => 'james@silverman.com',
-            'password' => 'monster',
-        ]);
+        $response = $this->post('/signin', $this->validParameters());
 
         $response->assertRedirect('/signin');
         $this->assertFalse(auth()->check());
@@ -77,6 +72,32 @@ class AuthenticatedSessionTest extends TestCase
     }
 
     /** @test */
+    public function a_valid_email_is_required()
+    {
+        $response = $this->from('/signin')
+            ->post('/signin', $this->validParameters([
+                'email' => '',
+            ]));
+
+        $response->assertStatus(302)
+            ->assertRedirect('/signin')
+            ->assertSessionHasErrors('email');
+    }
+
+    /** @test */
+    public function a_valid_password_is_required()
+    {
+        $response = $this->from('/signin')
+            ->post('/signin', $this->validParameters([
+                'password' => '',
+            ]));
+
+        $response->assertStatus(302)
+            ->assertRedirect('/signin')
+            ->assertSessionHasErrors('password');
+    }
+
+    /** @test */
     public function login_attempts_are_throttled()
     {
         create(User::class, [
@@ -89,10 +110,7 @@ class AuthenticatedSessionTest extends TestCase
             $mock->shouldReceive('availableIn')->andReturn(10);
         });
 
-        $response = $this->postJson('/signin', [
-            'email' => 'james@silverman.com',
-            'password' => 'monster',
-        ]);
+        $response = $this->postJson('/signin', $this->validParameters());
 
         $response->assertStatus(429);
         $response->assertJsonValidationErrors(['email']);
@@ -133,10 +151,7 @@ class AuthenticatedSessionTest extends TestCase
             'two_factor_secret' => 'test-secret',
         ]);
 
-        $response = $this->withoutExceptionHandling()->post('/signin', [
-            'email' => 'james@silverman.com',
-            'password' => 'monster',
-        ]);
+        $response = $this->withoutExceptionHandling()->post('/signin', $this->validParameters());
 
         $response->assertRedirect('/tfa-challenge');
     }
@@ -150,10 +165,7 @@ class AuthenticatedSessionTest extends TestCase
             'two_factor_secret' => null,
         ]);
 
-        $response = $this->withoutExceptionHandling()->post('/signin', [
-            'email' => 'james@silverman.com',
-            'password' => 'monster',
-        ]);
+        $response = $this->withoutExceptionHandling()->post('/signin', $this->validParameters());
 
         $response->assertRedirect('/home');
     }
@@ -220,5 +232,20 @@ class AuthenticatedSessionTest extends TestCase
 
         $response->assertRedirect('/signin');
         $this->assertNull(Auth::getUser());
+    }
+
+    /**
+     * Array of all valid parameters.
+     *
+     * @param array $override
+     *
+     * @return array
+     */
+    public function validParameters(array $overrides = []): array
+    {
+        return array_merge([
+            'email' => 'james@silverman.com',
+            'password' => 'monster',
+        ], $overrides);
     }
 }
