@@ -17,7 +17,7 @@ class RegisteredUserController extends Controller
      *
      * @var \Illuminate\Contracts\Auth\StatefulGuard
      */
-    protected StatefulGuard $guard;
+    protected $guard;
 
     /**
      * Create a new controller instance.
@@ -46,16 +46,14 @@ class RegisteredUserController extends Controller
     /**
      * Create a new registered user.
      *
-     * @param \Illuminate\Http\Request       $request
-     * @param \App\Contracts\CreatesNewUsers $creator
+     * @param \App\Http\Requests\CreateNewUserRequest $request
+     * @param \App\Contracts\CreatesNewUsers          $creator
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function store(CreateNewUserRequest $request, CreatesNewUsers $creator): Response
     {
-        event(new Registered(
-            $user = $creator->create($request->validated())
-        ));
+        event(new Registered($user = $creator->create($request->validated())));
 
         $this->guard->login($user);
 

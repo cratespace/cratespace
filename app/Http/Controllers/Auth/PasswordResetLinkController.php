@@ -28,7 +28,7 @@ class PasswordResetLinkController extends Controller
     /**
      * Send a reset link to the given user.
      *
-     * @param \Illuminate\Http\Request $request
+     * @param \App\Http\Requests\ResetPasswordRequest $request
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */

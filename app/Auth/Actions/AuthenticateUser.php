@@ -6,22 +6,9 @@ use Illuminate\Http\Request;
 use Illuminate\Pipeline\Pipeline;
 use App\Providers\AuthServiceProvider;
 use App\Contracts\Auth\AuthenticatesUsers;
-use Illuminate\Contracts\Foundation\Application;
 
 class AuthenticateUser implements AuthenticatesUsers
 {
-    /**
-     * Create new authenticator instance.
-     *
-     * @param \Illuminate\Contracts\Foundation\Application $app
-     *
-     * @return void
-     */
-    public function __construct(Application $app)
-    {
-        $this->app = $app;
-    }
-
     /**
      * Authenticate given login request.
      *
@@ -43,7 +30,7 @@ class AuthenticateUser implements AuthenticatesUsers
      */
     protected function signInPipeline(Request $request)
     {
-        return (new Pipeline($this->app))
+        return (new Pipeline(app()))
             ->send($request)
             ->through(array_filter(AuthServiceProvider::$authenticationMiddleware));
     }

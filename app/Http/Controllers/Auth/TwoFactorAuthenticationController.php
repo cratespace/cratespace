@@ -35,7 +35,7 @@ class TwoFactorAuthenticationController extends Controller
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function destroy(Request $request, DisableTwoFactorAuthentication $disable)
+    public function destroy(Request $request, DisableTwoFactorAuthentication $disable): Response
     {
         $disable($request->user());
 

@@ -45,11 +45,11 @@ abstract class Authenticator
      *
      * @param \Illuminate\Http\Request $request
      *
-     * @return mixed
+     * @return \Illuminate\Contracts\Auth\Authenticatable|null
      */
-    protected function validateCredentials(Request $request)
+    protected function validateCredentials(Request $request): ?Authenticatable
     {
-        return tap($this->findUser($request), function ($user) use ($request) {
+        return tap($this->findUser($request), function (?Authenticatable $user = null) use ($request) {
             if (!$user || !Hash::check($request->password, $user->password)) {
                 $this->fireFailedEvent($request, $user);
 
