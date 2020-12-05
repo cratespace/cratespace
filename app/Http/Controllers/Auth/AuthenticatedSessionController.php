@@ -47,7 +47,7 @@ class AuthenticatedSessionController extends Controller
      */
     public function create(Request $request): View
     {
-        return view('auth.login');
+        return view('auth.signin');
     }
 
     /**
