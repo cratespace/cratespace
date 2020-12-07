@@ -3,26 +3,26 @@
 @section('body')
     <x-sections.section-header>
         <navbar>
-            <template slot="logo">
+            <template #logo>
                 <a href="/" class="inline-block">
                     <x-logos.logo class="h-10 w-10"></x-logos.logo>
                 </a>
             </template>
 
-            <template slot="linksLeft">
+            <template #linksLeft>
                 <navbar-link class="text-white" href="{{ route('home') }}">{{ __('Dashboard') }}</navbar-link>
                 <navbar-link class="text-white" href="{{ route('home') }}">{{ __('Spaces') }}</navbar-link>
                 <navbar-link class="text-white" href="{{ route('home') }}">{{ __('Orders') }}</navbar-link>
                 <navbar-link class="text-white" href="{{ route('home') }}">{{ __('Support') }}</navbar-link>
             </template>
 
-            <template slot="linksRight">
+            <template #linksRight>
                 <dropdown>
-                    <template slot="trigger">
+                    <template #trigger>
                         <img src="{{ user('profile_photo_url') }}" class="rounded-full block w-10 h-10" alt="{{ user('name') }}">
                     </template>
 
-                    <template slot="items">
+                    <template #items>
                         <dropdown-link href="{{ route('profile.show') }}">{{ __('Profile') }}</dropdown-link>
                         <form @submit.prevent="signOut">
                             <dropdown-link as="button">{{ __('Sign out') }}</dropdown-link>

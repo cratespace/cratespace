@@ -27,6 +27,8 @@ Vue.component('sign-out', require('./Components/Misc/SignOut').default);
  * Views.
  */
 Vue.component('sign-in', require('./Views/SignIn').default);
+Vue.component('sign-up', require('./Views/SignUp').default);
+Vue.component('reset-password-request', require('./Views/ResetPasswordRequest').default);
 
 const app = new Vue({
     el: '#app',

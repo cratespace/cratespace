@@ -119,11 +119,26 @@ export default class Forms {
         Object.assign(this, this.originalData);
     }
 
+    /**
+     * Get error message of given form field.
+     *
+     * @param  {String} field
+     * @return {String|null}
+     */
     error(field) {
         if (this.errors.has(field)) {
             return this.errors.get(field);
         }
 
         return null;
+    }
+
+    /**
+     * Clear given form field.
+     *
+     * @param  {String} field
+     */
+    clear(field) {
+        this.errors.clear(field);
     }
 }
