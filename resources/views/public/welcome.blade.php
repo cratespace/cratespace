@@ -36,5 +36,13 @@
 @endsection
 
 @section('content')
-    <!-- Content -->
+    <section class="py-16 bg-gray-200">
+        <div class="container">
+            <div class="row justify-center">
+                <div class="col-xl-5 col-lg-6 col-md-8">
+                    <sign-in></sign-in>
+                </div>
+            </div>
+        </div>
+    </section>
 @endsection
