@@ -1,5 +1,5 @@
 <template>
-    <a class="px-3 leading-9 rounded-xl hover:bg-gray-900 focus:bg-gray-900 hover:bg-opacity-75 focus:bg-opacity-100 opacity-75 hover:opacity-100 focus:outline-none transition ease-in-out duration-150 ml-2">
+    <a class="px-3 leading-9 rounded-xl hover:bg-opacity-75 focus:bg-opacity-100 opacity-75 hover:opacity-100 focus:outline-none transition ease-in-out duration-150 ml-2">
         <span class="font-semibold text-sm">
             <slot></slot>
         </span>

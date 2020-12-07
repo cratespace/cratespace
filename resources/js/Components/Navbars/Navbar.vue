@@ -1,5 +1,5 @@
 <template>
-    <nav class="bg-gray-800">
+    <nav>
         <div class="container mx-auto px-4 sm:px-6">
             <div class="flex items-center justify-between h-16">
                 <div class="leading-none h-10 w-auto">
@@ -10,12 +10,12 @@
                 <div class="ml-6 flex flex-1 items-center">
                     <div class="hidden md:flex items-center mr-auto">
                         <!-- Links Left -->
-                        <slot name="linksLeft"></slot>
+                        <slot name="linksleft"></slot>
                     </div>
 
                     <div class="flex items-center ml-auto">
                         <!-- Links Right -->
-                        <slot name="linksRight"></slot>
+                        <slot name="linksright"></slot>
                     </div>
                 </div>
             </div>
@@ -25,12 +25,6 @@
 
 <script>
     export default {
-        props: ['user'],
-
-        data() {
-            return {
-                //
-            }
-        }
+        //
     }
 </script>
