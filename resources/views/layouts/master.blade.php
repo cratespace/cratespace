@@ -15,6 +15,8 @@
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+
+    @routes
 </head>
 <body class="text-gray-600 font-sans antialiased leading-normal">
     <div id="app">

@@ -1,0 +1,36 @@
+<template>
+    <nav class="h-16 bg-gray-800">
+        <div class="container mx-auto max-w-7xl min-h-full h-full px-4 sm:px-6">
+            <div class="flex items-center justify-between h-full">
+                <div class="leading-none h-10 w-auto">
+                    <!-- Logo -->
+                    <slot name="logo"></slot>
+                </div>
+
+                <div class="ml-6 flex flex-1 items-center">
+                    <div class="hidden md:flex items-center mr-auto">
+                        <!-- Links Left -->
+                        <slot name="linksLeft"></slot>
+                    </div>
+
+                    <div class="flex items-center ml-auto">
+                        <!-- Links Right -->
+                        <slot name="linksRight"></slot>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+</template>
+
+<script>
+    export default {
+        props: ['user'],
+
+        data() {
+            return {
+                //
+            }
+        }
+    }
+</script>

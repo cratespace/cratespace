@@ -25,7 +25,8 @@
         "laravel/sanctum": "^2.8",
         "laravel/tinker": "^2.5",
         "pragmarx/google2fa": "^7.0|^8.0",
-        "stevebauman/location": "^5.2"
+        "stevebauman/location": "^5.2",
+        "tightenco/ziggy": "^1.0"
     },
     "require-dev": {
         "facade/ignition": "^2.5",
