@@ -15,6 +15,8 @@ export default class Forms {
 
         this.processing = false;
 
+        this.successful = false;
+
         this.submitted = false;
     }
 
@@ -75,9 +77,7 @@ export default class Forms {
             .catch(this.onFail.bind(this))
             .then(this.onSuccess.bind(this));
 
-        setTimeout(() => {
-            this.processing = false;
-        }, 1000);
+        this.processing = false;
 
         return response;
     }
@@ -89,11 +89,13 @@ export default class Forms {
      * @return {object}
      */
     onSuccess(response) {
-        this.successful = true;
+        if (! this.errors.any()) {
+            this.successful = true;
 
-        setTimeout(() => {
-            this.successful = false;
-        }, 3000);
+            setTimeout(() => {
+                this.successful = false;
+            }, 3000);
+        }
 
         return response;
     }
@@ -108,8 +110,6 @@ export default class Forms {
         this.errors.record(error.response.data.errors);
 
         this.successful = false;
-
-        throw error;
     }
 
     /**

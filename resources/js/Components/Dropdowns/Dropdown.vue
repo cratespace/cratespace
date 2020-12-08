@@ -4,7 +4,6 @@
             <slot name="trigger"></slot>
         </a>
 
-
         <div class="dropdown-menu dropdown-menu-right mt-2 border-none rounded-xl shadow-lg bg-white p-2">
             <slot name="items"></slot>
         </div>

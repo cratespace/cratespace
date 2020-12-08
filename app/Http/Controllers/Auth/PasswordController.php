@@ -21,7 +21,7 @@ class PasswordController extends Controller
     {
         $this->authorize('update', $request->user());
 
-        $updater->update($request->user(), $request->validated());
+        $updater->update($request->user(), $request->all());
 
         return $request->wantsJson()
             ? response()->json()

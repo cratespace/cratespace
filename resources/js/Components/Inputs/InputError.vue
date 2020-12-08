@@ -1,5 +1,5 @@
 <template>
-    <div class="mt-1" v-show="message">
+    <div class="mt-2" v-show="message">
         <p class="font-semibold text-xs text-red-500 m-0 p-0">{{ message }}</p>
     </div>
 </template>

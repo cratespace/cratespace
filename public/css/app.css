@@ -2577,7 +2577,7 @@ a.close.disabled {
 }
 
 .bg-pattern {
-  background-image: url("/img/bg-pattern.svg"), linear-gradient(to right, #edf2f7 0%, white 100%);
+  background-image: url("/img/bg-pattern.svg"), linear-gradient(to right, #e2e7f0 0%, white 100%);
 }
 
 .space-y-0 > :not([hidden]) ~ :not([hidden]){
