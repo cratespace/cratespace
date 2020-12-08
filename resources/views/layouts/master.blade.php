@@ -20,7 +20,7 @@
     @routes
 </head>
 <body class="text-gray-600 font-sans antialiased leading-normal">
-    <div id="app">
+    <div id="app" v-cloak>
         @yield('body')
     </div>
 

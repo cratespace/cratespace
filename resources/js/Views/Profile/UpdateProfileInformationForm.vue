@@ -1,7 +1,7 @@
 <template>
     <form-section @submitted="updateProfileInformation()">
         <template #title>
-            Profile Information
+            Profile information
         </template>
 
         <template #description>

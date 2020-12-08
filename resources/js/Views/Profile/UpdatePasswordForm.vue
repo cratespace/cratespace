@@ -1,7 +1,7 @@
 <template>
     <form-section @submitted="updatePassword()">
         <template #title>
-            Update Password
+            Update password
         </template>
 
         <template #description>

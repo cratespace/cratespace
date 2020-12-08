@@ -148,7 +148,7 @@ class AuthenticatedSessionTest extends TestCase implements Postable
         create(User::class, [
             'email' => 'james@silverman.com',
             'password' => bcrypt('monster'),
-            'two_factor_secret' => 'test-secret',
+            'two_factor_enabled' => true,
         ]);
 
         $response = $this->withoutExceptionHandling()->post('/signin', $this->validParameters());
@@ -162,7 +162,7 @@ class AuthenticatedSessionTest extends TestCase implements Postable
         create(User::class, [
             'email' => 'james@silverman.com',
             'password' => bcrypt('monster'),
-            'two_factor_secret' => null,
+            'two_factor_enabled' => false,
         ]);
 
         $response = $this->withoutExceptionHandling()->post('/signin', $this->validParameters());

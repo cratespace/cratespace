@@ -26,6 +26,8 @@ class DeleteUserRequest extends FormRequest
      */
     public function rules()
     {
-        return [];
+        return [
+            'password' => ['required', 'string'],
+        ];
     }
 }

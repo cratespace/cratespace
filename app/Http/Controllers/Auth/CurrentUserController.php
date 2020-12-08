@@ -23,7 +23,7 @@ class CurrentUserController extends Controller
     {
         $this->authorize('delete', $request->user());
 
-        DeleteUserJob::dispatch($request->user());
+        DeleteUserJob::dispatch($request->user()->fresh());
 
         $auth->logout();
 

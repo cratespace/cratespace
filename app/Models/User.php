@@ -41,6 +41,7 @@ class User extends Authenticatable implements MustVerifyEmail
         'username',
         'settings',
         'profile_photo_path',
+        'two_factor_enabled',
         'two_factor_secret',
         'two_factor_recovery_codes',
     ];
@@ -62,6 +63,7 @@ class User extends Authenticatable implements MustVerifyEmail
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
+        'two_factor_enabled' => 'boolean',
         'settings' => 'array',
         'locked' => 'boolean',
     ];

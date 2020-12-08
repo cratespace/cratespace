@@ -58,11 +58,7 @@
         methods: {
             async signIn() {
                 await this.form.post(route('signin'))
-                    .then(response => {
-                        this.form.reset();
-
-                        window.location = route('home');
-                    });
+                    .then(response => window.location = route('home'));
             }
         }
     }

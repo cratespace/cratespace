@@ -12,4 +12,10 @@
     <update-password-form></update-password-form>
 
     <x-sections.section-border></x-sections.section-border>
+
+    <tfa-form :user="{{ $user }}"></tfa-form>
+
+    <x-sections.section-border></x-sections.section-border>
+
+    <delete-user-form></delete-user-form>
 @endsection

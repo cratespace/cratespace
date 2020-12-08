@@ -23,7 +23,7 @@ class DeleteUserJob implements ShouldQueue
      *
      * @var \App\Models\User
      */
-    protected User $user;
+    protected $user;
 
     /**
      * Create a new job instance.

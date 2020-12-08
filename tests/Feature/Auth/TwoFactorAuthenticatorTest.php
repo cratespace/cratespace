@@ -26,6 +26,7 @@ class TwoFactorAuthenticatorTest extends TestCase
 
         $user->fresh();
 
+        $this->assertTrue($user->two_factor_enabled);
         $this->assertNotNull($user->two_factor_secret);
         $this->assertNotNull($user->two_factor_recovery_codes);
         $this->assertIsArray(json_decode(decrypt($user->two_factor_recovery_codes), true));
@@ -48,6 +49,7 @@ class TwoFactorAuthenticatorTest extends TestCase
 
         $user->fresh();
 
+        $this->assertFalse($user->two_factor_enabled);
         $this->assertNull($user->two_factor_secret);
         $this->assertNull($user->two_factor_recovery_codes);
     }

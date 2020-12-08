@@ -16,6 +16,7 @@ class DisableTwoFactorAuthentication
     public function __invoke(User $user)
     {
         $user->forceFill([
+            'two_factor_enabled' => false,
             'two_factor_secret' => null,
             'two_factor_recovery_codes' => null,
         ])->save();

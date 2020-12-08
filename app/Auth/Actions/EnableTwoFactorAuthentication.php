@@ -38,6 +38,7 @@ class EnableTwoFactorAuthentication
     public function __invoke(User $user)
     {
         $user->forceFill([
+            'two_factor_enabled' => true,
             'two_factor_secret' => encrypt($this->authenticator->generateSecretKey()),
             'two_factor_recovery_codes' => encrypt(json_encode(Collection::times(8, function () {
                 return RecoveryCode::generate();

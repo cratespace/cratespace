@@ -17,9 +17,11 @@ class DeleteUserTest extends TestCase
     {
         Queue::fake();
 
-        $user = create(User::class);
+        $user = create(User::class, ['password' => 'crazyDruid']);
 
-        $response = $this->actingAs($user)->delete('/user');
+        $response = $this->actingAs($user)->delete('/user', [
+            'password' => 'crazyDruid',
+        ]);
 
         $response->assertStatus(302)->assertRedirect('/');
     }
@@ -29,9 +31,11 @@ class DeleteUserTest extends TestCase
     {
         Queue::fake();
 
-        $user = create(User::class);
+        $user = create(User::class, ['password' => 'crazyDruid']);
 
-        $response = $this->actingAs($user)->deleteJson('/user');
+        $response = $this->actingAs($user)->deleteJson('/user', [
+            'password' => 'crazyDruid',
+        ]);
 
         $response->assertStatus(204);
     }
@@ -41,11 +45,13 @@ class DeleteUserTest extends TestCase
     {
         Queue::fake();
 
-        $user = create(User::class);
+        $user = create(User::class, ['password' => 'crazyDruid']);
 
         Queue::assertNothingPushed();
 
-        $response = $this->actingAs($user)->deleteJson('/user');
+        $response = $this->actingAs($user)->deleteJson('/user', [
+            'password' => 'crazyDruid',
+        ]);
 
         Queue::assertPushed(DeleteUserJob::class);
 

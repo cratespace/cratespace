@@ -38,6 +38,7 @@ class UserFactory extends Factory
             ],
             'locked' => false,
             'profile_photo_path' => null,
+            'two_factor_enabled' => false,
             'two_factor_secret' => null,
             'two_factor_recovery_codes' => null,
         ];

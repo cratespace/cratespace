@@ -25,7 +25,7 @@ class RedirectIfTwoFactorAuthenticatable extends Authenticator
             return is_null($user) || Hash::check($request->password, $user->password);
         });
 
-        if (optional($user)->two_factor_secret &&
+        if (optional($user)->two_factor_enabled &&
             in_array(TwoFactorAuthenticatable::class, class_uses_recursive($user))) {
             return $this->twoFactorChallengeResponse($request, $user);
         }

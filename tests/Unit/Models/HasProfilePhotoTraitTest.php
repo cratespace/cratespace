@@ -7,9 +7,12 @@ use App\Models\User;
 use Illuminate\Support\Str;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class HasProfilePhotoTraitTest extends TestCase
 {
+    use RefreshDatabase;
+
     /** @test */
     public function all_users_have_profile_photos()
     {
