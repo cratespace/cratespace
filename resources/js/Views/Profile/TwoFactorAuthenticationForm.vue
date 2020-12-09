@@ -31,7 +31,7 @@
                         </p>
                     </div>
 
-                    <div class="mt-4 dark:p-4 dark:w-56 dark:bg-white" v-html="qrCode">
+                    <div class="mt-4 p-4 w-56 bg-white" v-html="qrCode">
                     </div>
                 </div>
 
@@ -42,7 +42,7 @@
                         </p>
                     </div>
 
-                    <div class="grid gap-1 max-w-xl mt-4 px-4 py-4 font-mono text-sm bg-gray-100 rounded-lg">
+                    <div class="grid gap-1 max-w-xl mt-4 px-4 py-4 font-mono text-sm bg-gray-100 text-gray-700 rounded-lg">
                         <div v-for="code in recoveryCodes" :key="code">
                             {{ code }}
                         </div>

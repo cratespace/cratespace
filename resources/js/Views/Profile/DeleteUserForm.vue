@@ -23,7 +23,7 @@
 
             <dialog-modal name="confirmUserDeletionModal">
                 <template #title>
-                    Delete Account
+                    Delete account
                 </template>
 
                 <template #content>

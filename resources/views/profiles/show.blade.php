@@ -17,5 +17,11 @@
 
     <x-sections.section-border></x-sections.section-border>
 
+    @if (config('session.driver') === 'database')
+        <signout-other-browser-sessions-form :sessions="{{ json_encode($sessions) }}"></signout-other-browser-sessions-form>
+
+        <x-sections.section-border></x-sections.section-border>
+    @endif
+
     <delete-user-form></delete-user-form>
 @endsection

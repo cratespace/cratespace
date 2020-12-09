@@ -24,6 +24,8 @@
 
                     <template #items>
                         <dropdown-link href="{{ route('profile.show') }}">{{ __('Profile') }}</dropdown-link>
+                        <dropdown-link href="{{ route('profile.show') }}">{{ __('API tokens') }}</dropdown-link>
+                        <div class="dropdown-divider"></div>
                         <form @submit.prevent="signOut">
                             <dropdown-link as="button">{{ __('Sign out') }}</dropdown-link>
                         </form>
