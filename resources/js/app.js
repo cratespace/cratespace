@@ -2,6 +2,8 @@ require('./bootstrap');
 
 window.Vue = require('vue');
 
+window.Form = require('./Utilities/Form').default;
+
 Vue.config.productionTip = false;
 
 /**

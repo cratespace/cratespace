@@ -8,7 +8,7 @@
             Please confirm access to your account by entering one of your emergency recovery codes.
         </div>
 
-        <div v-if="! form.errors.any()">
+        <div v-if="! form.hasErrors()">
             <div v-show="! recovery" class="mt-6 block">
                 <app-input type="text" v-model="form.code" label="Code" placeholder="746 598" inputmode="numeric" ref="code" autocomplete="one-time-code"></app-input>
             </div>
@@ -41,7 +41,6 @@
 </template>
 
 <script>
-    import Forms from '@/Utilities/Forms';
     import AppInput from '@/Components/Inputs/Input';
     import AppButton from '@/Components/Buttons/Button';
 
@@ -55,7 +54,7 @@
             return {
                 recovery: false,
 
-                form: new Forms({
+                form: new Form({
                     code: null,
                     recovery_code: null,
                 })
@@ -66,9 +65,7 @@
             async authenticate() {
                 await this.form.post('/tfa-challenge')
                     .then(() => {
-                        this.form.reset();
-
-                        if (! this.form.errors.any()) {
+                        if (! this.form.hasErrors()) {
                             window.location = route('home');
                         } else {
                             setTimeout(() => window.location = route('signin'), 3000);
@@ -77,7 +74,7 @@
             },
 
             showError() {
-                if (this.form.errors.has('code')) {
+                if (this.form.hasError('code')) {
                     return this.form.error('code');
                 }
 

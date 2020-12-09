@@ -35,7 +35,6 @@
 </template>
 
 <script>
-    import Forms from '@/Utilities/Forms';
     import AppInput from '@/Components/Inputs/Input';
     import AppButton from '@/Components/Buttons/Button';
 
@@ -47,7 +46,7 @@
 
         data() {
             return {
-                form: new Forms({
+                form: new Form({
                     email: null,
                     password: null,
                     remember: true
@@ -56,10 +55,10 @@
         },
 
         methods: {
-            async signIn() {
-                await this.form.post(route('signin'))
+            signIn() {
+                this.form.post(route('signin'))
                     .then(response => {
-                        if (! this.form.errors.any()) {
+                        if (! this.form.hasErrors()) {
                             window.location = this.redirectTo(response);
                         }
                     });

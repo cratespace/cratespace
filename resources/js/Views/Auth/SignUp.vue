@@ -30,7 +30,7 @@
             </div>
         </div>
 
-        <div class="mt-6 max-w-sm">
+        <div class="mt-6">
             <p class="text-xs text-gray-600 leading-5">
                 By clicking Submit, you confirm you have read and agreed to <a class="text-blue-500 hover:text-blue-600 focus:text-blue-600 active:text-gray-600 transition ease-in-out duration-150" href="/terms">Cratespace General Terms and Conditions</a> and <a class="text-blue-500 hover:text-blue-600 focus:text-blue-600 active:text-gray-600 transition ease-in-out duration-150" href="/privacy">Privacy Policy</a>.
             </p>
@@ -45,7 +45,6 @@
 </template>
 
 <script>
-    import Forms from '@/Utilities/Forms';
     import AppInput from '@/Components/Inputs/Input';
     import AppButton from '@/Components/Buttons/Button';
 
@@ -57,7 +56,7 @@
 
         data() {
             return {
-                form: new Forms({
+                form: new Form({
                     name: null,
                     business: null,
                     email: null,
@@ -69,10 +68,10 @@
         },
 
         methods: {
-            async signUp() {
-                await this.form.post(route('signup'))
+            signUp() {
+                this.form.post(route('signup'))
                     .then(() => {
-                        if (! this.form.errors.any()) {
+                        if (! this.form.hasErrors()) {
                             window.location = route('home');
                         }
                     });

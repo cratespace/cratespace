@@ -39,7 +39,7 @@
         </template>
 
         <template #actions>
-            <action-message :on="form.successful" class="mr-4">
+            <action-message :on="form.recentlySuccessful" class="mr-4">
                 Changes saved. <span class="ml-1">&check;</span>
             </action-message>
 
@@ -51,7 +51,6 @@
 </template>
 
 <script>
-    import Forms from '@/Utilities/Forms';
     import FormSection from '@/Components/Sections/FormSection';
     import AppInput from '@/Components/Inputs/Input';
     import AppButton from '@/Components/Buttons/Button';
@@ -67,7 +66,7 @@
 
         data() {
             return {
-                form: new Forms({
+                form: new Form({
                     current_password: null,
                     password: null,
                     password_confirmation: null,
@@ -76,13 +75,8 @@
         },
 
         methods: {
-            async updatePassword() {
-                await this.form.put(route('user-password.update'))
-                    .then(response => {
-                        if (! this.form.errors.any()) {
-                            this.form.reset();
-                        }
-                    });
+            updatePassword() {
+                this.form.put(route('user-password.update'));
             }
         }
     }

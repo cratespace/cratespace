@@ -1,4 +1,4 @@
-export default class Errors {
+class Errors {
     /**
      * Create new errors handler instance.
      */
@@ -47,6 +47,13 @@ export default class Errors {
     }
 
     /**
+     * Clear all error messages and reset instance.
+     */
+    clearAll() {
+        for (const field in this.errors) delete this.errors[field];
+    }
+
+    /**
      * Determine if any error messages are available in all registered fields.
      *
      * @return {Boolean}
@@ -55,3 +62,5 @@ export default class Errors {
         return Boolean(Object.keys(this.errors).length > 0);
     }
 }
+
+export default Errors;

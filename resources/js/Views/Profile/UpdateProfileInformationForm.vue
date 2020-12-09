@@ -29,7 +29,7 @@
         </template>
 
         <template #actions>
-            <action-message :on="form.successful" class="mr-4">
+            <action-message :on="form.recentlySuccessful" class="mr-4">
                 Changes saved. <span class="ml-1">&check;</span>
             </action-message>
 
@@ -41,7 +41,6 @@
 </template>
 
 <script>
-    import Forms from '@/Utilities/Forms';
     import FormSection from '@/Components/Sections/FormSection';
     import AppInput from '@/Components/Inputs/Input';
     import AppButton from '@/Components/Buttons/Button';
@@ -59,18 +58,20 @@
 
         data() {
             return {
-                form: new Forms({
+                form: new Form({
                     name: this.user.name,
                     username: this.user.username,
                     email: this.user.email,
                     phone: this.user.phone,
+                }, {
+                    resetOnSuccess: false,
                 })
             }
         },
 
         methods: {
-            async updateProfileInformation() {
-                await this.form.put(route('profile.update'));
+            updateProfileInformation() {
+                this.form.put(route('profile.update'));
             }
         }
     }

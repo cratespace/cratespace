@@ -21,7 +21,6 @@
 </template>
 
 <script>
-    import Forms from '@/Utilities/Forms';
     import AppInput from '@/Components/Inputs/Input';
     import AppButton from '@/Components/Buttons/Button';
 
@@ -33,7 +32,7 @@
 
         data() {
             return {
-                form: new Forms({
+                form: new Form({
                     email: null,
                 }),
 
@@ -42,13 +41,9 @@
         },
 
         methods: {
-            async requestReset() {
-                await this.form.post(route('password.email'))
-                    .then(({ data }) => {
-                        this.form.reset();
-
-                        this.message = data.message;
-                    });
+            requestReset() {
+                this.form.post(route('password.email'))
+                    .then(({ data }) => this.message = data.message);
             }
         }
     }

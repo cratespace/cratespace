@@ -49,7 +49,7 @@
                     Sign out other browser sessions
                 </app-button>
 
-                <action-message :on="form.successful" class="ml-4">
+                <action-message :on="form.recentlySuccessful" class="ml-4">
                     Done. <span class="ml-1">&check;</span>
                 </action-message>
             </div>
@@ -73,7 +73,7 @@
 
                 <template #actions>
                     <app-button class="mr-3" mode="secondary" data-dismiss="modal" @clicked="confirmingSignout = false">
-                        Nevermind
+                        Cancel
                     </app-button>
 
                     <app-button mode="primary" type="button" @clicked="signoutOtherBrowserSessions" :class="{ 'opacity-25': form.processing }" :loading="form.processing">
@@ -86,7 +86,6 @@
 </template>
 
 <script>
-    import Forms from '@/Utilities/Forms';
     import ActionSection from '@/Components/Sections/ActionSection';
     import ConfirmPasswordModal from '@/Components/Modals/ConfirmPasswordModal';
     import AppButton from '@/Components/Buttons/Button';
@@ -110,7 +109,7 @@
             return {
                 confirmingSignout: false,
 
-                form: new Forms({
+                form: new Form({
                     password: null,
                 }),
             }
@@ -129,8 +128,8 @@
 
             signoutOtherBrowserSessions() {
                 this.form.delete(route('other-browser-sessions.destroy'))
-                    .then(response => {
-                        if (! this.form.errors.any()) {
+                    .then(() => {
+                        if (! this.form.hasErrors()) {
                             $('#confirmSignoutModal').modal('hide');
                         }
                     });

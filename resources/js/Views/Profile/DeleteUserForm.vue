@@ -40,7 +40,7 @@
 
                 <template #actions>
                     <app-button class="mr-3" @clicked="confirmingUserDeletion = false" mode="secondary" data-dismiss="modal">
-                        Nevermind
+                        Cancel
                     </app-button>
 
                     <app-button mode="danger" type="button" @clicked="deleteUser" :class="{ 'opacity-25': form.processing }" :loading="form.processing">
@@ -53,7 +53,6 @@
 </template>
 
 <script>
-    import Forms from '@/Utilities/Forms';
     import ActionSection from '@/Components/Sections/ActionSection';
     import DialogModal from '@/Components/Modals/DialogModal';
     import AppInput from '@/Components/Inputs/Input';
@@ -71,8 +70,10 @@
             return {
                 confirmingUserDeletion: false,
 
-                form: new Forms({
+                form: new Form({
                     password: null
+                }, {
+                    resetOnSuccess: false,
                 }),
             }
         },
@@ -92,8 +93,8 @@
 
             async deleteUser() {
                 await this.form.delete(route('user.destroy'))
-                    .then(response => {
-                        if (! this.form.errors.any()) {
+                    .then(() => {
+                        if (! this.form.hasErrors()) {
                             this.confirmingUserDeletion = false;
 
                             $('#confirmUserDeletionModal').modal('hide');

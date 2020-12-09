@@ -28,7 +28,7 @@
 
                 <template #actions>
                     <app-button mode="secondary" type="button" data-dismiss="modal">
-                        Nevermind
+                        Cancel
                     </app-button>
 
                     <app-button class="ml-3" mode="primary" type="submit" :class="{ 'opacity-25': form.processing }" :loading="form.processing">
@@ -41,7 +41,6 @@
 </template>
 
 <script>
-    import Forms from '@/Utilities/Forms';
     import Modal from '@/Components/Modals/Modal';
     import AppInput from '@/Components/Inputs/Input';
     import AppButton from '@/Components/Buttons/Button';
@@ -59,17 +58,17 @@
 
         data() {
             return {
-                form: new Forms({
+                form: new Form({
                     password: null
                 }),
             }
         },
 
         methods: {
-            async startConfirmingPassword() {
-                this.form.clear();
+            startConfirmingPassword() {
+                this.form.errors.clearAll();
 
-                await axios.get(route('password.confirmation'))
+                axios.get(route('password.confirmation'))
                     .then(response => {
                         if (response.data.confirmed) {
                             this.$emit('confirmed');
@@ -85,12 +84,12 @@
                     });
             },
 
-            async confirmPassword() {
+            confirmPassword() {
                 this.form.processing = true;
 
-                await this.form.post('/user/confirm-password')
+                this.form.post('/user/confirm-password')
                     .then(() => {
-                        if (! this.form.errors.any()) {
+                        if (! this.form.hasErrors()) {
                             $('#' + this.name).modal('hide');
 
                             this.$emit('confirmed');
