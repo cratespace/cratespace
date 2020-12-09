@@ -16,6 +16,7 @@ Vue.component('navbar', require('./Components/Navbars/Navbar').default);
 Vue.component('navbar-link', require('./Components/Navbars/NavbarLink').default);
 Vue.component('dropdown', require('./Components/Dropdowns/Dropdown').default);
 Vue.component('dropdown-link', require('./Components/Dropdowns/DropdownLink').default);
+Vue.component('dropdown-divider', require('./Components/Dropdowns/DropdownDivider').default);
 Vue.component('section-loader', require('./Components/Sections/SectionLoader').default);
 
 /**
@@ -43,9 +44,8 @@ const app = new Vue({
     el: '#app',
 
     methods: {
-        signOut() {
-            axios.post(route('signout'))
-                .then(response => window.location = '/');
+        async signOut() {
+            await axios.post(route('signout')).then(response => window.location = '/');
         }
     }
 });

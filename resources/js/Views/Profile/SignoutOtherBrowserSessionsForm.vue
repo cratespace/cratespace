@@ -50,7 +50,7 @@
                 </app-button>
 
                 <action-message :on="form.successful" class="ml-4">
-                    Done.
+                    Done. <span class="ml-1">&check;</span>
                 </action-message>
             </div>
 

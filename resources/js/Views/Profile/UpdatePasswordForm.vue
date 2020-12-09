@@ -40,7 +40,7 @@
 
         <template #actions>
             <action-message :on="form.successful" class="mr-4">
-                Changes saved.
+                Changes saved. <span class="ml-1">&check;</span>
             </action-message>
 
             <app-button type="submit" mode="primary" :class="{ 'opacity-25': form.processing }" :loading="form.processing">

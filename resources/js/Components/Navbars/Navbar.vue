@@ -2,7 +2,7 @@
     <nav>
         <div class="container mx-auto px-4 sm:px-6">
             <div class="flex items-center justify-between h-16">
-                <div class="leading-none h-10 w-auto">
+                <div class="leading-none w-auto">
                     <!-- Logo -->
                     <slot name="logo"></slot>
                 </div>

@@ -4,8 +4,8 @@
     <x-sections.section-header>
         <navbar class="bg-gray-800">
             <template #logo>
-                <a href="/" class="inline-block">
-                    <x-logos.logo class="h-10 w-10"></x-logos.logo>
+                <a href="/" class="inline-block" title="{{ config('app.name') }}">
+                    <x-logos.logo-light class="h-8 w-auto" alt="{{ config('app.name') }}"></x-logos.logo-light>
                 </a>
             </template>
 
@@ -19,15 +19,15 @@
             <template #linksright>
                 <dropdown>
                     <template #trigger>
-                        <img src="{{ user('profile_photo_url') }}" class="rounded-full block w-10 h-10" alt="{{ user('name') }}">
+                        <img src="{{ user('profile_photo_url') }}" class="rounded-full block w-8 h-8" alt="{{ user('name') }}">
                     </template>
 
                     <template #items>
                         <dropdown-link href="{{ route('profile.show') }}">{{ __('Profile') }}</dropdown-link>
-                        <dropdown-link href="{{ route('profile.show') }}">{{ __('API tokens') }}</dropdown-link>
-                        <div class="dropdown-divider"></div>
+                        <dropdown-link href="{{ route('api-tokens.index') }}">{{ __('API tokens') }}</dropdown-link>
+                        <dropdown-divider></dropdown-divider>
                         <form @submit.prevent="signOut">
-                            <dropdown-link as="button">{{ __('Sign out') }}</dropdown-link>
+                            <dropdown-link as="button" type="submit">{{ __('Sign out') }}</dropdown-link>
                         </form>
                     </template>
                 </dropdown>
@@ -46,7 +46,7 @@
     <x-sections.section-footer>
         <div class="col-12">
             <div class="text-center">
-                <span class="text-gray-500 text-xs">&copy; {{ date('Y') }} {{ config('app.name') }}. All rights reserved.</span>
+                <span class="text-gray-500 text-xs">&copy; {{ date('Y') }} {{ config('app.name') }}. {{ __('All rights reserved.') }}</span>
             </div>
         </div>
     </x-sections.section-footer>
