@@ -77,7 +77,7 @@
                     </app-button>
 
                     <app-button mode="primary" type="button" @clicked="signoutOtherBrowserSessions" :class="{ 'opacity-25': form.processing }" :loading="form.processing">
-                        Sig nout other browser sessions
+                        Sign out other browser sessions
                     </app-button>
                 </template>
             </dialog-modal>
