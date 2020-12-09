@@ -16,6 +16,7 @@ Vue.component('navbar', require('./Components/Navbars/Navbar').default);
 Vue.component('navbar-link', require('./Components/Navbars/NavbarLink').default);
 Vue.component('dropdown', require('./Components/Dropdowns/Dropdown').default);
 Vue.component('dropdown-link', require('./Components/Dropdowns/DropdownLink').default);
+Vue.component('section-loader', require('./Components/Sections/SectionLoader').default);
 
 /**
  * Misc.
@@ -27,6 +28,7 @@ Vue.component('dropdown-link', require('./Components/Dropdowns/DropdownLink').de
 
 // Auth Views
 Vue.component('sign-in', require('./Views/Auth/SignIn').default);
+Vue.component('tfa-challenge', require('./Views/Auth/TwoFactorAuthenticationChallenge').default);
 Vue.component('sign-up', require('./Views/Auth/SignUp').default);
 Vue.component('reset-password-request', require('./Views/Auth/ResetPasswordRequest').default);
 

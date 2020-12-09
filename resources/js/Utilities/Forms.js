@@ -1,29 +1,26 @@
 import Errors from './Errors';
+import axios from 'axios';
 
 export default class Forms {
     /**
      * Create new form class instance.
      *
-     * @param  {object} data
+     * @param  {Object} data
      */
     constructor(data) {
         this.originalData = JSON.parse(JSON.stringify(data));
-
         Object.assign(this, data);
 
         this.errors = new Errors();
-
         this.processing = false;
-
         this.successful = false;
-
         this.submitted = false;
     }
 
     /**
      * Get data assigned to object.
      *
-     * @return {object}
+     * @return {Object}
      */
     data() {
         return Object.keys(this.originalData).reduce((data, attribute) => {
@@ -36,8 +33,8 @@ export default class Forms {
     /**
      * Make POST request to given endpoint with data assigned to object.
      *
-     * @param  {string} endpoint
-     * @return {object}
+     * @param  {String} endpoint
+     * @return {Object}
      */
     post(endpoint) {
         return this.submit(endpoint);
@@ -46,8 +43,8 @@ export default class Forms {
     /**
      * Make PUT request to given endpoint with data assigned to object.
      *
-     * @param  {string} endpoint
-     * @return {object}
+     * @param  {String} endpoint
+     * @return {Object}
      */
     put(endpoint) {
         return this.submit(endpoint, 'put');
@@ -56,8 +53,8 @@ export default class Forms {
     /**
      * Make DELETE request to given endpoint with data assigned to object.
      *
-     * @param  {string} endpoint
-     * @return {object}
+     * @param  {String} endpoint
+     * @return {Object}
      */
     delete(endpoint) {
         return this.submit(endpoint, 'delete');
@@ -66,14 +63,14 @@ export default class Forms {
     /**
      * Make specified request type to given endpoint with data assigned to object.
      *
-     * @param  {string} endpoint
-     * @param  {string} requestType
-     * @return {object}
+     * @param  {String} endpoint
+     * @param  {String} requestType
+     * @return {Object}
      */
     submit(endpoint, requestType = 'post') {
         this.processing = true;
 
-        const response = axios[requestType](endpoint, this.data())
+        const response = this.makeRequest(endpoint, requestType)
             .catch(this.onFail.bind(this))
             .then(this.onSuccess.bind(this));
 
@@ -83,10 +80,25 @@ export default class Forms {
     }
 
     /**
+     * Create request object and point to end point.
+     *
+     * @param  {String} endpoint
+     * @param  {String} requestType
+     * @return {Object}
+     */
+    makeRequest(endpoint, requestType = 'post') {
+        if (requestType == 'delete') {
+            return axios[requestType](endpoint, { data: this.data() });
+        }
+
+        return axios[requestType](endpoint, this.data());
+    }
+
+    /**
      * Set success status and return success response type.
      *
-     * @param  {object} response
-     * @return {object}
+     * @param  {Object} response
+     * @return {Object}
      */
     onSuccess(response) {
         if (! this.errors.any()) {
@@ -103,8 +115,8 @@ export default class Forms {
     /**
      * Set failed status and return error response type.
      *
-     * @param  {object} error
-     * @return {object}
+     * @param  {Object} error
+     * @return {Object}
      */
     onFail(error) {
         this.errors.record(error.response.data.errors);

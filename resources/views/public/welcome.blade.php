@@ -40,11 +40,11 @@
         <div class="container">
             <div class="row justify-center">
                 <div class="col-lg-6">
-                    <sign-up></sign-up>
+
                 </div>
 
-                <div class="col-lg-6">
-                    <sign-in></sign-in>
+                <div class="col-lg-4 offset-lg-2">
+
                 </div>
             </div>
         </div>

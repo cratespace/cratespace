@@ -46,10 +46,6 @@ class DeleteUser implements DeletesUsers
      */
     protected function deleteUserProfiles(User $user): void
     {
-        $user->business()->delete();
-
-        $user->account()->delete();
-
         $user->deleteProfilePhoto();
 
         $user->tokens->each->delete();

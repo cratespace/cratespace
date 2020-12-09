@@ -31,7 +31,7 @@
         </div>
 
         <div class="mt-6 max-w-sm">
-            <p class="text-xs text-gray-500 leading-5">
+            <p class="text-xs text-gray-600 leading-5">
                 By clicking Submit, you confirm you have read and agreed to <a class="text-blue-500 hover:text-blue-600 focus:text-blue-600 active:text-gray-600 transition ease-in-out duration-150" href="/terms">Cratespace General Terms and Conditions</a> and <a class="text-blue-500 hover:text-blue-600 focus:text-blue-600 active:text-gray-600 transition ease-in-out duration-150" href="/privacy">Privacy Policy</a>.
             </p>
         </div>
@@ -71,7 +71,11 @@
         methods: {
             async signUp() {
                 await this.form.post(route('signup'))
-                    .then(response => window.location = route('home'));
+                    .then(() => {
+                        if (! this.form.errors.any()) {
+                            window.location = route('home');
+                        }
+                    });
             }
         }
     }

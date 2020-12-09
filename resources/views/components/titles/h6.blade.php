@@ -1,3 +1,3 @@
-<h6 class="text-gray-500 text-base font-normal">
+<h6 class="text-gray-600 text-base font-normal">
     {{ $slot }}
 </h6>

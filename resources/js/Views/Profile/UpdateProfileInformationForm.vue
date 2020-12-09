@@ -69,8 +69,8 @@
         },
 
         methods: {
-            updateProfileInformation() {
-                this.form.put(route('profile.update'));
+            async updateProfileInformation() {
+                await this.form.put(route('profile.update'));
             }
         }
     }

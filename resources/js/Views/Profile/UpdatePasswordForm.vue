@@ -76,10 +76,10 @@
         },
 
         methods: {
-            updatePassword() {
-                this.form.put(route('user-password.update'))
+            async updatePassword() {
+                await this.form.put(route('user-password.update'))
                     .then(response => {
-                        if (response.status === 200) {
+                        if (! this.form.errors.any()) {
                             this.form.reset();
                         }
                     });

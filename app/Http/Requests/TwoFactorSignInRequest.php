@@ -109,7 +109,7 @@ class TwoFactorSignInRequest extends FormRequest
         $message = __('The provided two factor authentication code was invalid.');
 
         if ($this->wantsJson()) {
-            throw ValidationException::withMessages(['code' => [$message]]);
+            throw ValidationException::withMessages([is_null($this->code) ? 'recovery_code' : 'code' => [$message]]);
         }
 
         return redirect()->route('signin')->withErrors(['email' => $message]);

@@ -1,7 +1,7 @@
 <template>
     <form @submit.prevent="signIn()" class="w-full">
         <div class="mt-6 block">
-            <app-input type="email" v-model="form.email" :error="form.error('email')" label="Email address" placeholder="john.doe@example.com"></app-input>
+            <app-input type="email" v-model="form.email" autofocus :error="form.error('email')" label="Email address" placeholder="john.doe@example.com"></app-input>
         </div>
 
         <div class="mt-6 block">
@@ -58,7 +58,19 @@
         methods: {
             async signIn() {
                 await this.form.post(route('signin'))
-                    .then(response => window.location = route('home'));
+                    .then(response => {
+                        if (! this.form.errors.any()) {
+                            window.location = this.redirectTo(response);
+                        }
+                    });
+            },
+
+            redirectTo(response) {
+                if (response.data.tfa === true) {
+                    return route('tfa.signin');
+                }
+
+                return route('home');
             }
         }
     }

@@ -66,10 +66,10 @@
         },
 
         methods: {
-            startConfirmingPassword() {
+            async startConfirmingPassword() {
                 this.form.clear();
 
-                axios.get(route('password.confirmation'))
+                await axios.get(route('password.confirmation'))
                     .then(response => {
                         if (response.data.confirmed) {
                             this.$emit('confirmed');
@@ -85,16 +85,17 @@
                     });
             },
 
-            confirmPassword() {
+            async confirmPassword() {
                 this.form.processing = true;
 
-                this.form.post('/user/confirm-password', {
-                    password: this.form.password,
-                }).then(() => {
-                    $('#' + this.name).modal('hide');
+                await this.form.post('/user/confirm-password')
+                    .then(() => {
+                        if (! this.form.errors.any()) {
+                            $('#' + this.name).modal('hide');
 
-                    this.$emit('confirmed');
-                });
+                            this.$emit('confirmed');
+                        }
+                    });
             }
         }
     }

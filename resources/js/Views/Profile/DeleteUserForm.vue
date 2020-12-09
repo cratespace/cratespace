@@ -90,15 +90,15 @@
                 }, 250)
             },
 
-            deleteUser() {
-                this.form.delete(route('user.destroy'))
+            async deleteUser() {
+                await this.form.delete(route('user.destroy'))
                     .then(response => {
                         if (! this.form.errors.any()) {
                             this.confirmingUserDeletion = false;
 
                             $('#confirmUserDeletionModal').modal('hide');
 
-                            // window.location = '/';
+                            window.location = '/';
                         }
                     });
             },

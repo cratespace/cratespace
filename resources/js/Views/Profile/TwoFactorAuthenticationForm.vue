@@ -116,10 +116,10 @@
         },
 
         methods: {
-            enableTwoFactorAuthentication() {
+            async enableTwoFactorAuthentication() {
                 this.enabling = true;
 
-                axios.post('/user/tfa')
+                await axios.post('/user/tfa')
                     .then(() => {
                         this.showQrCode();
                         this.showRecoveryCodes();
@@ -150,10 +150,10 @@
                     });
             },
 
-            disableTwoFactorAuthentication() {
+            async disableTwoFactorAuthentication() {
                 this.disabling = true
 
-                axios.delete('/user/tfa')
+                await axios.delete('/user/tfa')
                     .then(() => {
                         this.disabling = false;
                         this.tfaEnabled = false;

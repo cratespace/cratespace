@@ -20,8 +20,12 @@
     @routes
 </head>
 <body class="text-gray-600 font-sans antialiased leading-normal">
-    <div id="app" v-cloak>
-        @yield('body')
+    <div id="app">
+        <section-loader>
+            <template #content>
+                @yield('body')
+            </template>
+        </section-loader>
     </div>
 
     <!-- Scripts -->
