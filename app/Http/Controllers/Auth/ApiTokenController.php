@@ -9,9 +9,12 @@ use App\Http\Controllers\Controller;
 use App\Contracts\Auth\CreatesApiTokens;
 use Symfony\Component\HttpFoundation\Response;
 use App\Http\Requests\CreateNewApiTokenRequest;
+use App\Http\Controllers\Auth\Concerns\GetsApiData;
 
 class ApiTokenController extends Controller
 {
+    use GetsApiData;
+
     /**
      * Show the user API token screen.
      *
@@ -21,17 +24,11 @@ class ApiTokenController extends Controller
      */
     public function index(Request $request)
     {
-        $apiData = [
-            'tokens' => $request->user()->tokens,
-            'availablePermissions' => Permission::$permissions,
-            'defaultPermissions' => Permission::$defaultPermissions,
-        ];
+        $apiData = $this->getApiData($request->user());
 
-        if ($request->wantsJson()) {
-            return response()->json($apiData);
-        }
-
-        return view('api.index', $apiData);
+        return $request->wantsJson()
+            ? response()->json($apiData)
+            : view('api.index', $apiData);
     }
 
     /**
