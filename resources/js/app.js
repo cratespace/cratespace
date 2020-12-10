@@ -32,17 +32,17 @@ Vue.component('inline-svg', require('./Components/Icons/InlineSvg').default);
 Vue.component('logo-light', require('./Components/Logos/LogoLight').default);
 
 /**
- * Views.
+ * Auth Views
  */
-
-// Auth Views
 Vue.component('sign-up', require('./Views/Auth/SignUp').default);
 Vue.component('sign-in', require('./Views/Auth/SignIn').default);
 Vue.component('tfa-challenge', require('./Views/Auth/TwoFactorAuthenticationChallenge').default);
 Vue.component('reset-password-request', require('./Views/Auth/ResetPasswordRequest').default);
 Vue.component('reset-password', require('./Views/Auth/ResetPassword').default);
 
-// Profile Views
+/**
+ * Profile Views
+ */
 Vue.component('delete-user-form', require('./Views/Profile/DeleteUserForm').default);
 Vue.component('signout-other-browser-sessions-form', require('./Views/Profile/SignoutOtherBrowserSessionsForm').default);
 Vue.component('tfa-form', require('./Views/Profile/TwoFactorAuthenticationForm').default);
