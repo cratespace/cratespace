@@ -55,8 +55,7 @@ const app = new Vue({
 
     methods: {
         signOut() {
-            axios.post(route('signout'))
-                .then(response => window.location = '/');
+            axios.post(route('signout')).then(() => window.location = '/');
         }
     }
 });
