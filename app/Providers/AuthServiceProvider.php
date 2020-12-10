@@ -8,6 +8,7 @@ use App\Auth\Api\Permission;
 use App\Policies\UserPolicy;
 use App\Auth\Actions\DeleteUser;
 use App\Auth\Actions\CreateNewUser;
+use App\Auth\Actions\CreateApiToken;
 use App\Auth\TwoFactorAuthenticator;
 use App\Contracts\Auth\DeletesUsers;
 use Illuminate\Support\Facades\Auth;
@@ -16,6 +17,7 @@ use App\Auth\Actions\ResetUserPassword;
 use App\Auth\Actions\UpdateUserProfile;
 use App\Contracts\Auth\CreatesNewUsers;
 use App\Auth\Actions\UpdateUserPassword;
+use App\Contracts\Auth\CreatesApiTokens;
 use App\Auth\Middleware\RedirectIfLocked;
 use App\Contracts\Auth\AuthenticatesUsers;
 use App\Contracts\Auth\ResetsUserPasswords;
@@ -51,6 +53,7 @@ class AuthServiceProvider extends ServiceProvider
         UpdatesUserPasswords::class => UpdateUserPassword::class,
         UpdatesUserProfiles::class => UpdateUserProfile::class,
         DeletesUsers::class => DeleteUser::class,
+        CreatesApiTokens::class => CreateApiToken::class,
     ];
 
     /**

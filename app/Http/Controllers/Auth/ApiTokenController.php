@@ -6,6 +6,7 @@ use App\Auth\Api\Permission;
 use Illuminate\Http\Request;
 use Illuminate\Contracts\View\View;
 use App\Http\Controllers\Controller;
+use App\Contracts\Auth\CreatesApiTokens;
 use Symfony\Component\HttpFoundation\Response;
 use App\Http\Requests\CreateNewApiTokenRequest;
 
@@ -40,16 +41,12 @@ class ApiTokenController extends Controller
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function store(CreateNewApiTokenRequest $request): Response
+    public function store(CreateNewApiTokenRequest $request, CreatesApiTokens $creator): Response
     {
-        $token = $request->user()->createToken(
-            $request->name, Permission::validPermissions($request->input('permissions', []))
-        );
-
-        $token = explode('|', $token->plainTextToken, 2)[1];
+        $token = explode('|', $creator->create($request)->plainTextToken, 2)[1];
 
         return $request->wantsJson()
-            ? response()->json(['token' => $token])
+            ? response()->json(compact('token'))
             : back()->with('flash', compact('token'));
     }
 
