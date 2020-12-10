@@ -16,15 +16,21 @@ class ApiTokenController extends Controller
      *
      * @param \Illuminate\Http\Request $request
      *
-     * @return \Illuminate\Contracts\View\View
+     * @return \Symfony\Component\HttpFoundation\Response|Illuminate\Contracts\View\View
      */
-    public function index(Request $request): View
+    public function index(Request $request)
     {
-        return view('auth.profile.api', [
+        $apiData = [
             'tokens' => $request->user()->tokens,
             'availablePermissions' => Permission::$permissions,
             'defaultPermissions' => Permission::$defaultPermissions,
-        ]);
+        ];
+
+        if ($request->wantsJson()) {
+            return response()->json($apiData);
+        }
+
+        return view('api.index', $apiData);
     }
 
     /**
@@ -43,7 +49,7 @@ class ApiTokenController extends Controller
         $token = explode('|', $token->plainTextToken, 2)[1];
 
         return $request->wantsJson()
-            ? response()->json($token, 200)
+            ? response()->json(['token' => $token])
             : back()->with('flash', compact('token'));
     }
 

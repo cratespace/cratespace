@@ -28,6 +28,7 @@ Vue.component('section-content', require('./Components/Sections/SectionContent')
 Vue.component('section-border', require('./Components/Sections/SectionBorder').default);
 Vue.component('section-footer', require('./Components/Sections/SectionFooter').default);
 Vue.component('logo', require('./Components/Logos/Logo').default);
+Vue.component('inline-svg', require('./Components/Icons/InlineSvg').default);
 Vue.component('logo-light', require('./Components/Logos/LogoLight').default);
 
 /**
@@ -47,13 +48,15 @@ Vue.component('signout-other-browser-sessions-form', require('./Views/Profile/Si
 Vue.component('tfa-form', require('./Views/Profile/TwoFactorAuthenticationForm').default);
 Vue.component('update-password-form', require('./Views/Profile/UpdatePasswordForm').default);
 Vue.component('update-profile-information-form', require('./Views/Profile/UpdateProfileInformationForm').default);
+Vue.component('api-token-management', require('./Views/API/ApiTokenManagement').default);
 
 const app = new Vue({
     el: '#app',
 
     methods: {
         signOut() {
-            axios.post(route('signout')).then(response => window.location = '/');
+            axios.post(route('signout'))
+                .then(response => window.location = '/');
         }
     }
 });

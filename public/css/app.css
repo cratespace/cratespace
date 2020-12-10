@@ -2574,6 +2574,11 @@ a.close.disabled {
  * Custom Styles
  */
 
+html,
+body {
+  font-family: "Inter", sans-serif;
+}
+
 [v-cloak] > * {
   display: none;
 }
@@ -2582,12 +2587,50 @@ a.close.disabled {
   content: "loading\2026";
 }
 
-.bg-gradient {
-  background: linear-gradient(180deg, white 0%, #eff7f7 100%);
+h1, h2, h3, h4, h5{
+  font-weight: 600;
+}
+
+h1, h2, h3, h4, h5{
+  --tw-text-opacity: 1;
+  color: rgba(45, 55, 72, var(--tw-text-opacity));
+}
+
+h1 {
+  font-size: 2.25rem;
+  line-height: 2.5rem;
+}
+
+h2 {
+  font-size: 1.875rem;
+  line-height: 2.25rem;
+}
+
+h3 {
+  font-size: 1.5rem;
+  line-height: 2rem;
+}
+
+h4 {
+  font-size: 1.25rem;
+  line-height: 1.75rem;
+}
+
+h5 {
+  font-size: 1.125rem;
+  line-height: 1.75rem;
+}
+
+h6 {
+  font-size: 1rem;
+  line-height: 1.5rem;
 }
 
 .bg-pattern {
-  background-image: url("/img/bg-pattern.svg"), linear-gradient(to right, #e2e7f0 0%, white 100%);
+  background-image: url("/img/bg-pattern.svg"), linear-gradient(to bottom right, #e2e7f0 0%, white 100%);
+  background-position: right top;
+  background-repeat: no-repeat;
+  background-size: contain;
 }
 
 .space-y-0 > :not([hidden]) ~ :not([hidden]){

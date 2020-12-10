@@ -10,7 +10,7 @@
     <div class="row">
         <div class="col-12">
             <div class="px-4 py-5 sm:px-6 bg-white shadow rounded-xl">
-                <span class="font-medium text-sm">We are defo here!</span>
+                <!-- Yo! -->
             </div>
         </div>
     </div>

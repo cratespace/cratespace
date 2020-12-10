@@ -1,7 +1,7 @@
 @extends('layouts.master')
 
 @section('body')
-    <div class="min-h-screen bg-pattern bg-contain bg-no-repeat bg-right-top w-full">
+    <div class="min-h-screen bg-pattern w-full">
         @yield('content')
     </div>
 @endsection

@@ -1,10 +1,11 @@
-.bg-gradient {
-    background: linear-gradient(180deg, rgba(255,255,255,1) 0%, rgba(239,247,247,1) 100%);
-}
-
 .bg-pattern {
-    background-image: url('/img/bg-pattern.svg'), -moz-linear-gradient(to right, rgba(226, 231, 240, 1) 0%, rgba(255,255,255,1) 100%);
-    background-image: url('/img/bg-pattern.svg'), -webkit-linear-gradient(to right, rgba(226, 231, 240, 1) 0%, rgba(255,255,255,1) 100%);
-    background-image: url('/img/bg-pattern.svg'), linear-gradient(to right, rgba(226, 231, 240, 1) 0%, rgba(255,255,255,1) 100%);
+    background-image: url('/img/bg-pattern.svg'), -moz-linear-gradient(to bottom right, rgba(226, 231, 240, 1) 0%, rgba(255,255,255,1) 100%);
+    background-image: url('/img/bg-pattern.svg'), -webkit-linear-gradient(to bottom right, rgba(226, 231, 240, 1) 0%, rgba(255,255,255,1) 100%);
+    background-image: url('/img/bg-pattern.svg'), linear-gradient(to bottom right, rgba(226, 231, 240, 1) 0%, rgba(255,255,255,1) 100%);
+
+    @apply
+        bg-contain
+        bg-no-repeat
+        bg-right-top;
 }
 

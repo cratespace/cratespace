@@ -4,7 +4,7 @@
     <navbar class="bg-blue-800">
         <template #logo>
             <a href="/" class="inline-block">
-                <x-logos.logo class="h-10 w-10"></x-logos.logo>
+                <logo-light classes="h-8 w-auto" title="{{ config('app.name') }}"></logo-light>
             </a>
         </template>
 

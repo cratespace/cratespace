@@ -165,10 +165,13 @@ class Form {
 
     onSuccess(response) {
         this.processing = false;
-        this.successful = true;
-        this.recentlySuccessful = true;
 
-        setTimeout(() => this.recentlySuccessful = false, 2000);
+        if (! this.hasErrors()) {
+            this.successful = true;
+            this.recentlySuccessful = true;
+
+            setTimeout(() => this.recentlySuccessful = false, 2000);
+        }
 
         if (this.__options.resetOnSuccess) {
             this.reset();
