@@ -9,16 +9,12 @@
 
             <div class="mt-6">
                 <h2>Reset password</h2>
+
+                <h6>Just remembered your password?</span> <app-link href="{{ route('signin') }}">Sign in</app-link></h6>
             </div>
 
             <div>
-                <reset-password></reset-password>
-            </div>
-
-            <div class="mt-6">
-                <span class="text-sm">
-                    <span class="text-gray-600">Just remembered your password?</span> <app-link href="{{ route('signin') }}">Sign in</app-link>
-                </span>
+                <reset-password token="{{ $token }}"></reset-password>
             </div>
         </div>
     </app-section>
