@@ -1,4 +1,6 @@
-@import url(https://rsms.me/inter/inter.css);/*! modern-normalize v1.0.0 | MIT License | https://github.com/sindresorhus/modern-normalize */
+@import url(https://rsms.me/inter/inter.css);@charset "UTF-8";
+
+/*! modern-normalize v1.0.0 | MIT License | https://github.com/sindresorhus/modern-normalize */
 
 /*
 Document
@@ -2571,6 +2573,14 @@ a.close.disabled {
 /*
  * Custom Styles
  */
+
+[v-cloak] > * {
+  display: none;
+}
+
+[v-cloak]::before {
+  content: "loading\2026";
+}
 
 .bg-gradient {
   background: linear-gradient(180deg, white 0%, #eff7f7 100%);

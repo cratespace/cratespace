@@ -20,9 +20,7 @@
             </div>
 
             <div class="text-sm leading-5">
-                <a class="text-blue-500 hover:text-blue-600 focus:text-blue-600 active:text-gray-600 transition ease-in-out duration-150" :href="route('password.request')">
-                    Forgot your password?
-                </a>
+                <app-link :href="route('password.request')">Forgot your password?</app-link>
             </div>
         </div>
 
@@ -35,6 +33,7 @@
 </template>
 
 <script>
+    import AppLink from '@/Components/Base/Link';
     import AppInput from '@/Components/Inputs/Input';
     import AppButton from '@/Components/Buttons/Button';
 

@@ -1,7 +1,9 @@
 @extends('layouts.app')
 
 @section('title')
-    <x-titles.title-header-section class="text-white">Dashboard</x-titles.title-header-section>
+    <h5 class="text-white font-semibold text-xl leading-none m-0 p-0">
+        Dashboard
+    </h5>
 @endsection
 
 @section('content')

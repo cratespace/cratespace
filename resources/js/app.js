@@ -14,26 +14,32 @@ Vue.mixin({ methods: { route } });
 /**
  * Components.
  */
+Vue.component('app-link', require('./Components/Base/Link').default);
 Vue.component('navbar', require('./Components/Navbars/Navbar').default);
 Vue.component('navbar-link', require('./Components/Navbars/NavbarLink').default);
 Vue.component('dropdown', require('./Components/Dropdowns/Dropdown').default);
 Vue.component('dropdown-link', require('./Components/Dropdowns/DropdownLink').default);
 Vue.component('dropdown-divider', require('./Components/Dropdowns/DropdownDivider').default);
-Vue.component('section-loader', require('./Components/Sections/SectionLoader').default);
-
-/**
- * Misc.
- */
+Vue.component('app-section', require('./Components/Sections/Section').default);
+Vue.component('main-section', require('./Components/Sections/MainSection').default);
+Vue.component('section-header', require('./Components/Sections/SectionHeader').default);
+Vue.component('section-title', require('./Components/Sections/SectionTitle').default);
+Vue.component('section-content', require('./Components/Sections/SectionContent').default);
+Vue.component('section-border', require('./Components/Sections/SectionBorder').default);
+Vue.component('section-footer', require('./Components/Sections/SectionFooter').default);
+Vue.component('logo', require('./Components/Logos/Logo').default);
+Vue.component('logo-light', require('./Components/Logos/LogoLight').default);
 
 /**
  * Views.
  */
 
 // Auth Views
+Vue.component('sign-up', require('./Views/Auth/SignUp').default);
 Vue.component('sign-in', require('./Views/Auth/SignIn').default);
 Vue.component('tfa-challenge', require('./Views/Auth/TwoFactorAuthenticationChallenge').default);
-Vue.component('sign-up', require('./Views/Auth/SignUp').default);
 Vue.component('reset-password-request', require('./Views/Auth/ResetPasswordRequest').default);
+Vue.component('reset-password', require('./Views/Auth/ResetPassword').default);
 
 // Profile Views
 Vue.component('delete-user-form', require('./Views/Profile/DeleteUserForm').default);

@@ -1,9 +1,9 @@
 <template>
     <div class="row">
-        <section-title>
+        <form-section-title>
             <template #title><slot name="title"></slot></template>
             <template #description><slot name="description"></slot></template>
-        </section-title>
+        </form-section-title>
 
         <div class="mt-6 md:mt-0 offset-lg-1 col-md-8 col-lg-7">
             <form @submit.prevent="$emit('submitted')">
@@ -20,11 +20,11 @@
 </template>
 
 <script>
-    import SectionTitle from './SectionTitle';
+    import FormSectionTitle from './FormSectionTitle';
 
     export default {
         components: {
-            SectionTitle,
+            FormSectionTitle,
         }
     }
 </script>

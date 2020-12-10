@@ -1,26 +1,28 @@
 @extends('layouts.app')
 
 @section('title')
-    <x-titles.title-header-section class="text-white">Profile</x-titles.title-header-section>
+    <h5 class="text-white font-semibold text-xl leading-none m-0 p-0">
+        Profile
+    </h5>
 @endsection
 
 @section('content')
     <update-profile-information-form :user="{{ $user }}"></update-profile-information-form>
 
-    <x-sections.section-border></x-sections.section-border>
+    <section-border></section-border>
 
     <update-password-form></update-password-form>
 
-    <x-sections.section-border></x-sections.section-border>
+    <section-border></section-border>
 
     <tfa-form :user="{{ $user }}"></tfa-form>
 
-    <x-sections.section-border></x-sections.section-border>
+    <section-border></section-border>
 
     @if (config('session.driver') === 'database')
         <signout-other-browser-sessions-form :sessions="{{ json_encode($sessions) }}"></signout-other-browser-sessions-form>
 
-        <x-sections.section-border></x-sections.section-border>
+        <section-border></section-border>
     @endif
 
     <delete-user-form></delete-user-form>

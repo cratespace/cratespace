@@ -1,12 +1,10 @@
 @extends('layouts.master')
 
 @section('body')
-    <x-sections.section-header>
+    <section-header>
         <navbar class="bg-gray-800">
             <template #logo>
-                <a href="/" class="inline-block" title="{{ config('app.name') }}">
-                    <x-logos.logo-light class="h-8 w-auto" alt="{{ config('app.name') }}"></x-logos.logo-light>
-                </a>
+                <logo-light classes="h-8 w-auto" title="{{ config('app.name') }}"></logo-light>
             </template>
 
             <template #linksleft>
@@ -33,21 +31,21 @@
                 </dropdown>
             </template>
         </navbar>
-    </x-sections.section-header>
+    </section-header>
 
-    <x-sections.section-app-title>
+    <section-title>
         @yield('title')
-    </x-sections.section-app-title>
+    </section-title>
 
-    <x-sections.section-app>
+    <section-content>
         @yield('content')
-    </x-sections.section-app>
+    </section-content>
 
-    <x-sections.section-footer>
+    <section-footer>
         <div class="col-12">
             <div class="text-center">
                 <span class="text-gray-500 text-xs">&copy; {{ date('Y') }} {{ config('app.name') }}. {{ __('All rights reserved.') }}</span>
             </div>
         </div>
-    </x-sections.section-footer>
+    </section-footer>
 @endsection

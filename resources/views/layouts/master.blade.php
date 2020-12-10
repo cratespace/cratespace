@@ -21,11 +21,9 @@
 </head>
 <body class="text-gray-600 font-sans antialiased leading-normal">
     <div id="app">
-        <section-loader>
-            <template #content>
-                @yield('body')
-            </template>
-        </section-loader>
+        <main-section>
+            @yield('body')
+        </main-section>
     </div>
 
     <!-- Scripts -->

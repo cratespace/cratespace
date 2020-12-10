@@ -1,11 +1,21 @@
 <template>
-    <div class="col-md-4">
-        <h3 class="text-lg font-semibold text-gray-800">
-            <slot name="title"></slot>
-        </h3>
+    <section class="pb-6 bg-gray-800">
+        <div class="container mx-auto px-4 sm:px-6">
+            <div class="row">
+                <div class="col-12">
+                    <div class="border-t border-gray-700"></div>
 
-        <p class="mt-1 text-sm text-gray-600">
-            <slot name="description"></slot>
-        </p>
-    </div>
+                    <div class="mt-6">
+                        <slot></slot>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 </template>
+
+<script>
+    export default {
+        //
+    }
+</script>

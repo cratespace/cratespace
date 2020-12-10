@@ -1,22 +1,24 @@
 <template>
     <div class="row">
-        <section-title>
+        <form-section-title>
             <template #title><slot name="title"></slot></template>
             <template #description><slot name="description"></slot></template>
-        </section-title>
+        </form-section-title>
 
-        <div class="mt-6 md:mt-0 offset-lg-1 col-md-8 col-lg-7">
+        <form-section-content>
             <slot name="content"></slot>
-        </div>
+        </form-section-content>
     </div>
 </template>
 
 <script>
-    import SectionTitle from './SectionTitle';
+    import FormSectionTitle from './FormSectionTitle';
+    import FormSectionContent from './FormSectionContent';
 
     export default {
         components: {
-            SectionTitle,
+            FormSectionTitle,
+            FormSectionContent,
         }
     }
 </script>
