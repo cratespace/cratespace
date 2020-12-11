@@ -5,6 +5,7 @@ namespace Tests\Feature\Auth;
 use Tests\TestCase;
 use App\Models\User;
 use App\Jobs\DeleteUserJob;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Queue;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
@@ -17,7 +18,7 @@ class DeleteUserTest extends TestCase
     {
         Queue::fake();
 
-        $user = create(User::class, ['password' => 'crazyDruid']);
+        $user = create(User::class, ['password' => Hash::make('crazyDruid')]);
 
         $response = $this->actingAs($user)->delete('/user', [
             'password' => 'crazyDruid',
@@ -31,7 +32,7 @@ class DeleteUserTest extends TestCase
     {
         Queue::fake();
 
-        $user = create(User::class, ['password' => 'crazyDruid']);
+        $user = create(User::class, ['password' => Hash::make('crazyDruid')]);
 
         $response = $this->actingAs($user)->deleteJson('/user', [
             'password' => 'crazyDruid',
@@ -45,7 +46,7 @@ class DeleteUserTest extends TestCase
     {
         Queue::fake();
 
-        $user = create(User::class, ['password' => 'crazyDruid']);
+        $user = create(User::class, ['password' => Hash::make('crazyDruid')]);
 
         Queue::assertNothingPushed();
 
