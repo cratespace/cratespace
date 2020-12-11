@@ -3,12 +3,9 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-use App\Http\Requests\Traits\AuthorizesRequest;
 
 class UserDetailsRequest extends FormRequest
 {
-    use AuthorizesRequest;
-
     /**
      * Determine if the user is authorized to make this request.
      *
@@ -16,7 +13,7 @@ class UserDetailsRequest extends FormRequest
      */
     public function authorize()
     {
-        return $this->authenticated();
+        return true;
     }
 
     /**

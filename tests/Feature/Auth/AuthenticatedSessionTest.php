@@ -50,7 +50,7 @@ class AuthenticatedSessionTest extends TestCase implements Postable
 
         $response = $this->post('/signin', $this->validParameters());
 
-        $response->assertRedirect('/signin');
+        $response->status(401);
         $this->assertFalse(auth()->check());
     }
 

@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers\Api;
 
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\UserDetailsRequest;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 class CurrentUserController extends Controller
 {
@@ -16,12 +16,12 @@ class CurrentUserController extends Controller
      *
      * @return mixed
      */
-    public function __invoke(UserDetailsRequest $request, ?string $attribute = null)
+    public function __invoke(UserDetailsRequest $request, ?string $attribute = null): JsonResponse
     {
         if (is_null($attribute)) {
-            return $request->user();
+            return response()->json($request->user());
         }
 
-        return $request->user()->{$attribute};
+        return response()->json($request->user()->{$attribute});
     }
 }

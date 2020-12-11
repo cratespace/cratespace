@@ -49,8 +49,8 @@ abstract class Authenticator
      */
     protected function validateCredentials(Request $request): ?Authenticatable
     {
-        return tap($this->findUser($request), function (?Authenticatable $user = null) use ($request) {
-            if (!$user || !Hash::check($request->password, $user->password)) {
+        return tap($this->findUser($request), function ($user = null) use ($request) {
+            if (is_null($user) || !Hash::check($request->password, $user->password)) {
                 $this->fireFailedEvent($request, $user);
 
                 $this->throwFailedAuthenticationException($request);

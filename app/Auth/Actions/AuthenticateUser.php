@@ -34,14 +34,4 @@ class AuthenticateUser implements AuthenticatesUsers
             ->send($request)
             ->through(array_filter(AuthServiceProvider::$authenticationMiddleware));
     }
-
-    /**
-     * Default username attribute.
-     *
-     * @return string
-     */
-    protected function username(): string
-    {
-        return config('auth.defaults.username', 'email');
-    }
 }

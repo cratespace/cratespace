@@ -52,6 +52,8 @@ class DeleteUserJob implements ShouldQueue
             app('log')->error($e->getMessage(), [
                 'user' => $this->user,
             ]);
+
+            throw $e;
         }
     }
 }
