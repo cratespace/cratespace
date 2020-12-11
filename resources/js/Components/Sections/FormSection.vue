@@ -6,7 +6,7 @@
         </form-section-title>
 
         <div class="mt-6 md:mt-0 offset-lg-1 col-md-8 col-lg-7">
-            <form @submit.prevent="$emit('submitted')">
+            <form @submit.prevent="$emit('submitted')" enctype="multipart/form-data">
                 <div>
                     <slot name="form"></slot>
                 </div>

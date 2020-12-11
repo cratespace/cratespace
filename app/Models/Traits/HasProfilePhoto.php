@@ -19,8 +19,7 @@ trait HasProfilePhoto
         tap($this->profile_photo_path, function ($previous) use ($photo) {
             $this->forceFill([
                 'profile_photo_path' => $photo->storePublicly(
-                    'profile-photos',
-                    ['disk' => $this->profilePhotoDisk()]
+                    'profile-photos', ['disk' => $this->profilePhotoDisk()]
                 ),
             ])->save();
 

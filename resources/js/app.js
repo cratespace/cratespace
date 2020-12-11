@@ -28,7 +28,6 @@ Vue.component('section-content', require('./Components/Sections/SectionContent')
 Vue.component('section-border', require('./Components/Sections/SectionBorder').default);
 Vue.component('section-footer', require('./Components/Sections/SectionFooter').default);
 Vue.component('logo', require('./Components/Logos/Logo').default);
-Vue.component('inline-svg', require('./Components/Icons/InlineSvg').default);
 Vue.component('logo-light', require('./Components/Logos/LogoLight').default);
 
 /**

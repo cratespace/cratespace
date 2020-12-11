@@ -10,6 +10,7 @@ use App\Http\Controllers\Auth\VerifyEmailController;
 use App\Http\Controllers\Auth\RecoveryCodeController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Auth\TwoFactorQrCodeController;
+use App\Http\Controllers\Auth\UserProfilePhotoController;
 use App\Http\Controllers\Auth\PasswordResetLinkController;
 use App\Http\Controllers\Auth\ConfirmablePasswordController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
@@ -70,6 +71,7 @@ Route::group([
         // User Profile Routes...
         Route::get('/profile', [UserProfileController::class, 'show'])->name('profile.show');
         Route::put('/profile', [UserProfileController::class, 'update'])->name('profile.update');
+        Route::delete('/profile-photo', [UserProfilePhotoController::class, 'destroy'])->name('user-photo.destroy');
         Route::delete('/', [CurrentUserController::class, 'destroy'])->name('user.destroy');
 
         // API Token Routes...

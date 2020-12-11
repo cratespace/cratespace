@@ -46,6 +46,6 @@ class UserProfileController extends Controller
 
         return $request->wantsJson()
             ? response()->json('', 200)
-            : back()->with('status', trans('profile-updated'));
+            : back()->with('status', 'profile-updated');
     }
 }

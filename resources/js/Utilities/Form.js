@@ -1,12 +1,11 @@
-import { shallowReactive } from 'vue'
 import Errors from './Errors';
 import axios from 'axios';
 import {
     guardAgainstReservedFieldName,
+    objectToFormData,
     isArray,
     isFile,
     merge,
-    objectToFormData,
     reservedFieldNames
 } from './helpers';
 
