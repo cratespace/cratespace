@@ -1,6 +1,6 @@
 <template>
     <div class="dropdown leading-none flex-no-shrink">
-        <a href="#" class="flex-no-shrink block dropdown-toggle focus:outline-none transition ease-in-out duration-150" data-toggle="dropdown" aria-expanded="false" role="button">
+        <a href="#" @click.prevent="toggle" class="flex-no-shrink block dropdown-toggle focus:outline-none transition ease-in-out duration-150" data-toggle="dropdown" aria-expanded="false" role="button">
             <slot name="trigger"></slot>
         </a>
 
@@ -12,6 +12,18 @@
 
 <script>
     export default {
-        //
+        data() {
+            return {
+                open: false
+            }
+        },
+
+        methods: {
+            toggle() {
+                this.open = ! this.open;
+
+                this.$emit('dropdown-toggled', this.open);
+            }
+        }
     }
 </script>

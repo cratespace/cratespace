@@ -39,12 +39,8 @@
     <section class="py-16 bg-gray-200">
         <div class="container">
             <div class="row justify-center">
-                <div class="col-lg-6">
-
-                </div>
-
-                <div class="col-lg-4 offset-lg-2">
-
+                <div class="col-12">
+                    <drop align="right" width="48"></drop>
                 </div>
             </div>
         </div>

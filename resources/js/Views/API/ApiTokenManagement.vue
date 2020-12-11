@@ -100,11 +100,11 @@
                                     <button class="cursor-pointer ml-6 text-blue-500 underline-none outline-none focus:outline-none"
                                         @click="managePermissions(token)"
                                         v-if="availablePermissions.length > 0">
-                                        <span class="font-semibold text-xs">Permissions</span>
+                                        <span class="font-medium text-xs">Permissions</span>
                                     </button>
 
                                     <button class="cursor-pointer ml-6 text-red-500 focus:outline-none" @click="confirmTokenDeletion(token)">
-                                        <span class="font-semibold text-xs">Delete</span>
+                                        <span class="font-medium text-xs">Delete</span>
                                     </button>
                                 </div>
                             </div>
