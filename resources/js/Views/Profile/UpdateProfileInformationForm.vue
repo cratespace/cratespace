@@ -10,7 +10,7 @@
 
         <template #form>
             <div class="row">
-                <div class="mt-6 col-lg-6">
+                <div class="col-lg-6">
                     <app-input type="text" v-model="form.name" :error="form.error('name')" label="Full name" placeholder="Johnathan Doe"></app-input>
                 </div>
 

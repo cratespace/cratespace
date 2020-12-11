@@ -10,7 +10,7 @@
 
         <template #form>
             <div class="row">
-                <div class="mt-6 col-12 col-lg-7">
+                <div class="col-12 col-lg-7">
                     <div>
                         <app-input type="password" v-model="form.password" :error="form.error('password')" label="New password" placeholder="hunterKiller739@3$"></app-input>
                     </div>
@@ -30,7 +30,7 @@
                     </div>
                 </div>
 
-                <div class="mt-6 col-12 col-lg-5">
+                <div class="col-12 col-lg-5">
                     <span class="font-medium text-xs text-gray-500">
                         Your password must be 8-20 characters long, contain letters and numbers, and must not contain spaces, special characters, or emoji.
                     </span>
