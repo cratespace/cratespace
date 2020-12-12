@@ -33,6 +33,7 @@ Vue.component('logo-light', require('./Components/Logos/LogoLight').default);
 /**
  * Auth Views
  */
+Vue.component('sign-out', require('./Views/Auth/SignOut').default);
 Vue.component('sign-up', require('./Views/Auth/SignUp').default);
 Vue.component('sign-in', require('./Views/Auth/SignIn').default);
 Vue.component('tfa-challenge', require('./Views/Auth/TwoFactorAuthenticationChallenge').default);
@@ -49,12 +50,9 @@ Vue.component('update-password-form', require('./Views/Profile/UpdatePasswordFor
 Vue.component('update-profile-information-form', require('./Views/Profile/UpdateProfileInformationForm').default);
 Vue.component('api-token-management', require('./Views/API/ApiTokenManagement').default);
 
+/**
+ * Vue Instance.
+ */
 const app = new Vue({
     el: '#app',
-
-    methods: {
-        signOut() {
-            axios.post(route('signout')).then(() => window.location = '/');
-        }
-    }
 });

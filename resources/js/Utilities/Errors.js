@@ -50,7 +50,7 @@ class Errors {
      * Clear all error messages and reset instance.
      */
     clearAll() {
-        for (const field in this.errors) delete this.errors[field];
+        this.errors = {};
     }
 
     /**

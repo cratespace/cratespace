@@ -40,7 +40,7 @@
         <div class="container">
             <div class="row justify-center">
                 <div class="col-12">
-                    <drop align="right" width="48"></drop>
+                    <!-- Content -->
                 </div>
             </div>
         </div>
