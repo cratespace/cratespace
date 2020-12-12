@@ -37,7 +37,7 @@
 
 @section('content')
     <section class="py-16 bg-gray-200">
-        <div class="container">
+        <div class="container mx-auto px-4 sm:px-6">
             <div class="row justify-center">
                 <div class="col-12">
                     <!-- Content -->

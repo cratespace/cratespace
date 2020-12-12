@@ -172,6 +172,7 @@
 
 <script>
     import { fromNow } from '@/Utilities/helpers';
+    import Checkbox from '@/Components/Inputs/Checkbox';
     import DialogModal from '@/Components/Modals/DialogModal';
     import FormSection from '@/Components/Sections/FormSection';
     import ActionSection from '@/Components/Sections/ActionSection';
@@ -187,6 +188,7 @@
         ],
 
         components: {
+            Checkbox,
             AppInput,
             AppButton,
             FormSection,

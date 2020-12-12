@@ -27,6 +27,7 @@ Vue.component('section-title', require('./Components/Sections/SectionTitle').def
 Vue.component('section-content', require('./Components/Sections/SectionContent').default);
 Vue.component('section-border', require('./Components/Sections/SectionBorder').default);
 Vue.component('section-footer', require('./Components/Sections/SectionFooter').default);
+Vue.component('card', require('./Components/Cards/Card').default);
 Vue.component('logo', require('./Components/Logos/Logo').default);
 Vue.component('logo-light', require('./Components/Logos/LogoLight').default);
 

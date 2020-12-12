@@ -10,13 +10,7 @@
 
         <div class="mt-6 flex items-center justify-between">
             <div>
-                <label for="remember" class="flex items-center cursor-pointer">
-                    <input id="remember" class="form-checkbox rounded text-blue-500 bg-white border border-gray-100 focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50 transition duration-150 ease-in-out" v-model="form.remember" type="checkbox"/>
-
-                    <span class="ml-2 text-sm font-medium leading-5">
-                        <span>Stay signed in</span>
-                    </span>
-                </label>
+                <checkbox id="remember" v-model="form.remember" label="Stay signed in"></checkbox>
             </div>
 
             <div class="text-sm leading-5">
@@ -36,11 +30,14 @@
     import AppLink from '@/Components/Base/Link';
     import AppInput from '@/Components/Inputs/Input';
     import AppButton from '@/Components/Buttons/Button';
+    import Checkbox from '@/Components/Inputs/Checkbox';
 
     export default {
         components: {
+            AppLink,
             AppInput,
             AppButton,
+            Checkbox
         },
 
         data() {
