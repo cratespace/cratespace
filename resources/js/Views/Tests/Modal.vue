@@ -9,11 +9,9 @@
                 </transition>
 
                 <transition enter-active-class="ease-out duration-300" enter-class="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95" enter-to-class="opacity-100 translate-y-0 sm:scale-100" leave-active-class="ease-in duration-200" leave-class="opacity-100 translate-y-0 sm:scale-100" leave-to-class="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95">
-                    <card v-show="show" :has-actions="hasActions" class="transform transition-all sm:w-full sm:max-w-xl">
-                        <template #content><slot name="content"></slot></template>
-
-                        <template #actions><slot name="actions"></slot></template>
-                    </card>
+                    <div v-show="show" class="transform transition-all sm:w-full sm:max-w-xl">
+                        <slot></slot>
+                    </div>
                 </transition>
             </div>
         </transition>

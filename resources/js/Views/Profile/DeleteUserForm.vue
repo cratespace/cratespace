@@ -21,7 +21,7 @@
                 </app-button>
             </div>
 
-            <dialog-modal hasActions name="confirmUserDeletionModal">
+            <dialog-modal :has-actions="true" :show="confirmingUserDeletion" @close="confirmingUserDeletion = false">
                 <template #title>
                     Delete account
                 </template>
@@ -39,7 +39,7 @@
                 </template>
 
                 <template #actions>
-                    <app-button class="mr-3" @clicked="confirmingUserDeletion = false" mode="secondary" data-dismiss="modal">
+                    <app-button class="mr-3" mode="secondary" type="button" @clicked="confirmingUserDeletion = false">
                         Cancel
                     </app-button>
 
@@ -84,8 +84,6 @@
 
                 this.confirmingUserDeletion = true;
 
-                $('#confirmUserDeletionModal').modal('show');
-
                 setTimeout(() => {
                     this.$refs.password.focus()
                 }, 250)
@@ -96,8 +94,6 @@
                     .then(() => {
                         if (! this.form.hasErrors()) {
                             this.confirmingUserDeletion = false;
-
-                            $('#confirmUserDeletionModal').modal('hide');
 
                             window.location = '/';
                         }

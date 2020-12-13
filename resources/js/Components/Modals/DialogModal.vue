@@ -1,9 +1,9 @@
 <template>
-    <modal :name="name">
+    <modal :show="show" :closeable="closeable" @close="close">
         <card :has-actions="hasActions">
             <template #content>
                 <div class="modal-header p-0">
-                    <h5 class="modal-title text-gray-800 font-semibold text-lg" :id="name + 'Label'">
+                    <h5 class="modal-title text-gray-800 font-semibold text-lg">
                         <slot name="title"></slot>
                     </h5>
                 </div>
@@ -25,12 +25,30 @@
     import Card from '@/Components/Cards/Card';
 
     export default {
-        props: ['name', 'hasActions'],
+        props: {
+            show: {
+                default: false
+            },
+
+            closeable: {
+                default: true
+            },
+
+            hasActions: {
+                default: false
+            }
+        },
 
         components: {
             Card,
             Modal,
         },
+
+        methods: {
+            close() {
+                this.$emit('close');
+            },
+        }
     }
 </script>
 

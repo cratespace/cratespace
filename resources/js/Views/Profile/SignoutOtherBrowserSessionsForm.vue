@@ -54,7 +54,7 @@
                 </action-message>
             </div>
 
-            <dialog-modal has-actions name="confirmSignoutModal">
+            <dialog-modal :has-actions="true" :show="confirmingSignout" @close="confirmingSignout = false">
                 <template #title>
                     Sign out other browser sessions
                 </template>
@@ -72,7 +72,7 @@
                 </template>
 
                 <template #actions>
-                    <app-button class="mr-3" mode="secondary" data-dismiss="modal" @clicked="confirmingSignout = false">
+                    <app-button class="mr-3" mode="secondary" type="button" @clicked="confirmingSignout = false">
                         Cancel
                     </app-button>
 
@@ -119,7 +119,7 @@
             confirmSignout() {
                 this.form.password = null
 
-                $('#confirmSignoutModal').modal('show');
+                this.confirmingSignout = true;
 
                 setTimeout(() => {
                     this.$refs.password.focus()
@@ -130,7 +130,7 @@
                 this.form.delete(route('other-browser-sessions.destroy'))
                     .then(() => {
                         if (! this.form.hasErrors()) {
-                            $('#confirmSignoutModal').modal('hide');
+                            this.confirmingSignout = false;
                         }
                     });
             },

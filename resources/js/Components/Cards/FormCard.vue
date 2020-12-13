@@ -1,6 +1,6 @@
 <template>
     <form @submit.prevent="$emit('submitted')">
-        <card has-actions>
+        <card :has-actions="true">
             <template #content><slot name="form"></slot></template>
             <template #actions><slot name="actions"></slot></template>
         </card>

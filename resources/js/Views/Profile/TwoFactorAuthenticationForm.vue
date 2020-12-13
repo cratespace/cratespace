@@ -78,8 +78,6 @@
                         </app-button>
                     </confirm-password-modal>
                 </div>
-
-
             </div>
         </template>
     </action-section>

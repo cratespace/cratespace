@@ -4,20 +4,16 @@
             <slot></slot>
         </span>
 
-        <modal :name="name">
+        <modal :show="confirmingPassword" @close="confirmingPassword = false">
             <form-card @submitted="confirmPassword">
                 <template #form>
-                    <div class="modal-header p-0">
-                        <h5 class="modal-title text-gray-800 font-semibold text-lg" :id="name + 'Label'">
-                            Confirm Password
-                        </h5>
+                    <div class="p-0">
+                        <h5 class="text-gray-800 font-semibold text-lg" v-text="title"></h5>
                     </div>
 
-                    <div class="modal-body mt-3 p-0">
+                    <div class="mt-3 p-0">
                         <div>
-                            <p class="text-gray-600">
-                                For your security, please confirm your password to continue.
-                            </p>
+                            <p class="text-gray-600" v-text="content"></p>
                         </div>
 
                         <div class="mt-6">
@@ -27,7 +23,7 @@
                 </template>
 
                 <template #actions>
-                    <app-button mode="secondary" type="button" data-dismiss="modal">
+                    <app-button mode="secondary" type="button" @click.native="confirmingPassword = false">
                         Cancel
                     </app-button>
 
@@ -47,7 +43,15 @@
     import FormCard from '@/Components/Cards/FormCard';
 
     export default {
-        props: ['name'],
+        props: {
+            title: {
+                default: 'Confirm Password',
+            },
+
+            content: {
+                default: 'For your security, please confirm your password to continue.',
+            },
+        },
 
         components: {
             Modal,
@@ -58,6 +62,8 @@
 
         data() {
             return {
+                confirmingPassword: false,
+
                 form: new Form({
                     password: null
                 }),
@@ -73,7 +79,7 @@
                         if (response.data.confirmed) {
                             this.$emit('confirmed');
                         } else {
-                            $('#' + this.name).modal('show');
+                            this.confirmingPassword = true;
 
                             this.form.password = null;
 
@@ -90,7 +96,7 @@
                 this.form.post('/user/confirm-password')
                     .then(() => {
                         if (! this.form.hasErrors()) {
-                            $('#' + this.name).modal('hide');
+                            this.confirmingPassword = false;
 
                             this.$emit('confirmed');
                         }
