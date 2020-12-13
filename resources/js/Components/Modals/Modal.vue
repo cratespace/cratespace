@@ -54,8 +54,8 @@
         },
 
         created() {
-            const closeOnEscape = (e) => {
-                if (e.key === 'Escape' && this.show) {
+            const closeOnEscape = (event) => {
+                if (event.key === 'Escape' && this.show) {
                     this.close();
                 }
             }
@@ -64,7 +64,7 @@
 
             this.$once('hook:destroyed', () => {
                 document.removeEventListener('keydown', closeOnEscape);
-            })
+            });
         },
 
         methods: {
