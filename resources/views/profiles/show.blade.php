@@ -20,7 +20,7 @@
     <section-border></section-border>
 
     @if (config('session.driver') === 'database')
-        <signout-other-browser-sessions-form :sessions="{{ json_encode($sessions) }}"></signout-other-browser-sessions-form>
+        <signout-other-browser-sessions-form :sessions="{{ json_encode($user->sessions) }}"></signout-other-browser-sessions-form>
 
         <section-border></section-border>
     @endif

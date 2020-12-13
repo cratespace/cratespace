@@ -75,6 +75,7 @@ class User extends Authenticatable implements MustVerifyEmail
      */
     protected $appends = [
         'profile_photo_url',
+        'sessions',
     ];
 
     /**
@@ -85,5 +86,15 @@ class User extends Authenticatable implements MustVerifyEmail
     public function isLocked(): bool
     {
         return (bool) $this->locked;
+    }
+
+    /**
+     * Get user sessions data.
+     *
+     * @return array
+     */
+    public function getSessionsAttribute()
+    {
+        return $this->sessions(request())->all();
     }
 }

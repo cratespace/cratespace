@@ -16,16 +16,15 @@ class UserProfileController extends Controller
      *
      * @param \Illuminate\Http\Request $request
      *
-     * @return \Illuminate\Contracts\View\View
+     * @return \Illuminate\Contracts\View\View|Symfony\Component\HttpFoundation\Response
      */
-    public function show(Request $request): View
+    public function show(Request $request)
     {
         $this->authorize('view', $user = $request->user());
 
-        return view('profiles.show', [
-            'user' => $user,
-            'sessions' => $user->sessions($request)->all(),
-        ]);
+        return $request->wantsJson()
+            ? response()->json($user)
+            : view('profiles.show', compact('user'));
     }
 
     /**
@@ -40,9 +39,9 @@ class UserProfileController extends Controller
         UpdateUserProfileRequest $request,
         UpdatesUserProfiles $updator
     ): Response {
-        $this->authorize('update', $request->user());
+        $this->authorize('update', $user = $request->user());
 
-        $updator->update($request->user(), $request->validated());
+        $updator->update($user, $request->validated());
 
         return $request->wantsJson()
             ? response()->json('', 200)

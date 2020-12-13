@@ -110,6 +110,7 @@
                 confirmingSignout: false,
 
                 form: new Form({
+                    '_method': 'DELETE',
                     password: null,
                 }),
             }
@@ -127,7 +128,7 @@
             },
 
             signoutOtherBrowserSessions() {
-                this.form.delete(route('other-browser-sessions.destroy'))
+                this.form.post(route('other-browser-sessions.destroy'))
                     .then(() => {
                         if (! this.form.hasErrors()) {
                             this.confirmingSignout = false;

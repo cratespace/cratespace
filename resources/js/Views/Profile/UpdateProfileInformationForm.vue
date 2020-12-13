@@ -101,7 +101,9 @@
                     resetOnSuccess: false,
                 }),
 
-                deletePhotoForm: new Form({}),
+                deletePhotoForm: new Form({
+                    '_method': 'DELETE',
+                }),
 
                 photoPreview: null,
             }
@@ -131,10 +133,8 @@
             },
 
             deletePhoto() {
-                this.deletePhotoForm.delete(route('user-photo.destroy'))
-                    .then(() => {
-                        this.photoPreview = null;
-                    });
+                this.deletePhotoForm.post(route('user-photo.destroy'))
+                    .then(() => this.photoPreview = null);
             },
         }
     }

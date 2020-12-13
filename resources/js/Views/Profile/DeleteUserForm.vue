@@ -71,6 +71,7 @@
                 confirmingUserDeletion: false,
 
                 form: new Form({
+                    '_method': 'DELETE',
                     password: null
                 }, {
                     resetOnSuccess: false,
@@ -90,7 +91,7 @@
             },
 
             async deleteUser() {
-                await this.form.delete(route('user.destroy'))
+                await this.form.post(route('user.destroy'))
                     .then(() => {
                         if (! this.form.hasErrors()) {
                             this.confirmingUserDeletion = false;
