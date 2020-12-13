@@ -21,7 +21,7 @@
                 </app-button>
             </div>
 
-            <dialog-modal name="confirmUserDeletionModal">
+            <dialog-modal hasActions name="confirmUserDeletionModal">
                 <template #title>
                     Delete account
                 </template>

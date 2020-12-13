@@ -1,8 +1,10 @@
 require('./bootstrap');
 
-window.Vue = require('vue');
+import Vue from 'vue';
+import PortalVue from 'portal-vue';
+import Form from './Utilities/Form';
 
-window.Form = require('./Utilities/Form').default;
+window.Form = Form;
 
 Vue.config.productionTip = false;
 
@@ -10,6 +12,11 @@ Vue.config.productionTip = false;
  * Mixins.
  */
 Vue.mixin({ methods: { route } });
+
+/**
+ * Plugins.
+ */
+Vue.use(PortalVue);
 
 /**
  * Components.
@@ -40,6 +47,7 @@ Vue.component('sign-in', require('./Views/Auth/SignIn').default);
 Vue.component('tfa-challenge', require('./Views/Auth/TwoFactorAuthenticationChallenge').default);
 Vue.component('reset-password-request', require('./Views/Auth/ResetPasswordRequest').default);
 Vue.component('reset-password', require('./Views/Auth/ResetPassword').default);
+Vue.component('kitchen-sink', require('./Views/Tests/KitchenSink').default);
 
 /**
  * Profile Views

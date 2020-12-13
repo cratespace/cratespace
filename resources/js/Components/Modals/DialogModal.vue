@@ -1,6 +1,6 @@
 <template>
     <modal :name="name">
-        <card>
+        <card :has-actions="hasActions">
             <template #content>
                 <div class="modal-header p-0">
                     <h5 class="modal-title text-gray-800 font-semibold text-lg" :id="name + 'Label'">
@@ -25,7 +25,7 @@
     import Card from '@/Components/Cards/Card';
 
     export default {
-        props: ['name'],
+        props: ['name', 'hasActions'],
 
         components: {
             Card,

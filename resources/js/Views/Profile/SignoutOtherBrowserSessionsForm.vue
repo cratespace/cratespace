@@ -54,7 +54,7 @@
                 </action-message>
             </div>
 
-            <dialog-modal name="confirmSignoutModal">
+            <dialog-modal has-actions name="confirmSignoutModal">
                 <template #title>
                     Sign out other browser sessions
                 </template>

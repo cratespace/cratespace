@@ -12,7 +12,11 @@
 
 <script>
     export default {
-        props: ['hasActions']
+        props: {
+            hasActions: {
+                default: false
+            }
+        }
     }
 </script>
 
