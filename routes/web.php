@@ -1,6 +1,6 @@
 <?php
 
-if (app()->isLocal() || app()->isRunningUnitTests()) {
+if (app()->isLocal() || app()->runningUnitTests()) {
     require __DIR__ . '/web/tests.php';
 }
 
