@@ -53,12 +53,11 @@ Vue.component('kitchen-sink', require('./Views/Tests/KitchenSink').default);
  * Profile Views
  */
 Vue.component('show-profile', require('./Views/Profile/Show').default);
-// Vue.component('delete-user-form', require('./Views/Profile/DeleteUserForm').default);
-// Vue.component('signout-other-browser-sessions-form', require('./Views/Profile/SignoutOtherBrowserSessionsForm').default);
-// Vue.component('tfa-form', require('./Views/Profile/TwoFactorAuthenticationForm').default);
-// Vue.component('update-password-form', require('./Views/Profile/UpdatePasswordForm').default);
-// Vue.component('update-profile-information-form', require('./Views/Profile/UpdateProfileInformationForm').default);
-// Vue.component('api-token-management', require('./Views/API/ApiTokenManagement').default);
+
+/**
+ * API Token Views
+ */
+Vue.component('api-token-management', require('./Views/API/ApiTokenManagement').default);
 
 /**
  * Vue Instance.
