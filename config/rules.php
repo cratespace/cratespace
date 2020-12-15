@@ -45,4 +45,8 @@ return [
         'settings' => ['nullable', 'array'],
         'photo' => ['nullable', 'image', 'max:1024'],
     ],
+
+    'new_api_token' => [
+        'name' => ['required', 'string', 'max:255', 'unique:personal_access_tokens,name'],
+    ],
 ];
