@@ -132,6 +132,8 @@
                     .then(() => {
                         if (! this.form.hasErrors()) {
                             this.confirmingSignout = false;
+
+                            this.$emit('updated');
                         }
                     });
             },

@@ -115,7 +115,10 @@
                     this.form.photo = this.$refs.photo.files[0];
                 }
 
-                this.form.post(route('profile.update'));
+                this.form.post(route('profile.update'))
+                    .then(() => {
+                        this.$emit('updated');
+                    });
             },
 
             selectNewPhoto() {
@@ -134,7 +137,11 @@
 
             deletePhoto() {
                 this.deletePhotoForm.post(route('user-photo.destroy'))
-                    .then(() => this.photoPreview = null);
+                    .then(() => {
+                        this.photoPreview = null;
+
+                        this.$emit('updated');
+                    });
             },
         }
     }

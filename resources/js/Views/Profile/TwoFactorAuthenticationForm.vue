@@ -124,6 +124,8 @@
 
                         this.enabling = false;
                         this.tfaEnabled = true;
+
+                        this.$emit('updated');
                     });
             },
 
@@ -155,6 +157,8 @@
                     .then(() => {
                         this.disabling = false;
                         this.tfaEnabled = false;
+
+                        this.$emit('updated');
                     });
             },
         }
