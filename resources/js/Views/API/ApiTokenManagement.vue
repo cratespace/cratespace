@@ -46,7 +46,7 @@
             </template>
         </form-section>
 
-        <dialog-modal name="displayingTokenModal">
+        <dialog-modal :has-actions="true" :show="displayingToken" @close="displayingToken = false">
             <template #title>
                 API Token
             </template>
@@ -113,7 +113,7 @@
                 </template>
             </action-section>
 
-            <dialog-modal name="managingPermissionsForTokenModal">
+            <dialog-modal :has-actions="true" :show="managingPermissionsFor" @close="managingPermissionsFor = false">
                 <template #title>
                     API token permissions
                 </template>
@@ -143,7 +143,7 @@
                 </template>
             </dialog-modal>
 
-            <dialog-modal name="confirmTokenDeletionModal">
+            <dialog-modal :has-actions="true" :show="tokenBeingDeleted" @close="tokenBeingDeleted = false">
                 <template #title>
                     Delete API token
                 </template>
