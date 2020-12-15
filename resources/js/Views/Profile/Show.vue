@@ -1,6 +1,6 @@
 <template>
     <div>
-        <update-profile-information-form @updated="fetchUser" :user="user"></update-profile-information-form>
+        <update-profile-information-form @updated="fetchUser" :user="user" :photo-enabled="photoEnabled"></update-profile-information-form>
 
         <section-border></section-border>
 
@@ -30,7 +30,7 @@
     import ApiTokenManagement from '@/Views/API/ApiTokenManagement';
 
     export default {
-        props: ['data'],
+        props: ['data', 'photoEnabled'],
 
         components: {
             FetchData,

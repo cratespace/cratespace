@@ -5,10 +5,12 @@ namespace Tests\Feature\Auth;
 use Tests\TestCase;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Foundation\Testing\WithoutMiddleware;
 
 class TwoFactorAuthenticatorTest extends TestCase
 {
     use RefreshDatabase;
+    use WithoutMiddleware;
 
     /** @test */
     public function two_factor_authentication_can_be_enabled()

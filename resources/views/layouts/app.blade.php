@@ -22,8 +22,9 @@
 
                     <template #items>
                         <dropdown-link href="{{ route('profile.show') }}">{{ __('Profile') }}</dropdown-link>
-                        <dropdown-link href="{{ route('api-tokens.index') }}">{{ __('API tokens') }}</dropdown-link>
-                        <dropdown-divider></dropdown-divider>
+                        @if (App\Features\AppFeatures::hasApiToken())
+                            <dropdown-link href="{{ route('api-tokens.index') }}">{{ __('API tokens') }}</dropdown-link>
+                        @endif
                         <sign-out>
                             <dropdown-link as="button" type="submit">{{ __('Sign out') }}</dropdown-link>
                         </sign-out>

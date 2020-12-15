@@ -2,6 +2,7 @@
 
 namespace App\Auth\Actions;
 
+use App\Features\AppFeatures;
 use App\Contracts\Auth\UpdatesUserProfiles;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
@@ -18,7 +19,7 @@ class UpdateUserProfile implements UpdatesUserProfiles
      */
     public function update(Authenticatable $user, array $data): void
     {
-        if (isset($data['photo'])) {
+        if (AppFeatures::hasProfilePhoto() && isset($data['photo'])) {
             $user->updateProfilePhoto($data['photo']);
         }
 

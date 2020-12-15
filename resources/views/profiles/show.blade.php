@@ -7,5 +7,5 @@
 @endsection
 
 @section('content')
-    <show-profile :data="{{ $user }}"></show-profile>
+    <show-profile :data="{{ $user }}" :photoEnabled="{{ App\Features\AppFeatures::hasProfilePhoto() }}"></show-profile>
 @endsection

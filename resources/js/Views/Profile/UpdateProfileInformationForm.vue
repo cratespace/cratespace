@@ -10,7 +10,7 @@
 
         <template #form>
             <div class="row">
-                <div class="col-12">
+                <div v-if="photoEnabled" class="mb-6 col-12">
                     <input type="file" class="hidden" ref="photo" @change="updatePhotoPreview">
 
                     <div class="flex items-center">
@@ -40,11 +40,11 @@
                     </div>
                 </div>
 
-                <div class="mt-6 col-lg-6">
+                <div class="col-lg-6">
                     <app-input type="text" v-model="form.name" :error="form.error('name')" label="Full name" placeholder="Johnathan Doe"></app-input>
                 </div>
 
-                <div class="mt-6 col-lg-6">
+                <div class="mt-6 lg:mt-0 col-lg-6">
                     <app-input type="text" v-model="form.username" :error="form.error('username')" label="Username" placeholder="JohnTheFarmer"></app-input>
                 </div>
 
@@ -78,7 +78,7 @@
     import ActionMessage from '@/Components/Alerts/ActionMessage';
 
     export default {
-        props: ['user'],
+        props: ['user', 'photoEnabled'],
 
         components: {
             FormSection,
