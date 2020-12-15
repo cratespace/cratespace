@@ -4,12 +4,14 @@ namespace App\Http\Requests;
 
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Http\FormRequest;
+use App\Http\Requests\Concerns\ValidatesInput;
 use App\Http\Requests\Traits\AuthorizesRequest;
 use Illuminate\Contracts\Validation\Validator as ValidatorContract;
 
 class CreateNewApiTokenRequest extends FormRequest
 {
     use AuthorizesRequest;
+    use ValidatesInput;
 
     /**
      * Determine if the user is authorized to make this request.
@@ -28,9 +30,7 @@ class CreateNewApiTokenRequest extends FormRequest
      */
     public function rules()
     {
-        return [
-            'name' => ['required', 'string', 'max:255'],
-        ];
+        return $this->getRulesFor('new_api_token');
     }
 
     /*
