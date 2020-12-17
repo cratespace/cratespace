@@ -10,7 +10,7 @@
 
         <template #form>
             <div class="row">
-                <div v-if="photoEnabled" class="mb-6 col-12">
+                <div class="mb-6 col-12">
                     <input type="file" class="hidden" ref="photo" @change="updatePhotoPreview">
 
                     <div class="flex items-center">
@@ -78,7 +78,7 @@
     import ActionMessage from '@/Components/Alerts/ActionMessage';
 
     export default {
-        props: ['user', 'photoEnabled'],
+        props: ['user'],
 
         components: {
             FormSection,

@@ -1,6 +1,6 @@
 <template>
     <div>
-        <update-profile-information-form @updated="fetchUser" :user="user" :photo-enabled="photoEnabled"></update-profile-information-form>
+        <update-profile-information-form @updated="fetchUser" :user.sync="user"></update-profile-information-form>
 
         <section-border></section-border>
 
@@ -8,7 +8,7 @@
 
         <section-border></section-border>
 
-        <two-factor-authentication-form @updated="fetchUser" :user="user"></two-factor-authentication-form>
+        <two-factor-authentication-form @updated="fetchUser" :user.sync="user"></two-factor-authentication-form>
 
         <section-border></section-border>
 
@@ -30,7 +30,7 @@
     import ApiTokenManagement from '@/Views/API/ApiTokenManagement';
 
     export default {
-        props: ['data', 'photoEnabled'],
+        props: ['data'],
 
         components: {
             FetchData,
