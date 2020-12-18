@@ -21,6 +21,7 @@
 </template>
 
 <script>
+    import axios from 'axios';
     import FetchData from '@/Components/Base/FetchData';
     import DeleteUserForm from '@/Views/Profile/DeleteUserForm';
     import SignoutOtherBrowserSessionsForm from '@/Views/Profile/SignoutOtherBrowserSessionsForm';

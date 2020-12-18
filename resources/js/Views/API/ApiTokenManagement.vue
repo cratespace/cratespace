@@ -242,8 +242,6 @@
                         if (! this.createForm.hasErrors()) {
                             this.displayableToken = response.data.token;
 
-                            $('#displayingTokenModal').modal('show');
-
                             this.fetchApiData();
 
                             this.displayingToken = true;
@@ -255,8 +253,6 @@
                 this.updateForm.permissions = token.abilities;
 
                 this.managingPermissionsFor = token;
-
-                $('#managingPermissionsForTokenModal').modal('show');
             },
 
             updateToken() {
@@ -264,24 +260,18 @@
                     .then(() => {
                         this.managingPermissionsFor = null;
 
-                        $('#managingPermissionsForTokenModal').modal('hide');
-
                         this.fetchApiData();
                     });
             },
 
             confirmTokenDeletion(token) {
                 this.tokenBeingDeleted = token;
-
-                $('#confirmTokenDeletionModal').modal('show');
             },
 
             deleteToken() {
                 this.deleteForm.delete(route('api-tokens.destroy', this.tokenBeingDeleted))
                     .then(() => {
                         this.tokenBeingDeleted = null;
-
-                        $('#confirmTokenDeletionModal').modal('hide');
 
                         this.fetchApiData();
                     });
