@@ -15,19 +15,17 @@
             </template>
 
             <template #linksright>
-                <dropdown>
+                <dropdown align="right">
                     <template #trigger>
-                        <img src="{{ user('profile_photo_url') }}" class="rounded-full block w-8 h-8" alt="{{ user('name') }}">
+                        <button class="flex text-sm border-2 border-transparent rounded-full focus:outline-none focus:border-gray-300 transition  duration-150 ease-in-out">
+                            <img src="{{ user()->profile_photo_url }}" class="rounded-full object-cover w-8 h-8" alt="{{ user()->name }}"/>
+                        </button>
                     </template>
 
                     <template #items>
-                        <dropdown-link href="{{ route('profile.show') }}">{{ __('Profile') }}</dropdown-link>
-                        @if (App\Features\AppFeatures::hasApiToken())
-                            <dropdown-link href="{{ route('api-tokens.index') }}">{{ __('API tokens') }}</dropdown-link>
-                        @endif
-                        <sign-out>
-                            <dropdown-link as="button" type="submit">{{ __('Sign out') }}</dropdown-link>
-                        </sign-out>
+                        <dropdown-link href="{{ route('profile.show') }}">Profile</dropdown-link>
+                        <dropdown-link href="{{ route('api-tokens.index') }}">API token</dropdown-link>
+                        <dropdown-link href="#" @clicked="signout">Sign out</dropdown-link>
                     </template>
                 </dropdown>
             </template>

@@ -62,9 +62,13 @@ class AuthenticatedSessionController extends Controller
         return $this->authenticator
             ->authenticate($request)
             ->then(function ($request) {
+                $intendedUrl = redirect()
+                    ->intended(config('auth.defaults.home'))
+                    ->getTargetUrl();
+
                 return $request->wantsJson()
-                    ? response()->json(['tfa' => false])
-                    : redirect()->intended(config('auth.defaults.home'));
+                    ? response()->json(['tfa' => false, 'intended' => $intendedUrl])
+                    : redirect($intendedUrl);
             });
     }
 

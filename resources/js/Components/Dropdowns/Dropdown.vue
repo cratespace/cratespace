@@ -1,29 +1,76 @@
 <template>
-    <div class="dropdown leading-none flex-no-shrink">
-        <a href="#" @click.prevent="toggle" class="flex-no-shrink block dropdown-toggle focus:outline-none transition ease-in-out duration-150" data-toggle="dropdown" aria-expanded="false" role="button">
+    <div class="relative">
+        <div @click="open = !open">
             <slot name="trigger"></slot>
-        </a>
-
-        <div class="dropdown-menu dropdown-menu-right mt-2 border-none rounded-xl shadow-lg bg-white p-2">
-            <slot name="items"></slot>
         </div>
+
+        <div
+            v-show="open"
+            class="fixed inset-0 z-40"
+            @click="open = false"
+        ></div>
+
+        <transition
+            enter-active-class="transition ease-out duration-200"
+            enter-class="transform opacity-0 scale-95"
+            enter-to-class="transform opacity-100 scale-100"
+            leave-active-class="transition ease-in duration-75"
+            leave-class="transform opacity-100 scale-100"
+            leave-to-class="transform opacity-0 scale-95"
+        >
+            <div
+                v-show="open"
+                class="absolute z-50 mt-2 rounded-xl shadow-xl overflow-hidden w-44"
+                :class="alignmentClasses"
+                style="display: none;"
+                @click="open = false"
+            >
+                <div class="p-2 bg-white">
+                    <slot name="items"></slot>
+                </div>
+            </div>
+        </transition>
     </div>
 </template>
 
 <script>
-    export default {
-        data() {
-            return {
-                open: false
+export default {
+    props: {
+        align: {
+            default: "right"
+        }
+    },
+
+    data() {
+        return {
+            open: false
+        };
+    },
+
+    created() {
+        const closeOnEscape = e => {
+            if (this.open && e.keyCode === 27) {
+                this.open = false;
             }
-        },
+        };
 
-        methods: {
-            toggle() {
-                this.open = ! this.open;
+        this.$once("hook:destroyed", () => {
+            document.removeEventListener("keydown", closeOnEscape);
+        });
 
-                this.$emit('dropdown-toggled', this.open);
+        document.addEventListener("keydown", closeOnEscape);
+    },
+
+    computed: {
+        alignmentClasses() {
+            if (this.align == "left") {
+                return "origin-top-left left-0";
+            } else if (this.align == "right") {
+                return "origin-top-right right-0";
+            } else {
+                return "origin-top";
             }
         }
     }
+};
 </script>
