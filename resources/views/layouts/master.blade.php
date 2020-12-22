@@ -21,9 +21,7 @@
 <body class="text-gray-600 font-sans antialiased leading-normal">
     <div id="app" v-cloak>
         <!-- Page Content -->
-        <main-section>
-            @yield('body')
-        </main-section>
+        @yield('body')
 
         <!-- Modal Portal -->
         <portal-target name="modal" multiple></portal-target>

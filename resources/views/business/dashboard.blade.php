@@ -9,9 +9,7 @@
 @section('content')
     <div class="row">
         <div class="col-12">
-            <div class="px-4 py-5 sm:px-6 bg-white shadow rounded-xl">
-                <!-- Yo! -->
-            </div>
+            <!-- Main Content Area -->
         </div>
     </div>
 @endsection

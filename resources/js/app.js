@@ -3,8 +3,6 @@ import "./components";
 
 import axios from "axios";
 import Vue from "vue";
-import PortalVue from "portal-vue";
-import Form from "@thavarshan/preflight-js";
 import { config } from "@/Config";
 
 window.axios = axios;
@@ -17,12 +15,6 @@ Vue.config.productionTip = false;
  * Mixins.
  */
 Vue.mixin({ methods: { route, config } });
-
-/**
- * Plugins.
- */
-Vue.use(PortalVue);
-Vue.use(Form);
 
 /**
  * Vue Instance.
