@@ -38,7 +38,7 @@
 
         data() {
             return {
-                form: new Form({
+                form: this.$form({
                     token: this.token,
                     email: null,
                     password: null,

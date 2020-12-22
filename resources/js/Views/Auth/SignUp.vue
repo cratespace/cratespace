@@ -1,5 +1,5 @@
 <template>
-    <form @submit.prevent="signUp()" class="w-full">
+    <form @submit.prevent="signUp" class="w-full">
         <div class="row">
             <div class="mt-6 col-12 col-md-6">
                 <app-input type="text" v-model="form.name" :error="form.error('name')" label="Full name" placeholder="Johnathan Doe"></app-input>
@@ -56,7 +56,7 @@
 
         data() {
             return {
-                form: new Form({
+                form: this.$form({
                     name: null,
                     business: null,
                     email: null,

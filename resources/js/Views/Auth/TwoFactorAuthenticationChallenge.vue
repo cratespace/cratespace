@@ -54,7 +54,7 @@
             return {
                 recovery: false,
 
-                form: new Form({
+                form: this.$form({
                     code: null,
                     recovery_code: null,
                 })

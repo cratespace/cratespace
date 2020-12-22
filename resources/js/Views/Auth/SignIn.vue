@@ -1,5 +1,5 @@
 <template>
-    <form @submit.prevent="signIn()" class="w-full">
+    <form @submit.prevent="signIn" class="w-full">
         <div class="mt-6 block">
             <app-input type="email" v-model="form.email" autofocus :error="form.error('email')" label="Email address" placeholder="john.doe@example.com"></app-input>
         </div>
@@ -42,7 +42,7 @@
 
         data() {
             return {
-                form: new Form({
+                form: this.$form({
                     email: null,
                     password: null,
                     remember: true

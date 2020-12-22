@@ -11,6 +11,7 @@
     },
     "devDependencies": {
         "@tailwindcss/forms": "^0.2.1",
+        "@thavarshan/preflight-js": "^1.6.5",
         "autoprefixer": "^9.8.6",
         "axios": "^0.19",
         "bootstrap": "^4.5.3",

@@ -70,7 +70,7 @@
             return {
                 confirmingUserDeletion: false,
 
-                form: new Form({
+                form: this.$form({
                     '_method': 'DELETE',
                     password: null
                 }, {

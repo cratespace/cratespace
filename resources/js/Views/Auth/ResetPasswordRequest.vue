@@ -1,5 +1,5 @@
 <template>
-    <form @submit.prevent="requestReset()" class="w-full">
+    <form @submit.prevent="requestReset" class="w-full">
         <div v-if="! message">
             <div class="mt-6">
                 <app-input type="email" v-model="form.email" :error="form.error('email')" label="Email address" placeholder="john.doe@example.com"></app-input>
@@ -32,7 +32,7 @@
 
         data() {
             return {
-                form: new Form({
+                form: this.$form({
                     email: null,
                 }),
 

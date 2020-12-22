@@ -19,7 +19,7 @@ return [
         AuthFeatures::signin(),
         AuthFeatures::signup(),
         AuthFeatures::passwordReset(),
-        AuthFeatures::emailVerification(),
+        // AuthFeatures::emailVerification(),
         AuthFeatures::passwordConfirmation(),
         AuthFeatures::twoFactorAuthentication(),
         AuthFeatures::otherBrowserSessions(),

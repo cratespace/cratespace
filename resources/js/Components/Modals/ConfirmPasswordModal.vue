@@ -64,7 +64,7 @@
             return {
                 confirmingPassword: false,
 
-                form: new Form({
+                form: this.$form({
                     password: null
                 }),
             }

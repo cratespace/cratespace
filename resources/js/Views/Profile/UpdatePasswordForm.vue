@@ -66,7 +66,7 @@
 
         data() {
             return {
-                form: new Form({
+                form: this.$form({
                     current_password: null,
                     password: null,
                     password_confirmation: null,

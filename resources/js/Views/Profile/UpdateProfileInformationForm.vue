@@ -90,7 +90,7 @@
 
         data() {
             return {
-                form: new Form({
+                form: this.$form({
                     '_method': 'PUT',
                     name: this.user.name,
                     username: this.user.username,
@@ -101,7 +101,7 @@
                     resetOnSuccess: false,
                 }),
 
-                deletePhotoForm: new Form({
+                deletePhotoForm: this.$form({
                     '_method': 'DELETE',
                 }),
 

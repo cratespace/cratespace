@@ -171,7 +171,6 @@
 </template>
 
 <script>
-    import { fromNow } from '@/Utilities/helpers';
     import Checkbox from '@/Components/Inputs/Checkbox';
     import DialogModal from '@/Components/Modals/DialogModal';
     import FormSection from '@/Components/Sections/FormSection';
@@ -201,21 +200,21 @@
             return {
                 tokens: [],
 
-                createForm: new Form({
+                createForm: this.$form({
                     name: null,
                     permissions: this.defaultPermissions
                 }, {
                     resetOnSuccess: true,
                 }),
 
-                updateForm: new Form({
+                updateForm: this.$form({
                     name: null,
                     permissions: []
                 }, {
                     resetOnSuccess: false,
                 }),
 
-                deleteForm: new Form({}),
+                deleteForm: this.$form({}),
 
                 displayableToken: null,
                 displayingToken: false,
@@ -277,7 +276,9 @@
                     });
             },
 
-            fromNow,
+            fromNow(timestamp) {
+                return moment(timestamp).fromNow();
+            },
         }
     }
 </script>

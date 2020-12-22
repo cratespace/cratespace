@@ -1,16 +1,12 @@
 import './components';
-import 'popper.js';
-import 'jquery';
 import 'bootstrap';
 import 'moment';
 
-import _ from 'lodash';
 import axios from 'axios';
 import Vue from 'vue';
 import PortalVue from 'portal-vue';
-import Form from './Utilities/Form';
+import Form from '@thavarshan/preflight-js';
 
-window.Form = Form;
 window.axios = axios;
 
 window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
@@ -27,6 +23,7 @@ Vue.mixin({ methods: { route } });
  * Plugins.
  */
 Vue.use(PortalVue);
+Vue.use(Form);
 
 /**
  * Vue Instance.
