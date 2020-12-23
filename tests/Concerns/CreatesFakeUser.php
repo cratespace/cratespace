@@ -27,9 +27,7 @@ trait CreatesFakeUser
         $user ?? create(User::class);
 
         $this->createBusiness($user);
-
         $this->createCreditAccount($user);
-
         $this->actingAs($user);
 
         return $user;

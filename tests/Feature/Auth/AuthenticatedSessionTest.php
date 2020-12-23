@@ -20,9 +20,10 @@ class AuthenticatedSessionTest extends TestCase implements Postable
     /** @test */
     public function a_user_can_view_the_login_view()
     {
-        $response = $this->get('/');
+        $response = $this->get('/login');
 
-        $response->assertStatus(200);
+        $response->assertStatus(200)
+            ->assertSee('Welcome back');
     }
 
     /** @test */
