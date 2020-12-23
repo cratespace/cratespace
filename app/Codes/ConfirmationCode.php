@@ -9,7 +9,7 @@ class ConfirmationCode extends Code
      *
      * @var string
      */
-    protected string $characterPool = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+    protected $characterPool = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
 
     /**
      * Generate a new unique and random code.

@@ -9,7 +9,7 @@ abstract class Code
      *
      * @var string
      */
-    protected string $characterPool;
+    protected $characterPool;
 
     /**
      * Default UID character length.

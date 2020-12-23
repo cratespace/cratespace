@@ -18,15 +18,6 @@ class AuthenticatedSessionTest extends TestCase implements Postable
     use RefreshDatabase;
 
     /** @test */
-    public function a_user_can_view_the_login_view()
-    {
-        $response = $this->get('/login');
-
-        $response->assertStatus(200)
-            ->assertSee('Welcome back');
-    }
-
-    /** @test */
     public function a_user_can_authenticate()
     {
         $user = create(User::class, [

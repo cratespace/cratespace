@@ -12,21 +12,21 @@ class HashidsCode extends Code
      *
      * @var string
      */
-    protected string $characterPool = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    protected $characterPool = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
 
     /**
      * Hash ID salt.
      *
      * @var string
      */
-    protected string $salt;
+    protected $salt;
 
     /**
      * Attribute to be hashed.
      *
      * @var string
      */
-    protected string $id;
+    protected $id;
 
     /**
      * Generate a new unique and random code.
@@ -35,13 +35,20 @@ class HashidsCode extends Code
      */
     public static function generate(): string
     {
-        return $this->hashIds()->encode($this->id());
+        $generator = new self();
+
+        [$id, $salt] = func_get_args();
+
+        return $generator->setId($id)
+            ->setSalt($salt)
+            ->hashIds()
+            ->encode($generator->id());
     }
 
     /**
-     * Create new instance of HasId generator.
+     * Create new instance of Hashid generator.
      *
-     * @return \HashIds\HashIds
+     * @return \Hashids\Hashids
      */
     protected function hashIds(): Hashids
     {
@@ -59,7 +66,7 @@ class HashidsCode extends Code
      */
     protected function salt(): string
     {
-        if (!isset($this->salt) || $this->salt !== config('app.key')) {
+        if (! isset($this->salt) || $this->salt !== config('app.key')) {
             throw new InvalidArgumentException('Invalid salt data.');
         }
 
@@ -71,11 +78,13 @@ class HashidsCode extends Code
      *
      * @param string $salt
      *
-     * @return void
+     * @return \Hashids\Hashids\HashidsCode
      */
-    public function setSalt(string $salt): void
+    public function setSalt(string $salt): HashidsCode
     {
         $this->salt = $salt;
+
+        return $this;
     }
 
     /**
@@ -93,10 +102,12 @@ class HashidsCode extends Code
      *
      * @param string $id
      *
-     * @return void
+     * @return \Hashids\Hashids\HashidsCode
      */
-    public function setId(string $id): void
+    public function setId(string $id): HashidsCode
     {
         $this->id = $id;
+
+        return $this;
     }
 }

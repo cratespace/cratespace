@@ -25,3 +25,4 @@ class MiscTest extends TestCase
         $this->assertTrue(Hash::check('alphaxion77', $password));
     }
 }
+
