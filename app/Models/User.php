@@ -2,22 +2,14 @@
 
 namespace App\Models;
 
-use Laravel\Sanctum\HasApiTokens;
-use Illuminate\Notifications\Notifiable;
-use Cratespace\Citadel\Models\Traits\HasProfilePhoto;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Cratespace\Citadel\Models\Concerns\InteractsWithSessions;
-use Cratespace\Citadel\Models\Traits\TwoFactorAuthenticatable;
+use Illuminate\Notifications\Notifiable;
 
 class User extends Authenticatable
 {
-    use HasApiTokens;
-    use HasFactory;
-    use HasProfilePhoto;
-    use Notifiable;
-    use InteractsWithSessions;
-    use TwoFactorAuthenticatable;
+    use HasFactory, Notifiable;
 
     /**
      * The attributes that are mass assignable.
@@ -28,12 +20,6 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
-        'username',
-        'settings',
-        'locked',
-        'profile_photo_path',
-        'two_factor_secret',
-        'two_factor_recovery_codes',
     ];
 
     /**
@@ -44,8 +30,6 @@ class User extends Authenticatable
     protected $hidden = [
         'password',
         'remember_token',
-        'two_factor_recovery_codes',
-        'two_factor_secret',
     ];
 
     /**
@@ -55,18 +39,5 @@ class User extends Authenticatable
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
-        'two_factor_enabled' => 'boolean',
-        'settings' => 'array',
-    ];
-
-    /**
-     * The accessors to append to the model's array form.
-     *
-     * @var array
-     */
-    protected $appends = [
-        'profile_photo_url',
-        'sessions',
-        'two_factor_enabled',
     ];
 }
