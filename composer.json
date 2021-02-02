@@ -1,14 +1,15 @@
 {
-    "name": "laravel/laravel",
+    "name": "cratespace/cratespace",
     "type": "project",
-    "description": "The Laravel Framework.",
+    "description": "Freight space sales platform",
     "keywords": [
         "framework",
-        "laravel"
+        "cratespace"
     ],
     "license": "MIT",
     "require": {
         "php": "^7.3|^8.0",
+        "cratespace/preflight": "^1.0",
         "fideloper/proxy": "^4.4",
         "fruitcake/laravel-cors": "^2.0",
         "guzzlehttp/guzzle": "^7.0.1",
