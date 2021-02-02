@@ -12,7 +12,8 @@ const app = document.getElementById('app');
 
 new Vue({
     metaInfo: {
-        titleTemplate: (title) => (title ? `${title} - Castle` : 'Castle'),
+        titleTemplate: (title) =>
+            title ? `${title} - Cratespace` : 'Cratespace',
     },
 
     render: (h) =>

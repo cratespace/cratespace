@@ -5084,7 +5084,7 @@ var app = document.getElementById('app');
 new vue__WEBPACK_IMPORTED_MODULE_3__.default({
   metaInfo: {
     titleTemplate: function titleTemplate(title) {
-      return title ? "".concat(title, " - Castle") : 'Castle';
+      return title ? "".concat(title, " - Cratespace") : 'Cratespace';
     }
   },
   render: function render(h) {
