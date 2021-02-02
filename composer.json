@@ -1,10 +1,10 @@
 {
-    "name": "laravel/laravel",
+    "name": "cratespace/cratespace",
     "type": "project",
-    "description": "The Laravel Framework.",
+    "description": "Freight space sales platform.",
     "keywords": [
         "framework",
-        "laravel"
+        "cratespace"
     ],
     "license": "MIT",
     "require": {
