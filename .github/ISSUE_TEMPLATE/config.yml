@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Feature request
+    url: https://github.com/cratespace/preflight/issues
+    about: "For ideas or feature requests, open up an issue on the Preflight repository"
+  - name: Support Questions & Other
+    url: https://github.com/cratespace/preflight/issues
+    about: "If you have a question or need help using the library, you can do so by opening an issue in this repository"
