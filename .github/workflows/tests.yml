@@ -1,4 +1,4 @@
-name: Preflight Checks
+name: Cratespace CI Tests
 
 on:
   push:
@@ -16,7 +16,7 @@ jobs:
         image: mysql:5.7
         env:
           MYSQL_ALLOW_EMPTY_PASSWORD: yes
-          MYSQL_DATABASE: laravel
+          MYSQL_DATABASE: cratespace
         ports:
           - 33306:3306
         options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
@@ -41,7 +41,7 @@ jobs:
       - name: ⛑ Setup problem matchers
         run: echo "::add-matcher::${{ runner.tool_cache }}/phpunit.json"
 
-      - name: 👍🏼 Verify MySQL connection
+      - name: 💿 Verify MySQL connection
         run: |
           mysql --version
           sudo apt-get install -y mysql-client
