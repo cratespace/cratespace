@@ -1,3 +1,0 @@
-#!/usr/bin/env bash
-
-COMPOSER_MEMORY_LIMIT=-1 composer install && npm install && npm run dev

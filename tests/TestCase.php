@@ -2,35 +2,17 @@
 
 namespace Tests;
 
-use Illuminate\Support\Facades\Schema;
 use Illuminate\Foundation\Testing\WithFaker;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
+use Cratespace\Preflight\Testing\Concerns\CreatesNewUser;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
+use Cratespace\Preflight\Testing\Concerns\InteractsWithNetwork;
+use Cratespace\Preflight\Testing\Concerns\InteractsWithProtectedQualities;
 
 abstract class TestCase extends BaseTestCase
 {
     use CreatesApplication;
-    use DatabaseMigrations;
-    use RefreshDatabase;
+    use InteractsWithProtectedQualities;
+    use InteractsWithNetwork;
+    use CreatesNewUser;
     use WithFaker;
-
-    use Concerns\CreatesFakeUser;
-    use Concerns\CalculatesCharges;
-    use Concerns\ChecksForInternet;
-    use Concerns\CanPlaceOrder;
-    use Concerns\TestsProtectedQualities;
-    use Concerns\HasMacros;
-
-    /**
-     * Setup test suite.
-     */
-    protected function setUp(): void
-    {
-        parent::setUp();
-
-        Schema::enableForeignKeyConstraints();
-
-        $this->registerMacros();
-    }
 }

@@ -1,79 +1,34 @@
-module.exports = {
-  purge: ['./storage/framework/views/*.php', './resources/views/**/*.blade.php'],
+const defaultTheme = require('tailwindcss/defaultTheme');
 
-  theme: {
-    customForms: theme => ({
-      default: {
-        input: {
-          borderRadius: theme('borderRadius.lg'),
-          backgroundColor: theme('colors.gray.100'),
-          '&:focus': {
-            backgroundColor: theme('colors.white'),
-          }
+module.exports = {
+    purge: [
+        './storage/framework/views/*.php',
+        './resources/views/**/*.blade.php',
+        './resources/js/**/*.vue',
+    ],
+
+    darkMode: false, // or 'media' or 'class'
+
+    theme: {
+        container: {
+            center: true,
         },
-        textarea: {
-            borderRadius: theme('borderRadius.md'),
-            backgroundColor: theme('colors.gray.100'),
-            '&:focus': {
-              backgroundColor: theme('colors.white'),
+
+        extend: {
+            fontFamily: {
+                sans: ['Inter', ...defaultTheme.fontFamily.sans],
             }
         },
-        select: {
-          borderRadius: theme('borderRadius.md'),
-          boxShadow: theme('boxShadow.none'),
-          backgroundColor: theme('colors.gray.100'),
-          '&:focus': {
-            backgroundColor: theme('colors.white'),
-          }
-        },
-        checkbox: {
-          backgroundColor: theme('colors.gray.100'),
-          width: theme('spacing.6'),
-          height: theme('spacing.6'),
-        },
-        radio: {
-          backgroundColor: theme('colors.gray.100'),
-          width: theme('spacing.6'),
-          height: theme('spacing.6'),
-        },
-      },
-    }),
-    typography: theme => ({
-        default: {
-          css: {
-            color: theme('colors.gray.600'),
-            a: {
-              color: '#0366D6',
-              '&:hover': {
-                color: '#035CC1',
-              },
-            },
-          },
-        },
-    }),
-    extend: {
-        colors: {
-          blue: {
-            100: '#E6F0FB',
-            200: '#C0D9F5',
-            300: '#9AC2EF',
-            400: '#4F94E2',
-            500: '#0366D6',
-            600: '#035CC1',
-            700: '#023D80',
-            800: '#012E60',
-            900: '#011F40',
-          },
-        }
-    }
-  },
+    },
 
-  variants: {
-    opacity: ['responsive', 'hover', 'focus', 'disabled'],
-  },
+    variants: {
+        extend: {
+            opacity: ['disabled'],
+        },
+    },
 
-  plugins: [
-    require('@tailwindcss/custom-forms'),
-    require('@tailwindcss/typography')
-  ],
+    plugins: [
+        require('@tailwindcss/forms'),
+        require('@tailwindcss/typography')
+    ],
 }

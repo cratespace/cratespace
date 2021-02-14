@@ -1,33 +1,11 @@
 <?php
 
-if (! app()->isProduction()) {
-    /**
-     * Public Routes...
-     */
-    require 'web/tests.php';
-}
+use Inertia\Inertia;
+use Illuminate\Support\Facades\Route;
 
-/*
- * Public Routes...
- */
-require 'web/public.php';
+Route::get('/', fn () => Inertia::render('Marketing/Welcome'))->name('welcome');
 
-/*
- * Authentication Routes...
- */
-require 'web/auth.php';
-
-/*
- * Business Customer Routes...
- */
-require 'web/business.php';
-
-/*
- * Customer Support Routes...
- */
-require 'web/support.php';
-
-/*
- * User Routes...
- */
-require 'web/user.php';
+Route::middleware(['auth:sentinel', 'verified'])->get(
+    '/home',
+    fn () => Inertia::render('Business/Home')
+)->name('home');

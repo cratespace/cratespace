@@ -1,12 +1,16 @@
-const mix = require('laravel-mix');
+const mix = require("laravel-mix");
+const path = require('path');
 
 mix.js('resources/js/app.js', 'public/js')
-  .sourceMaps()
-  .sass('resources/sass/app.scss', 'public/css')
-  .sourceMaps()
-  .options({
-    processCssUrls: false,
-    postCss: [require('tailwindcss')],
-  })
-  .browserSync('cratespace.test')
-  .version();
+    .vue({ versoin: 2 })
+    .postCss('resources/css/app.css', 'public/css', [
+        require('postcss-import'),
+        require('tailwindcss'),
+        require('autoprefixer'),
+    ])
+    .alias({ '@': path.join(__dirname, 'resources/js') })
+    .browserSync('preflight.test');
+
+if (mix.inProduction()) {
+    mix.version();
+}
