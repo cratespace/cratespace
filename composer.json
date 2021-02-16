@@ -10,8 +10,8 @@
     "license": "MIT",
     "require": {
         "php": "^7.4|^8.0",
-        "cratespace/preflight": "^2.0.7",
-        "cratespace/sentinel": "^2.0.1",
+        "cratespace/preflight": "^2.0",
+        "cratespace/sentinel": "^2.0",
         "fideloper/proxy": "^4.4",
         "fruitcake/laravel-cors": "^2.0",
         "guzzlehttp/guzzle": "^7.0.1",
