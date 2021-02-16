@@ -2,7 +2,9 @@
 
 namespace Database\Factories;
 
+use App\Models\User;
 use App\Models\Business;
+use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class BusinessFactory extends Factory
@@ -21,8 +23,18 @@ class BusinessFactory extends Factory
      */
     public function definition()
     {
+        $business = $this->faker->company;
+
         return [
-            //
+            'name' => $business,
+            'slug' => Str::slug($business),
+            'about' => $this->faker->paragraph(3),
+            'street' => $this->faker->streetAddress,
+            'city' => $this->faker->city,
+            'state' => $this->faker->state,
+            'country' => $this->faker->country,
+            'postcode' => $this->faker->postcode,
+            'user_id' => create(User::class)->id,
         ];
     }
 }

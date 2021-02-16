@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Traits\Sluggable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Cratespace\Sentinel\Models\Traits\HasProfilePhoto;
@@ -11,6 +12,7 @@ class Business extends Model
 {
     use HasFactory;
     use HasProfilePhoto;
+    use Sluggable;
 
     /**
      * The attributes that are mass assignable.
@@ -38,6 +40,16 @@ class Business extends Model
     protected $appends = [
         'profile_photo_url',
     ];
+
+    /**
+     * Get the route key for the model.
+     *
+     * @return string
+     */
+    public function getRouteKeyName(): string
+    {
+        return 'slug';
+    }
 
     /**
      * Get the user the business belongs to.
