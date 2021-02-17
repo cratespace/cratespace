@@ -2534,6 +2534,10 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
 
 
 
@@ -2553,6 +2557,7 @@ __webpack_require__.r(__webpack_exports__);
     return {
       form: this.$inertia.form({
         name: null,
+        business: null,
         email: null,
         password: null,
         remember: true
@@ -2566,7 +2571,7 @@ __webpack_require__.r(__webpack_exports__);
       this.form.post(this.route('register'), {
         preserveScroll: true,
         onFinish: function onFinish() {
-          return _this.form.reset('password', 'password_confirmation');
+          return _this.form.reset('password');
         }
       });
     }
@@ -34540,6 +34545,31 @@ var render = function() {
                   [
                     _c("app-input", {
                       attrs: {
+                        type: "text",
+                        error: _vm.form.errors.business,
+                        label: "Business name",
+                        placeholder: "Cratespace, Inc.",
+                        required: "",
+                        autofocus: ""
+                      },
+                      model: {
+                        value: _vm.form.business,
+                        callback: function($$v) {
+                          _vm.$set(_vm.form, "business", $$v)
+                        },
+                        expression: "form.business"
+                      }
+                    })
+                  ],
+                  1
+                ),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  { staticClass: "mt-6 block" },
+                  [
+                    _c("app-input", {
+                      attrs: {
                         type: "email",
                         error: _vm.form.errors.email,
                         label: "Email address",
@@ -34609,7 +34639,7 @@ var render = function() {
                   _c(
                     "p",
                     [
-                      _vm._v("\n                    Already an account? "),
+                      _vm._v("\n                    Already have an account? "),
                       _c("app-link", { attrs: { href: _vm.route("login") } }, [
                         _vm._v("Log in")
                       ])
@@ -37001,7 +37031,10 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c(
     "div",
-    { staticClass: "min-h-screen min-w-full overflow-x-hidden" },
+    {
+      staticClass:
+        "min-h-screen min-w-full overflow-x-hidden bg-gradient-to-r from-white via-gray-50 to-blue-50"
+    },
     [
       _c("main", { staticClass: "py-16", attrs: { role: "main" } }, [
         _c("div", { staticClass: "container mx-auto px-4 sm:px-6" }, [
@@ -37079,7 +37112,9 @@ var render = function() {
   return _c("guest-layout", [
     _c("div", [
       _c("p", [
-        _c("span", { staticClass: "font-semibold" }, [_vm._v("Preflight")]),
+        _c("span", { staticClass: "font-semibold" }, [
+          _vm._v(_vm._s(_vm.config("app.name")))
+        ]),
         _vm._v(" checks complete!\n        ")
       ]),
       _vm._v(" "),
