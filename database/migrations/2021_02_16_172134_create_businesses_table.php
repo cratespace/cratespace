@@ -25,7 +25,10 @@ class CreateBusinessesTable extends Migration
             $table->string('country')->nullable();
             $table->string('postcode')->nullable();
             $table->text('profile_photo_path')->nullable();
-            $table->foreignId('user_id')->constrained('users', 'id');
+            $table->foreignId('user_id')
+                ->constrained('users', 'id')
+                ->onUpdate('cascade')
+                ->onDelete('cascade');
             $table->timestamps();
         });
     }
