@@ -6,6 +6,10 @@
 
                 <section-border></section-border>
 
+                <update-business-information-form :business.sync="$page.props.user.business"></update-business-information-form>
+
+                <section-border></section-border>
+
                 <update-password-form></update-password-form>
 
                 <section-border></section-border>
@@ -28,6 +32,7 @@
 import AppLayout from '@/Views/Layouts/AppLayout';
 import SectionBorder from '@/Views/Components/Sections/SectionBorder';
 import UpdateProfileInformationForm from './UpdateProfileInformationForm';
+import UpdateBusinessInformationForm from './UpdateBusinessInformationForm';
 import UpdatePasswordForm from './UpdatePasswordForm';
 import TwoFactorAuthenticationForm from './TwoFactorAuthenticationForm';
 import DeleteUserForm from './DeleteUserForm';
@@ -38,6 +43,7 @@ export default {
         AppLayout,
         SectionBorder,
         UpdateProfileInformationForm,
+        UpdateBusinessInformationForm,
         UpdatePasswordForm,
         TwoFactorAuthenticationForm,
         DeleteUserForm,

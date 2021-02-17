@@ -22,7 +22,7 @@ class CreateBusinessesTable extends Migration
             $table->string('city')->nullable();
             $table->string('state')->nullable();
             $table->string('country')->nullable();
-            $table->string('zipcode')->nullable();
+            $table->string('postcode')->nullable();
             $table->text('profile_photo_path')->nullable();
             $table->foreignId('user_id')->constrained('users', 'id');
             $table->timestamps();

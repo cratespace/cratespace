@@ -1,15 +1,15 @@
 const mix = require("laravel-mix");
-const path = require('path');
+const path = require("path");
 
-mix.js('resources/js/app.js', 'public/js')
+mix.js("resources/js/app.js", "public/js")
     .vue({ versoin: 2 })
-    .postCss('resources/css/app.css', 'public/css', [
-        require('postcss-import'),
-        require('tailwindcss'),
-        require('autoprefixer'),
+    .postCss("resources/css/app.css", "public/css", [
+        require("postcss-import"),
+        require("tailwindcss"),
+        require("autoprefixer"),
     ])
-    .alias({ '@': path.join(__dirname, 'resources/js') })
-    .browserSync('preflight.test');
+    .alias({ "@": path.join(__dirname, "resources/js") })
+    .browserSync("cratespace.test");
 
 if (mix.inProduction()) {
     mix.version();

@@ -1,22 +1,22 @@
 <template>
     <action-section>
         <template #title>
-            Profile Information
+            Business Information
         </template>
 
         <template #description>
-            Update your account's profile information and email address.
+            Update your business profile information and address details.
         </template>
 
         <template #content>
-            <form @submit.prevent="updateProfileInformation">
+            <form @submit.prevent="updateBusinessInformation">
                 <div class="lg:grid lg:grid-cols-12 gap-6">
                     <div class="col-span-12">
                         <input type="file" class="hidden" ref="photo" @change="updatePhotoPreview">
 
                         <div class="flex items-center">
                             <div v-show="! photoPreview">
-                                <img :src="user.profile_photo_url" :alt="user.name" class="rounded-full h-20 w-20 object-cover">
+                                <img :src="business.profile_photo_url" :alt="business.name" class="rounded-full h-20 w-20 object-cover">
                             </div>
 
                             <div class="mt-2" v-show="photoPreview">
@@ -31,7 +31,7 @@
                                         Change
                                     </app-button>
 
-                                    <app-button class="ml-4" type="button" mode="secondary" @click.native.prevent="deletePhoto" v-if="user.profile_photo_path">
+                                    <app-button class="ml-4" type="button" mode="secondary" @click.native.prevent="deletePhoto" v-if="business.profile_photo_path">
                                         Remove
                                     </app-button>
                                 </div>
@@ -42,19 +42,31 @@
                     </div>
 
                     <div class="mt-6 lg:mt-0 md:col-span-8">
-                        <app-input type="text" v-model="form.name" :error="form.errors.name" label="Full name" placeholder="Johnathan Doeford"></app-input>
+                        <app-input type="text" v-model="form.name" :error="form.errors.name" label="Business name" placeholder="Johnathan Doeford"></app-input>
+                    </div>
+
+                    <div class="mt-6 lg:mt-0 md:col-span-8">
+                        <app-textarea type="text" v-model="form.about" :error="form.errors.about" label="About" placeholder="" rows="7"></app-textarea>
                     </div>
 
                     <div class="mt-6 lg:mt-0 md:col-span-6">
-                        <app-input type="text" v-model="form.username" :error="form.errors.username" label="Username" placeholder="JohnDoe"></app-input>
+                        <app-input type="text" v-model="form.street" :error="form.errors.street" label="Street" placeholder="2308 Harry Place"></app-input>
                     </div>
 
                     <div class="mt-6 lg:mt-0 md:col-span-6">
-                        <app-input type="email" v-model="form.email" :error="form.errors.email" label="Email address" placeholder="john.doe@example.com"></app-input>
+                        <app-input type="text" v-model="form.city" :error="form.errors.city" label="Town/City" placeholder="Charlotte"></app-input>
                     </div>
 
                     <div class="mt-6 lg:mt-0 md:col-span-6">
-                        <app-input type="tel" v-model="form.phone" :error="form.errors.phone" label="Telephone" placeholder="john.doe@example.com"></app-input>
+                        <app-input type="text" v-model="form.state" :error="form.errors.state" label="State/Province" placeholder="North Carolina"></app-input>
+                    </div>
+
+                    <div class="mt-6 lg:mt-0 md:col-span-6">
+                        <app-input type="text" v-model="form.country" :error="form.errors.country" label="Country" placeholder="United States"></app-input>
+                    </div>
+
+                    <div class="mt-6 lg:mt-0 md:col-span-6">
+                        <app-input type="text" v-model="form.postcode" :error="form.errors.postcode" label="Postcode" placeholder="28263"></app-input>
                     </div>
                 </div>
 
@@ -75,16 +87,18 @@
 <script>
 import ActionSection from '@/Views/Components/Sections/ActionSection';
 import AppInput from '@/Views/Components/Inputs/Input';
+import AppTextarea from '@/Views/Components/Inputs/Textarea';
 import AppInputError from '@/Views/Components/Inputs/InputError';
 import AppButton from '@/Views/Components/Buttons/Button';
 import ActionMessage from '@/Views/Components/Alerts/ActionMessage';
 
 export default {
-    props: ['user'],
+    props: ['business'],
 
     components: {
         ActionSection,
         AppInput,
+        AppTextarea,
         AppInputError,
         AppButton,
         ActionMessage
@@ -94,10 +108,13 @@ export default {
         return {
             form: this.$inertia.form({
                 _method: 'PUT',
-                name: this.user.name,
-                username: this.user.username,
-                email: this.user.email,
-                phone: this.user.phone,
+                name: this.business.name,
+                about: this.business.about,
+                street: this.business.street,
+                city: this.business.city,
+                state: this.business.state,
+                country: this.business.country,
+                postcode: this.business.postcode,
                 photo: null
             }),
 
@@ -106,13 +123,13 @@ export default {
     },
 
     methods: {
-        updateProfileInformation() {
+        updateBusinessInformation() {
             if (this.$refs.photo) {
                 this.form.photo = this.$refs.photo.files[0];
             }
 
-            this.form.post(this.route('user.update'), {
-                errorBag: 'updateProfileInformation',
+            this.form.post(this.route('user.business'), {
+                errorBag: 'updateBusinessInformation',
                 preserveScroll: true,
             });
         },

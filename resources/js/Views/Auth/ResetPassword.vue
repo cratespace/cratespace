@@ -3,10 +3,10 @@
         <template #title>
             <div>
                 <div>
-                    <logo :title="config('app.name')" classes="h-16 w-auto text-blue-500"></logo>
+                    <logo-text :title="config('app.name')" classes="h-10 w-auto"></logo-text>
                 </div>
 
-                <h4 class="mt-6 font-semibold text-xl text-gray-800">Reset password</h4>
+                <h4 class="mt-10 font-semibold text-xl text-gray-800">Reset password</h4>
 
                 <p class="mt-3 font-normal text-base text-gray-500">
                     Create a new password for your account using the form below.
@@ -40,7 +40,7 @@
 
 <script>
 import AuthLayout from '@/Views/Layouts/AuthLayout';
-import Logo from '@/Views/Components/Logos/Logo';
+import LogoText from '@/Views/Components/Logos/LogoText';
 import AppLink from '@/Views/Components/Base/Link';
 import AppInput from '@/Views/Components/Inputs/Input';
 import AppButton from '@/Views/Components/Buttons/Button';
@@ -54,7 +54,7 @@ export default {
 
     components: {
         AuthLayout,
-        Logo,
+        LogoText,
         AppLink,
         AppInput,
         AppButton,

@@ -4,6 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
+use Cratespace\Sentinel\Http\Requests\Traits\HasCustomValidator;
 use Cratespace\Sentinel\Http\Requests\Concerns\AuthorizesRequests;
 use Cratespace\Sentinel\Http\Requests\Traits\InputValidationRules;
 
@@ -11,6 +12,7 @@ class BusinessRequest extends FormRequest
 {
     use AuthorizesRequests;
     use InputValidationRules;
+    use HasCustomValidator;
 
     /**
      * Determine if the user is authorized to make this request.
@@ -34,7 +36,7 @@ class BusinessRequest extends FormRequest
                 'required',
                 'string',
                 'max:255',
-                Rule::unique('business', 'name')->ignore(
+                Rule::unique('businesses', 'name')->ignore(
                     $this->user()->business->id
                 ),
             ],

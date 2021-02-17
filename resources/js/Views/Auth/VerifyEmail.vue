@@ -3,10 +3,10 @@
         <template #title>
             <div>
                 <div>
-                    <logo :title="config('app.name')" classes="h-16 w-auto text-blue-500"></logo>
+                    <logo-text :title="config('app.name')" classes="h-10 w-auto"></logo-text>
                 </div>
 
-                <h4 class="mt-6 font-semibold text-xl text-gray-800">Verify your email address</h4>
+                <h4 class="mt-10 font-semibold text-xl text-gray-800">Verify your email address</h4>
 
                 <div class="mt-3 font-normal text-base text-gray-500">
                     Thanks for signing up! Before getting started, could you verify your email address by clicking on the link we just emailed to you? If you didn't receive the email, we will gladly send you another.
@@ -34,7 +34,7 @@
 
 <script>
 import AuthLayout from '@/Views/Layouts/AuthLayout';
-import Logo from '@/Views/Components/Logos/Logo';
+import LogoText from '@/Views/Components/Logos/LogoText';
 import AppButton from '@/Views/Components/Buttons/Button';
 
 export default {
@@ -44,7 +44,7 @@ export default {
 
     components: {
         AuthLayout,
-        Logo,
+        LogoText,
         AppButton,
     },
 
