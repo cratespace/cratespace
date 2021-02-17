@@ -22,6 +22,7 @@ class Business extends Model
     protected $fillable = [
         'name',
         'slug',
+        'credit',
         'about',
         'street',
         'city',
@@ -30,6 +31,15 @@ class Business extends Model
         'postcode',
         'user_id',
         'profile_photo_path',
+    ];
+
+    /**
+     * The attributes that should be hidden for arrays.
+     *
+     * @var array
+     */
+    protected $hidden = [
+        'credit',
     ];
 
     /**

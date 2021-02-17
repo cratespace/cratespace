@@ -17,6 +17,7 @@ class CreateBusinessesTable extends Migration
             $table->id();
             $table->string('name')->unique();
             $table->string('slug')->unique();
+            $table->integer('credit')->default(0)->nullable();
             $table->mediumText('about')->nullable();
             $table->string('street')->nullable();
             $table->string('city')->nullable();
