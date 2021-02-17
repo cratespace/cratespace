@@ -24,6 +24,7 @@ return [
      */
     'register' => [
         'name' => ['required', 'string', 'max:255'],
+        'business' => ['required', 'string', 'max:255'],
         'email' => [
             'required',
             'string',
