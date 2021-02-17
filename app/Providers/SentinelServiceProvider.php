@@ -43,5 +43,9 @@ class SentinelServiceProvider extends ServiceProvider
     public function boot(): void
     {
         $this->registerActions();
+
+        CreateNewUser::afterCreatingUser(function ($user, $data) {
+            $user->business()->create(['name' => $data['business']]);
+        });
     }
 }
