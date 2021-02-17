@@ -21,6 +21,10 @@
                 </div>
 
                 <div class="mt-6 block">
+                    <app-input type="text" v-model="form.business" :error="form.errors.business" label="Business name" placeholder="Cratespace, Inc." required autofocus></app-input>
+                </div>
+
+                <div class="mt-6 block">
                     <app-input type="email" v-model="form.email" :error="form.errors.email" label="Email address" placeholder="john.doe@example.com" required></app-input>
                 </div>
 
@@ -36,7 +40,7 @@
 
                 <div class="mt-6">
                     <p>
-                        Already an account? <app-link :href="route('login')">Log in</app-link>
+                        Already have an account? <app-link :href="route('login')">Log in</app-link>
                     </p>
                 </div>
             </form>
@@ -66,6 +70,7 @@ export default {
         return {
             form: this.$inertia.form({
                 name: null,
+                business: null,
                 email: null,
                 password: null,
                 remember: true
@@ -77,7 +82,7 @@ export default {
         register() {
             this.form.post(this.route('register'), {
                 preserveScroll: true,
-                onFinish: () => this.form.reset('password', 'password_confirmation'),
+                onFinish: () => this.form.reset('password'),
             })
         }
     }
