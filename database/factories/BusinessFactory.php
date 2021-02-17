@@ -23,7 +23,7 @@ class BusinessFactory extends Factory
      */
     public function definition()
     {
-        $business = $this->faker->company;
+        $business = $this->faker->unique()->company;
 
         return [
             'name' => $business,
@@ -34,7 +34,7 @@ class BusinessFactory extends Factory
             'state' => $this->faker->state,
             'country' => $this->faker->country,
             'postcode' => $this->faker->postcode,
-            'user_id' => create(User::class)->id,
+            'user_id' => create(User::class),
         ];
     }
 }
