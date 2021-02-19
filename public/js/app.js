@@ -36835,7 +36835,7 @@ var render = function() {
         "header",
         [
           _c("navbar", {
-            staticClass: "bg-blue-800",
+            staticClass: "bg-blue-900",
             scopedSlots: _vm._u([
               {
                 key: "logo",

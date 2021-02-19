@@ -2,7 +2,7 @@
     <div class="min-h-screen min-w-full overflow-x-hidden">
         <!-- Main Header Area -->
         <header>
-            <navbar class="bg-blue-800">
+            <navbar class="bg-blue-900">
                 <template #logo>
                     <logo classes="h-10 w-10 text-blue-500" :title="config('app.name')"></logo>
                 </template>
