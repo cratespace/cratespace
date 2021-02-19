@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "28c722b0bb53b99b2ad1bbf796f1f19f",
+    "content-hash": "6ae419dc9e3bfd2f39fdc32c66ad4ad3",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -173,20 +173,20 @@
         },
         {
             "name": "cratespace/preflight",
-            "version": "v2.0.8",
+            "version": "v2.5.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cratespace/preflight.git",
-                "reference": "b77e7035cda9b610ce5788ff8dde9ae80e03b8fe"
+                "reference": "5487d1fc0bd9538d5ebdc5708d4175e8599d137e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cratespace/preflight/zipball/b77e7035cda9b610ce5788ff8dde9ae80e03b8fe",
-                "reference": "b77e7035cda9b610ce5788ff8dde9ae80e03b8fe",
+                "url": "https://api.github.com/repos/cratespace/preflight/zipball/5487d1fc0bd9538d5ebdc5708d4175e8599d137e",
+                "reference": "5487d1fc0bd9538d5ebdc5708d4175e8599d137e",
                 "shasum": ""
             },
             "require": {
-                "cratespace/sentinel": "^2.0.1",
+                "cratespace/sentinel": "^2.5",
                 "ext-json": "*",
                 "illuminate/support": "^8.0",
                 "php": "^7.4|^8.0"
@@ -237,20 +237,20 @@
                 "issues": "https://github.com/cratespace/preflight/issues",
                 "source": "https://github.com/cratespace/preflight"
             },
-            "time": "2021-02-16T15:45:24+00:00"
+            "time": "2021-02-19T17:31:21+00:00"
         },
         {
             "name": "cratespace/sentinel",
-            "version": "v2.0.1",
+            "version": "v2.5.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cratespace/sentinel.git",
-                "reference": "fd40ef5dfa0cc39fad291691002aed7c8776704a"
+                "reference": "4ea7a6583e695e9871fa26921f42d8d8f8e0ad02"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cratespace/sentinel/zipball/fd40ef5dfa0cc39fad291691002aed7c8776704a",
-                "reference": "fd40ef5dfa0cc39fad291691002aed7c8776704a",
+                "url": "https://api.github.com/repos/cratespace/sentinel/zipball/4ea7a6583e695e9871fa26921f42d8d8f8e0ad02",
+                "reference": "4ea7a6583e695e9871fa26921f42d8d8f8e0ad02",
                 "shasum": ""
             },
             "require": {
@@ -308,7 +308,7 @@
                 "issues": "https://github.com/cratespace/sentinel/issues",
                 "source": "https://github.com/cratespace/sentinel"
             },
-            "time": "2021-02-12T16:18:44+00:00"
+            "time": "2021-02-19T17:25:36+00:00"
         },
         {
             "name": "dasprid/enum",

@@ -25,22 +25,21 @@ trait Sluggable
     {
         // Auto-create slug during first database entry.
         static::creating(function (Model $model): void {
-            // We first check whether the model has an attribute called "slug".
+            // We first check whether the model does *not* have an attribute called "slug".
             if (! $model->hasAttribute('slug')) {
                 // If it doesn't we skip the slugification process.
                 return;
             }
 
-            // Otherwise we which attribute of the model is used to create
-            // a slug with and convert into proper slug format the
-            // value of the given field.
+            // Otherwise we retrieve which ever attribute of the model
+            // that is used to create a slug with, and convert into
+            //  proper slug format the value of the given field.
             $model->slug = $model->sluggableField()->sluggify();
         });
 
         // Updating slug field when sluggable field is updated.
         static::updating(function (Model $model): void {
-            // We first determine if the feild used to create the slug with
-            // has been updated.
+            // We first determine if the feild used to create the slug with has been updated.
             if (! $model->isDirty($model->getSluggableField())) {
                 // If it has not, we skip this step.
                 return;
