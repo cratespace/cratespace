@@ -2,8 +2,8 @@
 
 namespace Tests\Fixtures;
 
-use App\Models\Traits\Presentable;
 use Illuminate\Database\Eloquent\Model;
+use Cratespace\Preflight\Models\Traits\Presentable;
 
 class PresentableModel extends Model
 {

@@ -18,9 +18,9 @@ class UpdateBusinessInformation implements UpdatesUserProfiles
     public function update(Authenticatable $user, array $data): void
     {
         if (isset($data['photo'])) {
-            $user->business()->updateProfilePhoto($data['photo']);
+            $user->business->updateProfilePhoto($data['photo']);
         }
 
-        $user->business()->update($data);
+        $user->business->update($data);
     }
 }

@@ -2,6 +2,9 @@
 
 namespace App\Presenters;
 
+use App\Support\Money;
+use Cratespace\Preflight\Presenters\Presenter;
+
 class BusinessPresenter extends Presenter
 {
     /**
@@ -11,6 +14,23 @@ class BusinessPresenter extends Presenter
      */
     public function address(): string
     {
-        return "{$this->model->street}, {$this->model->city}, {$this->model->state}, {$this->model->country}, {$this->model->postcode}";
+        return sprintf(
+            '%s, %s, %s, %s, %s',
+            static::$model->street,
+            static::$model->city,
+            static::$model->state,
+            static::$model->country,
+            static::$model->postcode
+        );
+    }
+
+    /**
+     * Mutate credit value to proper presentable money format.
+     *
+     * @return string
+     */
+    protected function credit(): string
+    {
+        return Money::format(static::$model->credit);
     }
 }

@@ -25,4 +25,11 @@ class BusinessPresenterTest extends TestCase
             $business->present()->address()
         );
     }
+
+    public function testCanMutateMoneyValue()
+    {
+        $business = create(Business::class, ['credit' => 800]);
+
+        $this->assertEquals('$8.00', $business->present()->credit);
+    }
 }

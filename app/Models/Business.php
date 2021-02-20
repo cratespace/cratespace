@@ -5,7 +5,7 @@ namespace App\Models;
 use App\Models\Traits\Sluggable;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Concerns\InteractsWithCredit;
-use App\Models\Traits\Presentable;
+use Cratespace\Preflight\Models\Traits\Presentable;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Cratespace\Sentinel\Models\Traits\HasProfilePhoto;
 use Illuminate\Database\Eloquent\Factories\HasFactory;

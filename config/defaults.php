@@ -30,7 +30,7 @@ return [
             'state' => 'Northern Province',
             'country' => 'Sri Lanka',
             'postcode' => '40000',
-        ]
+        ],
     ],
 
     /*
@@ -44,4 +44,9 @@ return [
             'delete',
         ],
     ],
+
+    /*
+     * Monetary Information...
+     */
+    'currency' => env('APP_CURRENCY', 'USD'),
 ];
