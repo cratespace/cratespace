@@ -3,6 +3,7 @@
 namespace App\Support;
 
 use Money\Currency;
+use NumberFormatter;
 use Money\Money as PHPMoney;
 use Money\Currencies\ISOCurrencies;
 use Money\Formatter\IntlMoneyFormatter;
@@ -10,21 +11,25 @@ use Money\Formatter\IntlMoneyFormatter;
 class Money
 {
     /**
-     * Format mony value from integer "cents" to proper currency format.
+     * Format the given amount into a displayable currency.
      *
-     * @param int $amount
+     * @param int         $amount
+     * @param string|null $currency
+     * @param string|null $locale
      *
      * @return string
      */
-    public static function format(int $amount): string
+    public static function format(int $amount, ?string $currency = null, ?string $locale = null): string
     {
-        $formatter = new IntlMoneyFormatter(
-            new \NumberFormatter(config('app.locale'), \NumberFormatter::CURRENCY),
-            new ISOCurrencies()
-        );
+        $money = new PHPMoney($amount, new Currency(
+            strtoupper($currency ?? config('money.currency'))
+        ));
 
-        return $formatter->format(
-            new PHPMoney($amount, new Currency(config('defaults.currency')))
-        );
+        $locale = $locale ?? config('money.currency_locale');
+
+        $numberFormatter = new NumberFormatter($locale, NumberFormatter::CURRENCY);
+        $moneyFormatter = new IntlMoneyFormatter($numberFormatter, new ISOCurrencies());
+
+        return $moneyFormatter->format($money);
     }
 }
