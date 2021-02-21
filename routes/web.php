@@ -2,6 +2,7 @@
 
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\SpaceController;
 use App\Http\Controllers\Auth\UserBusinessController;
 
 Route::get('/', fn () => Inertia::render('Marketing/Welcome'))->name('welcome');
@@ -12,4 +13,6 @@ Route::group([
     Route::get('/home', fn () => Inertia::render('Business/Home'))->name('home');
 
     Route::put('/user/business', [UserBusinessController::class, '__invoke'])->name('user.business');
+
+    Route::resource('spaces', SpaceController::class);
 });

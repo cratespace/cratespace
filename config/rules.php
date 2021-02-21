@@ -46,7 +46,7 @@ return [
     ],
 
     /*
-     * Use Account Password Update Validation Rules.
+     * User Account Password Update Validation Rules.
      */
     'update_password' => [
         'current_password' => ['required', 'string'],
@@ -59,6 +59,9 @@ return [
         ],
     ],
 
+    /*
+     * User Business Information Update Validation Rules.
+     */
     'business' => [
         'name' => ['required', 'string', 'max:255'],
         'about' => ['nullable', 'string'],
@@ -68,5 +71,28 @@ return [
         'state' => ['required', 'string', 'max:255'],
         'country' => ['required', 'string', 'max:255'],
         'postcode' => ['required', 'string', 'max:255'],
+    ],
+
+    /*
+     * Business Space Information Validation Rules.
+     */
+    'space' => [
+        'code' => ['nullable', 'string', 'max:255'],
+        'height' => ['required', 'integer'],
+        'width' => ['required', 'integer'],
+        'length' => ['required', 'integer'],
+        'weight' => ['required', 'integer'],
+        'price' => ['required', 'numeric'],
+        'tax' => ['nullable', 'numeric'],
+        'origin' => ['required', 'string', 'max:255'],
+        'destination' => ['required', 'string', 'max:255'],
+        'departs_at' => ['required', 'date'],
+        'arrives_at' => ['required', 'date', 'after:departs_at'],
+        'note' => ['nullable', 'string', 'max:255'],
+        'base' => ['required', 'string', 'max:255'],
+        'type' => [
+            'required', 'string', 'max:255',
+            Rule::in(['Local', 'International']),
+        ],
     ],
 ];
