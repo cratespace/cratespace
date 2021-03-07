@@ -5,7 +5,7 @@ namespace Tests\Unit\Codes;
 use Tests\TestCase;
 use App\Codes\HashCode;
 
-class HasCodeTest extends TestCase
+class HashCodeTest extends TestCase
 {
     public function testCodesGeneratedAreAtLeast6CharactersLong()
     {
@@ -20,7 +20,6 @@ class HasCodeTest extends TestCase
     public function testCodesGeneratedForTheSameResourceIdAreTheSame()
     {
         $code1 = HashCode::generate(1);
-
         $code2 = HashCode::generate(1);
 
         $this->assertEquals($code1, $code2);
@@ -29,7 +28,6 @@ class HasCodeTest extends TestCase
     public function testCodesGeneratedForDifferentResourceIdsAreDifferent()
     {
         $code1 = HashCode::generate(1);
-
         $code2 = HashCode::generate(2);
 
         $this->assertNotEquals($code1, $code2);

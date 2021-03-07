@@ -5,12 +5,14 @@ namespace App\Models;
 use App\Models\Traits\Hashable;
 use App\Models\Casts\ScheduleCast;
 use Illuminate\Database\Eloquent\Model;
+use Cratespace\Preflight\Models\Traits\Presentable;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Space extends Model
 {
     use HasFactory;
+    use Presentable;
     use Hashable;
 
     /**

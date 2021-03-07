@@ -86,4 +86,11 @@ class SpaceTest extends TestCase
 
         $this->assertTrue($space->schedule->nearingDeparture());
     }
+
+    public function testItCanPresentTotalPrice()
+    {
+        $space = create(Space::class, ['price' => 900, 'tax' => 100]);
+
+        $this->assertEquals('$10.00', $space->present()->price);
+    }
 }
