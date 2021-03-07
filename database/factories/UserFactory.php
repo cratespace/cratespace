@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\User;
+use App\Models\Business;
 use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -36,5 +37,25 @@ class UserFactory extends Factory
             'two_factor_secret' => null,
             'two_factor_recovery_codes' => null,
         ];
+    }
+
+    /**
+     * Indicate that the user should have a personal team.
+     *
+     * @return \Database\Factories\UserFactory
+     */
+    public function withBusiness(): UserFactory
+    {
+        return $this->has(
+            Business::factory()
+                ->state(function (array $attributes, User $user) {
+                    return [
+                        'name' => $this->faker->unique()->company,
+                        'user_id' => $user->id,
+                        'credit' => 0,
+                    ];
+                }),
+            'business'
+        );
     }
 }
