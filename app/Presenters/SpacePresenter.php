@@ -14,8 +14,6 @@ class SpacePresenter extends Presenter
      */
     public function price(): string
     {
-        return Money::format(
-            static::$model->price + static::$model->tax
-        );
+        return Money::format(static::$model->price + static::$model->tax);
     }
 }
