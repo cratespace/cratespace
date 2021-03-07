@@ -13,7 +13,7 @@
     "require": {
         "php": "^7.4|^8.0",
         "ext-intl": "*",
-        "cratespace/preflight": "^3.3",
+        "cratespace/preflight": "^3.3.4",
         "cratespace/sentinel": "^2.0.1",
         "fideloper/proxy": "^4.4",
         "fruitcake/laravel-cors": "^2.0",

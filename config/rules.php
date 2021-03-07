@@ -46,7 +46,7 @@ return [
     ],
 
     /*
-     * Use Account Password Update Validation Rules.
+     * User Account Password Update Validation Rules.
      */
     'update_password' => [
         'current_password' => ['required', 'string'],
@@ -57,5 +57,19 @@ return [
             'confirmed',
             'different:current_password',
         ],
+    ],
+
+    /*
+     * User Business Profile Information Update Validation Rules.
+     */
+    'business' => [
+        'name' => ['required', 'string', 'max:255'],
+        'about' => ['nullable', 'string'],
+        'photo' => ['sometimes', 'image', 'max:1024'],
+        'street' => ['required', 'string', 'max:255'],
+        'city' => ['required', 'string', 'max:255'],
+        'state' => ['required', 'string', 'max:255'],
+        'country' => ['required', 'string', 'max:255'],
+        'postcode' => ['required', 'string', 'max:255'],
     ],
 ];
