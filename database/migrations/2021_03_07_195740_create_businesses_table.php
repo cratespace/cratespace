@@ -15,6 +15,20 @@ class CreateBusinessesTable extends Migration
     {
         Schema::create('businesses', function (Blueprint $table) {
             $table->id();
+            $table->string('name')->unique();
+            $table->string('slug')->unique();
+            $table->integer('credit')->default(0)->nullable();
+            $table->mediumText('about')->nullable();
+            $table->string('street')->nullable();
+            $table->string('city')->nullable();
+            $table->string('state')->nullable();
+            $table->string('country')->nullable();
+            $table->string('postcode')->nullable();
+            $table->text('profile_photo_path')->nullable();
+            $table->foreignId('user_id')
+                ->constrained('users', 'id')
+                ->onUpdate('cascade')
+                ->onDelete('cascade');
             $table->timestamps();
         });
     }

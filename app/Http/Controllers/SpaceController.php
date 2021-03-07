@@ -1,12 +1,11 @@
 <?php
 
-namespace App\Http\Controllers\Auth;
+namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
-use App\Models\Business;
+use App\Models\Space;
 use Illuminate\Http\Request;
 
-class BusinessController extends Controller
+class SpaceController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,7 +14,6 @@ class BusinessController extends Controller
      */
     public function index()
     {
-        //
     }
 
     /**
@@ -25,62 +23,61 @@ class BusinessController extends Controller
      */
     public function create()
     {
-        //
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
+     *
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
     {
-        //
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Business  $business
+     * @param \App\Models\Space $space
+     *
      * @return \Illuminate\Http\Response
      */
-    public function show(Business $business)
+    public function show(Space $space)
     {
-        //
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Business  $business
+     * @param \App\Models\Space $space
+     *
      * @return \Illuminate\Http\Response
      */
-    public function edit(Business $business)
+    public function edit(Space $space)
     {
-        //
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Business  $business
+     * @param \Illuminate\Http\Request $request
+     * @param \App\Models\Space        $space
+     *
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Business $business)
+    public function update(Request $request, Space $space)
     {
-        //
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Business  $business
+     * @param \App\Models\Space $space
+     *
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Business $business)
+    public function destroy(Space $space)
     {
-        //
     }
 }

@@ -2,8 +2,8 @@
 
 namespace App\Http\Responses;
 
-use Cratespace\Sentinel\Http\Responses\Response;
 use Illuminate\Contracts\Support\Responsable;
+use Cratespace\Sentinel\Http\Responses\Response;
 
 class BusinessResponse extends Response implements Responsable
 {
@@ -16,6 +16,6 @@ class BusinessResponse extends Response implements Responsable
      */
     public function toResponse($request)
     {
-        return $request->expectsJson() ? $this->json() : $this->redirectTo('/');
+        return $request->expectsJson() ? $this->json('', 201) : $this->back(303);
     }
 }

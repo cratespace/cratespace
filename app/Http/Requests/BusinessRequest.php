@@ -2,10 +2,18 @@
 
 namespace App\Http\Requests;
 
+use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
+use Cratespace\Sentinel\Http\Requests\Traits\HasCustomValidator;
+use Cratespace\Sentinel\Http\Requests\Concerns\AuthorizesRequests;
+use Cratespace\Sentinel\Http\Requests\Traits\InputValidationRules;
 
 class BusinessRequest extends FormRequest
 {
+    use AuthorizesRequests;
+    use InputValidationRules;
+    use HasCustomValidator;
+
     /**
      * Determine if the user is authorized to make this request.
      *
@@ -13,7 +21,7 @@ class BusinessRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return $this->isAllowed('manage', $this->user());
     }
 
     /**
@@ -23,8 +31,25 @@ class BusinessRequest extends FormRequest
      */
     public function rules()
     {
-        return [
-            //
-        ];
+        return $this->getRulesFor('business', [
+            'name' => [
+                'required',
+                'string',
+                'max:255',
+                Rule::unique('businesses', 'name')->ignore(
+                    $this->user()->business->id
+                ),
+            ],
+        ]);
+    }
+
+    /**
+     * Prepare the data for validation.
+     *
+     * @return void
+     */
+    protected function prepareForValidation()
+    {
+        $this->setErrorBag('updateBusinessInformation');
     }
 }
