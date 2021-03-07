@@ -1,27 +1,19 @@
 {
-    "name": "cratespace/cratespace",
+    "name": "laravel/laravel",
     "type": "project",
-    "description": "Freight space sales platform.",
+    "description": "The Laravel Framework.",
     "keywords": [
-        "freight",
-        "space",
-        "cratespace"
+        "framework",
+        "laravel"
     ],
     "license": "MIT",
     "require": {
-        "php": "^7.4|^8.0",
-        "ext-intl": "*",
-        "cratespace/preflight": "^2.5",
-        "cratespace/sentinel": "^2.0",
+        "php": "^7.3|^8.0",
         "fideloper/proxy": "^4.4",
         "fruitcake/laravel-cors": "^2.0",
         "guzzlehttp/guzzle": "^7.0.1",
-        "hashids/hashids": "^4.1",
-        "inertiajs/inertia-laravel": "^0.3.5",
         "laravel/framework": "^8.12",
-        "laravel/tinker": "^2.5",
-        "moneyphp/money": "^3.3",
-        "tightenco/ziggy": "^1.0"
+        "laravel/tinker": "^2.5"
     },
     "require-dev": {
         "facade/ignition": "^2.5",
