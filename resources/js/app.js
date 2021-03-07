@@ -15,13 +15,15 @@ const app = document.getElementById('app');
 
 createApp({
     metaInfo: {
-        titleTemplate: (title) => title ? `${title} - Preflight` : 'Preflight',
+        titleTemplate: (title) =>
+            title ? `${title} - Cratespace` : 'Cratespace',
     },
 
-    render: () => h(InertiaApp, {
-        initialPage: JSON.parse(app.dataset.page),
-        resolveComponent: (name) => require(`./Views/${name}`).default,
-    }),
+    render: () =>
+        h(InertiaApp, {
+            initialPage: JSON.parse(app.dataset.page),
+            resolveComponent: (name) => require(`./Views/${name}`).default,
+        }),
 })
     .mixin({ methods: { route, diffForHumans } })
     .use(InertiaPlugin)
