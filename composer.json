@@ -1,14 +1,17 @@
 {
-    "name": "laravel/laravel",
+    "name": "cratespace/cratespace",
     "type": "project",
-    "description": "The Laravel Framework.",
+    "description": "A Freight sales platform.",
     "keywords": [
-        "framework",
-        "laravel"
+        "saas",
+        "freight",
+        "sales",
+        "platform",
+        "cratespace"
     ],
     "license": "MIT",
     "require": {
-        "php": "^7.3|^8.0",
+        "php": "^7.4|^8.0",
         "cratespace/preflight": "^3.3",
         "cratespace/sentinel": "^2.0.1",
         "fideloper/proxy": "^4.4",
@@ -25,7 +28,7 @@
         "laravel/sail": "^1.0.1",
         "mockery/mockery": "^1.4.2",
         "nunomaduro/collision": "^5.0",
-        "phpunit/phpunit": "^9.3.3"
+        "phpunit/phpunit": "^9.5"
     },
     "config": {
         "optimize-autoloader": true,
