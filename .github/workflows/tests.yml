@@ -65,6 +65,8 @@ jobs:
           composer update --${{ matrix.stability }} --prefer-dist --no-interaction --no-progress
           npm install
           npm run production
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
       - name: 🛫 Boot application
         run: |
@@ -141,6 +143,8 @@ jobs:
           composer update --${{ matrix.stability }} --prefer-dist --no-interaction --no-progress
           npm install
           npm run production
+        env:
+          NODE_AUTH_TOKEN: ${{secrets.npm_token}}
 
       - name: 🛫 Boot application
         run: |
