@@ -1,118 +1,6 @@
 /******/ (() => { // webpackBootstrap
 /******/ 	var __webpack_modules__ = ({
 
-/***/ "./node_modules/@cratespace/config-js/dist/Repository.js":
-/*!***************************************************************!*\
-  !*** ./node_modules/@cratespace/config-js/dist/Repository.js ***!
-  \***************************************************************/
-/***/ ((__unused_webpack_module, exports) => {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", ({
-    value: true
-}));
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-var Repository = function () {
-    /**
-     * Create new instance of config repository.
-     *
-     * @param   {Object}  items
-     */
-    function Repository() {
-        var items = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-
-        _classCallCheck(this, Repository);
-
-        this.items = items;
-    }
-
-    /**
-     * Get specific value from config repository.
-     *
-     * @param {String} key
-     * @return {Any}
-     */
-
-
-    _createClass(Repository, [{
-        key: 'get',
-        value: function get(key) {
-            var defaultValue = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
-
-            var value = key.split('.').reduce(function (object, item) {
-                return object[item];
-            }, this.items);
-
-            if (value === undefined) {
-                return defaultValue;
-            }
-
-            return value;
-        }
-
-        /**
-         * Get all config items from repository.
-         *
-         * @return  {Any}
-         */
-
-    }, {
-        key: 'all',
-        value: function all() {
-            return this.items;
-        }
-    }]);
-
-    return Repository;
-}();
-
-exports.default = Repository;
-
-/***/ }),
-
-/***/ "./node_modules/@cratespace/config-js/dist/index.js":
-/*!**********************************************************!*\
-  !*** ./node_modules/@cratespace/config-js/dist/index.js ***!
-  \**********************************************************/
-/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", ({
-    value: true
-}));
-
-var _Repository = __webpack_require__(/*! ./Repository */ "./node_modules/@cratespace/config-js/dist/Repository.js");
-
-var _Repository2 = _interopRequireDefault(_Repository);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-exports.default = {
-    install: function install(app) {
-        var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
-
-        app.mixin({
-            methods: {
-                config: function config(key, defaultValue) {
-                    var repository = new _Repository2.default(options);
-
-                    return repository.get(key, defaultValue);
-                }
-            }
-        });
-    }
-};
-
-/***/ }),
-
 /***/ "./node_modules/@inertiajs/inertia-vue3/dist/index.js":
 /*!************************************************************!*\
   !*** ./node_modules/@inertiajs/inertia-vue3/dist/index.js ***!
@@ -22730,6 +22618,110 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
 
 /***/ }),
 
+/***/ "./resources/js/Config/Repository.js":
+/*!*******************************************!*\
+  !*** ./resources/js/Config/Repository.js ***!
+  \*******************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+var Repository = /*#__PURE__*/function () {
+  /**
+   * Create new instance of config repository.
+   *
+   * @param   {Object}  items
+   */
+  function Repository() {
+    var items = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+
+    _classCallCheck(this, Repository);
+
+    this.items = items;
+  }
+  /**
+   * Get specific value from config repository.
+   *
+   * @param {String} key
+   * @return {Any}
+   */
+
+
+  _createClass(Repository, [{
+    key: "get",
+    value: function get(key) {
+      var defaultValue = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
+      var value = key.split('.').reduce(function (object, item) {
+        return object[item];
+      }, this.items);
+
+      if (value === undefined) {
+        return defaultValue;
+      }
+
+      return value;
+    }
+    /**
+     * Get all config items from repository.
+     *
+     * @return  {Any}
+     */
+
+  }, {
+    key: "all",
+    value: function all() {
+      return this.items;
+    }
+  }]);
+
+  return Repository;
+}();
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Repository);
+
+/***/ }),
+
+/***/ "./resources/js/Config/config.js":
+/*!***************************************!*\
+  !*** ./resources/js/Config/config.js ***!
+  \***************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ config)
+/* harmony export */ });
+/* harmony import */ var _Repository__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Repository */ "./resources/js/Config/Repository.js");
+/* harmony import */ var _items_json__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./items.json */ "./resources/js/Config/items.json");
+
+
+/**
+ * Get config value of given key.
+ *
+ * @param   {Any}  key
+ * @param   {Any}  defaultValue
+ *
+ * @return  {Any}
+ */
+
+function config(key) {
+  var defaultValue = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
+  var repository = new _Repository__WEBPACK_IMPORTED_MODULE_0__.default(_items_json__WEBPACK_IMPORTED_MODULE_1__);
+  return repository.get(key, defaultValue);
+}
+
+/***/ }),
+
 /***/ "./resources/js/Plugins/moment.js":
 /*!****************************************!*\
   !*** ./resources/js/Plugins/moment.js ***!
@@ -22768,9 +22760,9 @@ function diffForHumans(timestamp) {
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm-bundler.js");
-/* harmony import */ var _inertiajs_inertia_vue3__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @inertiajs/inertia-vue3 */ "./node_modules/@inertiajs/inertia-vue3/dist/index.js");
-/* harmony import */ var _cratespace_config_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @cratespace/config-js */ "./node_modules/@cratespace/config-js/dist/index.js");
+/* harmony import */ var _Config_config__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Config/config */ "./resources/js/Config/config.js");
+/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm-bundler.js");
+/* harmony import */ var _inertiajs_inertia_vue3__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @inertiajs/inertia-vue3 */ "./node_modules/@inertiajs/inertia-vue3/dist/index.js");
 /* harmony import */ var _Plugins_moment__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./Plugins/moment */ "./resources/js/Plugins/moment.js");
 /* harmony import */ var _inertiajs_progress__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @inertiajs/progress */ "./node_modules/@inertiajs/progress/dist/index.js");
 
@@ -22781,14 +22773,14 @@ __webpack_require__.r(__webpack_exports__);
 
 (axios__WEBPACK_IMPORTED_MODULE_0___default().defaults.headers.common["X-Requested-With"]) = 'XMLHttpRequest';
 var app = document.getElementById('app');
-(0,vue__WEBPACK_IMPORTED_MODULE_1__.createApp)({
+(0,vue__WEBPACK_IMPORTED_MODULE_2__.createApp)({
   metaInfo: {
     titleTemplate: function titleTemplate(title) {
       return title ? "".concat(title, " - Cratespace") : 'Cratespace';
     }
   },
   render: function render() {
-    return (0,vue__WEBPACK_IMPORTED_MODULE_1__.h)(_inertiajs_inertia_vue3__WEBPACK_IMPORTED_MODULE_2__.App, {
+    return (0,vue__WEBPACK_IMPORTED_MODULE_2__.h)(_inertiajs_inertia_vue3__WEBPACK_IMPORTED_MODULE_3__.App, {
       initialPage: JSON.parse(app.dataset.page),
       resolveComponent: function resolveComponent(name) {
         return __webpack_require__("./resources/js/Views sync recursive ^\\.\\/.*$")("./".concat(name))["default"];
@@ -22798,9 +22790,10 @@ var app = document.getElementById('app');
 }).mixin({
   methods: {
     route: route,
-    diffForHumans: _Plugins_moment__WEBPACK_IMPORTED_MODULE_4__.default
+    diffForHumans: _Plugins_moment__WEBPACK_IMPORTED_MODULE_4__.default,
+    config: _Config_config__WEBPACK_IMPORTED_MODULE_1__.default
   }
-}).use(_inertiajs_inertia_vue3__WEBPACK_IMPORTED_MODULE_2__.plugin).use(_cratespace_config_js__WEBPACK_IMPORTED_MODULE_3__.default, __webpack_require__(/*! ./Config/items.json */ "./resources/js/Config/items.json")).mount(app);
+}).use(_inertiajs_inertia_vue3__WEBPACK_IMPORTED_MODULE_3__.plugin).mount(app);
 _inertiajs_progress__WEBPACK_IMPORTED_MODULE_5__.InertiaProgress.init({
   delay: 250,
   color: '#3B82F6',
