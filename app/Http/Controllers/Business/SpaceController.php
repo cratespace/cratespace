@@ -1,9 +1,10 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Business;
 
 use App\Models\Space;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 
 class SpaceController extends Controller
 {
