@@ -66,7 +66,7 @@ jobs:
           npm install
           npm run production
         env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: 🛫 Boot application
         run: |
@@ -144,7 +144,7 @@ jobs:
           npm install
           npm run production
         env:
-          NODE_AUTH_TOKEN: ${{secrets.npm_token}}
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: 🛫 Boot application
         run: |
