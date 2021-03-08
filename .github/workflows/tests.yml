@@ -38,6 +38,11 @@ jobs:
           extensions: swoole, fileinfo, gmp, intl, json, mbstring, openssl, dom, curl, libxml, zip, pcntl, pdo, sqlite, pdo_sqlite, gd, dom, redis, memcached
           coverage: pcov
 
+      - name: 🍭 Use Node JS
+        uses: actions/setup-node@v2.1.4
+        with:
+          node-version: 14.x
+
       - name: ⛑ Setup problem matchers
         run: echo "::add-matcher::${{ runner.tool_cache }}/phpunit.json"
 
@@ -114,6 +119,11 @@ jobs:
           tools: pecl, php-cs-fixer, phpunit, composer:v2
           extensions: swoole, fileinfo, gmp, intl, json, mbstring, openssl, dom, curl, libxml, zip, pcntl, pdo, sqlite, pdo_sqlite, gd, dom, redis, memcached
           coverage: pcov
+
+      - name: 🍭 Use Node JS
+        uses: actions/setup-node@v2.1.4
+        with:
+          node-version: 14.x
 
       - name: ⛑ Setup problem matchers
         run: echo "::add-matcher::${{ runner.tool_cache }}/phpunit.json"
