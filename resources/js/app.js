@@ -1,11 +1,11 @@
 import axios from 'axios';
+import config from './Config/config';
 import { createApp, h } from 'vue';
 import {
     App as InertiaApp,
     plugin as InertiaPlugin,
 } from '@inertiajs/inertia-vue3';
 
-import Config from '@cratespace/config-js';
 import diffForHumans from './Plugins/moment';
 import { InertiaProgress } from '@inertiajs/progress';
 
@@ -25,9 +25,8 @@ createApp({
             resolveComponent: (name) => require(`./Views/${name}`).default,
         }),
 })
-    .mixin({ methods: { route, diffForHumans } })
+    .mixin({ methods: { route, diffForHumans, config } })
     .use(InertiaPlugin)
-    .use(Config, require('./Config/items.json'))
     .mount(app);
 
 InertiaProgress.init({

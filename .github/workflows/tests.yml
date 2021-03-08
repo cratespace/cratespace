@@ -16,7 +16,7 @@ jobs:
         image: mysql:5.7
         env:
           MYSQL_ALLOW_EMPTY_PASSWORD: yes
-          MYSQL_DATABASE: laravel
+          MYSQL_DATABASE: cratespace
         ports:
           - 33306:3306
         options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
@@ -37,6 +37,11 @@ jobs:
           tools: pecl, php-cs-fixer, phpunit, composer:v2
           extensions: swoole, fileinfo, gmp, intl, json, mbstring, openssl, dom, curl, libxml, zip, pcntl, pdo, sqlite, pdo_sqlite, gd, dom, redis, memcached
           coverage: pcov
+
+      - name: 🍭 Use Node JS
+        uses: actions/setup-node@v2.1.4
+        with:
+          node-version: 14.x
 
       - name: ⛑ Setup problem matchers
         run: echo "::add-matcher::${{ runner.tool_cache }}/phpunit.json"
@@ -60,6 +65,9 @@ jobs:
           composer update --${{ matrix.stability }} --prefer-dist --no-interaction --no-progress
           npm install
           npm run production
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          CI: true
 
       - name: 🛫 Boot application
         run: |
@@ -115,6 +123,11 @@ jobs:
           extensions: swoole, fileinfo, gmp, intl, json, mbstring, openssl, dom, curl, libxml, zip, pcntl, pdo, sqlite, pdo_sqlite, gd, dom, redis, memcached
           coverage: pcov
 
+      - name: 🍭 Use Node JS
+        uses: actions/setup-node@v2.1.4
+        with:
+          node-version: 14.x
+
       - name: ⛑ Setup problem matchers
         run: echo "::add-matcher::${{ runner.tool_cache }}/phpunit.json"
 
@@ -131,6 +144,9 @@ jobs:
           composer update --${{ matrix.stability }} --prefer-dist --no-interaction --no-progress
           npm install
           npm run production
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          CI: true
 
       - name: 🛫 Boot application
         run: |
