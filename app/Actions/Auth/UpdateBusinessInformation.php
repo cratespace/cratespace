@@ -2,6 +2,7 @@
 
 namespace App\Actions\Auth;
 
+use App\Models\User;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Cratespace\Sentinel\Contracts\Actions\UpdatesUserProfiles;
 

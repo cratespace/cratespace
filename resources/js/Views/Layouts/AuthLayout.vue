@@ -1,5 +1,5 @@
 <template>
-    <div class="min-h-screen min-w-full overflow-x-hidden bg-gradient-to-r from-white via-gray-50 to-blue-50">
+    <div class="min-h-screen min-w-full overflow-x-hidden">
         <!-- Main Content Area -->
         <main class="py-16" role="main">
             <div class="container mx-auto px-4 sm:px-6">
@@ -21,6 +21,6 @@
 
 <script>
 export default {
-
+    //
 }
 </script>

@@ -9,36 +9,33 @@
 </template>
 
 <script>
-    export default {
-        model: {
-            prop: 'checked',
-            event: 'change',
+export default {
+    emits: ['update:checked'],
+
+    props: {
+        id: String,
+        label: String,
+
+        value: {
+            default: null,
         },
 
-        props: {
-            id: String,
-            label: String,
+        checked: {
+            type: [Array, Boolean],
+            default: false,
+        },
+    },
 
-            value: {
-                default: null,
+    computed: {
+        proxyChecked: {
+            get() {
+                return this.checked;
             },
 
-            checked: {
-                type: [Array, Boolean],
-                default: false,
+            set(value) {
+                this.$emit('update:checked', value);
             },
         },
-
-        computed: {
-            proxyChecked: {
-                get() {
-                    return this.checked;
-                },
-
-                set(value) {
-                    this.$emit('change', value);
-                },
-            },
-        },
-    }
+    },
+}
 </script>

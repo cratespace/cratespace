@@ -1,5 +1,5 @@
 <template>
-    <portal to="modal">
+    <teleport to="body">
         <transition leave-active-class="duration-200">
             <div v-show="show" class="fixed top-0 inset-x-0 px-4 pt-8 sm:pt-16 sm:px-0 sm:flex sm:items-top sm:justify-center">
                 <transition enter-active-class="ease-out duration-300" enter-class="opacity-0" enter-to-class="opacity-100" leave-active-class="ease-in duration-200" leave-class="opacity-100" leave-to-class="opacity-0">
@@ -15,64 +15,59 @@
                 </transition>
             </div>
         </transition>
-    </portal>
+    </teleport>
 </template>
 
 <script>
-    import Card from '@/Views/Components/Cards/Card';
+import { onMounted, onUnmounted } from "vue";
+import Card from '@/Views/Components/Cards/Card';
 
-    export default {
-        props: {
-            show: {
-                default: false
-            },
+export default {
+    emits: ['close'],
 
-            closeable: {
-                default: true
-            },
+    props: {
+        show: {
+            default: false
+        },
 
-            hasActions: {
-                default: false
+        closeable: {
+            default: true
+        },
+
+        hasActions: {
+            default: false
+        }
+    },
+
+    components: {
+        Card,
+    },
+
+    watch: {
+        show: {
+            immediate: true,
+
+            handler: (show) => document.body.style.overflow = show ? 'hidden' : null
+        }
+    },
+
+    setup(props, { emit }) {
+        const close = () => {
+            if (props.closeable) {
+                this.$emit('close');
             }
-        },
+        }
 
-        components: {
-            Card,
-        },
-
-        watch: {
-            show: {
-                immediate: true,
-                handler: (show) => {
-                    if (show) {
-                        document.body.style.overflow = 'hidden';
-                    } else {
-                        document.body.style.overflow = null;
-                    }
-                }
+        const closeOnEscape = (e) => {
+            if (e.key === 'Escape' && props.show) {
+                close();
             }
-        },
+        }
 
-        created() {
-            const closeOnEscape = (event) => {
-                if (event.key === 'Escape' && this.show) {
-                    this.close();
-                }
-            }
+        onMounted(() => document.addEventListener('keydown', closeOnEscape));
+        onUnmounted(() => document.removeEventListener('keydown', closeOnEscape));
 
-            document.addEventListener('keydown', closeOnEscape);
-
-            this.$once('hook:destroyed', () => {
-                document.removeEventListener('keydown', closeOnEscape);
-            });
-        },
-
-        methods: {
-            close() {
-                if (this.closeable) {
-                    this.$emit('close');
-                }
-            }
-        },
-    }
+        return { close }
+    },
+}
 </script>

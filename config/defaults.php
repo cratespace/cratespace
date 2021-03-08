@@ -12,7 +12,7 @@ return [
             'username' => 'Thavarshan',
             'email' => 'tjthavarshan@gmail.com',
             'phone' => '0775018795',
-            'password' => '$2y$10$p2s6IMWuZ9hW5WyfyTtfX.DyYIoWxslklzI7ZNiwfeXtZ.Lp4qoJe', // password
+            'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
             'email_verified_at' => now(),
             'remember_token' => Str::random(10),
             'settings' => [],
@@ -20,16 +20,6 @@ return [
             'profile_photo_path' => null,
             'two_factor_secret' => null,
             'two_factor_recovery_codes' => null,
-        ],
-
-        'business' => [
-            'name' => 'Cratespace, Inc.',
-            'about' => 'A freight space sales platform.',
-            'street' => '59 Martin Road',
-            'city' => 'Jaffna',
-            'state' => 'Northern Province',
-            'country' => 'Sri Lanka',
-            'postcode' => '40000',
         ],
     ],
 
@@ -44,9 +34,4 @@ return [
             'delete',
         ],
     ],
-
-    /*
-     * Monetary Information...
-     */
-    'currency' => env('APP_CURRENCY', 'USD'),
 ];

@@ -1,4 +1,4 @@
-name: Cratespace CI
+name: Preflight Checks
 
 on:
   push:
@@ -16,7 +16,7 @@ jobs:
         image: mysql:5.7
         env:
           MYSQL_ALLOW_EMPTY_PASSWORD: yes
-          MYSQL_DATABASE: cratespace
+          MYSQL_DATABASE: laravel
         ports:
           - 33306:3306
         options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
@@ -41,7 +41,7 @@ jobs:
       - name: ⛑ Setup problem matchers
         run: echo "::add-matcher::${{ runner.tool_cache }}/phpunit.json"
 
-      - name: 💿 Verify MySQL connection
+      - name: 👍🏼 Verify MySQL connection
         run: |
           mysql --version
           sudo apt-get install -y mysql-client
@@ -80,11 +80,6 @@ jobs:
           DB_PORT: ${{ job.services.mysql.ports[3306] }}
           DB_USERNAME: root
         run: ./vendor/bin/phpunit --verbose
-
-      - name: ⚗️ Run JavaScript tests
-        run: |
-          npm install
-          npm run test
 
       - name: 📚 Upload artifacts
         uses: actions/upload-artifact@master
@@ -148,11 +143,6 @@ jobs:
           DB_CONNECTION: sqlite
           DB_DATABASE: ':memory:'
         run: vendor/bin/phpunit --verbose
-
-      - name: ⚗️ Run JavaScript tests
-        run: |
-          npm install
-          npm run test
 
       - name: 📚 Upload artifacts
         uses: actions/upload-artifact@master

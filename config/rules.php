@@ -14,7 +14,7 @@ return [
      * User Login Validation Rules.
      */
     'login' => [
-        'email' => ['required', 'string', 'email'],
+        'email' => ['sometimes', 'string', 'email'],
         'password' => ['required', 'string'],
         'remember' => ['sometimes'],
     ],
@@ -24,7 +24,6 @@ return [
      */
     'register' => [
         'name' => ['required', 'string', 'max:255'],
-        'business' => ['required', 'string', 'max:255'],
         'email' => [
             'required',
             'string',
@@ -39,14 +38,15 @@ return [
      * Use Profile Information Validation Rules.
      */
     'update_profile' => [
-        'photo' => ['sometimes', 'image', 'max:1024'],
         'name' => ['required', 'string', 'max:255'],
         'username' => ['required', 'string', 'max:255'],
         'email' => ['required', 'string', 'email'],
+        'email' => ['sometimes', 'string', 'regex:/(0)[0-9]{9}/'],
+        'photo' => ['nullable', 'image', 'mimes:jpg,jpeg,png', 'max:1024'],
     ],
 
     /*
-     * Use Account Password Update Validation Rules.
+     * User Account Password Update Validation Rules.
      */
     'update_password' => [
         'current_password' => ['required', 'string'],
@@ -59,6 +59,9 @@ return [
         ],
     ],
 
+    /*
+     * User Business Profile Information Update Validation Rules.
+     */
     'business' => [
         'name' => ['required', 'string', 'max:255'],
         'about' => ['nullable', 'string'],

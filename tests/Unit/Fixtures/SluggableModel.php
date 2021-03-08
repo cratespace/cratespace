@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Fixtures;
+namespace Tests\Unit\Fixtures;
 
 use App\Models\Traits\Sluggable;
 use Illuminate\Database\Eloquent\Model;

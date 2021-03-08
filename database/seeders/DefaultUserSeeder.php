@@ -15,20 +15,8 @@ class DefaultUserSeeder extends Seeder
      */
     public function run()
     {
-        Business::create(array_merge($this->config('business'), [
-            'user_id' => User::create($this->config('credentials'))->id,
-        ]));
-    }
+        $user = User::create(config('defaults.users.credentials'));
 
-    /**
-     * Get default user details.
-     *
-     * @param string $key
-     *
-     * @return mixed
-     */
-    protected function config(string $key)
-    {
-        return config("defaults.users.{$key}");
+        Business::create(['name' => 'Example, Inc.', 'user_id' => $user->id]);
     }
 }

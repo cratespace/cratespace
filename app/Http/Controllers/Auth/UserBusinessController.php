@@ -7,7 +7,7 @@ use App\Http\Requests\BusinessRequest;
 use App\Http\Responses\BusinessResponse;
 use App\Actions\Auth\UpdateBusinessInformation;
 
-class BusinessController extends Controller
+class UserBusinessController extends Controller
 {
     /**
      * Update the specified resource in storage.

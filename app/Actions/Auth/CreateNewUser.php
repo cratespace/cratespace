@@ -21,10 +21,8 @@ class CreateNewUser implements CreatesNewUsers
     public function create(array $data): AuthenticatableUser
     {
         return DB::transaction(function () use ($data) {
-            return tap($this->createUser($data), function ($user) use ($data) {
-                $this->afterCreatingUser($user, $data);
-
-                return $user->fresh();
+            return tap($this->createUser($data), function (AuthenticatableUser $user) {
+                return $user;
             });
         });
     }
@@ -62,18 +60,5 @@ class CreateNewUser implements CreatesNewUsers
         }
 
         return Str::studly($name);
-    }
-
-    /**
-     * Run given actions after creating new user.
-     *
-     * @param \App\Models\User $user
-     * @param array            $data
-     *
-     * @return void
-     */
-    public function afterCreatingUser(User $user, array $data): void
-    {
-        $user->business()->create(['name' => $data['business']]);
     }
 }

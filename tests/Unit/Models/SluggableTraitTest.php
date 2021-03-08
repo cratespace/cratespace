@@ -3,8 +3,8 @@
 namespace Tests\Unit\Models;
 
 use Tests\TestCase;
-use Tests\Fixtures\SluggableModel;
 use Illuminate\Support\Facades\Schema;
+use Tests\Unit\Fixtures\SluggableModel;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 

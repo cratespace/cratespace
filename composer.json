@@ -1,21 +1,24 @@
 {
     "name": "cratespace/cratespace",
     "type": "project",
-    "description": "Freight space sales platform.",
+    "description": "A Freight sales platform.",
     "keywords": [
+        "saas",
         "freight",
-        "space",
+        "sales",
+        "platform",
         "cratespace"
     ],
     "license": "MIT",
     "require": {
         "php": "^7.4|^8.0",
         "ext-intl": "*",
-        "cratespace/preflight": "^2.5",
-        "cratespace/sentinel": "^2.0",
+        "cratespace/preflight": "^3.3.4",
+        "cratespace/sentinel": "^2.0.1",
         "fideloper/proxy": "^4.4",
         "fruitcake/laravel-cors": "^2.0",
         "guzzlehttp/guzzle": "^7.0.1",
+        "hashids/hashids": "^4.1",
         "inertiajs/inertia-laravel": "^0.3.5",
         "laravel/framework": "^8.12",
         "laravel/tinker": "^2.5",
@@ -28,7 +31,7 @@
         "laravel/sail": "^1.0.1",
         "mockery/mockery": "^1.4.2",
         "nunomaduro/collision": "^5.0",
-        "phpunit/phpunit": "^9.3.3"
+        "phpunit/phpunit": "^9.5"
     },
     "config": {
         "optimize-autoloader": true,

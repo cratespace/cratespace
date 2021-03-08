@@ -2,9 +2,9 @@
     <div class="min-h-screen min-w-full overflow-x-hidden">
         <!-- Main Header Area -->
         <header>
-            <navbar class="bg-blue-900">
+            <navbar class="bg-blue-800">
                 <template #logo>
-                    <logo classes="h-10 w-10 text-blue-500" :title="config('app.name')"></logo>
+                    <logo classes="h-8 w-8 text-blue-500" :title="config('app.name')"></logo>
                 </template>
 
                 <template #linksleft>
@@ -12,15 +12,15 @@
                         Home
                     </navbar-link>
 
-                    <navbar-link href="/" class="text-white bg-blue-900 hover:bg-blue-900 focus:bg-blue-900">
+                    <navbar-link href="/" :active="false" class="text-white bg-blue-900 hover:bg-blue-900 focus:bg-blue-900">
                         Orders
                     </navbar-link>
 
-                    <navbar-link href="/" class="text-white bg-blue-900 hover:bg-blue-900 focus:bg-blue-900">
+                    <navbar-link href="/" :active="false" class="text-white bg-blue-900 hover:bg-blue-900 focus:bg-blue-900">
                         Spaces
                     </navbar-link>
 
-                    <navbar-link href="/" class="text-white bg-blue-900 hover:bg-blue-900 focus:bg-blue-900">
+                    <navbar-link href="/" :active="false" class="text-white bg-blue-900 hover:bg-blue-900 focus:bg-blue-900">
                         Support
                     </navbar-link>
                 </template>
@@ -60,13 +60,11 @@
                 </div>
             </div>
         </footer>
-
-        <!-- Modal Portal -->
-        <portal-target name="modal" multiple></portal-target>
     </div>
 </template>
 
 <script>
+import axios from 'axios';
 import Logo from '@/Views/Components/Logos/Logo';
 import Navbar from '@/Views/Components/Navbars/Navbar';
 import NavbarLink from '@/Views/Components/Navbars/NavbarLink';
@@ -90,8 +88,7 @@ export default {
 
     methods: {
         logout() {
-            this.$http.post(this.route('logout'))
-                .then(() => window.location = this.route('welcome'));
+            this.$inertia.post(this.route('logout'));
         }
     }
 }

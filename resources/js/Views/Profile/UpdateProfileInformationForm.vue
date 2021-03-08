@@ -27,11 +27,11 @@
 
                             <div class="ml-4">
                                 <div class="flex items-center">
-                                    <app-button type="button" mode="secondary" @click.native.prevent="selectNewPhoto">
+                                    <app-button type="button" mode="secondary" @click.prevent="selectNewPhoto">
                                         Change
                                     </app-button>
 
-                                    <app-button class="ml-4" type="button" mode="secondary" @click.native.prevent="deletePhoto" v-if="user.profile_photo_path">
+                                    <app-button class="ml-4" type="button" mode="secondary" @click.prevent="deletePhoto" v-if="user.profile_photo_path">
                                         Remove
                                     </app-button>
                                 </div>
@@ -51,10 +51,6 @@
 
                     <div class="mt-6 lg:mt-0 md:col-span-6">
                         <app-input type="email" v-model="form.email" :error="form.errors.email" label="Email address" placeholder="john.doe@example.com"></app-input>
-                    </div>
-
-                    <div class="mt-6 lg:mt-0 md:col-span-6">
-                        <app-input type="tel" v-model="form.phone" :error="form.errors.phone" label="Telephone" placeholder="john.doe@example.com"></app-input>
                     </div>
                 </div>
 
@@ -97,7 +93,6 @@ export default {
                 name: this.user.name,
                 username: this.user.username,
                 email: this.user.email,
-                phone: this.user.phone,
                 photo: null
             }),
 
