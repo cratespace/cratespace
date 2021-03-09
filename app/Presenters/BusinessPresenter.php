@@ -16,11 +16,11 @@ class BusinessPresenter extends Presenter
     {
         return sprintf(
             '%s, %s, %s, %s, %s',
-            static::$model->street,
-            static::$model->city,
-            static::$model->state,
-            static::$model->country,
-            static::$model->postcode
+            $this->model->street,
+            $this->model->city,
+            $this->model->state,
+            $this->model->country,
+            $this->model->postcode
         );
     }
 
@@ -31,6 +31,6 @@ class BusinessPresenter extends Presenter
      */
     protected function credit(): string
     {
-        return Money::format(static::$model->credit);
+        return Money::format($this->model->credit);
     }
 }
