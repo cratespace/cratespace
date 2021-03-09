@@ -16,7 +16,7 @@ class SpaceObserver
      */
     public function creating(Space $space): void
     {
-        $space->base = $space->base ?? Auth::user()->business->country();
+        $space->base = $space->base ?? Auth::user()->business->country;
     }
 
     /**

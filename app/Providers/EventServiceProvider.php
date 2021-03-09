@@ -2,10 +2,12 @@
 
 namespace App\Providers;
 
+use App\Models\Space;
+use App\Observers\SpaceObserver;
+use Illuminate\Support\Facades\Event;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
-use Illuminate\Support\Facades\Event;
 
 class EventServiceProvider extends ServiceProvider
 {
@@ -21,12 +23,33 @@ class EventServiceProvider extends ServiceProvider
     ];
 
     /**
+     * All model observers to be registered.
+     *
+     * @var array
+     */
+    protected $observers = [
+        Space::class => SpaceObserver::class,
+    ];
+
+    /**
      * Register any events for your application.
      *
      * @return void
      */
     public function boot()
     {
-        //
+        $this->registerObservers();
+    }
+
+    /**
+     * Programmatically register model observers.
+     *
+     * @return void
+     */
+    public function registerObservers(): void
+    {
+        foreach ($this->observers as $model => $observer) {
+            $model::observe($observer);
+        }
     }
 }

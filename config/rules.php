@@ -90,6 +90,6 @@ return [
             'required', 'string',
             Rule::in(['Local', 'International']),
         ],
-        'base' => ['required', 'string'],
+        'base' => ['sometimes', 'string'],
     ],
 ];

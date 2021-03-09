@@ -75,6 +75,171 @@ class AddSpacesTest extends TestCase implements Postable
         $this->assertIsString($content['code']);
     }
 
+    public function testAutomaticBaseAttributeForSpace()
+    {
+        $this->signIn($user = User::factory()->withBusiness()->create());
+
+        $response = $this->postJson('/spaces', $this->validParameters());
+
+        $content = json_decode($response->getContent(), true);
+        $this->assertEquals($user->business->country, $content['base']);
+    }
+
+    public function testRequiresValidDepartsAt()
+    {
+        $this->signIn($user = User::factory()->withBusiness()->create());
+
+        $response = $this->post('/spaces', $this->validParameters([
+            'departs_at' => '',
+            'base' => $user->business->country,
+        ]));
+
+        $response->assertStatus(302);
+        $response->assertSessionHasErrors('departs_at');
+    }
+
+    public function testRequiresValidArrivesAt()
+    {
+        $this->signIn($user = User::factory()->withBusiness()->create());
+
+        $response = $this->post('/spaces', $this->validParameters([
+            'arrives_at' => '',
+            'base' => $user->business->country,
+        ]));
+
+        $response->assertStatus(302);
+        $response->assertSessionHasErrors('arrives_at');
+    }
+
+    public function testRequiresValidOrigin()
+    {
+        $this->signIn($user = User::factory()->withBusiness()->create());
+
+        $response = $this->post('/spaces', $this->validParameters([
+            'origin' => '',
+            'base' => $user->business->country,
+        ]));
+
+        $response->assertStatus(302);
+        $response->assertSessionHasErrors('origin');
+    }
+
+    public function testRequiresValidDestination()
+    {
+        $this->signIn($user = User::factory()->withBusiness()->create());
+
+        $response = $this->post('/spaces', $this->validParameters([
+            'destination' => '',
+            'base' => $user->business->country,
+        ]));
+
+        $response->assertStatus(302);
+        $response->assertSessionHasErrors('destination');
+    }
+
+    public function testRequiresValidHeight()
+    {
+        $this->signIn($user = User::factory()->withBusiness()->create());
+
+        $response = $this->post('/spaces', $this->validParameters([
+            'height' => '',
+            'base' => $user->business->country,
+        ]));
+
+        $response->assertStatus(302);
+        $response->assertSessionHasErrors('height');
+    }
+
+    public function testRequiresValidWidth()
+    {
+        $this->signIn($user = User::factory()->withBusiness()->create());
+
+        $response = $this->post('/spaces', $this->validParameters([
+            'width' => '',
+            'base' => $user->business->country,
+        ]));
+
+        $response->assertStatus(302);
+        $response->assertSessionHasErrors('width');
+    }
+
+    public function testRequiresValidLength()
+    {
+        $this->signIn($user = User::factory()->withBusiness()->create());
+
+        $response = $this->post('/spaces', $this->validParameters([
+            'length' => '',
+            'base' => $user->business->country,
+        ]));
+
+        $response->assertStatus(302);
+        $response->assertSessionHasErrors('length');
+    }
+
+    public function testRequiresValidWeight()
+    {
+        $this->signIn($user = User::factory()->withBusiness()->create());
+
+        $response = $this->post('/spaces', $this->validParameters([
+            'weight' => '',
+            'base' => $user->business->country,
+        ]));
+
+        $response->assertStatus(302);
+        $response->assertSessionHasErrors('weight');
+    }
+
+    public function testRequiresValidPrice()
+    {
+        $this->signIn($user = User::factory()->withBusiness()->create());
+
+        $response = $this->post('/spaces', $this->validParameters([
+            'price' => 'sdasdas',
+            'base' => $user->business->country,
+        ]));
+
+        $response->assertStatus(302);
+        $response->assertSessionHasErrors('price');
+    }
+
+    public function testTaxIsOptional()
+    {
+        $this->signIn($user = User::factory()->withBusiness()->create());
+
+        $response = $this->post('/spaces', $this->validParameters([
+            'tax' => '',
+            'base' => $user->business->country,
+        ]));
+
+        $response->assertStatus(303);
+    }
+
+    public function testRequiresValidTax()
+    {
+        $this->signIn($user = User::factory()->withBusiness()->create());
+
+        $response = $this->post('/spaces', $this->validParameters([
+            'tax' => 'sbfls',
+            'base' => $user->business->country,
+        ]));
+
+        $response->assertStatus(302);
+        $response->assertSessionHasErrors('tax');
+    }
+
+    public function testRequiresValidType()
+    {
+        $this->signIn($user = User::factory()->withBusiness()->create());
+
+        $response = $this->post('/spaces', $this->validParameters([
+            'type' => 'Global',
+            'base' => $user->business->country,
+        ]));
+
+        $response->assertStatus(302);
+        $response->assertSessionHasErrors('type');
+    }
+
     /**
      * Provide only the necessary paramertes for a POST-able type request.
      *
