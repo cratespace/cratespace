@@ -10,6 +10,16 @@ use App\Http\Responses\SpaceResponse;
 class SpaceController extends Controller
 {
     /**
+     * Create new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware('money')->only(['store', 'update']);
+    }
+
+    /**
      * Display a listing of the resource.
      *
      * @return \Symfony\Component\HttpFoundation\Response

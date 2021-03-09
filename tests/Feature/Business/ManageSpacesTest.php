@@ -197,6 +197,37 @@ class ManageSpacesTest extends TestCase implements Postable
         $response->assertStatus(303);
     }
 
+    public function testPriceIsConvertedToCents()
+    {
+        $this->signIn($user = User::factory()->withBusiness()->create());
+        $space = create(Space::class, ['user_id' => $user->id]);
+
+        $response = $this->put("/spaces/{$space->code}", $this->validParameters([
+            'price' => '12.50',
+            'base' => $user->business->country,
+        ]));
+
+        $response->assertStatus(303);
+        $space = Space::whereUserId($user->id)->first();
+        $this->assertEquals(1250, $space->price);
+    }
+
+    public function testTaxIsConvertedToCents()
+    {
+        $this->withoutExceptionHandling();
+        $this->signIn($user = User::factory()->withBusiness()->create());
+        $space = create(Space::class, ['user_id' => $user->id]);
+
+        $response = $this->put("/spaces/{$space->code}", $this->validParameters([
+            'tax' => '0.50',
+            'base' => $user->business->country,
+        ]));
+
+        $response->assertStatus(303);
+        $space = Space::whereUserId($user->id)->first();
+        $this->assertEquals(50, $space->tax);
+    }
+
     public function testSpaceCanBeDeleted()
     {
         $this->signIn($user = User::factory()->withBusiness()->create());
@@ -206,6 +237,16 @@ class ManageSpacesTest extends TestCase implements Postable
 
         $response->assertStatus(303);
         $response->assertRedirect('/spaces');
+    }
+
+    public function testSpaceCanBeDeletedThroughJson()
+    {
+        $this->signIn($user = User::factory()->withBusiness()->create());
+        $space = create(Space::class, ['user_id' => $user->id]);
+
+        $response = $this->deleteJson("/spaces/{$space->code}");
+
+        $response->assertStatus(204);
     }
 
     public function testSpaceCanBeDeletedOnlyByOwner()

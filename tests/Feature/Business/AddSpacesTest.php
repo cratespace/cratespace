@@ -4,6 +4,7 @@ namespace Tests\Feature\Business;
 
 use Tests\TestCase;
 use App\Models\User;
+use App\Models\Space;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Cratespace\Preflight\Testing\Contracts\Postable;
@@ -200,6 +201,34 @@ class AddSpacesTest extends TestCase implements Postable
 
         $response->assertStatus(302);
         $response->assertSessionHasErrors('price');
+    }
+
+    public function testPriceIsConvertedToCents()
+    {
+        $this->signIn($user = User::factory()->withBusiness()->create());
+
+        $response = $this->post('/spaces', $this->validParameters([
+            'price' => '12.50',
+            'base' => $user->business->country,
+        ]));
+
+        $response->assertStatus(303);
+        $space = Space::whereUserId($user->id)->first();
+        $this->assertEquals(1250, $space->price);
+    }
+
+    public function testTaxIsConvertedToCents()
+    {
+        $this->signIn($user = User::factory()->withBusiness()->create());
+
+        $response = $this->post('/spaces', $this->validParameters([
+            'tax' => '0.50',
+            'base' => $user->business->country,
+        ]));
+
+        $response->assertStatus(303);
+        $space = Space::whereUserId($user->id)->first();
+        $this->assertEquals(50, $space->tax);
     }
 
     public function testTaxIsOptional()

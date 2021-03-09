@@ -25,16 +25,39 @@ class FormatPrice
     public function handle(Request $request, Closure $next)
     {
         foreach (static::$feilds as $feild) {
-            if (array_key_exists($feild, $request->all())) {
-                $request->{$feild} = $this->formatAmount($request->{$feild});
+            if ($this->hasValidField($feild, $request)) {
+                $request->merge([
+                    $feild => $this->formatAmount($request->{$feild}),
+                ]);
             }
         }
 
         return $next($request);
     }
 
-    protected function formatAmount(float $amount): int
+    /**
+     * Convert monetary amount into centes.
+     *
+     * @param string $amount
+     *
+     * @return int
+     */
+    protected function formatAmount(string $amount): int
     {
         return (int) ($amount * 100);
+    }
+
+    /**
+     * Determine if the request.
+     *
+     * @param string                   $feild
+     * @param \Illuminate\Http\Request $request
+     *
+     * @return bool
+     */
+    protected function hasValidField(string $feild, Request $request): bool
+    {
+        return array_key_exists($feild, $request->all()) &&
+            is_numeric($request->{$feild});
     }
 }
