@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Cratespace\Sentinel\Models\Traits\HasApiTokens;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Cratespace\Sentinel\Models\Traits\HasProfilePhoto;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -86,5 +87,15 @@ class User extends Authenticatable
     public function business(): HasOne
     {
         return $this->hasOne(Business::class, 'user_id');
+    }
+
+    /**
+     * Get business details of the user.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function spaces(): HasMany
+    {
+        return $this->hasMany(Space::class, 'user_id');
     }
 }

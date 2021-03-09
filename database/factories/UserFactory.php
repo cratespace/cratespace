@@ -52,7 +52,7 @@ class UserFactory extends Factory
                     return [
                         'name' => $this->faker->unique()->company,
                         'user_id' => $user->id,
-                        'credit' => 0,
+                        'credit' => 0.00,
                     ];
                 }),
             'business'

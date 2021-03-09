@@ -3,15 +3,16 @@
 namespace App\Http\Controllers\Business;
 
 use App\Models\Space;
-use Illuminate\Http\Request;
+use App\Http\Requests\SpaceRequest;
 use App\Http\Controllers\Controller;
+use App\Http\Responses\SpaceResponse;
 
 class SpaceController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function index()
     {
@@ -20,10 +21,11 @@ class SpaceController extends Controller
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function create()
     {
+        $this->authorize('manage', new Space());
     }
 
     /**
@@ -31,10 +33,13 @@ class SpaceController extends Controller
      *
      * @param \Illuminate\Http\Request $request
      *
-     * @return \Illuminate\Http\Response
+     * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function store(Request $request)
+    public function store(SpaceRequest $request)
     {
+        $space = $request->user()->spaces()->create($request->validated());
+
+        return SpaceResponse::dispatch($space);
     }
 
     /**
@@ -42,10 +47,11 @@ class SpaceController extends Controller
      *
      * @param \App\Models\Space $space
      *
-     * @return \Illuminate\Http\Response
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function show(Space $space)
     {
+        $this->authorize('manage', $space);
     }
 
     /**
@@ -53,10 +59,11 @@ class SpaceController extends Controller
      *
      * @param \App\Models\Space $space
      *
-     * @return \Illuminate\Http\Response
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function edit(Space $space)
     {
+        $this->authorize('manage', $space);
     }
 
     /**
@@ -65,10 +72,13 @@ class SpaceController extends Controller
      * @param \Illuminate\Http\Request $request
      * @param \App\Models\Space        $space
      *
-     * @return \Illuminate\Http\Response
+     * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function update(Request $request, Space $space)
+    public function update(SpaceRequest $request, Space $space)
     {
+        $space->update($request->validated());
+
+        return SpaceResponse::dispatch($space->fresh());
     }
 
     /**
@@ -76,9 +86,12 @@ class SpaceController extends Controller
      *
      * @param \App\Models\Space $space
      *
-     * @return \Illuminate\Http\Response
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function destroy(Space $space)
     {
+        $this->authorize('manage', $space);
+
+        return SpaceResponse::dispatch();
     }
 }
