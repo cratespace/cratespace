@@ -7,7 +7,12 @@ use Illuminate\Http\Request;
 
 class FormatPrice
 {
-    protected static $feilds = [
+    /**
+     * List of acceptable monetary value fields.
+     *
+     * @var array
+     */
+    protected static $fields = [
         'price',
         'tax',
         'total',
@@ -24,10 +29,10 @@ class FormatPrice
      */
     public function handle(Request $request, Closure $next)
     {
-        foreach (static::$feilds as $feild) {
-            if ($this->hasValidField($feild, $request)) {
+        foreach (static::$fields as $field) {
+            if ($this->hasValidField($field, $request)) {
                 $request->merge([
-                    $feild => $this->formatAmount($request->{$feild}),
+                    $field => $this->formatAmount($request->{$field}),
                 ]);
             }
         }
@@ -50,14 +55,14 @@ class FormatPrice
     /**
      * Determine if the request.
      *
-     * @param string                   $feild
+     * @param string                   $field
      * @param \Illuminate\Http\Request $request
      *
      * @return bool
      */
-    protected function hasValidField(string $feild, Request $request): bool
+    protected function hasValidField(string $field, Request $request): bool
     {
-        return array_key_exists($feild, $request->all()) &&
-            is_numeric($request->{$feild});
+        return array_key_exists($field, $request->all()) &&
+            is_numeric($request->{$field});
     }
 }
