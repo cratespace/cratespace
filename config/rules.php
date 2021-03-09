@@ -72,4 +72,24 @@ return [
         'country' => ['required', 'string', 'max:255'],
         'postcode' => ['required', 'string', 'max:255'],
     ],
+
+    'space' => [
+        'code' => ['nullable', 'string', 'max:255', 'unique:spaces,code'],
+        'height' => ['required', 'integer'],
+        'width' => ['required', 'integer'],
+        'length' => ['required', 'integer'],
+        'weight' => ['required', 'integer'],
+        'price' => ['required', 'numeric', 'regex:/^\d+(\.\d{1,2})?$/'],
+        'tax' => ['nullable', 'numeric', 'regex:/^\d+(\.\d{1,2})?$/'],
+        'origin' => ['required', 'string'],
+        'destination' => ['required', 'string'],
+        'departs_at' => ['required', 'date'],
+        'arrives_at' => ['required', 'date', 'after:departs_at'],
+        'note' => ['nullable', 'string'],
+        'type' => [
+            'required', 'string',
+            Rule::in(['Local', 'International']),
+        ],
+        'base' => ['required', 'string'],
+    ],
 ];
