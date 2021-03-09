@@ -197,6 +197,28 @@ class ManageSpacesTest extends TestCase implements Postable
         $response->assertStatus(303);
     }
 
+    public function testSpaceCanBeDeleted()
+    {
+        $this->signIn($user = User::factory()->withBusiness()->create());
+        $space = create(Space::class, ['user_id' => $user->id]);
+
+        $response = $this->delete("/spaces/{$space->code}");
+
+        $response->assertStatus(303);
+        $response->assertRedirect('/spaces');
+    }
+
+    public function testSpaceCanBeDeletedOnlyByOwner()
+    {
+        $this->signIn($user = User::factory()->withBusiness()->create());
+        create(Space::class, ['user_id' => $user->id]);
+        $space = create(Space::class);
+
+        $response = $this->delete("/spaces/{$space->code}");
+
+        $response->assertStatus(403);
+    }
+
     /**
      * Provide only the necessary paramertes for a POST-able type request.
      *
