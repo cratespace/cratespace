@@ -1,4 +1,4 @@
-name: Preflight Checks
+name: Cratespace CI - Tests
 
 on:
   push:
