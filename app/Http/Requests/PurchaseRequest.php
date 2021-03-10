@@ -18,7 +18,7 @@ class PurchaseRequest extends FormRequest
      */
     public function authorize()
     {
-        return $this->isAllowed('purchase', $this->route('space'), true);
+        return $this->isAllowed('purchase', $this->route('space'));
     }
 
     /**

@@ -14,7 +14,6 @@ Route::group([
     Route::get('/home', fn () => Inertia::render('Business/Home'))->name('home');
     Route::put('/user/business', [UserBusinessController::class, '__invoke'])->name('user.business');
     Route::resource('/spaces', SpaceController::class);
+    Route::post('/spaces/{space}/orders', [PublicOrderController::class, 'store'])->name('orders.create');
+    Route::get('/orders/{order}', [PublicOrderController::class, 'show'])->name('orders.show');
 });
-
-Route::post('/spaces/{space}/orders', [PublicOrderController::class, 'store'])->name('orders.create');
-Route::get('/orders/{order}', [PublicOrderController::class, 'show'])->name('orders.show');

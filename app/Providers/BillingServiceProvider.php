@@ -2,11 +2,9 @@
 
 namespace App\Providers;
 
-use App\Billing\Payments\FakeGateway;
 use App\Actions\Billing\PurchaseSpace;
 use Illuminate\Support\ServiceProvider;
 use App\Contracts\Actions\Billing\MakesPurchase;
-use App\Billing\Payments\Gateway as PaymentGateway;
 use Cratespace\Sentinel\Providers\Traits\HasActions;
 
 class BillingServiceProvider extends ServiceProvider
@@ -44,9 +42,5 @@ class BillingServiceProvider extends ServiceProvider
 
     protected function registerPaymentGateway()
     {
-        $this->app->singleton(
-            PaymentGateway::class,
-            $this->app->runningUnitTests() ? FakeGateway::class : null
-        );
     }
 }
