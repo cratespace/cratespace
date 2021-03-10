@@ -22,10 +22,10 @@ class Money
     public static function format(int $amount, ?string $currency = null, ?string $locale = null): string
     {
         $money = new PHPMoney($amount, new Currency(
-            strtoupper($currency ?? config('money.currency'))
+            strtoupper($currency ?? config('billing.currency'))
         ));
 
-        $locale = $locale ?? config('money.currency_locale');
+        $locale = $locale ?? config('billing.currency_locale');
 
         $numberFormatter = new NumberFormatter($locale, NumberFormatter::CURRENCY);
         $moneyFormatter = new IntlMoneyFormatter($numberFormatter, new ISOCurrencies());

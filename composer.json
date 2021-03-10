@@ -23,9 +23,11 @@
         "laravel/framework": "^8.12",
         "laravel/tinker": "^2.5",
         "moneyphp/money": "^3.3",
+        "stripe/stripe-php": "^7.75",
         "tightenco/ziggy": "^1.0"
     },
     "require-dev": {
+        "brianium/paratest": "^6.2",
         "facade/ignition": "^2.5",
         "fakerphp/faker": "^1.9.1",
         "laravel/sail": "^1.0.1",

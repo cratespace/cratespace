@@ -87,7 +87,7 @@ jobs:
         env:
           DB_PORT: ${{ job.services.mysql.ports[3306] }}
           DB_USERNAME: root
-        run: ./vendor/bin/phpunit --verbose
+        run: php artisan test --parallel
 
       - name: 📚 Upload artifacts
         uses: actions/upload-artifact@master
@@ -158,7 +158,7 @@ jobs:
         env:
           DB_CONNECTION: sqlite
           DB_DATABASE: ':memory:'
-        run: vendor/bin/phpunit --verbose
+        run: php artisan test --parallel
 
       - name: 📚 Upload artifacts
         uses: actions/upload-artifact@master
