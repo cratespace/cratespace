@@ -41,7 +41,7 @@ return [
         'name' => ['required', 'string', 'max:255'],
         'username' => ['required', 'string', 'max:255'],
         'email' => ['required', 'string', 'email'],
-        'email' => ['sometimes', 'string', 'regex:/(0)[0-9]{9}/'],
+        'phone' => ['sometimes', 'string', 'regex:/(0)[0-9]{9}/'],
         'photo' => ['nullable', 'image', 'mimes:jpg,jpeg,png', 'max:1024'],
     ],
 
@@ -73,6 +73,9 @@ return [
         'postcode' => ['required', 'string', 'max:255'],
     ],
 
+    /*
+     * Create/Update Space Details Validation Rules...
+     */
     'space' => [
         'code' => ['nullable', 'string', 'max:255', 'unique:spaces,code'],
         'height' => ['required', 'integer'],
@@ -91,5 +94,16 @@ return [
             Rule::in(['Local', 'International']),
         ],
         'base' => ['sometimes', 'string'],
+    ],
+
+    /*
+     * Purchase (purchase space) Validation Rules...
+     */
+    'order' => [
+        'name' => ['required', 'string', 'max:255'],
+        'email' => ['required', 'string', 'email'],
+        'phone' => ['sometimes', 'string', 'regex:/(0)[0-9]{9}/'],
+        'business' => ['sometimes', 'string', 'max:255'],
+        'payment_token' => ['required', 'string'],
     ],
 ];
