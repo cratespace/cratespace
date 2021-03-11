@@ -3,7 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
@@ -27,6 +27,13 @@ class Role extends Model
         'permissions' => 'array',
     ];
 
+    /**
+     * Allow role to have given permission.
+     *
+     * @param \App\Models\Permission|string $permission
+     *
+     * @return void
+     */
     public function allowTo($permission): void
     {
         if (is_string($permission)) {
@@ -36,13 +43,23 @@ class Role extends Model
         $this->permissions()->save($permission);
     }
 
+    /**
+     * Get all permissions the role has.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
     public function permissions(): BelongsToMany
     {
         return $this->belongsToMany(Permission::class);
     }
 
-    public function user(): HasOne
+    /**
+     * Get all users with this role.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function users(): HasMany
     {
-        return $this->hasOne(User::class, 'role_id');
+        return $this->hasMany(User::class, 'role_id');
     }
 }

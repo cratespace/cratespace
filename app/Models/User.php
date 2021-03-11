@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\Models\Traits\HasAuthorization;
+use App\Models\Traits\ManageRoles;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Cratespace\Sentinel\Models\Traits\HasApiTokens;
@@ -21,7 +21,7 @@ class User extends Authenticatable
     use Notifiable;
     use InteractsWithSessions;
     use TwoFactorAuthenticatable;
-    use HasAuthorization;
+    use ManageRoles;
 
     /**
      * The attributes that are mass assignable.
@@ -87,7 +87,7 @@ class User extends Authenticatable
      *
      * @var array
      */
-    protected $with = ['business'];
+    protected $with = ['business', 'role'];
 
     /**
      * Get business details of the user.

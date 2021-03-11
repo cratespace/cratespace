@@ -27,11 +27,12 @@ return [
          */
         'permissions' => [
             'administrator:*',
-            'customer:purchase',
+            'customer:purchase_space',
             'customer:cancel_order',
             'business:add_space',
             'business:edit_space',
             'business:delete_space',
+            'business:purchase_space',
             'business:approve_order',
             'business:complete_order',
             'business:cancel_order',

@@ -19,13 +19,13 @@ class Permission extends Model implements PermissionContract
     protected $guarded = [];
 
     /**
-     * Determine if any permissions have been registered with Preflight.
+     * Determine if any permissions have been registered with Cratespace.
      *
      * @return bool
      */
     public static function hasPermissions(): bool
     {
-        return true;
+        return $this->all()->count() > 0;
     }
 
     /**
@@ -37,9 +37,17 @@ class Permission extends Model implements PermissionContract
      */
     public static function validPermissions(array $permissions): array
     {
-        return [];
+        return collect($permissions)
+            ->filter(function ($permission) {
+                return $this->whereLabel($permission)->exists();
+            })->toArray();
     }
 
+    /**
+     * Get all roles the permission is assigned to.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
     public function roles(): BelongsToMany
     {
         return $this->belongsToMany(Role::class);
