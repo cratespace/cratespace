@@ -4,7 +4,7 @@ use Inertia\Inertia;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Business\SpaceController;
 use App\Http\Controllers\Auth\UserBusinessController;
-use App\Http\Controllers\Public\OrderController as PublicOrderController;
+use App\Http\Controllers\Public\OrderController as CustomerOrderController;
 
 Route::get('/', fn () => Inertia::render('Marketing/Welcome'))->name('welcome');
 
@@ -14,6 +14,6 @@ Route::group([
     Route::get('/home', fn () => Inertia::render('Business/Home'))->name('home');
     Route::put('/user/business', [UserBusinessController::class, '__invoke'])->name('user.business');
     Route::resource('/spaces', SpaceController::class);
-    Route::post('/spaces/{space}/orders', [PublicOrderController::class, 'store'])->name('orders.create');
-    Route::get('/orders/{order}', [PublicOrderController::class, 'show'])->name('orders.show');
+    Route::post('/spaces/{space}/orders', [CustomerOrderController::class, 'store'])->name('orders.create');
+    Route::get('/orders/{order}', [CustomerOrderController::class, 'show'])->name('orders.show');
 });
