@@ -3,7 +3,9 @@
 namespace Tests\Feature\Auth;
 
 use Tests\TestCase;
+use App\Models\User;
 use App\Models\Business;
+use Stripe\StripeClientInterface;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
@@ -51,5 +53,13 @@ class RegistrationTest extends TestCase
         $this->assertAuthenticated();
         $this->assertCount(0, Business::all());
         $response->assertRedirect(RouteServiceProvider::HOME);
+
+        $user = User::whereName('Test User')->first();
+        $customer = app(StripeClientInterface::class)->customers->retrieve($user->stripe_id);
+
+        $this->assertNotNull($customer);
+        $this->assertEquals('test@example.com', $customer->email);
+        $this->assertEquals('Test User', $customer->name);
+        $this->assertEquals('0775018795', $customer->phone);
     }
 }
