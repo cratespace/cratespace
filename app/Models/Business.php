@@ -27,7 +27,7 @@ class Business extends Model
         'name',
         'slug',
         'credit',
-        'about',
+        'description',
         'street',
         'city',
         'state',

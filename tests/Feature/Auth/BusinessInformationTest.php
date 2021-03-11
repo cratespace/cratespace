@@ -11,8 +11,10 @@ class BusinessInformationTest extends TestCase implements Postable
 {
     use RefreshDatabase;
 
-    public function testProfileInformationCanBeUpdated()
+    public function testBusinessInformationCanBeUpdated()
     {
+        $this->withExceptionHandling();
+
         $user = $this->signInUserWithBusiness();
 
         $response = $this->put('/user/business', $this->validParameters());
@@ -20,7 +22,7 @@ class BusinessInformationTest extends TestCase implements Postable
         $response->assertStatus(303);
 
         $this->assertEquals('Example, Co.', $user->business->name);
-        $this->assertEquals('Example company profile.', $user->business->about);
+        $this->assertEquals('Example company profile.', $user->business->description);
     }
 
     public function testAValidNameIsRequired()
@@ -100,7 +102,7 @@ class BusinessInformationTest extends TestCase implements Postable
         $this->signInUserWithBusiness();
 
         $response = $this->put('/user/business', $this->validParameters([
-            'about' => '',
+            'description' => '',
         ]));
 
         $response->assertStatus(303);
@@ -117,7 +119,7 @@ class BusinessInformationTest extends TestCase implements Postable
     {
         return array_merge([
             'name' => 'Example, Co.',
-            'about' => 'Example company profile.',
+            'description' => 'Example company profile.',
             'street' => '768 Portal Coast',
             'city' => 'Atlastis',
             'state' => 'Upper Core',

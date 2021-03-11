@@ -67,7 +67,7 @@ return [
      */
     'business' => [
         'name' => ['required', 'string', 'max:255'],
-        'about' => ['nullable', 'string'],
+        'description' => ['nullable', 'string'],
         'photo' => ['sometimes', 'image', 'max:1024'],
         'street' => ['required', 'string', 'max:255'],
         'city' => ['required', 'string', 'max:255'],

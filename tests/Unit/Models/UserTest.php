@@ -21,16 +21,15 @@ class UserTest extends TestCase
 
     public function testUserModelAppendsSessionData()
     {
-        $user = create(User::class);
+        $user = User::factory()->withBusiness()->create();
 
         $this->assertArrayHasKey('sessions', $user->toArray());
     }
 
     public function testRoleAssignment()
     {
-        $user = create(User::class);
         $role = Role::create(['name' => 'Customer', 'slug' => 'customer']);
-
+        $user = User::factory()->asCustomer()->create();
         $user->assignRole($role);
 
         $this->assertTrue($user->hasRole($role));

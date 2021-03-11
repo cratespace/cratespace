@@ -4,7 +4,9 @@ namespace Database\Factories;
 
 use App\Models\User;
 use App\Models\Business;
+use App\Models\Customer;
 use Illuminate\Support\Str;
+use App\Billing\Clients\Stripe;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class UserFactory extends Factory
@@ -40,7 +42,7 @@ class UserFactory extends Factory
     }
 
     /**
-     * Indicate that the user should have a personal team.
+     * Indicate that the user should have a business profile.
      *
      * @return \Database\Factories\UserFactory
      */
@@ -56,6 +58,31 @@ class UserFactory extends Factory
                     ];
                 }),
             'business'
+        );
+    }
+
+    /**
+     * Indicate that the user should have a customer profile.
+     *
+     * @return \Database\Factories\UserFactory
+     */
+    public function asCustomer(): UserFactory
+    {
+        return $this->has(
+            Customer::factory()
+                ->state(function (array $attributes, User $user) {
+                    $customer = app(Stripe::class)->createCustomer([
+                        'name' => $user->name,
+                        'email' => $user->email,
+                        'phone' => $user->phone,
+                    ]);
+
+                    return [
+                        'user_id' => $user->id,
+                        'stripe_id' => $customer->id,
+                    ];
+                }),
+            'customer'
         );
     }
 }

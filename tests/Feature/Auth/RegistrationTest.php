@@ -3,15 +3,24 @@
 namespace Tests\Feature\Auth;
 
 use Tests\TestCase;
+use App\Models\Role;
 use App\Models\User;
 use App\Models\Business;
-use Stripe\StripeClientInterface;
+use App\Billing\Clients\Stripe;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class RegistrationTest extends TestCase
 {
     use RefreshDatabase;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        Role::create(['name' => 'Customer', 'slug' => 'customer']);
+        Role::create(['name' => 'Business', 'slug' => 'business']);
+    }
 
     public function testRegistrationScreenCanBeRendered()
     {
@@ -55,7 +64,7 @@ class RegistrationTest extends TestCase
         $response->assertRedirect(RouteServiceProvider::HOME);
 
         $user = User::whereName('Test User')->first();
-        $customer = app(StripeClientInterface::class)->customers->retrieve($user->stripe_id);
+        $customer = app(Stripe::class)->getCustomer($user->customer->stripe_id);
 
         $this->assertNotNull($customer);
         $this->assertEquals('test@example.com', $customer->email);

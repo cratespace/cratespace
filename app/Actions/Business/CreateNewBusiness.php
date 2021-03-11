@@ -21,6 +21,8 @@ class CreateNewBusiness implements CreatesNewUsers
             'credit' => 0.00,
         ]);
 
+        $data['user']->assignRole('Business');
+
         return $data['user']->fresh();
     }
 }

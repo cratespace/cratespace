@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateBusinessesTable extends Migration
+class CreateCustomersTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,18 +13,17 @@ class CreateBusinessesTable extends Migration
      */
     public function up()
     {
-        Schema::create('businesses', function (Blueprint $table) {
+        Schema::create('customers', function (Blueprint $table) {
             $table->id();
-            $table->string('name')->unique();
-            $table->string('slug')->unique();
-            $table->integer('credit')->default(0)->nullable();
+            $table->string('stripe_id')->index();
+            $table->string('pm_type')->nullable();
+            $table->string('pm_last_four', 4)->nullable();
             $table->mediumText('description')->nullable();
             $table->string('street')->nullable();
             $table->string('city')->nullable();
             $table->string('state')->nullable();
             $table->string('country')->nullable();
             $table->string('postcode')->nullable();
-            $table->text('profile_photo_path')->nullable();
             $table->foreignId('user_id')
                 ->constrained('users', 'id')
                 ->onUpdate('cascade')
@@ -40,6 +39,6 @@ class CreateBusinessesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('businesses');
+        Schema::dropIfExists('customers');
     }
 }
