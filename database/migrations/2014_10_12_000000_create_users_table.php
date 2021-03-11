@@ -23,6 +23,9 @@ class CreateUsersTable extends Migration
             $table->text('profile_photo_path')->nullable();
             $table->text('two_factor_secret')->nullable();
             $table->text('two_factor_recovery_codes')->nullable();
+            $table->string('stripe_id')->nullable()->index();
+            $table->string('pm_type')->nullable();
+            $table->string('pm_last_four', 4)->nullable();
             $table->json('settings')->nullable();
             $table->boolean('locked')->default(false);
             $table->rememberToken();

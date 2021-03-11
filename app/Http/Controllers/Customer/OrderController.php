@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Public;
+namespace App\Http\Controllers\Customer;
 
 use App\Models\Order;
 use App\Models\Space;

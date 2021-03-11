@@ -36,6 +36,9 @@ class User extends Authenticatable
         'profile_photo_path',
         'two_factor_secret',
         'two_factor_recovery_codes',
+        'stripe_id',
+        'pm_type',
+        'pm_last_four',
     ];
 
     /**
@@ -48,6 +51,9 @@ class User extends Authenticatable
         'remember_token',
         'two_factor_recovery_codes',
         'two_factor_secret',
+        'stripe_id',
+        'pm_type',
+        'pm_last_four',
     ];
 
     /**

@@ -4,7 +4,7 @@ use Inertia\Inertia;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Business\SpaceController;
 use App\Http\Controllers\Auth\UserBusinessController;
-use App\Http\Controllers\Public\OrderController as CustomerOrderController;
+use App\Http\Controllers\Customer\OrderController as CustomerOrderController;
 
 Route::get('/', fn () => Inertia::render('Marketing/Welcome'))->name('welcome');
 
