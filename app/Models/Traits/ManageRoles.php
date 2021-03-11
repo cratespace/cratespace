@@ -20,6 +20,10 @@ trait ManageRoles
             $role = $this->findRole($role);
         }
 
+        if (is_null($role)) {
+            return false;
+        }
+
         return $this->role->is($role);
     }
 
@@ -44,9 +48,9 @@ trait ManageRoles
      *
      * @param string $role
      *
-     * @return \App\Models\Role $role
+     * @return \App\Models\Role|null $role
      */
-    public function findRole(string $role): Role
+    public function findRole(string $role): ?Role
     {
         return Role::whereName($role)->first();
     }

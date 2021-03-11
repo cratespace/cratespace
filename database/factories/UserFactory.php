@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Role;
 use App\Models\User;
 use App\Models\Business;
 use App\Models\Customer;
@@ -48,9 +49,13 @@ class UserFactory extends Factory
      */
     public function withBusiness(): UserFactory
     {
+        $role = Role::firstOrCreate(['name' => 'Business', 'slug' => 'business']);
+
         return $this->has(
             Business::factory()
-                ->state(function (array $attributes, User $user) {
+                ->state(function (array $attributes, User $user) use ($role) {
+                    $user->assignRole($role);
+
                     return [
                         'name' => $this->faker->unique()->company,
                         'user_id' => $user->id,
@@ -68,9 +73,13 @@ class UserFactory extends Factory
      */
     public function asCustomer(): UserFactory
     {
+        $role = Role::firstOrCreate(['name' => 'Customer', 'slug' => 'customer']);
+
         return $this->has(
             Customer::factory()
-                ->state(function (array $attributes, User $user) {
+                ->state(function (array $attributes, User $user) use ($role) {
+                    $user->assignRole($role);
+
                     $customer = app(Stripe::class)->createCustomer([
                         'name' => $user->name,
                         'email' => $user->email,

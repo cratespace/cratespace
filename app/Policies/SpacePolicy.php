@@ -20,7 +20,15 @@ class SpacePolicy
      */
     public function manage(User $user, Space $space): bool
     {
-        return $user->is($space->user);
+        if ($user->hasRole('Administrator')) {
+            return true;
+        }
+
+        if ($user->hasRole('Business')) {
+            return $user->is($space->user);
+        }
+
+        return false;
     }
 
     /**

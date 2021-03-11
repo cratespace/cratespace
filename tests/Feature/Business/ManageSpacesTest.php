@@ -14,6 +14,8 @@ class ManageSpacesTest extends TestCase implements Postable
 
     public function testUpdateSpaceDetails()
     {
+        $this->withoutExceptionHandling();
+
         $this->signIn($user = User::factory()->withBusiness()->create());
         $space = create(Space::class, ['user_id' => $user->id]);
 
