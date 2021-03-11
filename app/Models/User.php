@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Traits\HasAuthorization;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Cratespace\Sentinel\Models\Traits\HasApiTokens;
@@ -20,6 +21,7 @@ class User extends Authenticatable
     use Notifiable;
     use InteractsWithSessions;
     use TwoFactorAuthenticatable;
+    use HasAuthorization;
 
     /**
      * The attributes that are mass assignable.
@@ -39,6 +41,7 @@ class User extends Authenticatable
         'stripe_id',
         'pm_type',
         'pm_last_four',
+        'role_id',
     ];
 
     /**
@@ -54,6 +57,7 @@ class User extends Authenticatable
         'stripe_id',
         'pm_type',
         'pm_last_four',
+        'role_id',
     ];
 
     /**

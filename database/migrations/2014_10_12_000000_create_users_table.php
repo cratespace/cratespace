@@ -28,6 +28,10 @@ class CreateUsersTable extends Migration
             $table->string('pm_last_four', 4)->nullable();
             $table->json('settings')->nullable();
             $table->boolean('locked')->default(false);
+            $table->foreignId('role_id')
+                ->nullable()
+                ->constrained('roles')
+                ->onDelete('cascade');
             $table->rememberToken();
             $table->timestamps();
 

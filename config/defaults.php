@@ -21,6 +21,21 @@ return [
             'two_factor_secret' => null,
             'two_factor_recovery_codes' => null,
         ],
+
+        /*
+         * All Permissions A User Can Have...
+         */
+        'permissions' => [
+            'administrator:*',
+            'customer:purchase',
+            'customer:cancel_order',
+            'business:add_space',
+            'business:edit_space',
+            'business:delete_space',
+            'business:approve_order',
+            'business:complete_order',
+            'business:cancel_order',
+        ],
     ],
 
     /*

@@ -36,12 +36,33 @@ class CreateNewUser implements CreatesNewUsers
      */
     protected function createUser(array $data): User
     {
-        return User::create([
+        $user = User::create([
             'name' => $data['name'],
             'email' => $data['email'],
             'username' => $this->makeUsername($data['name']),
             'password' => Hash::make($data['password']),
         ]);
+
+        // $this->createUserProfile($user, $data);
+
+        return $user;
+    }
+
+    /**
+     * Create user profile according to user type.
+     *
+     * @param \App\Models\User $user
+     * @param array            $data
+     *
+     * @return \App\Models\User
+     */
+    protected function createUserProfile(User $user, array $data): User
+    {
+        $data['type'] === 'business'
+            ? $user->createBusiness($data['business'])
+            : $user->createCustomer();
+
+        return $user->fresh();
     }
 
     /**
