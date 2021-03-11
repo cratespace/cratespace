@@ -24,6 +24,8 @@ return [
      */
     'register' => [
         'name' => ['required', 'string', 'max:255'],
+        'business' => ['sometimes', 'string', 'max:255'],
+        'phone' => ['sometimes', 'string', 'regex:/(0)[0-9]{9}/'],
         'email' => [
             'required',
             'string',
@@ -32,6 +34,7 @@ return [
             Rule::unique(User::class),
         ],
         'password' => ['required', 'string', new PasswordRule()],
+        'type' => ['sometimes', 'string', Rule::in(['business', 'customer'])],
     ],
 
     /*

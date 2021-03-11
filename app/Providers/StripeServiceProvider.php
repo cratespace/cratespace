@@ -26,7 +26,7 @@ class StripeServiceProvider extends ServiceProvider
     protected function registerClient(): void
     {
         $this->app->singleton(StripeClientInterface::class, function ($app) {
-            return new StripeClient($app['config']->get('billing.key'));
+            return new StripeClient($app['config']->get('billing.secret'));
         });
     }
 }

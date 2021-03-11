@@ -10,6 +10,4 @@ class Stripe
     {
         $this->client = $client;
     }
-
-    
 }

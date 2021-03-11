@@ -6,6 +6,8 @@ use App\Models\User;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use App\Actions\Business\CreateNewBusiness;
+use App\Actions\Business\CreateNewCustomer;
 use Cratespace\Sentinel\Contracts\Actions\CreatesNewUsers;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableUser;
 
@@ -43,7 +45,7 @@ class CreateNewUser implements CreatesNewUsers
             'password' => Hash::make($data['password']),
         ]);
 
-        // $this->createUserProfile($user, $data);
+        $this->createUserProfile($user, $data);
 
         return $user;
     }
@@ -58,9 +60,11 @@ class CreateNewUser implements CreatesNewUsers
      */
     protected function createUserProfile(User $user, array $data): User
     {
+        $data['user'] = $user;
+
         $data['type'] === 'business'
-            ? $user->createBusiness($data['business'])
-            : $user->createCustomer();
+            ? app(CreateNewBusiness::class)->create($data)
+            : app(CreateNewCustomer::class)->create($data);
 
         return $user->fresh();
     }
