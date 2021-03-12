@@ -32,4 +32,24 @@ class Money
 
         return $moneyFormatter->format($money);
     }
+
+    /**
+     * Get the supported currency used by the customer.
+     *
+     * @return string
+     */
+    public static function preferredCurrency(): string
+    {
+        return config('billing.currency');
+    }
+
+    /**
+     * Get the supported currency locale used by the customer.
+     *
+     * @return string
+     */
+    public static function preferredCurrencyLocale(): string
+    {
+        return config('billing.currency_locale');
+    }
 }
