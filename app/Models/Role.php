@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Throwable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -19,15 +20,6 @@ class Role extends Model
     protected $guarded = [];
 
     /**
-     * The attributes that should be cast to native types.
-     *
-     * @var array
-     */
-    protected $casts = [
-        'permissions' => 'array',
-    ];
-
-    /**
      * Allow role to have given permission.
      *
      * @param \App\Models\Permission|string $permission
@@ -37,10 +29,30 @@ class Role extends Model
     public function allowTo($permission): void
     {
         if (is_string($permission)) {
-            $permission = Permission::whereLabel($permission)->first();
+            $permission = $this->permissions->whereLabel($permission)->first();
         }
 
         $this->permissions()->save($permission);
+    }
+
+    /**
+     * Determine if the role has the given permission.
+     *
+     * @param \App\Models\Permission|string $permission
+     *
+     * @return bool
+     */
+    public function can($permission): bool
+    {
+        if (is_string($permission)) {
+            $permission = $this->permissions()->whereLabel($permission)->first();
+        }
+
+        try {
+            return $this->permissions->contains($permission);
+        } catch (Throwable $th) {
+            return false;
+        }
     }
 
     /**

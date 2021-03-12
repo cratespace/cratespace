@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Models\Traits;
+namespace App\Models\Concerns;
 
 use App\Models\Role;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-trait ManageRoles
+trait ManagesRoles
 {
     /**
      * Determine if user is assigned the given role.

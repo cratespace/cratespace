@@ -3,19 +3,25 @@
 namespace App\Models;
 
 use App\Models\Traits\Hashable;
+use App\Models\Traits\Marketable;
 use App\Models\Casts\ScheduleCast;
+use App\Contracts\Purchases\Product;
 use Illuminate\Database\Eloquent\Model;
-use App\Contracts\Actions\Orders\PlacesOrders;
+use App\Models\Concerns\DeterminesStatus;
+use App\Models\Concerns\InteractsWithOrder;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Cratespace\Preflight\Models\Traits\Presentable;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class Space extends Model
+class Space extends Model implements Product
 {
     use HasFactory;
     use Presentable;
     use Hashable;
+    use Marketable;
+    use InteractsWithOrder;
+    use DeterminesStatus;
 
     /**
      * The accessors to append to the model's array form.
@@ -81,20 +87,6 @@ class Space extends Model
     }
 
     /**
-     * Mark space as booked and create order details.
-     *
-     * @param array $details
-     *
-     * @return \App\Models\Order
-     */
-    public function placeOrder(array $details): Order
-    {
-        $this->update(['reserved_at' => now()]);
-
-        return app(PlacesOrders::class)->make($details, $this);
-    }
-
-    /**
      * Get the order details of the space.
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasOne
@@ -105,6 +97,26 @@ class Space extends Model
     }
 
     /**
+     * Reserve space for customer.
+     *
+     * @return void
+     */
+    public function reserve(): void
+    {
+        $this->update(['reserved_at' => now()]);
+    }
+
+    /**
+     * Release space from order.
+     *
+     * @return void
+     */
+    public function release(): void
+    {
+        $this->update(['reserved_at' => null]);
+    }
+
+    /**
      * Get full path to single resource page.
      *
      * @return string
@@ -112,19 +124,5 @@ class Space extends Model
     public function getPathAttribute(): string
     {
         return route('spaces.show', $this);
-    }
-
-    /**
-     * Get full price or product inclusive of all additional charges.
-     *
-     * @return int
-     */
-    public function fullPrice(): int
-    {
-        if (is_null($this->tax)) {
-            return $this->price;
-        }
-
-        return $this->price + $this->tax;
     }
 }

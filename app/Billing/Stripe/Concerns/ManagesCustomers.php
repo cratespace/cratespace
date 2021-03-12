@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Billing\Clients\Concerns;
+namespace App\Billing\Stripe\Concerns;
 
+use Stripe\Customer;
 use Illuminate\Support\Collection;
 use Stripe\Service\CustomerService;
-use Stripe\Customer as StripeCustomer;
 
 trait ManagesCustomers
 {
@@ -15,7 +15,7 @@ trait ManagesCustomers
      *
      * @return \Stripe\Customer
      */
-    public function createCustomer(array $data): StripeCustomer
+    public function createCustomer(array $data): Customer
     {
         return $this->customers()->create($data);
     }
@@ -27,7 +27,7 @@ trait ManagesCustomers
      *
      * @return \Stripe\Customer
      */
-    public function getCustomer(string $id): StripeCustomer
+    public function getCustomer(string $id): Customer
     {
         return $this->customers()->retrieve($id);
     }
@@ -40,7 +40,7 @@ trait ManagesCustomers
      *
      * @return \Stripe\Customer
      */
-    public function updateCustomer(string $id, array $data = []): StripeCustomer
+    public function updateCustomer(string $id, array $data = []): Customer
     {
         return $this->customers()->update($id, $data);
     }

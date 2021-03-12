@@ -27,7 +27,9 @@ class DefaultAuthorizationsSeeder extends Seeder
 
                 $role = Role::whereSlug($role)->first();
 
-                $role->allowTo($permission);
+                if (! is_null($role)) {
+                    $role->allowTo($permission);
+                }
             });
     }
 }

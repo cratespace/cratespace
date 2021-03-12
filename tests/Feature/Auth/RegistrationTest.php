@@ -6,7 +6,7 @@ use Tests\TestCase;
 use App\Models\Role;
 use App\Models\User;
 use App\Models\Business;
-use App\Billing\Clients\Stripe;
+use App\Contracts\Billing\Client;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
@@ -64,7 +64,7 @@ class RegistrationTest extends TestCase
         $response->assertRedirect(RouteServiceProvider::HOME);
 
         $user = User::whereName('Test User')->first();
-        $customer = app(Stripe::class)->getCustomer($user->customer->stripe_id);
+        $customer = app(Client::class)->getCustomer($user->customer->stripe_id);
 
         $this->assertNotNull($customer);
         $this->assertEquals('test@example.com', $customer->email);

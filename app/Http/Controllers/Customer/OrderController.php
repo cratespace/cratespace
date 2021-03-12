@@ -6,9 +6,9 @@ use App\Models\Order;
 use App\Models\Space;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\PurchaseRequest;
+use App\Contracts\Actions\MakesPurchase;
 use App\Http\Responses\PurchaseResponse;
 use App\Http\Responses\FailedPurchaseResponse;
-use App\Contracts\Actions\Billing\MakesPurchase;
 
 class OrderController extends Controller
 {
@@ -24,15 +24,15 @@ class OrderController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param \App\Http\Requests\PurchaseRequest           $request
-     * @param \App\Contracts\Actions\Billing\MakesPurchase $purchaser
-     * @param \App\Models\Space                            $space
+     * @param \App\Http\Requests\PurchaseRequest   $request
+     * @param \App\Contracts\Actions\MakesPurchase $purchaser
+     * @param \App\Models\Space                    $space
      *
      * @return \Illuminate\Http\Response
      */
     public function store(PurchaseRequest $request, MakesPurchase $purchaser, Space $space)
     {
-        $order = $purchaser->purchase($request->validated(), $space);
+        $order = $purchaser->purchase($space, $request->validated());
 
         if ($order === false) {
             return FailedPurchaseResponse::dispatch();

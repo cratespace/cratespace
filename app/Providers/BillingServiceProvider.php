@@ -2,9 +2,7 @@
 
 namespace App\Providers;
 
-use App\Actions\Billing\PurchaseSpace;
 use Illuminate\Support\ServiceProvider;
-use App\Contracts\Actions\Billing\MakesPurchase;
 use Cratespace\Sentinel\Providers\Traits\HasActions;
 
 class BillingServiceProvider extends ServiceProvider
@@ -16,9 +14,7 @@ class BillingServiceProvider extends ServiceProvider
      *
      * @var array
      */
-    protected $actions = [
-        MakesPurchase::class => PurchaseSpace::class,
-    ];
+    protected $actions = [];
 
     /**
      * Register services.

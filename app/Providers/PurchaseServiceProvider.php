@@ -3,8 +3,9 @@
 namespace App\Providers;
 
 use App\Actions\Orders\PlaceOrder;
+use App\Contracts\Actions\PlacesOrders;
 use Illuminate\Support\ServiceProvider;
-use App\Contracts\Actions\Orders\PlacesOrders;
+use App\Contracts\Actions\MakesPurchase;
 use Cratespace\Sentinel\Providers\Traits\HasActions;
 
 class PurchaseServiceProvider extends ServiceProvider
@@ -17,6 +18,7 @@ class PurchaseServiceProvider extends ServiceProvider
      * @var array
      */
     protected $actions = [
+        MakesPurchase::class => PurchaseSpace::class,
         PlacesOrders::class => PlaceOrder::class,
     ];
 

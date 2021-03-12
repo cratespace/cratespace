@@ -3,9 +3,10 @@
 namespace App\Providers;
 
 use Stripe\StripeClient;
-use App\Billing\Clients\Stripe;
+use App\Billing\Stripe\Client;
 use Stripe\StripeClientInterface;
 use Illuminate\Support\ServiceProvider;
+use App\Contracts\Billing\Client as ClientContract;
 
 class StripeServiceProvider extends ServiceProvider
 {
@@ -30,6 +31,6 @@ class StripeServiceProvider extends ServiceProvider
             return new StripeClient($app['config']->get('billing.secret'));
         });
 
-        $this->app->singleton(Stripe::class);
+        $this->app->singleton(ClientContract::class, Client::class);
     }
 }

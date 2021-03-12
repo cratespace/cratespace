@@ -2,21 +2,22 @@
 
 namespace App\Actions\Orders;
 
-use App\Contracts\Actions\Orders\PlacesOrders;
+use App\Contracts\Purchases\Product;
+use App\Contracts\Actions\PlacesOrders;
 
 class PlaceOrder implements PlacesOrders
 {
     /**
      * Make order using given details.
      *
-     * @param array $details
-     * @param mixed $product
+     * @param \App\Contracts\Purchases\Product $product
+     * @param array                            $details
      *
      * @return mixed
      */
-    public function make(array $details, $product)
+    public function make(Product $product, array $details)
     {
-        return $product->order()->create(
+        return $product->placeOrder(
             array_merge($details, [
                 'price' => $product->price,
                 'tax' => $product->tax,

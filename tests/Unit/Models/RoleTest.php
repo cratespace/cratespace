@@ -2,17 +2,26 @@
 
 namespace Tests\Unit\Models;
 
-use PHPUnit\Framework\TestCase;
+use Tests\TestCase;
+use App\Models\Role;
+use App\Models\Permission;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class RoleTest extends TestCase
 {
-    /**
-     * A basic unit test example.
-     *
-     * @return void
-     */
-    public function test_example()
+    use RefreshDatabase;
+
+    public function testDeterminePermission()
     {
-        $this->assertTrue(true);
+        $permission = Permission::create(['label' => '*']);
+        $role = Role::create([
+            'name' => 'Administrator',
+            'slug' => 'administrator',
+            'description' => 'An administrator can perform all actions',
+        ]);
+
+        $role->allowTo($permission);
+
+        $this->assertTrue($role->can($permission));
     }
 }

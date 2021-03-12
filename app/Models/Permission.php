@@ -25,7 +25,7 @@ class Permission extends Model implements PermissionContract
      */
     public static function hasPermissions(): bool
     {
-        return $this->all()->count() > 0;
+        return static::all()->count() > 0;
     }
 
     /**
@@ -39,7 +39,7 @@ class Permission extends Model implements PermissionContract
     {
         return collect($permissions)
             ->filter(function ($permission) {
-                return $this->whereLabel($permission)->exists();
+                return static::whereLabel($permission)->exists();
             })->toArray();
     }
 

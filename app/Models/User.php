@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\Models\Traits\ManageRoles;
+use App\Models\Concerns\ManagesRoles;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Relations\HasOne;
@@ -22,7 +22,7 @@ class User extends Authenticatable
     use Notifiable;
     use InteractsWithSessions;
     use TwoFactorAuthenticatable;
-    use ManageRoles;
+    use ManagesRoles;
 
     /**
      * The attributes that are mass assignable.

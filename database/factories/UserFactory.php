@@ -7,7 +7,7 @@ use App\Models\User;
 use App\Models\Business;
 use App\Models\Customer;
 use Illuminate\Support\Str;
-use App\Billing\Clients\Stripe;
+use App\Contracts\Billing\Client;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class UserFactory extends Factory
@@ -80,7 +80,7 @@ class UserFactory extends Factory
                 ->state(function (array $attributes, User $user) use ($role) {
                     $user->assignRole($role);
 
-                    $customer = app(Stripe::class)->createCustomer([
+                    $customer = app(Client::class)->createCustomer([
                         'name' => $user->name,
                         'email' => $user->email,
                         'phone' => $user->phone,

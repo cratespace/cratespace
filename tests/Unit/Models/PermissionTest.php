@@ -2,17 +2,28 @@
 
 namespace Tests\Unit\Models;
 
-use PHPUnit\Framework\TestCase;
+use Tests\TestCase;
+use App\Models\Permission;
 
 class PermissionTest extends TestCase
 {
-    /**
-     * A basic unit test example.
-     *
-     * @return void
-     */
-    public function test_example()
+    public function testDetermineApplicationHasPermissions()
     {
-        $this->assertTrue(true);
+        Permission::create(['label' => 'purchase']);
+
+        $this->assertTrue(Permission::hasPermissions());
+    }
+
+    public function testGetValidPermissions()
+    {
+        $permissions = ['purchase', 'manage', 'delete', 'cancel'];
+
+        foreach ($permissions as $permission) {
+            Permission::create(['label' => $permission]);
+        }
+
+        $this->assertEquals($permissions, Permission::validPermissions([
+            'purchase', 'manage', 'delete', 'cancel', 'read', 'update', 'remove',
+        ]));
     }
 }

@@ -3,10 +3,11 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Contracts\Purchases\Order as OrderContract;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class Order extends Model
+class Order extends Model implements OrderContract
 {
     use HasFactory;
 
@@ -33,6 +34,8 @@ class Order extends Model
         'total',
         'note',
         'space_id',
+        'user_id',
+        'customer_id',
     ];
 
     /**
@@ -43,6 +46,48 @@ class Order extends Model
     public function space(): BelongsTo
     {
         return $this->belongsTo(Space::class, 'space_id');
+    }
+
+    /**
+     * Get the business the order belongs to.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
+
+    /**
+     * Get the customer the order belongs to.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function customer(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'customer_id');
+    }
+
+    /**
+     * Determine the status of the order.
+     *
+     * @return string
+     */
+    public function status(): string
+    {
+        return 'TODO';
+    }
+
+    /**
+     * Cancel the order.
+     *
+     * @return void
+     */
+    public function cancel(): void
+    {
+        $this->space->release();
+
+        $this->delete();
     }
 
     /**

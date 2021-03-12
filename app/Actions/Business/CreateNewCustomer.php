@@ -3,7 +3,7 @@
 namespace App\Actions\Business;
 
 use App\Models\Customer;
-use App\Billing\Clients\Stripe;
+use App\Contracts\Billing\Client;
 use Illuminate\Contracts\Auth\Authenticatable as User;
 use Cratespace\Sentinel\Contracts\Actions\CreatesNewUsers;
 
@@ -12,11 +12,11 @@ class CreateNewCustomer implements CreatesNewUsers
     /**
      * Create new instance of create customer action.
      *
-     * @param \App\Billing\Clients\Stripe $client
+     * @param \App\Contracts\Billing\Client $client
      *
      * @return void
      */
-    public function __construct(Stripe $client)
+    public function __construct(Client $client)
     {
         $this->client = $client;
     }

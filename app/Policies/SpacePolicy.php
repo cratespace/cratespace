@@ -41,6 +41,10 @@ class SpacePolicy
      */
     public function purchase(?User $user, Space $space): bool
     {
-        return is_null($space->order);
+        if ($user->role->can('purchase')) {
+            return is_null($space->order);
+        }
+
+        return false;
     }
 }
