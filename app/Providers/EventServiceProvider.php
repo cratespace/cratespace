@@ -3,6 +3,10 @@
 namespace App\Providers;
 
 use App\Models\Space;
+use App\Events\OrderPlaced;
+use App\Events\OrderCanceled;
+use App\Events\SpaceReleased;
+use App\Events\SpaceReserved;
 use App\Observers\SpaceObserver;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Auth\Events\Registered;
@@ -20,6 +24,12 @@ class EventServiceProvider extends ServiceProvider
         Registered::class => [
             SendEmailVerificationNotification::class,
         ],
+
+        SpaceReserved::class => [],
+        SpaceReleased::class => [],
+
+        OrderPlaced::class => [],
+        OrderCanceled::class => [],
     ];
 
     /**
