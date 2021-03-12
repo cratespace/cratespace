@@ -24,7 +24,7 @@ return [
      */
     'register' => [
         'name' => ['required', 'string', 'max:255'],
-        'business' => ['sometimes', 'string', 'max:255'],
+        'business' => ['exclude_if:type,customer', 'string', 'max:255'],
         'phone' => ['sometimes', 'string', 'regex:/(0)[0-9]{9}/'],
         'email' => [
             'required',

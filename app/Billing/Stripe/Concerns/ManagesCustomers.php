@@ -9,6 +9,30 @@ use Stripe\Service\CustomerService;
 trait ManagesCustomers
 {
     /**
+     * Get all customers registered to Cratespace.
+     *
+     * @param array|null $filters
+     *
+     * @return \Illuminate\Support\Collection
+     */
+    public function allCustomers(?array $filters = null): Collection
+    {
+        return collect($this->customers()->all($filters));
+    }
+
+    /**
+     * Get the customer with the given ID.
+     *
+     * @param string $id
+     *
+     * @return \Stripe\Customer|null
+     */
+    public function getCustomer(string $id): ?Customer
+    {
+        return $this->customers()->retrieve($id);
+    }
+
+    /**
      * Create new Stripe customer.
      *
      * @param array $data
@@ -18,18 +42,6 @@ trait ManagesCustomers
     public function createCustomer(array $data): Customer
     {
         return $this->customers()->create($data);
-    }
-
-    /**
-     * Get the customer with the given ID.
-     *
-     * @param string $id
-     *
-     * @return \Stripe\Customer
-     */
-    public function getCustomer(string $id): Customer
-    {
-        return $this->customers()->retrieve($id);
     }
 
     /**
@@ -57,18 +69,6 @@ trait ManagesCustomers
         $response = $this->customers()->delete($id);
 
         return $response->deleted;
-    }
-
-    /**
-     * Get all customers registered to Cratespace.
-     *
-     * @param array|null $filters
-     *
-     * @return \Illuminate\Support\Collection
-     */
-    public function allCustomers(?array $filters = null): Collection
-    {
-        return collect($this->customers()->all($filters));
     }
 
     /**

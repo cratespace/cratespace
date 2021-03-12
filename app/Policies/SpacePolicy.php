@@ -30,21 +30,4 @@ class SpacePolicy
 
         return false;
     }
-
-    /**
-     * Determine whether the model has no other commitments.
-     *
-     * @param \App\Models\User|null $user
-     * @param \App\Models\Space     $space
-     *
-     * @return bool
-     */
-    public function purchase(?User $user, Space $space): bool
-    {
-        if ($user->role->can('purchase')) {
-            return is_null($space->order);
-        }
-
-        return false;
-    }
 }

@@ -79,6 +79,63 @@ class StripeClientTest extends TestCase
         $this->assertTrue($customers->count() > 0);
     }
 
+    public function testCreateAndGetPaymentIntent()
+    {
+        $paymentIntent = $this->client->createIntent([
+            'amount' => 1000,
+            'currency' => config('billing.currency'),
+            'confirm' => false,
+            'payment_method' => 'pm_card_visa',
+            'description' => 'Cratespace customer payment intent.',
+        ]);
+
+        $this->assertEquals(
+            $paymentIntent->amount,
+            $this->client->getIntent($paymentIntent->id)->amount
+        );
+    }
+
+    public function testConfirmPaymentIntent()
+    {
+        $paymentIntent = $this->client->createIntent([
+            'amount' => 1000,
+            'currency' => config('billing.currency'),
+            'confirm' => false,
+            'payment_method' => 'pm_card_visa',
+            'description' => 'Cratespace customer payment intent.',
+        ]);
+
+        $paymentIntent = $this->client->confirmIntent(
+            $paymentIntent->id,
+            'pm_card_visa'
+        );
+
+        $this->assertEquals('succeeded', $paymentIntent->status);
+    }
+
+    public function testCancelPaymentIntent()
+    {
+        $paymentIntent = $this->client->createIntent([
+            'amount' => 1000,
+            'currency' => config('billing.currency'),
+            'confirm' => false,
+            'payment_method' => 'pm_card_visa',
+            'description' => 'Cratespace customer payment intent.',
+        ]);
+
+        $paymentIntent = $this->client->cancelIntent($paymentIntent->id, 'abandoned');
+
+        $this->assertEquals('canceled', $paymentIntent->status);
+    }
+
+    public function testGetAllPaymentIntents()
+    {
+        $customers = $this->client->allIntents();
+
+        $this->assertInstanceOf(Collection::class, $customers);
+        $this->assertTrue($customers->count() > 0);
+    }
+
     /**
      * Get instance of Stripe client.
      *
