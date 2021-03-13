@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Models\Concerns\ManagesRoles;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Concerns\ManagesCustomer;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Cratespace\Sentinel\Models\Traits\HasApiTokens;
@@ -23,6 +24,7 @@ class User extends Authenticatable
     use InteractsWithSessions;
     use TwoFactorAuthenticatable;
     use ManagesRoles;
+    use ManagesCustomer;
 
     /**
      * The attributes that are mass assignable.

@@ -13,6 +13,13 @@ class Client implements ClientContract
     use ManagesPaymentIntents;
 
     /**
+     * The Stripe API version.
+     *
+     * @var string
+     */
+    const STRIPE_VERSION = '2020-08-27';
+
+    /**
      * Create new Stripe client instance.
      *
      * @param \Stripe\StripeClientInterface $client
@@ -20,6 +27,21 @@ class Client implements ClientContract
     public function __construct(StripeClientInterface $client)
     {
         $this->client = $client;
+    }
+
+    /**
+     * Get the default Stripe API options.
+     *
+     * @param array $options
+     *
+     * @return array
+     */
+    public function options(array $options = []): array
+    {
+        return array_merge([
+            'api_key' => $this->client->getApiKey(),
+            'stripe_version' => static::STRIPE_VERSION,
+        ], $options);
     }
 
     /**

@@ -3,8 +3,8 @@
 namespace App\Billing\Gateways;
 
 use App\Support\Money;
+use App\Billing\Stripe\Payment;
 use App\Contracts\Billing\Client;
-use App\Billing\Attributes\Payment;
 use Illuminate\Support\Facades\Auth;
 
 class StripeGateway extends Gateway
@@ -31,16 +31,12 @@ class StripeGateway extends Gateway
     public function charge(int $amount, array $details, ?array $options = null)
     {
         $details = array_merge([
+            'amount' => $amount,
+            'customer' => $this->customer(),
             'confirmation_method' => 'automatic',
             'confirm' => true,
             'currency' => Money::preferredCurrency(),
         ], $details);
-
-        $details['amount'] = $amount;
-
-        if (! is_null(Auth::user()->profile->stripe_id)) {
-            $details['customer'] = Auth::user()->profile->stripe_id;
-        }
 
         $payment = new Payment(
             $this->client->createIntent($details, $this->client->options())
@@ -49,5 +45,15 @@ class StripeGateway extends Gateway
         $payment->validate();
 
         return $payment;
+    }
+
+    /**
+     * Get the Stripe ID of the customer making the request to purchase.
+     *
+     * @return string|null
+     */
+    public function customer(): ?string
+    {
+        return Auth::user()->customerId();
     }
 }
