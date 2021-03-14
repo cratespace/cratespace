@@ -41,4 +41,20 @@ trait Marketable
 
         return $this->price + $this->tax;
     }
+
+    /**
+     * Purchase this product using the given details.
+     *
+     * @param array $details
+     *
+     * @return mixed
+     */
+    public function purchase(array $details)
+    {
+        $this->reserve();
+
+        $order = $this->placeOrder($details);
+
+        return $order;
+    }
 }

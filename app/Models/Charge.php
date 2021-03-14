@@ -2,10 +2,12 @@
 
 namespace App\Models;
 
+use App\Support\Money;
 use Illuminate\Database\Eloquent\Model;
+use App\Contracts\Billing\Payment as PaymentContract;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class Charge extends Model
+class Charge extends Model implements PaymentContract
 {
     use HasFactory;
 
@@ -23,5 +25,38 @@ class Charge extends Model
      */
     protected $casts = [
         'details' => 'array',
+        'status' => 'boolean',
     ];
+
+    /**
+     * Get the total amount that will be paid.
+     *
+     * @return string
+     */
+    public function amount(): string
+    {
+        return Money::format($this->details['amount']);
+    }
+
+    /**
+     * Get the raw total amount that will be paid.
+     *
+     * @return int
+     */
+    public function rawAmount(): int
+    {
+        return (int) $this->details['amount'];
+    }
+
+    /**
+     * Validate if the payment intent was successful and throw an exception if not.
+     *
+     * @return void
+     *
+     * @throws \App\Exceptions\PaymentFailedException
+     * @throws \App\Exceptions\PaymentFailure
+     */
+    public function validate(): void
+    {
+    }
 }

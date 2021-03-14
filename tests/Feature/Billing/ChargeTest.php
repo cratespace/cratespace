@@ -16,8 +16,8 @@ class ChargeTest extends TestCase
         $customer = User::factory()->asCustomer()->create();
         $this->signIn($customer);
 
-        $payment = $paymentGateway->charge(1000, [
-            'payment_method' => 'pm_card_visa',
+        $payment = $paymentGateway->charge(1000, 'pm_card_visa', [
+            'customer' => $customer->customerId(),
         ]);
 
         $this->assertInstanceOf(Payment::class, $payment);
@@ -25,6 +25,5 @@ class ChargeTest extends TestCase
         $this->assertEquals(1000, $payment->rawAmount());
         $this->assertTrue($payment->isSucceeded());
         $this->assertEquals($customer->customerId(), $payment->customer);
-        $this->assertEquals($paymentGateway->customer(), $payment->customer);
     }
 }

@@ -2,14 +2,14 @@
 
 namespace App\Billing\Stripe;
 
-use App\Support\Money;
 use App\Support\Attribute;
 use App\Exceptions\PaymentFailedException;
+use Illuminate\Contracts\Support\Arrayable;
 use Stripe\PaymentIntent as StripePaymentIntent;
 use App\Exceptions\PaymentActionRequiredException;
 use App\Contracts\Billing\Payment as PaymentContract;
 
-class Payment extends Attribute implements PaymentContract
+class Payment extends Attribute implements PaymentContract, Arrayable
 {
     /**
      * Attribute identifier.
@@ -125,6 +125,16 @@ class Payment extends Attribute implements PaymentContract
         } elseif ($this->requiresAction()) {
             throw PaymentActionRequiredException::incomplete($this);
         }
+    }
+
+    /**
+     * Get the instance as an array.
+     *
+     * @return array
+     */
+    public function toArray()
+    {
+        return (array) $this->paymentIntent;
     }
 
     /**

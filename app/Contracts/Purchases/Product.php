@@ -5,6 +5,15 @@ namespace App\Contracts\Purchases;
 interface Product
 {
     /**
+     * Purchase this product using the given details.
+     *
+     * @param array $details
+     *
+     * @return mixed
+     */
+    public function purchase(array $details);
+
+    /**
      * Place order for given product.
      *
      * @param array $details

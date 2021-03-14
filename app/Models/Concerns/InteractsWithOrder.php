@@ -3,6 +3,7 @@
 namespace App\Models\Concerns;
 
 use App\Models\Order;
+use Illuminate\Support\Facades\Auth;
 
 trait InteractsWithOrder
 {
@@ -15,13 +16,12 @@ trait InteractsWithOrder
      */
     public function placeOrder(array $details): Order
     {
-        $this->reserve();
-
         return $this->order()->create(array_merge($details, [
             'price' => $this->price,
             'tax' => $this->tax,
             'total' => $this->fullPrice(),
             'user_id' => $this->user->id,
+            'customer_id' => Auth::id(),
         ]));
     }
 }
