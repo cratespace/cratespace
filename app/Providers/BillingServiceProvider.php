@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Billing\Gateways\Gateway;
+use App\Billing\Gateways\StripeGateway;
 use Illuminate\Support\ServiceProvider;
 use Cratespace\Sentinel\Providers\Traits\HasActions;
 
@@ -36,7 +38,13 @@ class BillingServiceProvider extends ServiceProvider
         $this->registerActions();
     }
 
-    protected function registerPaymentGateway()
+    /**
+     * Register payment gateways to the application.
+     *
+     * @return void
+     */
+    protected function registerPaymentGateway(): void
     {
+        $this->app->singleton(Gateway::class, StripeGateway::class);
     }
 }

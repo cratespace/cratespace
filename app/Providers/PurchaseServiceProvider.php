@@ -5,6 +5,7 @@ namespace App\Providers;
 use App\Actions\Orders\PlaceOrder;
 use App\Contracts\Actions\PlacesOrders;
 use Illuminate\Support\ServiceProvider;
+use App\Actions\Purchases\PurchaseSpace;
 use App\Contracts\Actions\MakesPurchase;
 use Cratespace\Sentinel\Providers\Traits\HasActions;
 

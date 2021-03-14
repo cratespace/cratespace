@@ -3,6 +3,7 @@
 namespace App\Models\Concerns;
 
 use App\Models\Customer;
+use App\Exceptions\InvalidCustomerException;
 
 trait ManagesCustomer
 {
@@ -13,6 +14,10 @@ trait ManagesCustomer
      */
     public function isCustomer(): bool
     {
+        if (is_null($this->profile)) {
+            return false;
+        }
+
         if ($this->profile instanceof Customer) {
             return ! is_null($this->profile->stripe_id);
         }
@@ -28,7 +33,7 @@ trait ManagesCustomer
     public function customerId(): ?string
     {
         if (! $this->isCustomer()) {
-            return null;
+            throw new InvalidCustomerException("User [$this->name] is not a valid customer");
         }
 
         return $this->profile->stripe_id;

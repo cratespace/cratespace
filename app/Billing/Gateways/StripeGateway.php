@@ -5,7 +5,6 @@ namespace App\Billing\Gateways;
 use App\Support\Money;
 use App\Billing\Stripe\Payment;
 use App\Contracts\Billing\Client;
-use Illuminate\Support\Facades\Auth;
 
 class StripeGateway extends Gateway
 {
@@ -23,23 +22,21 @@ class StripeGateway extends Gateway
      * Make a "one off" charge on the customer for the given amount.
      *
      * @param int        $amount
-     * @param array      $details
+     * @param string     $paymentMethod
      * @param array|null $options
      *
      * @return mixed
      */
-    public function charge(int $amount, array $details, ?array $options = null)
+    public function charge(int $amount, string $paymentMethod, array $options = [])
     {
-        $details = array_merge([
-            'amount' => $amount,
-            'customer' => $this->customer(),
-            'confirmation_method' => 'automatic',
-            'confirm' => true,
-            'currency' => Money::preferredCurrency(),
-        ], $details);
-
         $payment = new Payment(
-            $this->client->createIntent($details, $this->client->options())
+            $this->client->createIntent(
+                $this->defaultOptions([
+                    'amount' => $amount,
+                    'payment_method' => $paymentMethod,
+                ] + $options),
+                $this->client->options()
+            )
         );
 
         $payment->validate();
@@ -48,12 +45,28 @@ class StripeGateway extends Gateway
     }
 
     /**
-     * Get the Stripe ID of the customer making the request to purchase.
+     * All default options required to create a payment intent.
      *
-     * @return string|null
+     * @param array $overrides
+     *
+     * @return array
      */
-    public function customer(): ?string
+    public function defaultOptions(array $overrides = []): array
     {
-        return Auth::user()->customerId();
+        return array_merge([
+            'confirmation_method' => 'automatic',
+            'confirm' => true,
+            'currency' => Money::preferredCurrency(),
+        ], $overrides);
+    }
+
+    /**
+     * Get native Stripe client.
+     *
+     * @return \App\Contracts\Billing\Client
+     */
+    public function client(): Client
+    {
+        return $this->client;
     }
 }

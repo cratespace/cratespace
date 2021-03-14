@@ -22,10 +22,10 @@ abstract class Gateway
      * Make a "one off" charge on the customer for the given amount.
      *
      * @param int        $amount
-     * @param array      $details
+     * @param string     $paymentMethod
      * @param array|null $options
      *
      * @return mixed
      */
-    abstract public function charge(int $amount, array $details, ?array $options = null);
+    abstract public function charge(int $amount, string $paymentMethod, array $options = []);
 }
