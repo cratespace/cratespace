@@ -119,7 +119,6 @@ class SpaceTest extends TestCase
         ]);
 
         $this->assertInstanceOf(Order::class, $order);
-        $this->assertTrue($space->reserved());
     }
 
     public function testReserveAndRelease()
