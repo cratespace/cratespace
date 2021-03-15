@@ -11,6 +11,6 @@ trait DeterminesStatus
      */
     public function reserved(): bool
     {
-        return ! is_null($this->reserved_at);
+        return ! is_null($this->reserved_at) || $this->order()->exists();
     }
 }

@@ -14,7 +14,7 @@ class ValidatePurchaseToken
      *
      * @return bool
      */
-    public function validate(string $token): bool
+    public function validate(?string $token = null): bool
     {
         $value = DB::table('purchase_tokens')
             ->where('token', $token)
