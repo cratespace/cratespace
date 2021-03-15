@@ -15,9 +15,11 @@ class CreateChargesTable extends Migration
     {
         Schema::create('charges', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('user_id')->constrained('users');
+            $table->foreignId('customer_id')->constrained('users');
             $table->json('details');
             $table->unsignedInteger('product_id')->nullable();
-            $table->string('status')->default('successful'); // successful, failed
+            $table->string('status')->default('successful');
             $table->timestamps();
         });
     }

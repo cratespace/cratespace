@@ -5,6 +5,8 @@ namespace App\Providers;
 use App\Billing\Gateways\Gateway;
 use App\Billing\Gateways\StripeGateway;
 use Illuminate\Support\ServiceProvider;
+use App\Actions\Purchases\CalculatePayout;
+use App\Contracts\Actions\CalculatesAmount;
 use Cratespace\Sentinel\Providers\Traits\HasActions;
 
 class BillingServiceProvider extends ServiceProvider
@@ -16,7 +18,9 @@ class BillingServiceProvider extends ServiceProvider
      *
      * @var array
      */
-    protected $actions = [];
+    protected $actions = [
+        CalculatesAmount::class => CalculatePayout::class,
+    ];
 
     /**
      * Register services.

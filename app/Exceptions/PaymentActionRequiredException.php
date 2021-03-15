@@ -3,7 +3,7 @@
 namespace App\Exceptions;
 
 use Exception;
-use App\Billing\Attributes\Payment;
+use App\Contracts\Billing\Payment;
 
 class PaymentActionRequiredException extends Exception
 {

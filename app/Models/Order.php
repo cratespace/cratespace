@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Events\OrderCanceled;
 use App\Models\Traits\Directable;
 use Illuminate\Database\Eloquent\Model;
 use App\Contracts\Purchases\Order as OrderContract;
@@ -90,5 +91,7 @@ class Order extends Model implements OrderContract
         $this->space->release();
 
         $this->delete();
+
+        OrderCanceled::dispatch($this);
     }
 }

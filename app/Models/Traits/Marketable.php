@@ -43,18 +43,12 @@ trait Marketable
     }
 
     /**
-     * Purchase this product using the given details.
+     * Get unique ID of product.
      *
-     * @param array $details
-     *
-     * @return mixed
+     * @return string
      */
-    public function purchase(array $details)
+    public function id(): string
     {
-        $this->reserve();
-
-        $order = $this->placeOrder($details);
-
-        return $order;
+        return $this->code ?? $this->id;
     }
 }

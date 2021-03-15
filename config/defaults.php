@@ -50,4 +50,8 @@ return [
             'delete',
         ],
     ],
+
+    'billing' => [
+        'service' => 0.03,
+    ],
 ];

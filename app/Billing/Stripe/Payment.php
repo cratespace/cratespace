@@ -134,7 +134,7 @@ class Payment extends Attribute implements PaymentContract, Arrayable
      */
     public function toArray()
     {
-        return (array) $this->paymentIntent;
+        return $this->paymentIntent->toArray();
     }
 
     /**

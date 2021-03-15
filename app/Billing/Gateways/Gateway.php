@@ -28,4 +28,14 @@ abstract class Gateway
      * @return mixed
      */
     abstract public function charge(int $amount, string $paymentMethod, array $options = []);
+
+    /**
+     * Determine if the charge action was successful.
+     *
+     * @return bool
+     */
+    public function isSuccessful(): bool
+    {
+        return $this->successful;
+    }
 }

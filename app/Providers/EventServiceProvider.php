@@ -7,7 +7,9 @@ use App\Events\OrderPlaced;
 use App\Events\OrderCanceled;
 use App\Events\SpaceReleased;
 use App\Events\SpaceReserved;
+use App\Listeners\MakePayout;
 use App\Observers\SpaceObserver;
+use App\Events\PaymentSuccessful;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
@@ -23,6 +25,10 @@ class EventServiceProvider extends ServiceProvider
     protected $listen = [
         Registered::class => [
             SendEmailVerificationNotification::class,
+        ],
+
+        PaymentSuccessful::class => [
+            MakePayout::class,
         ],
 
         SpaceReserved::class => [],

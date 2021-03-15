@@ -41,7 +41,9 @@ class StripeGateway extends Gateway
 
         $payment->validate();
 
-        $this->successful = true;
+        if ($payment->isSucceeded()) {
+            $this->successful = true;
+        }
 
         $this->total = $payment->amount();
 

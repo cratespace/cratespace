@@ -2,7 +2,7 @@
 
 namespace App\Exceptions;
 
-use App\Billing\Attributes\Payment;
+use App\Contracts\Billing\Payment;
 
 class PaymentFailedException extends IncompletePaymentException
 {

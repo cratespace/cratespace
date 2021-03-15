@@ -15,14 +15,20 @@ class MockProductModel extends Model implements Product
 
     protected $guarded = [];
 
-    public function id(): string
-    {
-        return (string) $this->id;
-    }
-
     public function order(): HasOne
     {
         return $this->hasOne(MockOrderModel::class, 'mock_product_id');
+    }
+
+    /**
+     * Purchase this product using the given details.
+     *
+     * @param array $details
+     *
+     * @return mixed
+     */
+    public function purchase(array $details)
+    {
     }
 
     /**

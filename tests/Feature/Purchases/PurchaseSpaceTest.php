@@ -6,6 +6,7 @@ use Tests\TestCase;
 use App\Models\Role;
 use App\Models\User;
 use App\Models\Space;
+use App\Models\Charge;
 use App\Actions\Purchases\GeneratePurchaseToken;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
@@ -30,10 +31,14 @@ class PurchaseSpaceTest extends TestCase
                 'purchase_token' => $purchaseToken,
             ]);
 
+        $charge = Charge::where('product_id', $space->id)->first();
+
         $response->assertStatus(303);
         $this->assertEquals(1250, $space->order->total);
+        $this->assertEquals(1250, $charge->rawAmount());
         $this->assertNotNull($space->order);
         $this->assertEquals($user->email, $space->order->email);
+        $this->assertEquals(1212, $space->user->business->credit); // 3% service charge
     }
 
     public function testOnlyCustomersCanPurchaseSpace()

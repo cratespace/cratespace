@@ -2,12 +2,14 @@
 
 namespace App\Actions\Purchases;
 
-use Throwable;
 use App\Models\Charge;
+use App\Events\PaymentFailed;
+use App\Events\PaymentSuccessful;
 use Illuminate\Support\Facades\DB;
 use App\Contracts\Purchases\Product;
 use Illuminate\Support\Facades\Auth;
 use App\Contracts\Actions\MakesPurchase;
+use App\Exceptions\PaymentFailedException;
 use App\Exceptions\InvalidPaymentTokenException;
 use App\Billing\Gateways\Gateway as PaymentGateway;
 
@@ -42,21 +44,25 @@ class PurchaseSpace implements MakesPurchase
     {
         $this->validatePurchaseToken($details['purchase_token']);
 
-        try {
-            $payment = $this->paymentGateway->charge(
-                $product->fullPrice(),
-                $details['payment_method'],
-                ['customer' => $this->getCustomer($details)]
-            );
-        } catch (Throwable $e) {
-            $this->saveChargeDetails($product, $details, true);
+        $payment = $this->paymentGateway->charge(
+            $product->fullPrice(),
+            $details['payment_method'],
+            ['customer' => $this->getCustomer($details)]
+        );
 
-            throw $e;
+        if ($this->paymentGateway->isSuccessful()) {
+            $charge = $this->saveChargeDetails($product, $payment->toArray());
+
+            PaymentSuccessful::dispatch($charge);
+
+            return $product->purchase($details);
         }
 
-        $this->saveChargeDetails($product, $payment->toArray());
+        $charge = $this->saveChargeDetails($product, $details, true);
 
-        return $product->purchase($details);
+        PaymentFailed::dispatch($charge);
+
+        throw new PaymentFailedException($payment);
     }
 
     /**
@@ -104,14 +110,17 @@ class PurchaseSpace implements MakesPurchase
      *
      * @param \App\Contracts\Purchases\Product $product
      * @param array                            $details
+     * @param string|null                      $context
      *
-     * @return void
+     * @return \App\Models\Charge
      */
-    protected function saveChargeDetails(Product $product, array $details, bool $failed = false): void
+    protected function saveChargeDetails(Product $product, array $details, bool $failed = false): Charge
     {
-        Charge::create([
+        return Charge::create([
             'product_id' => $product->id,
-            'details' => json_encode($details),
+            'user_id' => $product->user_id,
+            'customer_id' => Auth::id(),
+            'details' => $details,
             'status' => $failed ? 'failed' : 'successful',
         ]);
     }

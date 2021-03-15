@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Events\SpaceReleased;
+use App\Events\SpaceReserved;
 use App\Models\Traits\Hashable;
 use App\Models\Traits\Directable;
 use App\Models\Traits\Marketable;
@@ -106,6 +108,8 @@ class Space extends Model implements Product
     public function reserve(): void
     {
         $this->update(['reserved_at' => now()]);
+
+        SpaceReserved::dispatch($this);
     }
 
     /**
@@ -116,15 +120,23 @@ class Space extends Model implements Product
     public function release(): void
     {
         $this->update(['reserved_at' => null]);
+
+        SpaceReleased::dispatch($this);
     }
 
     /**
-     * Get unique ID of product.
+     * Purchase this product using the given details.
      *
-     * @return string
+     * @param array $details
+     *
+     * @return mixed
      */
-    public function id(): string
+    public function purchase(array $details)
     {
-        return $this->code;
+        $this->reserve();
+
+        $order = $this->placeOrder($details);
+
+        return $order;
     }
 }
