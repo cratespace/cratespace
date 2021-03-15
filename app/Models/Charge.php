@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Support\Money;
 use Illuminate\Database\Eloquent\Model;
+use App\Exceptions\PaymentFailedException;
 use App\Contracts\Billing\Payment as PaymentContract;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
@@ -46,17 +47,5 @@ class Charge extends Model implements PaymentContract
     public function rawAmount(): int
     {
         return (int) $this->details['amount'];
-    }
-
-    /**
-     * Validate if the payment intent was successful and throw an exception if not.
-     *
-     * @return void
-     *
-     * @throws \App\Exceptions\PaymentFailedException
-     * @throws \App\Exceptions\PaymentFailure
-     */
-    public function validate(): void
-    {
     }
 }

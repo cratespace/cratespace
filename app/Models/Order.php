@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Traits\Directable;
 use Illuminate\Database\Eloquent\Model;
 use App\Contracts\Purchases\Order as OrderContract;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -10,6 +11,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class Order extends Model implements OrderContract
 {
     use HasFactory;
+    use Directable;
 
     /**
      * The accessors to append to the model's array form.
@@ -88,15 +90,5 @@ class Order extends Model implements OrderContract
         $this->space->release();
 
         $this->delete();
-    }
-
-    /**
-     * Get full path to single resource page.
-     *
-     * @return string
-     */
-    public function getPathAttribute(): string
-    {
-        return route('orders.show', $this);
     }
 }

@@ -18,26 +18,6 @@ class OrderController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param \Illuminate\Http\Request $request
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-    }
-
-    /**
      * Display the specified resource.
      *
      * @param \App\Models\Order $order
@@ -45,17 +25,6 @@ class OrderController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function show(Order $order)
-    {
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param \App\Models\Order $order
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Order $order)
     {
     }
 
@@ -80,5 +49,8 @@ class OrderController extends Controller
      */
     public function destroy(Order $order)
     {
+        $order->cancel();
+
+        return response('', 204);
     }
 }

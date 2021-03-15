@@ -2,13 +2,16 @@
 
 namespace App\Http\Controllers\Customer;
 
+use Inertia\Inertia;
 use App\Models\Order;
 use App\Models\Space;
+use App\Contracts\Purchases\Product;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\PurchaseRequest;
 use App\Contracts\Actions\MakesPurchase;
 use App\Http\Responses\PurchaseResponse;
 use App\Http\Responses\FailedPurchaseResponse;
+use App\Actions\Purchases\GeneratePurchaseToken;
 
 class OrderController extends Controller
 {
@@ -17,8 +20,12 @@ class OrderController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Product $product)
     {
+        return Inertia::render('Checkout/Show', [
+            'token' => $this->app(GeneratePurchaseToken::class)
+                ->generate($product->id()),
+        ]);
     }
 
     /**

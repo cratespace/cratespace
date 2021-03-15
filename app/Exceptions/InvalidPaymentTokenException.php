@@ -2,8 +2,8 @@
 
 namespace App\Exceptions;
 
-use Exception;
+use InvalidArgumentException;
 
-class InvalidPaymentTokenException extends Exception
+class InvalidPaymentTokenException extends InvalidArgumentException
 {
 }

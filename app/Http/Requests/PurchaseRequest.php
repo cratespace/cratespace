@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Rules\PurchaseTokenRule;
 use Illuminate\Foundation\Http\FormRequest;
 use App\Exceptions\InvalidCustomerException;
 use Cratespace\Sentinel\Http\Requests\Concerns\AuthorizesRequests;
@@ -35,7 +36,9 @@ class PurchaseRequest extends FormRequest
      */
     public function rules()
     {
-        return $this->getRulesFor('order');
+        return $this->getRulesFor('order', [
+            'purchase_token' => app(PurchaseTokenRule::class),
+        ]);
     }
 
     /**

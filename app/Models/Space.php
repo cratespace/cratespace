@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\Traits\Hashable;
+use App\Models\Traits\Directable;
 use App\Models\Traits\Marketable;
 use App\Models\Casts\ScheduleCast;
 use App\Contracts\Purchases\Product;
@@ -22,6 +23,7 @@ class Space extends Model implements Product
     use Marketable;
     use InteractsWithOrder;
     use DeterminesStatus;
+    use Directable;
 
     /**
      * The accessors to append to the model's array form.
@@ -117,12 +119,12 @@ class Space extends Model implements Product
     }
 
     /**
-     * Get full path to single resource page.
+     * Get unique ID of product.
      *
      * @return string
      */
-    public function getPathAttribute(): string
+    public function id(): string
     {
-        return route('spaces.show', $this);
+        return $this->code;
     }
 }

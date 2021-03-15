@@ -5,6 +5,13 @@ namespace App\Contracts\Purchases;
 interface Product
 {
     /**
+     * Get unique ID of product.
+     *
+     * @return string
+     */
+    public function id(): string;
+
+    /**
      * Purchase this product using the given details.
      *
      * @param array $details

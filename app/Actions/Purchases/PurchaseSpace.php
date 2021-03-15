@@ -4,9 +4,11 @@ namespace App\Actions\Purchases;
 
 use Throwable;
 use App\Models\Charge;
+use Illuminate\Support\Facades\DB;
 use App\Contracts\Purchases\Product;
 use Illuminate\Support\Facades\Auth;
 use App\Contracts\Actions\MakesPurchase;
+use App\Exceptions\InvalidPaymentTokenException;
 use App\Billing\Gateways\Gateway as PaymentGateway;
 
 class PurchaseSpace implements MakesPurchase
@@ -38,6 +40,8 @@ class PurchaseSpace implements MakesPurchase
      */
     public function purchase(Product $product, array $details)
     {
+        $this->validatePurchaseToken($details['purchase_token']);
+
         try {
             $payment = $this->paymentGateway->charge(
                 $product->fullPrice(),
@@ -53,6 +57,30 @@ class PurchaseSpace implements MakesPurchase
         $this->saveChargeDetails($product, $payment->toArray());
 
         return $product->purchase($details);
+    }
+
+    /**
+     * Validate and delete current purchase token.
+     *
+     * @param string $token
+     *
+     * @return bool
+     *
+     * @throws \App\Exceptions\InvalidPaymentTokenException
+     */
+    protected function validatePurchaseToken(string $token): bool
+    {
+        if (! app(ValidatePurchaseToken::class)->validate($token)) {
+            throw new InvalidPaymentTokenException("Purchase token [{$token}] is invalid");
+        }
+
+        DB::transaction(function () use ($token) {
+            DB::table('purchase_tokens')
+                ->where('token', $token)
+                ->delete();
+        });
+
+        return true;
     }
 
     /**
