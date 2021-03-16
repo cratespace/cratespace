@@ -128,6 +128,16 @@ class Payment extends Attribute implements PaymentContract, Arrayable
     }
 
     /**
+     * Determine the status of the order.
+     *
+     * @return string
+     */
+    public function status(): string
+    {
+        return $this->status;
+    }
+
+    /**
      * Get the instance as an array.
      *
      * @return array

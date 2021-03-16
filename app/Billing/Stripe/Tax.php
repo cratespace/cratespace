@@ -113,6 +113,16 @@ class Tax extends Attribute implements PaymentContract
     }
 
     /**
+     * Determine the status of the order.
+     *
+     * @return string
+     */
+    public function status(): string
+    {
+        return $this->status;
+    }
+
+    /**
      * Dynamically get values from the Stripe TaxRate.
      *
      * @param string $key

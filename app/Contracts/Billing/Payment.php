@@ -17,4 +17,11 @@ interface Payment
      * @return int
      */
     public function rawAmount(): int;
+
+    /**
+     * Determine the status of the order.
+     *
+     * @return string
+     */
+    public function status(): string;
 }

@@ -49,6 +49,16 @@ class Payout extends Model implements PaymentContract
     }
 
     /**
+     * Determine the status of the order.
+     *
+     * @return string
+     */
+    public function status(): string
+    {
+        return ! is_null($this->paid_at) ? 'paid' : 'pending';
+    }
+
+    /**
      * Get the business the payout is meant for.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
