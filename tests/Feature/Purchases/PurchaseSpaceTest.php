@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Purchases;
 
+use Carbon\Carbon;
 use Tests\TestCase;
 use App\Models\Role;
 use App\Models\User;
@@ -9,6 +10,7 @@ use App\Models\Space;
 use App\Events\OrderPlaced;
 use App\Events\SpaceReserved;
 use App\Events\PaymentSuccessful;
+use App\Contracts\Billing\Payment;
 use App\Contracts\Purchases\Product;
 use Illuminate\Support\Facades\Event;
 use App\Actions\Purchases\GeneratePurchaseToken;
@@ -41,6 +43,8 @@ class PurchaseSpaceTest extends TestCase implements Postable
             ]));
 
         $response->assertStatus(303);
+        $this->assertInstanceOf(Payment::class, $space->order->details);
+        $this->assertTrue($space->order->details->isSucceeded());
         $this->assertEquals(1250, $space->order->total);
     }
 
@@ -50,6 +54,22 @@ class PurchaseSpaceTest extends TestCase implements Postable
 
         $space = create(Space::class, ['price' => 1200, 'tax' => 50]);
         $space->reserve();
+        $user = $this->createCustomer();
+
+        $response = $this->signIn($user)
+            ->post("/spaces/{$space->code}/orders", $this->validParameters([
+                'purchase_token' => $this->generateToken($space),
+            ]));
+
+        $response->assertStatus(403);
+    }
+
+    public function testCannotPurchaseExpiredSpace()
+    {
+        Event::fake();
+
+        $space = create(Space::class, ['price' => 1200, 'tax' => 50]);
+        $space->update(['departs_at' => Carbon::now()->subDay()]);
         $user = $this->createCustomer();
 
         $response = $this->signIn($user)

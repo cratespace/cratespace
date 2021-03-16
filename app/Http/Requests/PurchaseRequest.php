@@ -22,9 +22,10 @@ class PurchaseRequest extends FormRequest
     public function authorize()
     {
         $role = $this->user()->role;
+        $space = $this->route('space');
 
         if ($role->can('purchase') || $role->can('*')) {
-            return ! $this->route('space')->reserved();
+            return ! $space->reserved() && ! $space->expired();
         }
 
         return false;
