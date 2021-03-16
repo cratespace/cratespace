@@ -2,8 +2,8 @@
 
 namespace App\Events;
 
-use App\Models\Charge;
 use App\Models\Business;
+use App\Contracts\Billing\Payment;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Broadcasting\InteractsWithSockets;
@@ -15,31 +15,26 @@ class PaymentEvent
     use SerializesModels;
 
     /**
-     * The instance of the charge.
+     * The instance of the payment.
      *
-     * @var \App\Models\Charge
+     * @var \App\Contracts\Billing\Payment
      */
-    public $charge;
+    public $payment;
 
     /**
      * Create a new event instance.
      *
-     * @param \App\Models\Charge $charge
+     * @param \App\Contracts\Billing\Payment $payment
      *
      * @return void
      */
-    public function __construct(Charge $charge)
+    public function __construct(Payment $payment)
     {
-        $this->charge = $charge;
+        $this->payment = $payment;
     }
 
-    /**
-     * Get the business the charge was made for.
-     *
-     * @return \App\Models\Business
-     */
     public function business(): Business
     {
-        return $this->charge->user->business;
+        return Business::find($this->payment->metadata['businessId']);
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Support\Money;
 use App\Events\OrderCanceled;
 use App\Models\Traits\Directable;
 use Illuminate\Database\Eloquent\Model;
@@ -39,6 +40,16 @@ class Order extends Model implements OrderContract
         'space_id',
         'user_id',
         'customer_id',
+        'details',
+    ];
+
+    /**
+     * The attributes that should be cast to native types.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'details' => 'array',
     ];
 
     /**
@@ -69,6 +80,44 @@ class Order extends Model implements OrderContract
     public function customer(): BelongsTo
     {
         return $this->belongsTo(User::class, 'customer_id');
+    }
+
+    /**
+     * Get the total amount that will be paid.
+     *
+     * @return string
+     */
+    public function amount(): string
+    {
+        return Money::format($this->total);
+    }
+
+    /**
+     * Get the raw total amount that will be paid.
+     *
+     * @return int
+     */
+    public function rawAmount(): int
+    {
+        return (int) $this->total;
+    }
+
+    /**
+     * Get the details attribute as an object.
+     *
+     * @param string|null $key
+     *
+     * @return mixed
+     */
+    public function details(?string $key = null)
+    {
+        $details = (object) $this->details;
+
+        if (is_null($key)) {
+            return $details;
+        }
+
+        return $details->{$key};
     }
 
     /**

@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Rules\PaymentMethodRule;
 use App\Rules\PurchaseTokenRule;
 use Illuminate\Foundation\Http\FormRequest;
 use App\Exceptions\InvalidCustomerException;
@@ -37,7 +38,8 @@ class PurchaseRequest extends FormRequest
     public function rules()
     {
         return $this->getRulesFor('order', [
-            'purchase_token' => app(PurchaseTokenRule::class),
+            'payment_method' => ['required', 'string', app(PaymentMethodRule::class)],
+            'purchase_token' => ['required', 'string', app(PurchaseTokenRule::class)],
         ]);
     }
 

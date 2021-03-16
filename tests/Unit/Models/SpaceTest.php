@@ -116,6 +116,7 @@ class SpaceTest extends TestCase
             'email' => $user->email,
             'phone' => $user->phoneNumber,
             'customer_id' => $user->id,
+            'payment' => ['meta' => 'pi_suaidakyeg3k7eawkudx']
         ]);
 
         $this->assertInstanceOf(Order::class, $order);

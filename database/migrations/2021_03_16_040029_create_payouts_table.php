@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateChargesTable extends Migration
+class CreatePayoutsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,13 +13,13 @@ class CreateChargesTable extends Migration
      */
     public function up()
     {
-        Schema::create('charges', function (Blueprint $table) {
+        Schema::create('payouts', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained('users');
-            $table->foreignId('customer_id')->constrained('users');
-            $table->json('details');
-            $table->unsignedInteger('product_id')->nullable();
-            $table->string('status')->default('successful');
+            $table->foreignId('order_id')->constrained('orders');
+            $table->unsignedInteger('amount');
+            $table->unsignedDouble('service_percentage');
+            $table->timestamp('paid_at')->nullable();
             $table->timestamps();
         });
     }
@@ -31,6 +31,6 @@ class CreateChargesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('charges');
+        Schema::dropIfExists('payouts');
     }
 }

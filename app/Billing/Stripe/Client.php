@@ -6,11 +6,13 @@ use Stripe\StripeClientInterface;
 use App\Billing\Stripe\Concerns\ManagesCustomers;
 use App\Contracts\Billing\Client as ClientContract;
 use App\Billing\Stripe\Concerns\ManagesPaymentIntents;
+use App\Billing\Stripe\Concerns\ManagesPaymentMethods;
 
 class Client implements ClientContract
 {
     use ManagesCustomers;
     use ManagesPaymentIntents;
+    use ManagesPaymentMethods;
 
     /**
      * The Stripe API version.

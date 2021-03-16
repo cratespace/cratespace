@@ -6,7 +6,6 @@ use Tests\TestCase;
 use App\Models\Role;
 use App\Models\User;
 use App\Models\Space;
-use App\Models\Charge;
 use App\Events\OrderPlaced;
 use App\Events\SpaceReserved;
 use App\Events\PaymentSuccessful;
@@ -41,11 +40,8 @@ class PurchaseSpaceTest extends TestCase implements Postable
                 'purchase_token' => $this->generateToken($space),
             ]));
 
-        $charge = $this->getChargeDetails($space);
-
         $response->assertStatus(303);
         $this->assertEquals(1250, $space->order->total);
-        $this->assertEquals(1250, $charge->rawAmount());
     }
 
     public function testCannotPurchaseUnavailableSpace()
@@ -81,11 +77,9 @@ class PurchaseSpaceTest extends TestCase implements Postable
                 ])
             );
 
-        $charge = $this->getChargeDetails($space);
         $order = json_decode($response->getContent(), true);
 
         $response->assertStatus(201);
-        $this->assertEquals($order['total'], $charge->rawAmount());
         $this->assertEquals($order['total'], $space->order->total);
     }
 
@@ -234,10 +228,7 @@ class PurchaseSpaceTest extends TestCase implements Postable
                 'purchase_token' => $this->generateToken($space),
             ]));
 
-        $charge = $this->getChargeDetails($space);
-
         $response->assertStatus(303);
-        $this->assertEquals(1250, $charge->rawAmount());
         $this->assertEquals(1212, $space->user->business->credit); // 3% service charge
     }
 
@@ -261,18 +252,6 @@ class PurchaseSpaceTest extends TestCase implements Postable
     protected function createCustomer(): User
     {
         return User::factory()->asCustomer()->create();
-    }
-
-    /**
-     * Get charge details of given product.
-     *
-     * @param \App\Contracts\Purchases\Product $product
-     *
-     * @return \App\Models\Charge
-     */
-    protected function getChargeDetails(Product $product): Charge
-    {
-        return Charge::where('product_id', $product->id)->first();
     }
 
     /**

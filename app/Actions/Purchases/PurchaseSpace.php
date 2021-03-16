@@ -2,7 +2,6 @@
 
 namespace App\Actions\Purchases;
 
-use App\Models\Charge;
 use App\Events\PaymentFailed;
 use App\Events\PaymentSuccessful;
 use Illuminate\Support\Facades\DB;
@@ -47,20 +46,18 @@ class PurchaseSpace implements MakesPurchase
         $payment = $this->paymentGateway->charge(
             $product->fullPrice(),
             $details['payment_method'],
-            ['customer' => $this->getCustomer($details)]
+            $this->setOptions($product, $details)
         );
 
         if ($this->paymentGateway->isSuccessful()) {
-            $charge = $this->saveChargeDetails($product, $payment->toArray());
+            PaymentSuccessful::dispatch($payment);
 
-            PaymentSuccessful::dispatch($charge);
-
-            return $product->purchase($details);
+            return $product->purchase(
+                array_merge($details, ['payment' => $payment->toArray()])
+            );
         }
 
-        $charge = $this->saveChargeDetails($product, $details, true);
-
-        PaymentFailed::dispatch($charge);
+        PaymentFailed::dispatch($payment);
 
         throw new PaymentFailedException($payment);
     }
@@ -90,38 +87,35 @@ class PurchaseSpace implements MakesPurchase
     }
 
     /**
+     * Set options to be set when creating payment intent.
+     *
+     * @param \App\Contracts\Purchases\Product $product
+     * @param array                            $details
+     *
+     * @return array
+     */
+    protected function setOptions(Product $product, array $details): array
+    {
+        return array_merge(
+            $this->getCustomerInformation($details),
+            ['metadata' => [
+                'businessId' => $product->business('business')->id,
+            ]],
+        );
+    }
+
+    /**
      * Get Stripe customer ID>.
      *
      * @param array $details
      *
-     * @return string
+     * @return array
      */
-    protected function getCustomer(array $details): string
+    protected function getCustomerInformation(array $details): array
     {
-        if (! isset($details['customer'])) {
-            return Auth::user()->customerId();
-        }
-
-        return $details['customer'];
-    }
-
-    /**
-     * Save charge details to database.
-     *
-     * @param \App\Contracts\Purchases\Product $product
-     * @param array                            $details
-     * @param string|null                      $context
-     *
-     * @return \App\Models\Charge
-     */
-    protected function saveChargeDetails(Product $product, array $details, bool $failed = false): Charge
-    {
-        return Charge::create([
-            'product_id' => $product->id,
-            'user_id' => $product->user_id,
-            'customer_id' => Auth::id(),
-            'details' => $details,
-            'status' => $failed ? 'failed' : 'successful',
-        ]);
+        return [
+            'customer' => $details['customer'] ?? Auth::user()->customerId(),
+            'receipt_email' => $details['email'] ?? Auth::user()->email,
+        ];
     }
 }

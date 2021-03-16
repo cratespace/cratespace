@@ -2,7 +2,9 @@
 
 namespace App\Contracts\Purchases;
 
-interface Order
+use App\Contracts\Billing\Payment;
+
+interface Order extends Payment
 {
     /**
      * Determine the status of the order.

@@ -27,7 +27,7 @@ class MakePayout
     public function handle(PaymentSuccessful $event)
     {
         $event->business()->addCredit(
-            $this->payout->calculate($event->charge->rawAmount())
+            $this->payout->calculate($event->payment->rawAmount())
         );
     }
 }

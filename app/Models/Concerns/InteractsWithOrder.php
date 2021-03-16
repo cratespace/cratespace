@@ -41,6 +41,7 @@ trait InteractsWithOrder
             'total' => $this->fullPrice(),
             'user_id' => $this->user_id,
             'customer_id' => Auth::id(),
+            'details' => $details['payment'],
         ]);
     }
 }
