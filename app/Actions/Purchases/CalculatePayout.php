@@ -15,6 +15,18 @@ class CalculatePayout implements CalculatesAmount
      */
     public function calculate(int $amount): int
     {
-        return (int) ($amount - ($amount * config('defaults.billing.service')));
+        return (int) ($amount - ($amount * $this->servicePercentage()));
+    }
+
+    /**
+     * Get service charge percentage amount.
+     *
+     * @param float|null $service
+     *
+     * @return float
+     */
+    public function servicePercentage(?float $service = null): float
+    {
+        return config('defaults.billing.service', $service);
     }
 }

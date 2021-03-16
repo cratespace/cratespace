@@ -3,9 +3,11 @@
 namespace App\Models;
 
 use App\Models\Traits\Sluggable;
+use App\Models\Concerns\ManagesPayouts;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Concerns\InteractsWithCredit;
 use Cratespace\Preflight\Models\Traits\Presentable;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Cratespace\Sentinel\Models\Traits\HasProfilePhoto;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -17,6 +19,7 @@ class Business extends Model
     use Sluggable;
     use InteractsWithCredit;
     use Presentable;
+    use ManagesPayouts;
 
     /**
      * The attributes that are mass assignable.
@@ -73,5 +76,15 @@ class Business extends Model
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class, 'user_id');
+    }
+
+    /**
+     * Get all payouts that belong to the business.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function payouts(): HasMany
+    {
+        return $this->hasMany(Payout::class, 'user_id');
     }
 }

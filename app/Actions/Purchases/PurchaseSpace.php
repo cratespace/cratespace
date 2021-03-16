@@ -100,6 +100,7 @@ class PurchaseSpace implements MakesPurchase
             $this->getCustomerInformation($details),
             ['metadata' => [
                 'businessId' => $product->business('business')->id,
+                'productId' => $product->id(),
             ]],
         );
     }

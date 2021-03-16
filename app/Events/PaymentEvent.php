@@ -33,6 +33,11 @@ class PaymentEvent
         $this->payment = $payment;
     }
 
+    /**
+     * Get the business the payment is for.
+     *
+     * @return \App\Models\Business
+     */
     public function business(): Business
     {
         return Business::find($this->payment->metadata['businessId']);
