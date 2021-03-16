@@ -45,7 +45,7 @@ class StripeGateway extends Gateway
             $this->successful = true;
         }
 
-        $this->total = $payment->amount();
+        $this->total = $payment->rawAmount();
 
         return $payment;
     }
