@@ -87,7 +87,9 @@ jobs:
         env:
           DB_PORT: ${{ job.services.mysql.ports[3306] }}
           DB_USERNAME: root
-        run: ./vendor/bin/phpunit --verbose
+          STRIPE_KEY: ${{ secrets.STRIPE_KEY }}
+          STRIPE_SECRET: ${{ secrets.STRIPE_SECRET }}
+        run: php artisan test --parallel
 
       - name: 📚 Upload artifacts
         uses: actions/upload-artifact@master
@@ -158,7 +160,9 @@ jobs:
         env:
           DB_CONNECTION: sqlite
           DB_DATABASE: ':memory:'
-        run: vendor/bin/phpunit --verbose
+          STRIPE_KEY: ${{ secrets.STRIPE_KEY }}
+          STRIPE_SECRET: ${{ secrets.STRIPE_SECRET }}
+        run: php artisan test --parallel
 
       - name: 📚 Upload artifacts
         uses: actions/upload-artifact@master

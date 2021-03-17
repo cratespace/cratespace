@@ -12,7 +12,7 @@ class PasswordConfirmationTest extends TestCase
 
     public function testConfirmPasswordScreenCanBeRendered()
     {
-        $user = create(User::class);
+        $user = User::factory()->withBusiness()->create();
 
         $response = $this->signIn($user)->get('/user/confirm-password');
 
@@ -21,7 +21,7 @@ class PasswordConfirmationTest extends TestCase
 
     public function testPasswordCanBeConfirmed()
     {
-        $user = create(User::class);
+        $user = User::factory()->withBusiness()->create();
 
         $response = $this->signIn($user)->post('/user/confirm-password', [
             'password' => 'password',
@@ -33,7 +33,7 @@ class PasswordConfirmationTest extends TestCase
 
     public function testPasswordIsNotConfirmedWithInvalidPassword()
     {
-        $user = create(User::class);
+        $user = User::factory()->withBusiness()->create();
 
         $response = $this->signIn($user)->post('/user/confirm-password', [
             'password' => 'wrong-password',

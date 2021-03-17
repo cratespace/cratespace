@@ -68,7 +68,8 @@ export default {
                 name: null,
                 email: null,
                 password: null,
-                remember: true
+                remember: true,
+                type: 'customer',
             }),
         }
     },

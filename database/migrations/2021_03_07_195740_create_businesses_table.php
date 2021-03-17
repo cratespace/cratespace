@@ -1,8 +1,8 @@
 <?php
 
-use Illuminate\Database\Migrations\Migration;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Migrations\Migration;
 
 class CreateBusinessesTable extends Migration
 {
@@ -18,7 +18,7 @@ class CreateBusinessesTable extends Migration
             $table->string('name')->unique();
             $table->string('slug')->unique();
             $table->integer('credit')->default(0)->nullable();
-            $table->mediumText('about')->nullable();
+            $table->mediumText('description')->nullable();
             $table->string('street')->nullable();
             $table->string('city')->nullable();
             $table->string('state')->nullable();

@@ -2,6 +2,9 @@
 
 namespace App\Models;
 
+use App\Models\Concerns\ManagesRoles;
+use Illuminate\Database\Eloquent\Model;
+use App\Models\Concerns\ManagesCustomer;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Cratespace\Sentinel\Models\Traits\HasApiTokens;
@@ -20,6 +23,8 @@ class User extends Authenticatable
     use Notifiable;
     use InteractsWithSessions;
     use TwoFactorAuthenticatable;
+    use ManagesRoles;
+    use ManagesCustomer;
 
     /**
      * The attributes that are mass assignable.
@@ -36,6 +41,10 @@ class User extends Authenticatable
         'profile_photo_path',
         'two_factor_secret',
         'two_factor_recovery_codes',
+        'stripe_id',
+        'pm_type',
+        'pm_last_four',
+        'role_id',
     ];
 
     /**
@@ -48,6 +57,7 @@ class User extends Authenticatable
         'remember_token',
         'two_factor_recovery_codes',
         'two_factor_secret',
+        'role_id',
     ];
 
     /**
@@ -70,6 +80,7 @@ class User extends Authenticatable
         'profile_photo_url',
         'sessions',
         'two_factor_enabled',
+        'profile',
     ];
 
     /**
@@ -77,7 +88,17 @@ class User extends Authenticatable
      *
      * @var array
      */
-    protected $with = ['business'];
+    protected $with = ['role'];
+
+    /**
+     * Get the appropriate user profile.
+     *
+     * @return \Illuminate\Database\Eloquent\Model|null
+     */
+    public function getProfileAttribute(): ?Model
+    {
+        return $this->business ?? $this->customer;
+    }
 
     /**
      * Get business details of the user.
@@ -87,6 +108,16 @@ class User extends Authenticatable
     public function business(): HasOne
     {
         return $this->hasOne(Business::class, 'user_id');
+    }
+
+    /**
+     * Get customer details of the user.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function customer(): HasOne
+    {
+        return $this->hasOne(Customer::class, 'user_id');
     }
 
     /**

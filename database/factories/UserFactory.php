@@ -2,9 +2,12 @@
 
 namespace Database\Factories;
 
+use App\Models\Role;
 use App\Models\User;
 use App\Models\Business;
+use App\Models\Customer;
 use Illuminate\Support\Str;
+use App\Contracts\Billing\Client;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class UserFactory extends Factory
@@ -40,15 +43,19 @@ class UserFactory extends Factory
     }
 
     /**
-     * Indicate that the user should have a personal team.
+     * Indicate that the user should have a business profile.
      *
      * @return \Database\Factories\UserFactory
      */
     public function withBusiness(): UserFactory
     {
+        $role = Role::firstOrCreate(['name' => 'Business', 'slug' => 'business']);
+
         return $this->has(
             Business::factory()
-                ->state(function (array $attributes, User $user) {
+                ->state(function (array $attributes, User $user) use ($role) {
+                    $user->assignRole($role);
+
                     return [
                         'name' => $this->faker->unique()->company,
                         'user_id' => $user->id,
@@ -56,6 +63,35 @@ class UserFactory extends Factory
                     ];
                 }),
             'business'
+        );
+    }
+
+    /**
+     * Indicate that the user should have a customer profile.
+     *
+     * @return \Database\Factories\UserFactory
+     */
+    public function asCustomer(): UserFactory
+    {
+        $role = Role::firstOrCreate(['name' => 'Customer', 'slug' => 'customer']);
+
+        return $this->has(
+            Customer::factory()
+                ->state(function (array $attributes, User $user) use ($role) {
+                    $user->assignRole($role);
+
+                    $customer = app(Client::class)->createCustomer([
+                        'name' => $user->name,
+                        'email' => $user->email,
+                        'phone' => $user->phone,
+                    ]);
+
+                    return [
+                        'user_id' => $user->id,
+                        'stripe_id' => $customer->id,
+                    ];
+                }),
+            'customer'
         );
     }
 }

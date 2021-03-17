@@ -2,7 +2,7 @@
 
 namespace App\Models\Traits;
 
-use App\Codes\HashCode;
+use Facades\App\Codes\HashCode;
 use Illuminate\Database\Eloquent\Model;
 
 trait Hashable

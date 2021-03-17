@@ -3,8 +3,14 @@
 namespace App\Providers;
 
 use App\Models\Space;
+use App\Events\OrderPlaced;
+use App\Events\OrderCanceled;
+use App\Events\PaymentFailed;
+use App\Events\SpaceReleased;
+use App\Events\SpaceReserved;
+use App\Listeners\MakePayout;
 use App\Observers\SpaceObserver;
-use Illuminate\Support\Facades\Event;
+use App\Events\PaymentSuccessful;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
@@ -20,6 +26,19 @@ class EventServiceProvider extends ServiceProvider
         Registered::class => [
             SendEmailVerificationNotification::class,
         ],
+
+        PaymentSuccessful::class => [
+            MakePayout::class,
+        ],
+
+        PaymentFailed::class => [],
+        PaymentRefunded::class => [],
+
+        SpaceReserved::class => [],
+        SpaceReleased::class => [],
+
+        OrderPlaced::class => [],
+        OrderCanceled::class => [],
     ];
 
     /**

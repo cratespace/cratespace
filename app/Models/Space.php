@@ -2,18 +2,30 @@
 
 namespace App\Models;
 
+use App\Events\SpaceReleased;
+use App\Events\SpaceReserved;
 use App\Models\Traits\Hashable;
+use App\Models\Traits\Directable;
+use App\Models\Traits\Marketable;
 use App\Models\Casts\ScheduleCast;
+use App\Contracts\Purchases\Product;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Concerns\DeterminesStatus;
+use App\Models\Concerns\InteractsWithOrder;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Cratespace\Preflight\Models\Traits\Presentable;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class Space extends Model
+class Space extends Model implements Product
 {
     use HasFactory;
     use Presentable;
     use Hashable;
+    use Marketable;
+    use InteractsWithOrder;
+    use DeterminesStatus;
+    use Directable;
 
     /**
      * The accessors to append to the model's array form.
@@ -69,7 +81,7 @@ class Space extends Model
     }
 
     /**
-     * Get the user the business belongs to.
+     * Get the user the space belongs to.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
@@ -79,12 +91,52 @@ class Space extends Model
     }
 
     /**
-     * Get full path to single resource page.
+     * Get the order details of the space.
      *
-     * @return string
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
      */
-    public function getPathAttribute(): string
+    public function order(): HasOne
     {
-        return route('spaces.show', $this);
+        return $this->hasOne(Order::class, 'space_id');
+    }
+
+    /**
+     * Reserve product for customer.
+     *
+     * @return void
+     */
+    public function reserve(): void
+    {
+        $this->update(['reserved_at' => now()]);
+
+        SpaceReserved::dispatch($this);
+    }
+
+    /**
+     * Release space from order.
+     *
+     * @return void
+     */
+    public function release(): void
+    {
+        $this->update(['reserved_at' => null]);
+
+        SpaceReleased::dispatch($this);
+    }
+
+    /**
+     * Purchase this product using the given details.
+     *
+     * @param array $details
+     *
+     * @return mixed
+     */
+    public function purchase(array $details)
+    {
+        $this->reserve();
+
+        $order = $this->placeOrder($details);
+
+        return $order;
     }
 }

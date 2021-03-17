@@ -28,7 +28,7 @@ class BusinessFactory extends Factory
         return [
             'name' => $business,
             'slug' => Str::slug($business),
-            'about' => $this->faker->paragraph(3),
+            'description' => $this->faker->paragraph(3),
             'street' => $this->faker->streetAddress,
             'city' => $this->faker->city,
             'state' => $this->faker->state,

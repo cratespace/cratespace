@@ -22,14 +22,34 @@ class Money
     public static function format(int $amount, ?string $currency = null, ?string $locale = null): string
     {
         $money = new PHPMoney($amount, new Currency(
-            strtoupper($currency ?? config('money.currency'))
+            strtoupper($currency ?? config('billing.currency'))
         ));
 
-        $locale = $locale ?? config('money.currency_locale');
+        $locale = $locale ?? config('billing.currency_locale');
 
         $numberFormatter = new NumberFormatter($locale, NumberFormatter::CURRENCY);
         $moneyFormatter = new IntlMoneyFormatter($numberFormatter, new ISOCurrencies());
 
         return $moneyFormatter->format($money);
+    }
+
+    /**
+     * Get the supported currency used by the customer.
+     *
+     * @return string
+     */
+    public static function preferredCurrency(): string
+    {
+        return config('billing.currency');
+    }
+
+    /**
+     * Get the supported currency locale used by the customer.
+     *
+     * @return string
+     */
+    public static function preferredCurrencyLocale(): string
+    {
+        return config('billing.currency_locale');
     }
 }

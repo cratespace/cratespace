@@ -24,7 +24,7 @@
         "laravel-mix": "^6.0.13",
         "lodash": "^4.17.21",
         "moment": "^2.29.1",
-        "postcss": "^8.2.7",
+        "postcss": "^8.2.8",
         "postcss-import": "^14.0.0",
         "tailwindcss": "^2.0.3",
         "vue": "^3.0.5",

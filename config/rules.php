@@ -24,6 +24,8 @@ return [
      */
     'register' => [
         'name' => ['required', 'string', 'max:255'],
+        'business' => ['exclude_if:type,customer', 'string', 'max:255'],
+        'phone' => ['sometimes', 'string', 'regex:/(0)[0-9]{9}/'],
         'email' => [
             'required',
             'string',
@@ -32,6 +34,7 @@ return [
             Rule::unique(User::class),
         ],
         'password' => ['required', 'string', new PasswordRule()],
+        'type' => ['sometimes', 'string', Rule::in(['business', 'customer'])],
     ],
 
     /*
@@ -41,7 +44,7 @@ return [
         'name' => ['required', 'string', 'max:255'],
         'username' => ['required', 'string', 'max:255'],
         'email' => ['required', 'string', 'email'],
-        'email' => ['sometimes', 'string', 'regex:/(0)[0-9]{9}/'],
+        'phone' => ['sometimes', 'string', 'regex:/(0)[0-9]{9}/'],
         'photo' => ['nullable', 'image', 'mimes:jpg,jpeg,png', 'max:1024'],
     ],
 
@@ -64,7 +67,7 @@ return [
      */
     'business' => [
         'name' => ['required', 'string', 'max:255'],
-        'about' => ['nullable', 'string'],
+        'description' => ['nullable', 'string'],
         'photo' => ['sometimes', 'image', 'max:1024'],
         'street' => ['required', 'string', 'max:255'],
         'city' => ['required', 'string', 'max:255'],
@@ -73,6 +76,9 @@ return [
         'postcode' => ['required', 'string', 'max:255'],
     ],
 
+    /*
+     * Create/Update Space Details Validation Rules...
+     */
     'space' => [
         'code' => ['nullable', 'string', 'max:255', 'unique:spaces,code'],
         'height' => ['required', 'integer'],
@@ -91,5 +97,18 @@ return [
             Rule::in(['Local', 'International']),
         ],
         'base' => ['sometimes', 'string'],
+    ],
+
+    /*
+     * Purchase (purchase space) Validation Rules...
+     */
+    'order' => [
+        'name' => ['required', 'string', 'max:255'],
+        'email' => ['required', 'string', 'email'],
+        'phone' => ['sometimes', 'string', 'regex:/(0)[0-9]{9}/'],
+        'business' => ['sometimes', 'string', 'max:255'],
+        'payment_method' => ['required', 'string'],
+        'purchase_token' => ['required', 'string'],
+        'customer' => ['required', 'string'],
     ],
 ];

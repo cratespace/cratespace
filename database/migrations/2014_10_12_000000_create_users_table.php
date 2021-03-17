@@ -25,6 +25,10 @@ class CreateUsersTable extends Migration
             $table->text('two_factor_recovery_codes')->nullable();
             $table->json('settings')->nullable();
             $table->boolean('locked')->default(false);
+            $table->foreignId('role_id')
+                ->nullable()
+                ->constrained('roles')
+                ->onDelete('cascade');
             $table->rememberToken();
             $table->timestamps();
 

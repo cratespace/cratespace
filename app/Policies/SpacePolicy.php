@@ -16,10 +16,35 @@ class SpacePolicy
      * @param \App\Models\User  $user
      * @param \App\Models\Space $space
      *
+     * @return bool
+     */
+    public function manage(User $user, Space $space): bool
+    {
+        if ($user->hasRole('Administrator')) {
+            return true;
+        }
+
+        if ($user->hasRole('Business')) {
+            return $user->is($space->user);
+        }
+
+        return false;
+    }
+
+    /**
+     * Determine whether the user can purchase the product.
+     *
+     * @param \App\Models\User  $user
+     * @param \App\Models\Space $space
+     *
      * @return mixed
      */
-    public function manage(User $user, Space $space)
+    public function purchase(User $user, Space $space)
     {
-        return $user->is($space->user);
+        if ($user->role->can('purchase') || $user->role->can('*')) {
+            return ! $space->reserved() && ! $space->expired();
+        }
+
+        return false;
     }
 }
