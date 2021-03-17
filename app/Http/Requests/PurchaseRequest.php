@@ -21,14 +21,7 @@ class PurchaseRequest extends FormRequest
      */
     public function authorize()
     {
-        $role = $this->user()->role;
-        $space = $this->route('space');
-
-        if ($role->can('purchase') || $role->can('*')) {
-            return ! $space->reserved() && ! $space->expired();
-        }
-
-        return false;
+        return $this->isAllowed('purchase', $this->route('space'), false);
     }
 
     /**
@@ -39,8 +32,16 @@ class PurchaseRequest extends FormRequest
     public function rules()
     {
         return $this->getRulesFor('order', [
-            'payment_method' => ['required', 'string', app(PaymentMethodRule::class)],
-            'purchase_token' => ['required', 'string', app(PurchaseTokenRule::class)],
+            'payment_method' => [
+                'required',
+                'string',
+                $this->container->make(PaymentMethodRule::class),
+            ],
+            'purchase_token' => [
+                'required',
+                'string',
+                $this->container->make(PurchaseTokenRule::class),
+            ],
         ]);
     }
 
