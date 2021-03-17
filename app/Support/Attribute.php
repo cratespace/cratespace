@@ -22,4 +22,14 @@ abstract class Attribute
     {
         return Money::format($amount, $this->currency);
     }
+
+    /**
+     * Get the name of the attribute.
+     *
+     * @return string
+     */
+    public function name(): string
+    {
+        return $this->name;
+    }
 }

@@ -4,7 +4,7 @@ namespace Tests\Concerns;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
-trait InteractsWithUserRoles
+trait CreatesUserRoles
 {
     use RefreshDatabase;
 

@@ -17,9 +17,6 @@ class CreatePayoutsTable extends Migration
             $table->id();
             $table->string('payment_intent')->nullable();
             $table->foreignId('user_id')->constrained('users');
-            $table->foreignId('order_id')
-                ->nullable()
-                ->constrained('orders');
             $table->unsignedInteger('amount');
             $table->unsignedDouble('service_percentage');
             $table->timestamp('paid_at')->nullable();

@@ -104,31 +104,13 @@ class Order extends Model implements OrderContract
     }
 
     /**
-     * Get the details attribute as an object.
-     *
-     * @param string|null $key
-     *
-     * @return mixed
-     */
-    public function details(?string $key = null)
-    {
-        $details = (object) $this->details;
-
-        if (is_null($key)) {
-            return $details;
-        }
-
-        return $details->{$key};
-    }
-
-    /**
      * Determine the status of the order.
      *
      * @return string
      */
     public function status(): string
     {
-        return 'TODO';
+        return ! is_null($this->confirmation_number) ? 'confirmed' : 'pending';
     }
 
     /**
@@ -140,7 +122,7 @@ class Order extends Model implements OrderContract
     {
         $this->space->release();
 
-        OrderCanceled::dispatch($this);
+        OrderCanceled::dispatch(clone $this);
 
         $this->delete();
     }

@@ -28,7 +28,6 @@ class CreateOrdersTable extends Migration
             $table->unsignedInteger('total');
             $table->text('note')->nullable();
             $table->json('details')->nullable();
-            $table->string('status')->default('successful');
             $table->timestamps();
         });
     }

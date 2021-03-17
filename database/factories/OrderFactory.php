@@ -37,6 +37,7 @@ class OrderFactory extends Factory
             'space_id' => $space->id,
             'user_id' => $space->user_id,
             'customer_id' => User::factory()->asCustomer()->create()->id,
+            'details' => null,
         ];
     }
 }
