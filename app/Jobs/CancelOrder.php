@@ -44,10 +44,6 @@ class CancelOrder implements ShouldQueue
      */
     public function handle(CancelOrderAction $action)
     {
-        try {
-            $action->cancel($this->order);
-        } catch (Throwable $e) {
-            app('log')->error($e->getMessage());
-        }
+        $action->cancel($this->order);
     }
 }

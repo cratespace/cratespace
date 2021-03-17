@@ -7,9 +7,11 @@ use App\Models\User;
 use App\Models\Order;
 use App\Models\Space;
 use Stripe\StripeClient;
+use App\Jobs\CancelOrder;
 use App\Events\OrderCanceled;
 use App\Billing\Stripe\Payment;
 use Illuminate\Support\Facades\Event;
+use Illuminate\Support\Facades\Queue;
 
 class OrderTest extends TestCase
 {
@@ -44,32 +46,15 @@ class OrderTest extends TestCase
 
     public function testOrderCancellation()
     {
-        Event::fake();
+        Queue::fake();
 
-        $space = create(Space::class);
-        $order = create(Order::class, ['space_id' => $space->id]);
+        $order = create(Order::class);
 
-        $order->cancel();
-
-        $this->assertNull($space->order);
-    }
-
-    public function testOrderCancellationDispatchesEvent()
-    {
-        Event::fake([
-            OrderCanceled::class,
-        ]);
-
-        $space = create(Space::class);
-        $order = create(Order::class, ['space_id' => $space->id]);
+        Queue::assertNothingPushed();
 
         $order->cancel();
 
-        Event::assertDispatched(function (OrderCanceled $event) use ($order) {
-            return $event->order->id === $order->id;
-        });
-
-        $this->assertNull($space->order);
+        Queue::assertPushed(CancelOrder::class);
     }
 
     public function testOrderCastsPaymentDetailsToPaymentObject()

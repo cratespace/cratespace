@@ -11,15 +11,15 @@ use App\Events\OrderPlaced;
 use App\Events\SpaceReserved;
 use App\Events\PaymentSuccessful;
 use App\Contracts\Billing\Payment;
-use App\Contracts\Purchases\Product;
+use Tests\Concerns\SupportsPurchase;
 use Illuminate\Support\Facades\Event;
-use App\Actions\Purchases\GeneratePurchaseToken;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Cratespace\Preflight\Testing\Contracts\Postable;
 
 class PurchaseSpaceTest extends TestCase implements Postable
 {
     use RefreshDatabase;
+    use SupportsPurchase;
 
     protected function setUp(): void
     {
@@ -250,28 +250,6 @@ class PurchaseSpaceTest extends TestCase implements Postable
 
         $response->assertStatus(303);
         $this->assertEquals(1212, $space->user->business->credit); // 3% service charge
-    }
-
-    /**
-     * Generate mock purchase token.
-     *
-     * @param \App\Contracts\Purchases\Product $product
-     *
-     * @return string
-     */
-    protected function generateToken(Product $product): string
-    {
-        return (new GeneratePurchaseToken())->generate($product->id());
-    }
-
-    /**
-     * Create a user with customer role.
-     *
-     * @return \App\Models\User
-     */
-    protected function createCustomer(): User
-    {
-        return User::factory()->asCustomer()->create();
     }
 
     /**

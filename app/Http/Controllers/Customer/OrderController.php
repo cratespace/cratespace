@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Customer;
 use Inertia\Inertia;
 use App\Models\Order;
 use App\Models\Space;
+use App\Http\Requests\OrderRequest;
 use App\Contracts\Purchases\Product;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\PurchaseRequest;
@@ -67,14 +68,15 @@ class OrderController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param \App\Models\Order $order
+     * @param \App\Http\Requests\OrderRequest $request
+     * @param \App\Models\Order               $order
      *
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Order $order)
+    public function destroy(OrderRequest $request, Order $order)
     {
         $order->cancel();
 
-        return OrderCancelledResponse::dispatch();
+        return OrderCancelledResponse::dispatch($request);
     }
 }

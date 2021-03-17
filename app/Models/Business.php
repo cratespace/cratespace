@@ -3,9 +3,9 @@
 namespace App\Models;
 
 use App\Models\Traits\Sluggable;
+use App\Models\Concerns\ManagesCredit;
 use App\Models\Concerns\ManagesPayouts;
 use Illuminate\Database\Eloquent\Model;
-use App\Models\Concerns\InteractsWithCredit;
 use Cratespace\Preflight\Models\Traits\Presentable;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -17,7 +17,7 @@ class Business extends Model
     use HasFactory;
     use HasProfilePhoto;
     use Sluggable;
-    use InteractsWithCredit;
+    use ManagesCredit;
     use Presentable;
     use ManagesPayouts;
 
@@ -75,7 +75,7 @@ class Business extends Model
      */
     public function user(): BelongsTo
     {
-        return $this->belongsTo(User::class, 'user_id');
+        return $this->belongsTo(User::class);
     }
 
     /**
@@ -85,6 +85,6 @@ class Business extends Model
      */
     public function payouts(): HasMany
     {
-        return $this->hasMany(Payout::class, 'user_id');
+        return $this->hasMany(Payout::class);
     }
 }

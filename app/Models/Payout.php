@@ -63,18 +63,8 @@ class Payout extends Model implements PaymentContract
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function user(): BelongsTo
+    public function business(): BelongsTo
     {
-        return $this->belongsTo(User::class);
-    }
-
-    /**
-     * Get the order the payout is based on.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
-    public function order(): BelongsTo
-    {
-        return $this->belongsTo(Order::class);
+        return $this->belongsTo(Business::class);
     }
 }

@@ -16,7 +16,7 @@ class CreatePayoutsTable extends Migration
         Schema::create('payouts', function (Blueprint $table) {
             $table->id();
             $table->string('payment_intent')->nullable();
-            $table->foreignId('user_id')->constrained('users');
+            $table->foreignId('business_id')->constrained('businesses');
             $table->unsignedInteger('amount');
             $table->unsignedDouble('service_percentage');
             $table->timestamp('paid_at')->nullable();

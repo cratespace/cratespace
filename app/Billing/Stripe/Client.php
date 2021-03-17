@@ -3,6 +3,7 @@
 namespace App\Billing\Stripe;
 
 use Stripe\StripeClientInterface;
+use App\Billing\Stripe\Concerns\ManagesRefunds;
 use App\Billing\Stripe\Concerns\ManagesCustomers;
 use App\Contracts\Billing\Client as ClientContract;
 use App\Billing\Stripe\Concerns\ManagesPaymentIntents;
@@ -13,6 +14,7 @@ class Client implements ClientContract
     use ManagesCustomers;
     use ManagesPaymentIntents;
     use ManagesPaymentMethods;
+    use ManagesRefunds;
 
     /**
      * The Stripe API version.

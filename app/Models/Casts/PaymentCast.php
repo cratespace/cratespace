@@ -20,6 +20,10 @@ class PaymentCast implements CastsAttributes
      */
     public function get($model, $key, $value, $attributes)
     {
+        if (is_null($value)) {
+            return null;
+        }
+
         return new Payment(
             app(Client::class)->getIntent(json_decode($value, true)['id'])
         );

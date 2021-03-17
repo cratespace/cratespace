@@ -9,6 +9,7 @@ use App\Contracts\Billing\Payment;
 use App\Contracts\Purchases\Order;
 use Illuminate\Support\Facades\DB;
 use App\Contracts\Purchases\Product;
+use App\Actions\Purchases\CancelPayout;
 use App\Exceptions\OrderCancellationException;
 
 class CancelOrder
@@ -61,7 +62,7 @@ class CancelOrder
         $refund = app(Client::class)->createRefund([
             'amount' => $order->rawAmount(),
             'payment_intent' => $order->details->id,
-            'reason' => 'Cratespace purchase cancellation.',
+            'reason' => 'requested_by_customer',
         ]);
 
         PaymentRefunded::dispatch($refund);
@@ -76,6 +77,8 @@ class CancelOrder
      */
     protected function cancelPayout(Payment $payment): void
     {
-        app(CancelPayout::class)->cancel($payment);
+        DB::transaction(function () use ($payment) {
+            app(CancelPayout::class)->cancel($payment);
+        });
     }
 }

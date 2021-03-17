@@ -2,9 +2,7 @@
 
 namespace App\Models\Concerns;
 
-use InvalidArgumentException;
-
-trait InteractsWithCredit
+trait ManagesCredit
 {
     /**
      * Add credit to business.
@@ -17,13 +15,7 @@ trait InteractsWithCredit
      */
     public function addCredit(int $credit): void
     {
-        if ($credit >= 0) {
-            $this->updateCredit($credit);
-
-            return;
-        }
-
-        throw new InvalidArgumentException('Credit amount should be positive when ~adding~ to account');
+        $this->updateCredit(abs($credit));
     }
 
     /**
@@ -37,13 +29,7 @@ trait InteractsWithCredit
      */
     public function deductCredit(int $credit): void
     {
-        if ($credit < 0) {
-            $this->updateCredit($credit);
-
-            return;
-        }
-
-        throw new InvalidArgumentException('Credit amount should be negative when ~deducting~ to account');
+        $this->updateCredit(-1 * abs($credit));
     }
 
     /**

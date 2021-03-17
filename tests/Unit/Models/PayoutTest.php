@@ -3,9 +3,9 @@
 namespace Tests\Unit\Models;
 
 use Tests\TestCase;
-use App\Models\User;
 use App\Models\Payout;
 use App\Support\Money;
+use App\Models\Business;
 use App\Contracts\Billing\Payment;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
@@ -24,7 +24,7 @@ class PayoutTest extends TestCase
     {
         $payout = create(Payout::class);
 
-        $this->assertInstanceOf(User::class, $payout->user);
+        $this->assertInstanceOf(Business::class, $payout->business);
     }
 
     public function testPayoutContainsServicePercentageDetails()

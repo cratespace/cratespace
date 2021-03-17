@@ -16,4 +16,5 @@ Route::group([
     Route::resource('/spaces', SpaceController::class);
     Route::post('/spaces/{space}/orders', [CustomerOrderController::class, 'store'])->name('orders.create');
     Route::get('/orders/{order}', [CustomerOrderController::class, 'show'])->name('orders.show');
+    Route::delete('/orders/{order}', [CustomerOrderController::class, 'destroy'])->name('orders.destroy');
 });

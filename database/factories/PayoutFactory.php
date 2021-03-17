@@ -22,9 +22,11 @@ class PayoutFactory extends Factory
      */
     public function definition()
     {
+        $user = User::factory()->withBusiness()->create();
+
         return [
             'payment_intent' => 'pi_1DnXbp2eZvKYlo2Czed9qnYW',
-            'user_id' => User::factory()->withBusiness()->create(),
+            'business_id' => $user->business->id,
             'amount' => 1000,
             'service_percentage' => config('billing.service'),
             'paid_at' => null,

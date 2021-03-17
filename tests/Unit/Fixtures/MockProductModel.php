@@ -37,4 +37,32 @@ class MockProductModel extends Model implements Product
     {
         return $details;
     }
+
+    /**
+     * Determine if the product has expired.
+     *
+     * @return bool
+     */
+    public function expired(): bool
+    {
+        return false;
+    }
+
+    /**
+     * Reserve product for customer.
+     *
+     * @return void
+     */
+    public function reserve(): void
+    {
+    }
+
+    /**
+     * Release product from order.
+     *
+     * @return void
+     */
+    public function release(): void
+    {
+    }
 }

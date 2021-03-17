@@ -2,7 +2,9 @@
 
 namespace Tests\Unit\Fixtures;
 
+use Mockery as m;
 use App\Contracts\Purchases\Order;
+use App\Contracts\Purchases\Product;
 use Illuminate\Database\Eloquent\Model;
 
 class MockOrderModel extends Model implements Order
@@ -48,5 +50,15 @@ class MockOrderModel extends Model implements Order
      */
     public function cancel(): void
     {
+    }
+
+    /**
+     * Get the product this order belongs to.
+     *
+     * @return \App\Contracts\Purchases\Product
+     */
+    public function product(): Product
+    {
+        return m::mock(Product::class);
     }
 }
