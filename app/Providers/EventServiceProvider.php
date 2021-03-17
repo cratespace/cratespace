@@ -5,6 +5,7 @@ namespace App\Providers;
 use App\Models\Space;
 use App\Events\OrderPlaced;
 use App\Events\OrderCanceled;
+use App\Events\PaymentFailed;
 use App\Events\SpaceReleased;
 use App\Events\SpaceReserved;
 use App\Listeners\MakePayout;
@@ -29,6 +30,9 @@ class EventServiceProvider extends ServiceProvider
         PaymentSuccessful::class => [
             MakePayout::class,
         ],
+
+        PaymentFailed::class => [],
+        PaymentRefunded::class => [],
 
         SpaceReserved::class => [],
         SpaceReleased::class => [],

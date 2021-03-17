@@ -44,4 +44,25 @@ interface Product
      * @return mixed
      */
     public function business(?string $attribute = null);
+
+    /**
+     * Determine if the product has expired.
+     *
+     * @return bool
+     */
+    public function expired(): bool;
+
+    /**
+     * Reserve product for customer.
+     *
+     * @return void
+     */
+    public function reserve(): void;
+
+    /**
+     * Release product from order.
+     *
+     * @return void
+     */
+    public function release(): void;
 }

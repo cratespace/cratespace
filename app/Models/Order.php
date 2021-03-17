@@ -3,10 +3,12 @@
 namespace App\Models;
 
 use App\Support\Money;
-use App\Events\OrderCanceled;
+use App\Jobs\CancelOrder;
 use App\Models\Casts\PaymentCast;
 use App\Models\Traits\Directable;
+use App\Contracts\Purchases\Product;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Concerns\DeterminesEligibility;
 use App\Contracts\Purchases\Order as OrderContract;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -15,6 +17,7 @@ class Order extends Model implements OrderContract
 {
     use HasFactory;
     use Directable;
+    use DeterminesEligibility;
 
     /**
      * The accessors to append to the model's array form.
@@ -114,16 +117,22 @@ class Order extends Model implements OrderContract
     }
 
     /**
+     * Get the product this order belongs to.
+     *
+     * @return \App\Contracts\Purchases\Product
+     */
+    public function product(): Product
+    {
+        return $this->space;
+    }
+
+    /**
      * Cancel the order.
      *
      * @return void
      */
     public function cancel(): void
     {
-        $this->space->release();
-
-        OrderCanceled::dispatch(clone $this);
-
-        $this->delete();
+        CancelOrder::dispatch($this);
     }
 }

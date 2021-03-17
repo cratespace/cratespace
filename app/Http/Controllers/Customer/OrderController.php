@@ -10,7 +10,9 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\PurchaseRequest;
 use App\Contracts\Actions\MakesPurchase;
 use App\Http\Responses\PurchaseResponse;
+use Inertia\Response as InertiaResponse;
 use App\Http\Responses\FailedPurchaseResponse;
+use App\Http\Responses\OrderCancelledResponse;
 use App\Actions\Purchases\GeneratePurchaseToken;
 
 class OrderController extends Controller
@@ -18,11 +20,13 @@ class OrderController extends Controller
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response
+     * @param \App\Contracts\Purchases\Product
+     *
+     * @return \Inertia\Response
      */
-    public function create(Product $product)
+    public function create(Product $product): InertiaResponse
     {
-        return Inertia::render('Checkout/Show', [
+        return Inertia::render('Orders/Create', [
             'token' => $this->app(GeneratePurchaseToken::class)
                 ->generate($product->id()),
         ]);
@@ -53,10 +57,11 @@ class OrderController extends Controller
      *
      * @param \App\Models\Order $order
      *
-     * @return \Illuminate\Http\Response
+     * @return \Inertia\Response
      */
-    public function show(Order $order)
+    public function show(Order $order): InertiaResponse
     {
+        return Inertia::render('Orders/Show', compact('order'));
     }
 
     /**
@@ -70,6 +75,6 @@ class OrderController extends Controller
     {
         $order->cancel();
 
-        return response('', 204);
+        return OrderCancelledResponse::dispatch();
     }
 }

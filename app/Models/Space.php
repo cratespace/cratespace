@@ -101,7 +101,7 @@ class Space extends Model implements Product
     }
 
     /**
-     * Reserve space for customer.
+     * Reserve product for customer.
      *
      * @return void
      */
