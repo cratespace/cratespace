@@ -69,4 +69,16 @@ return [
     */
 
     'logger' => env('BILLING_LOGGER'),
+
+    /*
+    |--------------------------------------------------------------------------
+    | Service Charge
+    |--------------------------------------------------------------------------
+    |
+    | This amount is by how much a percentage of the sales will be deducted
+    | from the business as charge for service provided by Cratespace.
+    |
+    */
+
+    'service' => 0.03, // 3%
 ];
