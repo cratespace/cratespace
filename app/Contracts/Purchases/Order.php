@@ -12,11 +12,4 @@ interface Order extends Payment
      * @return \App\Contracts\Purchases\Product
      */
     public function product(): Product;
-
-    /**
-     * Cancel the order.
-     *
-     * @return void
-     */
-    public function cancel(): void;
 }

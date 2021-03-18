@@ -2,7 +2,7 @@
 
 namespace App\Models\Traits;
 
-use Facades\App\Codes\HashCode;
+use App\Support\HashId;
 use Illuminate\Database\Eloquent\Model;
 
 trait Hashable
@@ -15,7 +15,7 @@ trait Hashable
     protected static function bootHashable(): void
     {
         static::created(function (Model $model): void {
-            $model->update(['code' => HashCode::generate($model->id)]);
+            $model->update(['code' => HashId::generate($model->id)]);
         });
     }
 }

@@ -1,18 +1,17 @@
 <?php
 
-namespace App\Codes;
+namespace App\Support;
 
-use Cratespace\Sentinel\Codes\Code;
-use Cratespace\Sentinel\Contracts\Codes\CodeGenerator;
-
-class ConfirmationNumber extends Code implements CodeGenerator
+class OrderId extends Uid
 {
     /**
      * Generate a new and unique code.
      *
+     * @param array[] $arguments
+     *
      * @return string
      */
-    public function generate(): string
+    public static function generate(...$arguments): string
     {
         return substr(str_shuffle(str_repeat(
             static::$characterPool,

@@ -17,7 +17,7 @@ class OrderCancellationTest extends TestCase
     public function testOrderCancellation()
     {
         $user = $this->createCustomer();
-        $space = create(Space::class);
+        $space = create(Space::class, ['price' => 1200, 'tax' => 50]);
 
         $this->signIn($user);
 
@@ -40,7 +40,7 @@ class OrderCancellationTest extends TestCase
         ]);
 
         $user = $this->createCustomer();
-        $space = create(Space::class);
+        $space = create(Space::class, ['price' => 1200, 'tax' => 50]);
 
         $this->signIn($user);
 

@@ -2,7 +2,9 @@
 
 namespace App\Contracts\Billing;
 
-interface Payment
+use App\Contracts\Support\Cancellable;
+
+interface Payment extends Cancellable
 {
     /**
      * Get the total amount that will be paid.

@@ -2,10 +2,10 @@
 
 namespace App\Contracts\Support;
 
-interface Cacellable
+interface Cancellable
 {
     /**
-     * Cancel action.
+     * Cancel the action.
      *
      * @return void
      */
