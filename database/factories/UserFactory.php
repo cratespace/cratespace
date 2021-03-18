@@ -2,13 +2,9 @@
 
 namespace Database\Factories;
 
-use App\Models\Role;
 use App\Models\User;
-use App\Models\Business;
-use App\Models\Customer;
-use Illuminate\Support\Str;
-use App\Contracts\Billing\Client;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Str;
 
 class UserFactory extends Factory
 {
@@ -28,70 +24,24 @@ class UserFactory extends Factory
     {
         return [
             'name' => $this->faker->name,
-            'username' => $this->faker->unique()->userName,
             'email' => $this->faker->unique()->safeEmail,
-            'phone' => $this->faker->phoneNumber,
             'email_verified_at' => now(),
             'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
             'remember_token' => Str::random(10),
-            'settings' => [],
-            'locked' => false,
-            'profile_photo_path' => null,
-            'two_factor_secret' => null,
-            'two_factor_recovery_codes' => null,
         ];
     }
 
     /**
-     * Indicate that the user should have a business profile.
+     * Indicate that the model's email address should be unverified.
      *
-     * @return \Database\Factories\UserFactory
+     * @return \Illuminate\Database\Eloquent\Factories\Factory
      */
-    public function withBusiness(): UserFactory
+    public function unverified()
     {
-        $role = Role::firstOrCreate(['name' => 'Business', 'slug' => 'business']);
-
-        return $this->has(
-            Business::factory()
-                ->state(function (array $attributes, User $user) use ($role) {
-                    $user->assignRole($role);
-
-                    return [
-                        'name' => $this->faker->unique()->company,
-                        'user_id' => $user->id,
-                        'credit' => 0.00,
-                    ];
-                }),
-            'business'
-        );
-    }
-
-    /**
-     * Indicate that the user should have a customer profile.
-     *
-     * @return \Database\Factories\UserFactory
-     */
-    public function asCustomer(): UserFactory
-    {
-        $role = Role::firstOrCreate(['name' => 'Customer', 'slug' => 'customer']);
-
-        return $this->has(
-            Customer::factory()
-                ->state(function (array $attributes, User $user) use ($role) {
-                    $user->assignRole($role);
-
-                    $customer = app(Client::class)->createCustomer([
-                        'name' => $user->name,
-                        'email' => $user->email,
-                        'phone' => $user->phone,
-                    ]);
-
-                    return [
-                        'user_id' => $user->id,
-                        'stripe_id' => $customer->id,
-                    ];
-                }),
-            'customer'
-        );
+        return $this->state(function (array $attributes) {
+            return [
+                'email_verified_at' => null,
+            ];
+        });
     }
 }
