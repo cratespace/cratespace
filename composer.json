@@ -13,11 +13,15 @@
     "require": {
         "php": "^7.4|^8.0",
         "ext-intl": "*",
+        "cratespace/preflight": "^3.4",
+        "cratespace/sentinel": "^2.0.1",
         "fideloper/proxy": "^4.4",
         "fruitcake/laravel-cors": "^2.0",
         "guzzlehttp/guzzle": "^7.0.1",
+        "inertiajs/inertia-laravel": "^0.3.5",
         "laravel/framework": "^8.12",
-        "laravel/tinker": "^2.5"
+        "laravel/tinker": "^2.5",
+        "tightenco/ziggy": "^1.0"
     },
     "require-dev": {
         "facade/ignition": "^2.5",
