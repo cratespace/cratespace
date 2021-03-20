@@ -2,9 +2,11 @@
 
 namespace App\Models;
 
+use App\Casts\AddressCast;
 use Illuminate\Notifications\Notifiable;
 use Cratespace\Sentinel\Models\Traits\HasApiTokens;
 use Illuminate\Database\Eloquent\Casts\AsArrayObject;
+use Cratespace\Preflight\Models\Concerns\ManagesRoles;
 use Cratespace\Sentinel\Models\Traits\HasProfilePhoto;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -13,10 +15,11 @@ use Cratespace\Sentinel\Models\Traits\TwoFactorAuthenticatable;
 
 class User extends Authenticatable
 {
-    use HasApiTokens;
-    use HasFactory;
-    use HasProfilePhoto;
     use Notifiable;
+    use HasFactory;
+    use HasApiTokens;
+    use ManagesRoles;
+    use HasProfilePhoto;
     use InteractsWithSessions;
     use TwoFactorAuthenticatable;
 
@@ -31,6 +34,7 @@ class User extends Authenticatable
         'password',
         'username',
         'settings',
+        'address',
         'locked',
         'profile_photo_path',
         'two_factor_secret',
@@ -57,6 +61,8 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
         'two_factor_enabled' => 'boolean',
+        'profile' => ProfileCast::class,
+        'address' => AddressCast::class,
         'settings' => AsArrayObject::class,
     ];
 
