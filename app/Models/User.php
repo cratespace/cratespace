@@ -2,10 +2,11 @@
 
 namespace App\Models;
 
-use App\Casts\AddressCast;
+use App\Models\Casts\AddressCast;
+use App\Models\Casts\ProfileCast;
+use App\Models\Casts\SettingsCast;
 use Illuminate\Notifications\Notifiable;
 use Cratespace\Sentinel\Models\Traits\HasApiTokens;
-use Illuminate\Database\Eloquent\Casts\AsArrayObject;
 use Cratespace\Preflight\Models\Concerns\ManagesRoles;
 use Cratespace\Sentinel\Models\Traits\HasProfilePhoto;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -63,7 +64,7 @@ class User extends Authenticatable
         'two_factor_enabled' => 'boolean',
         'profile' => ProfileCast::class,
         'address' => AddressCast::class,
-        'settings' => AsArrayObject::class,
+        'settings' => SettingsCast::class,
     ];
 
     /**

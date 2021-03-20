@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Casts;
+namespace App\Models\Casts;
 
-use App\Values\Address;
+use App\Models\Values\Settings;
 use Illuminate\Contracts\Database\Eloquent\CastsAttributes;
 
-class AddressCast implements CastsAttributes
+class SettingsCast implements CastsAttributes
 {
     /**
      * Cast the given value.
@@ -19,7 +19,7 @@ class AddressCast implements CastsAttributes
      */
     public function get($model, $key, $value, $attributes)
     {
-        return new Address(json_decode($value, true));
+        return new Settings(json_decode($value, true));
     }
 
     /**
