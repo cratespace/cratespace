@@ -24,6 +24,7 @@ return [
      */
     'register' => [
         'name' => ['required', 'string', 'max:255'],
+        'business' => ['exclude_if:type,customer', 'string', 'max:255'],
         'email' => [
             'required',
             'string',
@@ -32,6 +33,7 @@ return [
             Rule::unique(User::class),
         ],
         'password' => ['required', 'string', new PasswordRule()],
+        'type' => ['sometimes', 'string', Rule::in(['business', 'customer'])],
     ],
 
     /*

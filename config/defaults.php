@@ -14,7 +14,19 @@ return [
             'password' => '$2y$10$X71vOqkxROWZBhbWxwvf9eHvN8kFjDmDO5Cjsfk5dIKOKGqkxyWNq', // alphaxion77
             'email_verified_at' => now(),
             'remember_token' => Str::random(10),
-            'settings' => [],
+            'settings' => [
+                'notificaions' => ['web', 'email', 'sms'],
+            ],
+            'address' => [
+                'street' => '59, Martin Road',
+                'city' => 'Jaffna',
+                'state' => 'Northern Province',
+                'country' => 'Sri Lanka',
+            ],
+            'profile' => [
+                'business' => 'Cratesapce, Inc.',
+                'description' => 'A freight space sales company.',
+            ],
             'locked' => false,
             'profile_photo_path' => null,
             'two_factor_secret' => null,
@@ -27,10 +39,29 @@ return [
                 'slug' => 'administrator',
                 'description' => 'An administrator has permission to do anything.',
             ],
+
+            'Business' => [
+                'name' => 'Business',
+                'slug' => 'business',
+                'description' => 'Business users can manage spaces and orders aswell as purchase spaces.',
+            ],
+
+            /*
+            * Customers can only purchase spaces.
+            */
+            'Customer' => [
+                'name' => 'Customer',
+                'slug' => 'customer',
+                'description' => 'Customers can only purchase spaces.',
+            ],
         ],
 
         'permissions' => [
             'Administrator' => ['*'],
+        ],
+
+        'settings' => [
+            'notifications' => ['web', 'email', 'sms'],
         ],
     ],
 
