@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature\Seeders;
+namespace Tests\Console\Seeders;
 
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
