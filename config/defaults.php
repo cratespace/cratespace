@@ -11,7 +11,7 @@ return [
             'name' => 'Thavarshan Thayananthajothy',
             'username' => 'Thavarshan',
             'email' => 'tjthavarshan@gmail.com',
-            'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
+            'password' => '$2y$10$X71vOqkxROWZBhbWxwvf9eHvN8kFjDmDO5Cjsfk5dIKOKGqkxyWNq', // alphaxion77
             'email_verified_at' => now(),
             'remember_token' => Str::random(10),
             'settings' => [],
@@ -19,6 +19,18 @@ return [
             'profile_photo_path' => null,
             'two_factor_secret' => null,
             'two_factor_recovery_codes' => null,
+        ],
+
+        'roles' => [
+            'Administrator' => [
+                'name' => 'Administrator',
+                'slug' => 'administrator',
+                'description' => 'An administrator has permission to do anything.',
+            ],
+        ],
+
+        'permissions' => [
+            'Administrator' => ['*'],
         ],
     ],
 
