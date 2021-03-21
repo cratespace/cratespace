@@ -18,6 +18,12 @@ class StripeServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->registerLogger();
+
+        Stripe::setAppInfo(
+            'Cratespace',
+            config('app.version'),
+            'https://cratespace.biz'
+        );
     }
 
     /**

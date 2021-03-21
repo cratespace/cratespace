@@ -86,7 +86,7 @@ class Client
      */
     public function logger(): LoggerInterface
     {
-        return $this->app->make(Logger::class);
+        return $this->app->make(LoggerInterface::class);
     }
 
     /**
@@ -110,7 +110,13 @@ class Client
     public function __call(string $name, array $arguments)
     {
         try {
-            return $this->app->make(self::class)->stripe()->{$name};
+            $stripe = $this->app->make(self::class)->stripe();
+
+            if (! empty($arguments)) {
+                return $stripe->{$name}($arguments);
+            }
+
+            return $stripe->{$name};
         } catch (Throwable $e) {
             $this->logger()->error($e->getMessage());
 

@@ -12,7 +12,9 @@ return [
     |
     */
 
-    'name' => env('APP_NAME', 'Laravel'),
+    'name' => env('APP_NAME', 'Cratespace'),
+
+    'version' => env('APP_VERSION', '2.7.4'),
 
     /*
     |--------------------------------------------------------------------------
@@ -135,7 +137,7 @@ return [
 
     'providers' => [
         /*
-         * Laravel Framework Service Providers...
+         * Cratespace Framework Service Providers...
          */
         Illuminate\Auth\AuthServiceProvider::class,
         Illuminate\Broadcasting\BroadcastServiceProvider::class,

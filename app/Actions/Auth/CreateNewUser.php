@@ -5,7 +5,6 @@ namespace App\Actions\Auth;
 use App\Models\User;
 use App\Facades\Stripe;
 use Illuminate\Support\Str;
-use App\Services\Stripe\Client;
 use Illuminate\Support\Facades\Hash;
 use Cratespace\Sentinel\Contracts\Actions\CreatesNewUsers;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableUser;
@@ -139,16 +138,6 @@ class CreateNewUser implements CreatesNewUsers
     protected function setDefaultSettings(): array
     {
         return config('defaults.users.settings');
-    }
-
-    /**
-     * Get instance of Stripe client.
-     *
-     * @return \App\Billing\Clients\Client
-     */
-    protected function getClient(): Client
-    {
-        return app(Client::class);
     }
 
     /**
