@@ -87,6 +87,9 @@ jobs:
         env:
           DB_PORT: ${{ job.services.mysql.ports[3306] }}
           DB_USERNAME: root
+          STRIPE_KEY: ${{ secrets.STRIPE_KEY }}
+          STRIPE_SECRET: ${{ secrets.STRIPE_SECRET }}
+          STRIPE_ACCOUNT: ${{ secrets.STRIPE_ACCOUNT }}
         run: php artisan test --parallel
 
       - name: 📚 Upload artifacts
@@ -158,6 +161,9 @@ jobs:
         env:
           DB_CONNECTION: sqlite
           DB_DATABASE: ':memory:'
+          STRIPE_KEY: ${{ secrets.STRIPE_KEY }}
+          STRIPE_SECRET: ${{ secrets.STRIPE_SECRET }}
+          STRIPE_ACCOUNT: ${{ secrets.STRIPE_ACCOUNT }}
         run: php artisan test --parallel
 
       - name: 📚 Upload artifacts
