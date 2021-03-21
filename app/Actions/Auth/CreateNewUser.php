@@ -3,7 +3,9 @@
 namespace App\Actions\Auth;
 
 use App\Models\User;
+use App\Facades\Stripe;
 use Illuminate\Support\Str;
+use App\Services\Stripe\Client;
 use Illuminate\Support\Facades\Hash;
 use Cratespace\Sentinel\Contracts\Actions\CreatesNewUsers;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableUser;
@@ -98,12 +100,14 @@ class CreateNewUser implements CreatesNewUsers
     protected function createCustomerProfile(array $data): array
     {
         return [
-            'stripe_id' => $this->getClient()->createCustomer(
+            'stripe_id' => Stripe::customers()->create(
                 array_merge(array_filter($data, function (string $key) {
                     return in_array($key, [
                         'name', 'description', 'email', 'phone',
                     ]);
-                }, \ARRAY_FILTER_USE_KEY), $this->createAddress($data))
+                }, \ARRAY_FILTER_USE_KEY), [
+                    'address' => $this->createAddress($data, true),
+                ])
             )->id,
         ];
     }
@@ -112,16 +116,18 @@ class CreateNewUser implements CreatesNewUsers
      * Create address for user.
      *
      * @param array $data
+     * @param bool  $stripe
      *
      * @return array
      */
-    protected function createAddress(array $data): array
+    protected function createAddress(array $data, bool $stripe = false): array
     {
         return [
-            'street' => $data['street'] ?? null,
+            $stripe ? 'line1' : 'street' => $data['street'] ?? null,
             'city' => $data['city'] ?? null,
             'state' => $data['state'] ?? null,
             'country' => $data['country'] ?? null,
+            $stripe ? 'postal_code' : 'postcode' => $data['postcode'] ?? null,
         ];
     }
 

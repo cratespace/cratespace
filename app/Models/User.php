@@ -35,6 +35,7 @@ class User extends Authenticatable
         'password',
         'username',
         'settings',
+        'profile',
         'address',
         'locked',
         'profile_photo_path',
