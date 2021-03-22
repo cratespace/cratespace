@@ -4,8 +4,8 @@ namespace App\Actions\Auth;
 
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
-use Cratespace\Sentinel\Contracts\Actions\DeletesUsers;
 use Illuminate\Contracts\Auth\Authenticatable;
+use Cratespace\Sentinel\Contracts\Actions\DeletesUsers;
 
 class DeleteUser implements DeletesUsers
 {
@@ -18,8 +18,8 @@ class DeleteUser implements DeletesUsers
      */
     public function delete(Authenticatable $user): void
     {
-        DB::transaction(function () use ($user) {
-            tap($user, function (User $user) {
+        DB::transaction(function () use ($user): void {
+            tap($user, function (User $user): void {
                 $this->deleteUserResources($user);
 
                 $this->deleteUserProfiles($user);
@@ -48,6 +48,8 @@ class DeleteUser implements DeletesUsers
     protected function deleteUserProfiles(User $user): void
     {
         $user->deleteProfilePhoto();
+
+        $user->profile->delete();
 
         $user->tokens->each->delete();
     }

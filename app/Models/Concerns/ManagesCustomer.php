@@ -3,6 +3,7 @@
 namespace App\Models\Concerns;
 
 use App\Models\Customer;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use App\Services\Stripe\Customer as StripeCustomer;
 
 trait ManagesCustomer
@@ -30,5 +31,15 @@ trait ManagesCustomer
             'user_id' => $this->id,
             'stripe_id' => $customer->id,
         ]);
+    }
+
+    /**
+     * Get user business profile details.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function customer(): HasOne
+    {
+        return $this->hasOne(Customer::class, 'user_id');
     }
 }

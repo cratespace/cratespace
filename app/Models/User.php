@@ -4,10 +4,10 @@ namespace App\Models;
 
 use App\Models\Casts\AddressCast;
 use App\Models\Casts\SettingsCast;
+use Illuminate\Database\Eloquent\Model;
 use App\Models\Concerns\ManagesBusiness;
 use App\Models\Concerns\ManagesCustomer;
 use Illuminate\Notifications\Notifiable;
-use Illuminate\Database\Eloquent\Relations\HasOne;
 use Cratespace\Sentinel\Models\Traits\HasApiTokens;
 use Cratespace\Preflight\Models\Concerns\ManagesRoles;
 use Cratespace\Sentinel\Models\Traits\HasProfilePhoto;
@@ -80,26 +80,16 @@ class User extends Authenticatable
         'profile_photo_url',
         'sessions',
         'two_factor_enabled',
+        'profile',
     ];
 
     /**
-     * The relations to eager load on every query.
+     * Get the user's profile.
      *
-     * @var array
+     * @return \Illuminate\Database\Eloquent\Model
      */
-    protected $with = ['profile'];
-
-    /**
-     * Get user profile details.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasOne
-     */
-    public function profile(): HasOne
+    public function getProfileAttribute(): Model
     {
-        if ($this->hasRole('Business')) {
-            return $this->hasOne(Business::class, 'user_id');
-        }
-
-        return $this->hasOne(Customer::class, 'user_id');
+        return $this->hasRole('Business') ? $this->business : $this->customer;
     }
 }

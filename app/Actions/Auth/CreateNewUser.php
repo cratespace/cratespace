@@ -4,6 +4,7 @@ namespace App\Actions\Auth;
 
 use App\Models\User;
 use App\Support\Util;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Cratespace\Sentinel\Contracts\Actions\CreatesNewUsers;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableUser;
@@ -19,12 +20,14 @@ class CreateNewUser implements CreatesNewUsers
      */
     public function create(array $data): AuthenticatableUser
     {
-        return tap($this->createUser($data), function (User $user) use ($data) {
-            ($business = $this->isForBusiness($data))
-                ? $user->createAsBusiness($data)
-                : $user->createAsCustomer($data);
+        return DB::transaction(function () use ($data): User {
+            return tap($this->createUser($data), function (User $user) use ($data): void {
+                ($business = $this->isForBusiness($data))
+                    ? $user->createAsBusiness($data)
+                    : $user->createAsCustomer($data);
 
-            $user->assignRole($business ? 'Business' : 'Customer');
+                $user->assignRole($business ? 'Business' : 'Customer');
+            });
         });
     }
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Unit\Models;
+namespace Tests\Fixtures;
 
 use App\Services\Stripe\Resource;
 

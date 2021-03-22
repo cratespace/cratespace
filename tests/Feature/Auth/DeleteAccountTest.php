@@ -12,22 +12,20 @@ class DeleteAccountTest extends TestCase
 
     public function testUserAccountsCanBeDeleted()
     {
-        $this->signIn($user = create(User::class));
+        $this->withoutExceptionHandling();
 
-        $response = $this->delete('/user/profile', [
-            'password' => 'password',
-        ]);
+        $this->signIn($user = User::factory()->asBusiness()->create());
+
+        $this->delete('/user/profile', ['password' => 'password']);
 
         $this->assertNull($user->fresh());
     }
 
     public function testCorrectPasswordMustBeProvidedBeforeAccountCanBeDeleted()
     {
-        $this->signIn($user = create(User::class));
+        $this->signIn($user = User::factory()->asBusiness()->create());
 
-        $response = $this->delete('/user/profile', [
-            'password' => 'wrong-password',
-        ]);
+        $this->delete('/user/profile', ['password' => 'wrong-password']);
 
         $this->assertNotNull($user->fresh());
     }

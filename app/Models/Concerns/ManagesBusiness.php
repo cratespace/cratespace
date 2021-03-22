@@ -4,6 +4,7 @@ namespace App\Models\Concerns;
 
 use App\Support\Util;
 use App\Models\Business;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 trait ManagesBusiness
 {
@@ -33,5 +34,15 @@ trait ManagesBusiness
                 'url' => $data['url'] ?? null,
             ],
         ]);
+    }
+
+    /**
+     * Get user business profile details.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function business(): HasOne
+    {
+        return $this->hasOne(Business::class, 'user_id');
     }
 }

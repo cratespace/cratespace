@@ -5,7 +5,7 @@ namespace Tests\Unit\Stripe;
 use Throwable;
 use Tests\TestCase;
 use InvalidArgumentException;
-use Tests\Unit\Models\StripeResourceStub;
+use Tests\Fixtures\StripeResourceStub;
 
 class ResourceTest extends TestCase
 {
