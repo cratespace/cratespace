@@ -123,6 +123,16 @@ abstract class Resource
     }
 
     /**
+     * Refresh the resource instance.
+     *
+     * @return void
+     */
+    public function refresh(): void
+    {
+        $this->resource = static::get($this->id);
+    }
+
+    /**
      * Dynamically get values from the Stripe resource.
      *
      * @param string $key

@@ -20,6 +20,8 @@ class DefaultUserSeeder extends Seeder
         $user = $this->createUser();
 
         $this->assignDefualtRoles($user);
+
+        $user->createAsBusiness($this->businessDetails());
     }
 
     /**
@@ -70,5 +72,15 @@ class DefaultUserSeeder extends Seeder
 
             return $role;
         })->values();
+    }
+
+    /**
+     * Get the default user profile details.
+     *
+     * @return array
+     */
+    protected function businessDetails(): array
+    {
+        return config('defaults.users.profile');
     }
 }

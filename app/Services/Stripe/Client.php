@@ -8,8 +8,9 @@ use InvalidArgumentException;
 use Stripe\Util\LoggerInterface;
 use Stripe\StripeClientInterface;
 use Illuminate\Contracts\Foundation\Application;
+use App\Contracts\Services\Client as ClientContract;
 
-class Client
+class Client implements ClientContract
 {
     /**
      * The Stripe API version.
@@ -49,9 +50,9 @@ class Client
      *
      * @param array[] $config
      *
-     * @return \Stripe\StripeClientInterface
+     * @return mixed
      */
-    public function make(array $config = []): StripeClientInterface
+    public function make(array $config = [])
     {
         $this->stripe = new StripeClient($this->options($config));
 

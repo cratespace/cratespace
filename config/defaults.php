@@ -29,6 +29,23 @@ return [
             'two_factor_recovery_codes' => null,
         ],
 
+        'profile' => [
+            'type' => 'standard',
+            'business' => 'Cratesapce, Inc.',
+            'email' => 'hello@cratespace.biz',
+            'phone' => '0775018795',
+            'registration_number' => 01234567,
+            'country' => 'Sri Lanka',
+            'business_type' => 'company',
+            'business_profile' => [
+                'name' => 'Cratesapce, Inc.',
+                'mcc' => 4799,
+                'support_phone' => '0775018795',
+                'support_email' => 'support@cratespace.biz',
+                'url' => 'https://cratesapce.biz',
+            ],
+        ],
+
         'roles' => [
             'Administrator' => [
                 'name' => 'Administrator',
