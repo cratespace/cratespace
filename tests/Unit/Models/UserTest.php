@@ -7,7 +7,6 @@ use Tests\TestCase;
 use App\Models\User;
 use InvalidArgumentException;
 use App\Models\Values\Address;
-use App\Models\Values\Profile;
 use App\Models\Values\Settings;
 use Cratespace\Preflight\Models\Role;
 use Illuminate\Contracts\Auth\Authenticatable;
@@ -57,20 +56,6 @@ class UserTest extends TestCase
         } catch (Throwable $e) {
             $this->assertInstanceOf(InvalidArgumentException::class, $e);
         }
-    }
-
-    public function testCastProfileValueAsProfileValueObject()
-    {
-        $user = create(User::class, [
-            'profile' => [
-                'name' => 'Example, Inc.',
-                'description' => 'An example company.',
-            ],
-        ]);
-
-        $this->assertInstanceOf(Profile::class, $user->profile);
-        $this->assertEquals('Example, Inc.', $user->profile->name);
-        $this->assertEquals('An example company.', $user->profile->description);
     }
 
     public function testCastSettingsValueAsSettingsValueObject()

@@ -3,9 +3,11 @@
 namespace App\Models;
 
 use App\Models\Casts\AddressCast;
-use App\Models\Casts\ProfileCast;
 use App\Models\Casts\SettingsCast;
+use App\Models\Concerns\ManagesBusiness;
+use App\Models\Concerns\ManagesCustomer;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Cratespace\Sentinel\Models\Traits\HasApiTokens;
 use Cratespace\Preflight\Models\Concerns\ManagesRoles;
 use Cratespace\Sentinel\Models\Traits\HasProfilePhoto;
@@ -20,6 +22,8 @@ class User extends Authenticatable
     use HasFactory;
     use HasApiTokens;
     use ManagesRoles;
+    use ManagesCustomer;
+    use ManagesBusiness;
     use HasProfilePhoto;
     use InteractsWithSessions;
     use TwoFactorAuthenticatable;
@@ -63,7 +67,6 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
         'two_factor_enabled' => 'boolean',
-        'profile' => ProfileCast::class,
         'address' => AddressCast::class,
         'settings' => SettingsCast::class,
     ];
@@ -78,4 +81,18 @@ class User extends Authenticatable
         'sessions',
         'two_factor_enabled',
     ];
+
+    /**
+     * Get user profile details.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function profile(): HasOne
+    {
+        if ($this->hasRole('Business')) {
+            return $this->hasOne(Business::class, 'user_id');
+        }
+
+        return $this->hasOne(Customer::class, 'user_id');
+    }
 }
