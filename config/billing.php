@@ -18,6 +18,8 @@ return [
 
     'account' => env('STRIPE_ACCOUNT'),
 
+    'client_id' => env('STRIPE_CLIENT_ID'),
+
     /*
     |--------------------------------------------------------------------------
     | Currency

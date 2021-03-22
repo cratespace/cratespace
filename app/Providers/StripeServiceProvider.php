@@ -74,10 +74,7 @@ class StripeServiceProvider extends ServiceProvider
         $this->app->singleton('stripe.client', function ($app) {
             $client = new Client($app);
 
-            $client->make([
-                'api_key' => $app['config']->get('billing.secret'),
-                'stripe_account' => $app['config']->get('billing.account'),
-            ]);
+            $client->make();
 
             return $client;
         });

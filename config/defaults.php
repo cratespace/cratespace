@@ -23,10 +23,6 @@ return [
                 'state' => 'Northern Province',
                 'country' => 'Sri Lanka',
             ],
-            'profile' => [
-                'business' => 'Cratesapce, Inc.',
-                'description' => 'A freight space sales company.',
-            ],
             'locked' => false,
             'profile_photo_path' => null,
             'two_factor_secret' => null,

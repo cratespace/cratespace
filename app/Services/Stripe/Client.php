@@ -47,19 +47,12 @@ class Client
     /**
      * Create Stripe client instance.
      *
-     * @param array|null $config
+     * @param array[] $config
      *
      * @return \Stripe\StripeClientInterface
      */
-    public function make(?array $config = null): StripeClientInterface
+    public function make(array $config = []): StripeClientInterface
     {
-        if (is_null($config)) {
-            $config = [
-                'api_key' => $this->app['config']->get('billing.secret'),
-                'stripe_account' => $this->app['config']->get('billing.account'),
-            ];
-        }
-
         $this->stripe = new StripeClient($this->options($config));
 
         return $this->stripe;
@@ -75,7 +68,9 @@ class Client
     public function options(array $options = []): array
     {
         return array_merge([
+            'api_key' => config('billing.secret'),
             'stripe_version' => static::STRIPE_VERSION,
+            'stripe_account' => config('billing.account'),
         ], $options);
     }
 
@@ -97,6 +92,16 @@ class Client
     public function stripe(): StripeClientInterface
     {
         return $this->stripe;
+    }
+
+    /**
+     * Get instance of Cratespace application.
+     *
+     * @return \Illuminate\Contracts\Foundation\Application
+     */
+    public function app(): Application
+    {
+        return $this->app;
     }
 
     /**
