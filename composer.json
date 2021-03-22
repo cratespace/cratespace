@@ -1,7 +1,7 @@
 {
     "name": "cratespace/cratespace",
     "type": "project",
-    "description": "A Freight sales platform.",
+    "description": "A freight sales platform.",
     "keywords": [
         "saas",
         "freight",
@@ -14,7 +14,7 @@
         "php": "^7.4|^8.0",
         "ext-intl": "*",
         "cratespace/preflight": "^3.4",
-        "cratespace/sentinel": "^2.0.1",
+        "cratespace/sentinel": "^2.7.1",
         "fideloper/proxy": "^4.4",
         "fruitcake/laravel-cors": "^2.0",
         "guzzlehttp/guzzle": "^7.0.1",
