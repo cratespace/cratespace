@@ -20,19 +20,11 @@ class CreateNewUser implements CreatesNewUsers
     public function create(array $data): AuthenticatableUser
     {
         return tap($this->createUser($data), function (User $user) use ($data) {
-            if (isset($data['type']) && $data['type'] === 'business') {
-                $user->createAsBusiness($data);
+            ($business = $this->isForBusiness($data))
+                ? $user->createAsBusiness($data)
+                : $user->createAsCustomer($data);
 
-                $user->assignRole('Business');
-
-                return $user;
-            }
-
-            $user->createAsCustomer($data);
-
-            $user->assignRole('Customer');
-
-            return $user;
+            $user->assignRole($business ? 'Business' : 'Customer');
         });
     }
 
@@ -52,6 +44,18 @@ class CreateNewUser implements CreatesNewUsers
             'password' => Hash::make($data['password']),
             'settings' => $this->setDefaultSettings(),
         ]);
+    }
+
+    /**
+     * Determine if the user is a business user or a customer.
+     *
+     * @param array $data
+     *
+     * @return bool
+     */
+    protected function isForBusiness(array $data): bool
+    {
+        return isset($data['type']) && $data['type'] === 'business';
     }
 
     /**
