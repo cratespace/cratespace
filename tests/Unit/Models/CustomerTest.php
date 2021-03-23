@@ -4,7 +4,6 @@ namespace Tests\Unit\Models;
 
 use Tests\TestCase;
 use App\Models\User;
-use App\Facades\Stripe;
 use App\Models\Customer;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use App\Services\Stripe\Customer as StripeCustomer;
@@ -32,9 +31,8 @@ class CustomerTest extends TestCase
             'stripe_id' => $stripeCustomer->id,
         ]);
 
-        $this->assertEquals($stripeCustomer->id, $customer->details()->id);
+        $this->assertEquals($stripeCustomer->id, $customer->details->id);
 
-        $deletable = new StripeCustomer($stripeCustomer);
-        $deletable->delete();
+        $customer->details->delete();
     }
 }

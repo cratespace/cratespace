@@ -4,6 +4,7 @@ namespace App\Services\Stripe;
 
 use App\Facades\Stripe;
 use Stripe\ApiResource;
+use Illuminate\Support\Collection;
 use Stripe\Service\AbstractService;
 use Symfony\Component\Translation\Exception\InvalidResourceException;
 
@@ -40,10 +41,40 @@ abstract class Resource
     public function __construct($resource)
     {
         if (is_string($resource)) {
-            $resource = static::get($resource);
+            $resource = static::getStripeObject($resource);
         }
 
         $this->resource = $resource;
+    }
+
+    /**
+     * Get all resource objects as list.
+     *
+     * @param array $filters
+     *
+     * @return \Illuminate\Support\Collection
+     */
+    public static function all(array $filters = null): Collection
+    {
+        $data = static::createService()->all($filters)->data;
+
+        if (empty($data)) {
+            return collect([]);
+        }
+
+        return collect($data)->map(fn ($resource) => new static($resource));
+    }
+
+    /**
+     * Get the specified Stripe resource.
+     *
+     * @param string $id
+     *
+     * @return \App\Services\Stripe\Resource
+     */
+    public static function get(string $id): Resource
+    {
+        return new static(static::getStripeObject($id));
     }
 
     /**
@@ -53,7 +84,7 @@ abstract class Resource
      *
      * @return \Stripe\ApiResource
      */
-    public static function get(string $id): ApiResource
+    public static function getStripeObject(string $id): ApiResource
     {
         return static::createService()->retrieve($id);
     }

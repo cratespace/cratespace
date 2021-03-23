@@ -24,6 +24,13 @@ class Customer extends Model
     ];
 
     /**
+     * The accessors to append to the model's array form.
+     *
+     * @var array
+     */
+    protected $appends = ['details'];
+
+    /**
      * Get the user this profile belongs to.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
@@ -38,7 +45,7 @@ class Customer extends Model
      *
      * @return \App\Services\Stripe\Customer
      */
-    public function details(): StripeCustomer
+    public function getDetailsAttribute(): StripeCustomer
     {
         return new StripeCustomer($this->stripe_id);
     }

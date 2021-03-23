@@ -7,6 +7,7 @@ use App\Models\Business;
 use App\Models\Customer;
 use Illuminate\Support\Str;
 use Cratespace\Preflight\Models\Role;
+use App\Services\Stripe\Customer as StripeCustomer;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class UserFactory extends Factory
@@ -77,12 +78,18 @@ class UserFactory extends Factory
         return $this->has(
             Customer::factory()
                 ->state(function (array $attributes, User $user) {
+                    $customer = StripeCustomer::create([
+                        'name' => $user->name,
+                        'email' => $user->email,
+                        'phone' => $user->phone,
+                    ]);
+
                     $user->assignRole(
                         Role::firstOrCreate(['name' => 'Customer', 'slug' => 'customer'])
                     );
 
                     return [
-                        'stripe_id' => Str::random(40),
+                        'stripe_id' => $customer->id,
                         'user_id' => $user->id,
                     ];
                 }),

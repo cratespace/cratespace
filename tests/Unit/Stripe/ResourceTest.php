@@ -20,6 +20,8 @@ class ResourceTest extends TestCase
 
     public function testDynamicallyGetResourceAttributesAndServices()
     {
+        $this->withoutExceptionHandling();
+
         try {
             new StripeResourceStub('id');
         } catch (Throwable $e) {
