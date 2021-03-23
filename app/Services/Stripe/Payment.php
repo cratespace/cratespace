@@ -15,7 +15,7 @@ class Payment extends Resource implements PaymentContract
      *
      * @var string
      */
-    protected static $index = 'paymentIntent';
+    protected static $index = 'paymentIntents';
 
     /**
      * Resource specific attributes.

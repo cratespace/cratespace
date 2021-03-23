@@ -2,6 +2,7 @@
 
 namespace App\Services\Stripe;
 
+use App\Support\Money;
 use App\Facades\Stripe;
 use Stripe\ApiResource;
 use Illuminate\Support\Collection;
@@ -161,6 +162,18 @@ abstract class Resource
     public function refresh(): void
     {
         $this->resource = static::get($this->id);
+    }
+
+    /**
+     * Format the given amount into a displayable currency.
+     *
+     * @param int $amount
+     *
+     * @return string
+     */
+    protected function formatAmount(int $amount): string
+    {
+        return Money::format($amount);
     }
 
     /**
