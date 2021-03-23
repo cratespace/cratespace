@@ -20,7 +20,7 @@ return [
     ],
 
     /*
-     * Use Registration Validation Rules.
+     * Customer Registration Validation Rules.
      */
     'register' => [
         'name' => ['required', 'string', 'max:255'],
@@ -35,6 +35,26 @@ return [
         ],
         'password' => ['required', 'string', new PasswordRule()],
         'type' => ['sometimes', 'string', Rule::in(['business', 'customer'])],
+    ],
+
+    /*
+     * Business User Input Validation Rules.
+     */
+    'business' => [
+        'registration_number' => ['required', 'string', 'max:255'],
+        'mcc' => ['required', 'string', 'max:255'],
+        'url' => ['required', 'url', 'string', 'max:255'],
+        'invite' => ['sometimes', 'accepted'],
+    ],
+
+    /*
+     * Address Inputs Validation Rules.
+     */
+    'address' => [
+        'line1' => ['required', 'string', 'max:255'],
+        'city' => ['required', 'string', 'max:255'],
+        'state' => ['required', 'string', 'max:255'],
+        'country' => ['required', 'string', 'max:255'],
     ],
 
     /*
@@ -61,6 +81,9 @@ return [
         ],
     ],
 
+    /*
+     * Business Invitaion Parameters Validation Rules.
+     */
     'invitation' => [
         'email' => ['required', 'email', 'unique:invitations,email'],
         'role' => ['required', 'string', Rule::in(['Business', 'Administrator'])],

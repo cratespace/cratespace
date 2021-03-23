@@ -2,17 +2,27 @@
 
 namespace Tests\Unit\Models;
 
-use PHPUnit\Framework\TestCase;
+use Tests\TestCase;
+use App\Models\User;
+use App\Models\Business;
+use App\Models\Values\Profile;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class BusinessTest extends TestCase
 {
-    /**
-     * A basic unit test example.
-     *
-     * @return void
-     */
-    public function test_example()
+    use RefreshDatabase;
+
+    public function testBelongsToUser()
     {
-        $this->assertTrue(true);
+        $business = create(Business::class);
+
+        $this->assertInstanceOf(User::class, $business->user);
+    }
+
+    public function testBusinessProfileCastsAsArrayObject()
+    {
+        $business = create(Business::class);
+
+        $this->assertInstanceOf(Profile::class, $business->business_profile);
     }
 }

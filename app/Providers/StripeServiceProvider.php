@@ -7,6 +7,7 @@ use App\Services\Stripe\Client;
 use App\Services\Stripe\Logger;
 use Stripe\Util\LoggerInterface;
 use Illuminate\Support\ServiceProvider;
+use App\Contracts\Services\Client as ClientContract;
 
 class StripeServiceProvider extends ServiceProvider
 {
@@ -79,7 +80,7 @@ class StripeServiceProvider extends ServiceProvider
             return $client;
         });
 
-        $this->app->singleton(Client::class, function ($app) {
+        $this->app->singleton(ClientContract::class, function ($app) {
             return $app->make('stripe.client');
         });
     }

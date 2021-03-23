@@ -46,6 +46,7 @@ class CreateNewUser implements CreatesNewUsers
             'username' => Util::makeUsername($data['name']),
             'password' => Hash::make($data['password']),
             'settings' => $this->setDefaultSettings(),
+            'locked' => $data['type'] === 'customer' ? false : true,
         ]);
     }
 

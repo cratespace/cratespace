@@ -116,7 +116,7 @@ class Client implements ClientContract
     public function __call(string $name, array $arguments)
     {
         try {
-            $stripe = $this->app->make(self::class)->stripe();
+            $stripe = $this->app->make(ClientContract::class)->stripe();
 
             if (! empty($arguments)) {
                 return $stripe->{$name}($arguments);

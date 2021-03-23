@@ -2,8 +2,8 @@
 
 namespace App\Models;
 
+use App\Models\Casts\ProfileCast;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Casts\AsArrayObject;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Cratespace\Sentinel\Models\Traits\HasProfilePhoto;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -37,7 +37,7 @@ class Business extends Model
      * @var array
      */
     protected $casts = [
-        'business_profile' => AsArrayObject::class,
+        'business_profile' => ProfileCast::class,
     ];
 
     /**

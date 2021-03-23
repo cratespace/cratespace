@@ -4,6 +4,8 @@ namespace App\Models\Concerns;
 
 use App\Support\Util;
 use App\Models\Business;
+use App\Models\Invitation;
+use App\Exceptions\UserAlreadyOnboard;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
 trait ManagesBusiness
@@ -34,6 +36,42 @@ trait ManagesBusiness
                 'url' => $data['url'] ?? null,
             ],
         ]);
+    }
+
+    /**
+     * Invite the business user to Cratesapce.
+     *
+     * @return \App\Models\Invitation
+     *
+     * @throws \App\Exceptions\UserAlreadyOnboard
+     */
+    public function invite(): Invitation
+    {
+        if ($this->invited()) {
+            throw new UserAlreadyOnboard('This user has already been invited.');
+        }
+
+        return $this->invitation()->create(['email' => $this->email]);
+    }
+
+    /**
+     * Determine wether the user has already been invited.
+     *
+     * @return bool
+     */
+    public function invited(): bool
+    {
+        return $this->invitation->exists() || $this->invitation->accepted;
+    }
+
+    /**
+     * Get the invitation sent to the business user.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function invitation(): HasOne
+    {
+        return $this->hasOne(Invitation::class, 'user_id');
     }
 
     /**
