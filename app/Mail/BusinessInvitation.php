@@ -2,23 +2,34 @@
 
 namespace App\Mail;
 
+use App\Models\Invitation;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
+use Illuminate\Support\Facades\URL;
 use Illuminate\Queue\SerializesModels;
 
 class BusinessInvitation extends Mailable
 {
-    use Queueable, SerializesModels;
+    use Queueable;
+    use SerializesModels;
+
+    /**
+     * The business invitation instance.
+     *
+     * @var \App\Models\Invitation
+     */
+    public $invitation;
 
     /**
      * Create a new message instance.
      *
+     * @param \App\Models\Invitation $invitation
+     *
      * @return void
      */
-    public function __construct()
+    public function __construct(Invitation $invitation)
     {
-        //
+        $this->invitation = $invitation;
     }
 
     /**
@@ -28,6 +39,13 @@ class BusinessInvitation extends Mailable
      */
     public function build()
     {
-        return $this->view('view.name');
+        return $this->markdown(
+            'emails.business.business-invitation',
+            [
+                'acceptUrl' => URL::signedRoute('invitations.accept', [
+                    'invitation' => $this->invitation,
+                ]),
+            ]
+        )->subject(__('Business Invitation'));
     }
 }

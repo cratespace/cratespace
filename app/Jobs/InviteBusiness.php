@@ -4,6 +4,7 @@ namespace App\Jobs;
 
 use App\Models\User;
 use Illuminate\Bus\Queueable;
+use App\Events\BusinessInvited;
 use App\Exceptions\UserAlreadyOnboard;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
@@ -45,7 +46,9 @@ class InviteBusiness implements ShouldQueue
     public function handle(InviteBusinessAction $action)
     {
         try {
-            $action->invite($this->user);
+            $invitation = $action->invite($this->user);
+
+            BusinessInvited::dispatch($invitation);
         } catch (UserAlreadyOnboard $e) {
             $this->fail($e);
         }
