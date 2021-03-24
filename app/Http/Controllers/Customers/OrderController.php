@@ -31,7 +31,7 @@ class OrderController extends Controller
      */
     public function store(PurchaseRequest $request, Product $product, MakesPurchases $purchaser)
     {
-        $order = $purchaser->purchase($product, $request->details());
+        $order = $purchaser->purchase($product, $request->validated());
 
         if ($order === false) {
             return PurchaseFailedResponse::dispatch();

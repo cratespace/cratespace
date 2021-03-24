@@ -64,6 +64,7 @@ return [
         'name' => ['required', 'string', 'max:255'],
         'username' => ['required', 'string', 'max:255'],
         'email' => ['required', 'string', 'email'],
+        'phone' => ['sometimes', 'string', 'regex:/(0)[0-9]{9}/'],
         'photo' => ['nullable', 'image', 'mimes:jpg,jpeg,png', 'max:1024'],
     ],
 
@@ -87,5 +88,41 @@ return [
     'invitation' => [
         'email' => ['required', 'email', 'unique:invitations,email'],
         'role' => ['required', 'string', Rule::in(['Business', 'Administrator'])],
+    ],
+
+    /*
+     * Create/Update Space Details Validation Rules...
+     */
+    'space' => [
+        'code' => ['nullable', 'string', 'max:255', 'unique:spaces,code'],
+        'height' => ['required', 'integer'],
+        'width' => ['required', 'integer'],
+        'length' => ['required', 'integer'],
+        'weight' => ['required', 'integer'],
+        'price' => ['required', 'numeric', 'regex:/^\d+(\.\d{1,2})?$/'],
+        'tax' => ['nullable', 'numeric', 'regex:/^\d+(\.\d{1,2})?$/'],
+        'origin' => ['required', 'string'],
+        'destination' => ['required', 'string'],
+        'departs_at' => ['required', 'date'],
+        'arrives_at' => ['required', 'date', 'after:departs_at'],
+        'note' => ['nullable', 'string'],
+        'type' => [
+            'required', 'string',
+            Rule::in(['Local', 'International']),
+        ],
+        'base' => ['sometimes', 'string'],
+    ],
+
+    /*
+     * Purchase (purchase space) Validation Rules...
+     */
+    'order' => [
+        'name' => ['required', 'string', 'max:255'],
+        'email' => ['required', 'string', 'email'],
+        'phone' => ['sometimes', 'string', 'regex:/(0)[0-9]{9}/'],
+        'business' => ['sometimes', 'string', 'max:255'],
+        'payment_method' => ['required', 'string'],
+        'purchase_token' => ['required', 'string'],
+        'customer' => ['required', 'string'],
     ],
 ];

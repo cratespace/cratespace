@@ -2,10 +2,18 @@
 
 namespace App\Providers;
 
+use App\Models\Space;
+use App\Events\OrderPlaced;
+use App\Events\OrderCanceled;
+use App\Events\PaymentFailed;
+use App\Listeners\MakePayout;
+use App\Events\ProductReleased;
+use App\Events\ProductReserved;
+use App\Observers\SpaceObserver;
+use App\Events\PaymentSuccessful;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
-use Illuminate\Support\Facades\Event;
 
 class EventServiceProvider extends ServiceProvider
 {
@@ -18,6 +26,28 @@ class EventServiceProvider extends ServiceProvider
         Registered::class => [
             SendEmailVerificationNotification::class,
         ],
+
+        PaymentSuccessful::class => [
+            MakePayout::class,
+        ],
+
+        PaymentFailed::class => [],
+        PaymentRefunded::class => [],
+
+        ProductReserved::class => [],
+        ProductReleased::class => [],
+
+        OrderPlaced::class => [],
+        OrderCanceled::class => [],
+    ];
+
+    /**
+     * All model observers to be registered.
+     *
+     * @var array
+     */
+    protected $observers = [
+        // Space::class => SpaceObserver::class,
     ];
 
     /**
@@ -27,6 +57,18 @@ class EventServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+        $this->registerObservers();
+    }
+
+    /**
+     * Programmatically register model observers.
+     *
+     * @return void
+     */
+    public function registerObservers(): void
+    {
+        foreach ($this->observers as $model => $observer) {
+            $model::observe($observer);
+        }
     }
 }

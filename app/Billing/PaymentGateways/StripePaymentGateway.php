@@ -5,7 +5,10 @@ namespace App\Billing\PaymentGateways;
 use Throwable;
 use App\Support\Money;
 use App\Facades\Stripe;
+use App\Events\PaymentFailed;
+use InvalidArgumentException;
 use App\Services\Stripe\Payment;
+use App\Events\PaymentSuccessful;
 use App\Services\Stripe\Customer;
 use Illuminate\Support\Facades\Auth;
 use App\Exceptions\InvalidCustomerException;
@@ -23,11 +26,11 @@ class StripePaymentGateway extends PaymentGateway
      */
     public function charge(int $amount, array $details, ?array $options = null)
     {
-        $customer = $this->getCustomer();
+        $customer = $this->getCustomer($details);
 
         try {
             $payment = Payment::create([
-                'amount' => $amount,
+                'amount' => (int) $amount,
                 'currency' => Money::preferredCurrency(),
                 'customer' => $customer->id,
                 'payment_method' => $details['payment_method'],
@@ -36,10 +39,14 @@ class StripePaymentGateway extends PaymentGateway
                 'metadata' => [
                     'product' => $this->getProductDetails($details),
                 ],
-                'confirm' => $details['confirm'] ?? true,
+                'confirm' => (bool) $details['confirm'] ?? true,
             ], $options);
         } catch (Throwable $e) {
             Stripe::logger()->error($e->getMessage());
+
+            PaymentFailed::dispatch(array_merge($details, [
+                'context' => $e->getMessage(),
+            ]));
 
             return false;
         }
@@ -48,6 +55,8 @@ class StripePaymentGateway extends PaymentGateway
 
         if ($payment->isSucceeded()) {
             $this->successful = true;
+
+            PaymentSuccessful::dispatch($payment);
         }
 
         return $payment;
@@ -58,13 +67,12 @@ class StripePaymentGateway extends PaymentGateway
      *
      * @return \App\Services\Stripe\Customer
      */
-    public function getCustomer(): Customer
+    public function getCustomer(array $details): Customer
     {
-        $user = Auth::user();
-        $stripeId = $user->profile->stripe_id;
+        $stripeId = $details['customer'] ?? Auth::user()->customerId();
 
         if (is_null($stripeId)) {
-            throw new InvalidCustomerException("Customer [{$user->name}] is not a valid Stripe customer.");
+            throw new InvalidCustomerException('User is not a valid Stripe customer');
         }
 
         return new Customer($stripeId);
@@ -80,11 +88,9 @@ class StripePaymentGateway extends PaymentGateway
     public function getProductDetails(array $details): array
     {
         if (! isset($details['product'])) {
-            throw new InvalidArgumentException('Product ID not set.');
+            throw new InvalidArgumentException('Product details not set');
         }
 
-        $product = Space::find($details['product']);
-
-        return $product->toArray();
+        return $details['product'];
     }
 }

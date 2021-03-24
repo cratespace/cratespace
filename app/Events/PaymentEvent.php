@@ -2,33 +2,34 @@
 
 namespace App\Events;
 
-use App\Models\Invitation;
+use App\Models\Business;
+use App\Contracts\Billing\Payment;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Broadcasting\InteractsWithSockets;
 
-class BusinessInvited
+class PaymentEvent
 {
     use Dispatchable;
     use InteractsWithSockets;
     use SerializesModels;
 
     /**
-     * The business invitation instance.
+     * The instance of the payment.
      *
-     * @var \App\Models\Invitation
+     * @var \App\Contracts\Billing\Payment
      */
-    public $invitation;
+    public $payment;
 
     /**
      * Create a new event instance.
      *
-     * @param \App\Models\Invitation $invitation
+     * @param \App\Contracts\Billing\Payment $payment
      *
      * @return void
      */
-    public function __construct(Invitation $invitation)
+    public function __construct(?Payment $payment = null)
     {
-        $this->invitation = $invitation;
+        $this->payment = $payment;
     }
 }
