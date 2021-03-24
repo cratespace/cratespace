@@ -6,7 +6,6 @@ use Tests\TestCase;
 use App\Services\Stripe\Customer;
 use App\Services\Stripe\Resource;
 use Illuminate\Support\Collection;
-use Stripe\Customer as StripeCustomer;
 
 class CustomerTest extends TestCase
 {
@@ -18,7 +17,7 @@ class CustomerTest extends TestCase
             'phone' => $this->faker->phoneNumber,
         ]);
 
-        $this->assertInstanceOf(StripeCustomer::class, $customer);
+        $this->assertInstanceOf(Customer::class, $customer);
 
         $deletable = new Customer($customer);
         $deletable->delete();
