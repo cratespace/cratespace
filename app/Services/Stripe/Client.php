@@ -106,6 +106,16 @@ class Client implements ClientContract
     }
 
     /**
+     * Get shared instance of Stripe client,.
+     *
+     * @return \App\Contracts\Services\Client
+     */
+    protected function getInstane(): ClientContract
+    {
+        return $this->app->make(ClientContract::class);
+    }
+
+    /**
      * Dynamically get Stripe client services.
      *
      * @param mixed $name
@@ -115,9 +125,9 @@ class Client implements ClientContract
      */
     public function __call(string $name, array $arguments)
     {
-        try {
-            $stripe = $this->app->make(ClientContract::class)->stripe();
+        $stripe = $this->getInstane()->stripe();
 
+        try {
             if (! empty($arguments)) {
                 return $stripe->{$name}($arguments);
             }

@@ -95,11 +95,13 @@ abstract class Resource
      *
      * @param array $data
      *
-     * @return \Stripe\ApiResource
+     * @return \App\Services\Stripe\Resource
      */
-    public static function create(array $data): ApiResource
+    public static function create(array $data): Resource
     {
-        return static::createService()->create(static::fillable($data));
+        return new static(
+            static::createService()->create(static::fillable($data))
+        );
     }
 
     /**
