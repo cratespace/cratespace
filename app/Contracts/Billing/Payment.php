@@ -24,4 +24,11 @@ interface Payment
      * @return bool
      */
     public function paid(): bool;
+
+    /**
+     * Get payment details.
+     *
+     * @return array
+     */
+    public function details(): array;
 }
