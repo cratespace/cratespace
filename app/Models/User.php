@@ -4,7 +4,6 @@ namespace App\Models;
 
 use App\Models\Casts\AddressCast;
 use App\Models\Casts\SettingsCast;
-use App\Models\Concerns\HasProducts;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Concerns\ManagesBusiness;
 use App\Models\Concerns\ManagesCustomer;
@@ -28,7 +27,6 @@ class User extends Authenticatable
     use HasProfilePhoto;
     use InteractsWithSessions;
     use TwoFactorAuthenticatable;
-    use HasProducts;
 
     /**
      * The attributes that are mass assignable.
