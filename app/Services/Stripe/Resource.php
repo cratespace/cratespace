@@ -143,6 +143,16 @@ abstract class Resource
     }
 
     /**
+     * Get the instance as an array.
+     *
+     * @return array
+     */
+    public function toArray()
+    {
+        return static::getStripeObject($this->id)->toArray();
+    }
+
+    /**
      * Filter out only allowable attributes of the resource.
      *
      * @param array $data

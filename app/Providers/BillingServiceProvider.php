@@ -4,7 +4,9 @@ namespace App\Providers;
 
 use App\Actions\Customer\MakePurchase;
 use Illuminate\Support\ServiceProvider;
+use App\Actions\Product\CreateNewProduct;
 use App\Contracts\Actions\MakesPurchases;
+use App\Contracts\Actions\CreatesNewResources;
 use App\Billing\PaymentGateways\PaymentGateway;
 use Cratespace\Sentinel\Providers\Traits\HasActions;
 use App\Billing\PaymentGateways\StripePaymentGateway;
@@ -20,6 +22,7 @@ class BillingServiceProvider extends ServiceProvider
      */
     protected $actions = [
         MakesPurchases::class => MakePurchase::class,
+        CreatesNewResources::class => CreateNewProduct::class,
     ];
 
     /**

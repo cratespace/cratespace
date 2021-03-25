@@ -49,4 +49,14 @@ class Customer extends Model
     {
         return new StripeCustomer($this->stripe_id);
     }
+
+    /**
+     * Get the user account the customer profile belongs to.
+     *
+     * @return \App\Models\User
+     */
+    public function account()
+    {
+        return $this->user;
+    }
 }

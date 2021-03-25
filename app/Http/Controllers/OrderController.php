@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Space;
+use App\Models\Order;
 use Illuminate\Http\Request;
 
-class SpaceController extends Controller
+class OrderController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -41,10 +41,10 @@ class SpaceController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Space  $space
+     * @param  \App\Models\Order  $order
      * @return \Illuminate\Http\Response
      */
-    public function show(Space $space)
+    public function show(Order $order)
     {
         //
     }
@@ -52,10 +52,10 @@ class SpaceController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Space  $space
+     * @param  \App\Models\Order  $order
      * @return \Illuminate\Http\Response
      */
-    public function edit(Space $space)
+    public function edit(Order $order)
     {
         //
     }
@@ -64,10 +64,10 @@ class SpaceController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Space  $space
+     * @param  \App\Models\Order  $order
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Space $space)
+    public function update(Request $request, Order $order)
     {
         //
     }
@@ -75,10 +75,10 @@ class SpaceController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Space  $space
+     * @param  \App\Models\Order  $order
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Space $space)
+    public function destroy(Order $order)
     {
         //
     }

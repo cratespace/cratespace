@@ -2,7 +2,9 @@
 
 namespace App\Contracts\Billing;
 
-interface Payment
+use Illuminate\Contracts\Support\Arrayable;
+
+interface Payment extends Arrayable
 {
     /**
      * Get the total amount that will be paid.
@@ -24,11 +26,4 @@ interface Payment
      * @return bool
      */
     public function paid(): bool;
-
-    /**
-     * Get payment details.
-     *
-     * @return array
-     */
-    public function details(): array;
 }

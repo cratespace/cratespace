@@ -5,6 +5,27 @@ namespace App\Contracts\Billing;
 interface Product
 {
     /**
+     * Get the owner of the product.
+     *
+     * @return mixed
+     */
+    public function merchant();
+
+    /**
+     * Reserve product for customer.
+     *
+     * @return void
+     */
+    public function reserve(): void;
+
+    /**
+     * Release space from order.
+     *
+     * @return void
+     */
+    public function release(): void;
+
+    /**
      * Get full price of product in integer value.
      *
      * @return int

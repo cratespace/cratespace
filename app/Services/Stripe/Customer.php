@@ -2,6 +2,9 @@
 
 namespace App\Services\Stripe;
 
+use App\Models\User;
+use App\Models\Customer as NativeCustomer;
+
 class Customer extends Resource
 {
     /**
@@ -26,4 +29,16 @@ class Customer extends Resource
         'payment_method',
         'address',
     ];
+
+    /**
+     * Get the native user ID of the customer.
+     *
+     * @param string $id
+     *
+     * @return \App\Models\User
+     */
+    public static function native(string $id): User
+    {
+        return NativeCustomer::where('stripe_id', $id)->account();
+    }
 }
