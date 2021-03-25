@@ -2,7 +2,6 @@
 
 namespace App\Models\Concerns;
 
-use App\Support\Util;
 use App\Models\Business;
 use App\Models\Invitation;
 use App\Exceptions\UserAlreadyOnboard;
@@ -26,7 +25,6 @@ trait ManagesBusiness
             'email' => $data['email'],
             'phone' => $data['phone'],
             'registration_number' => $data['registration_number'],
-            'country' => Util::alpha2($data['country']),
             'business_type' => 'company',
             'business_profile' => [
                 'name' => $data['business'],

@@ -29,7 +29,6 @@ class BusinessFactory extends Factory
             'email' => $this->faker->email,
             'phone' => $this->faker->phoneNumber,
             'registration_number' => rand(10000, 100000),
-            'country' => $this->faker->country,
             'business_type' => 'company',
             'business_profile' => [
                 'name' => $name,

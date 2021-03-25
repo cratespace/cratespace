@@ -2,8 +2,8 @@
 
 namespace App\Http\Responses;
 
-use Cratespace\Sentinel\Http\Responses\Response;
 use Illuminate\Contracts\Support\Responsable;
+use Cratespace\Sentinel\Http\Responses\Response;
 
 class SpaceResponse extends Response implements Responsable
 {
@@ -16,6 +16,14 @@ class SpaceResponse extends Response implements Responsable
      */
     public function toResponse($request)
     {
-        return $request->expectsJson() ? $this->json() : $this->redirectTo('/');
+        if (is_null($this->content)) {
+            return $request->expectsJson()
+                ? $this->json('', 204)
+                : $this->redirectToRoute('spaces.index', [], 303);
+        }
+
+        return $request->expectsJson()
+            ? $this->json($this->content, $request->method() === 'PUT' ? 200 : 201)
+            : $this->redirectTo($this->content->path, 303);
     }
 }

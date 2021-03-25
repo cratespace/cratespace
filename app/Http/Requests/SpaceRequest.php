@@ -3,9 +3,14 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Cratespace\Sentinel\Http\Requests\Concerns\AuthorizesRequests;
+use Cratespace\Sentinel\Http\Requests\Traits\InputValidationRules;
 
 class SpaceRequest extends FormRequest
 {
+    use AuthorizesRequests;
+    use InputValidationRules;
+
     /**
      * Determine if the user is authorized to make this request.
      *
@@ -13,7 +18,11 @@ class SpaceRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        if ($this->route('space')) {
+            return $this->isAllowed('manage', $this->space);
+        }
+
+        return $this->isAuthenticated();
     }
 
     /**
@@ -23,8 +32,6 @@ class SpaceRequest extends FormRequest
      */
     public function rules()
     {
-        return [
-            //
-        ];
+        return $this->getRulesFor('space');
     }
 }

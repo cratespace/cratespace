@@ -18,7 +18,6 @@ class CreateBusinessesTable extends Migration
             $table->string('name');
             $table->string('email')->unique();
             $table->string('phone');
-            $table->string('country');
             $table->text('profile_photo_path')->nullable();
             $table->string('registration_number')->unique();
             $table->string('type')->default('standard');

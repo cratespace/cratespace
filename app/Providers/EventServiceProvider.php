@@ -47,7 +47,7 @@ class EventServiceProvider extends ServiceProvider
      * @var array
      */
     protected $observers = [
-        // Space::class => SpaceObserver::class,
+        Space::class => SpaceObserver::class,
     ];
 
     /**
