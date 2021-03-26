@@ -5,7 +5,7 @@ namespace App\Http\Middleware;
 use Closure;
 use Illuminate\Http\Request;
 
-class FormatPrice
+class FormatChargeAmount
 {
     /**
      * List of acceptable monetary value fields.
