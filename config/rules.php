@@ -41,10 +41,20 @@ return [
      * Business User Input Validation Rules.
      */
     'business' => [
-        'registration_number' => ['required', 'string', 'max:255'],
-        'mcc' => ['required', 'string', 'max:255'],
-        'url' => ['required', 'url', 'string', 'max:255'],
-        'invite' => ['sometimes', 'accepted'],
+        'registration_number' => [
+            'required',
+            'string',
+            'max:255',
+            'unique:businesses,registration_number',
+        ],
+        'mcc' => [
+            'required',
+            'string',
+            'max:255',
+            'unique:businesses,mcc',
+        ],
+        'url' => ['sometimes', 'url', 'string', 'max:255'],
+        'invite' => ['sometimes'],
     ],
 
     /*
@@ -55,6 +65,7 @@ return [
         'city' => ['required', 'string', 'max:255'],
         'state' => ['required', 'string', 'max:255'],
         'country' => ['required', 'string', 'max:255'],
+        'postcode' => ['required', 'string', 'max:255'],
     ],
 
     /*
@@ -87,7 +98,11 @@ return [
      */
     'invitation' => [
         'email' => ['required', 'email', 'unique:invitations,email'],
-        'role' => ['required', 'string', Rule::in(['Business', 'Administrator'])],
+        'role' => [
+            'required',
+            'string',
+            Rule::in(['Business', 'Administrator']),
+        ],
     ],
 
     /*

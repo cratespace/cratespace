@@ -2,9 +2,8 @@
 
 namespace App\Jobs;
 
-use Throwable;
 use Illuminate\Bus\Queueable;
-use App\Contracts\Purchases\Order;
+use App\Contracts\Billing\Order;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -44,6 +43,10 @@ class CancelOrder implements ShouldQueue
      */
     public function handle(CancelOrderAction $action)
     {
-        $action->cancel($this->order);
+        try {
+            $action->cancel($this->order);
+        } catch (Throwable $e) {
+            $this->fail($e);
+        }
     }
 }

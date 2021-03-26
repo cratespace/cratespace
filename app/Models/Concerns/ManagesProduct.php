@@ -23,16 +23,6 @@ trait ManagesProduct
     }
 
     /**
-     * Get the order details of the space.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasOne
-     */
-    public function order(): HasOne
-    {
-        return $this->hasOne(Order::class, 'product_id');
-    }
-
-    /**
      * Reserve product for customer.
      *
      * @return void
