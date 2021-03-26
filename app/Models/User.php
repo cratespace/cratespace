@@ -9,6 +9,7 @@ use App\Models\Concerns\ManagesBusiness;
 use App\Models\Concerns\ManagesCustomer;
 use Illuminate\Notifications\Notifiable;
 use Cratespace\Sentinel\Models\Traits\HasApiTokens;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Cratespace\Preflight\Models\Concerns\ManagesRoles;
 use Cratespace\Sentinel\Models\Traits\HasProfilePhoto;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -91,6 +92,16 @@ class User extends Authenticatable
     protected $with = ['roles'];
 
     /**
+     * Get the route key for the model.
+     *
+     * @return string
+     */
+    public function getRouteKeyName(): string
+    {
+        return 'username';
+    }
+
+    /**
      * Get the user's profile.
      *
      * @return \Illuminate\Database\Eloquent\Model
@@ -98,5 +109,15 @@ class User extends Authenticatable
     public function getProfileAttribute(): Model
     {
         return $this->hasRole('Business') ? $this->business : $this->customer;
+    }
+
+    /**
+     * Get business details of the user.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function spaces(): HasMany
+    {
+        return $this->hasMany(Space::class, 'user_id');
     }
 }

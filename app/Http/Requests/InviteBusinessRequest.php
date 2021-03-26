@@ -2,15 +2,15 @@
 
 namespace App\Http\Requests;
 
-use Illuminate\Validation\Rule;
+use App\Models\Invitation;
 use Illuminate\Foundation\Http\FormRequest;
 use Cratespace\Sentinel\Http\Requests\Concerns\AuthorizesRequests;
 use Cratespace\Sentinel\Http\Requests\Traits\InputValidationRules;
 
-class BusinessRequest extends FormRequest
+class InviteBusinessRequest extends FormRequest
 {
-    use InputValidationRules;
     use AuthorizesRequests;
+    use InputValidationRules;
 
     /**
      * Determine if the user is authorized to make this request.
@@ -19,7 +19,11 @@ class BusinessRequest extends FormRequest
      */
     public function authorize()
     {
-        return $this->isAllowed('manage', $this->user(), false);
+        if (! $this->route('user')->hasRole('Business')) {
+            return false;
+        }
+
+        return $this->isAllowed('create', new Invitation(), false);
     }
 
     /**
@@ -29,11 +33,6 @@ class BusinessRequest extends FormRequest
      */
     public function rules()
     {
-        return $this->getRulesFor('business', array_merge(
-            $this->getRulesFor('register', [
-                'type' => ['required', 'string', Rule::in(['business'])],
-            ]),
-            $this->getRulesFor('address')
-        ));
+        return $this->getRulesFor('invitation');
     }
 }

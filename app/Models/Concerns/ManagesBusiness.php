@@ -4,6 +4,7 @@ namespace App\Models\Concerns;
 
 use App\Models\Business;
 use App\Models\Invitation;
+use App\Events\BusinessInvited;
 use App\Exceptions\UserAlreadyOnboard;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
@@ -46,10 +47,14 @@ trait ManagesBusiness
     public function invite(): Invitation
     {
         if ($this->invited()) {
-            throw new UserAlreadyOnboard('This user has already been invited.');
+            throw new UserAlreadyOnboard('This user has already been invited');
         }
 
-        return $this->invitation()->create(['email' => $this->email]);
+        $invitation = $this->invitation()->create(['email' => $this->email]);
+
+        BusinessInvited::dispatch($invitation);
+
+        return $invitation;
     }
 
     /**
@@ -59,7 +64,7 @@ trait ManagesBusiness
      */
     public function invited(): bool
     {
-        return $this->invitation->exists() || $this->invitation->accepted;
+        return $this->invitation()->exists() || optional($this->invitation)->accepted;
     }
 
     /**

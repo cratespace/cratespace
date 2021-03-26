@@ -7,6 +7,7 @@ use App\Events\OrderPlaced;
 use App\Events\OrderCanceled;
 use App\Events\PaymentFailed;
 use App\Listeners\MakePayout;
+use App\Events\BusinessInvited;
 use App\Events\ProductReleased;
 use App\Events\ProductReserved;
 use App\Observers\SpaceObserver;
@@ -27,6 +28,8 @@ class EventServiceProvider extends ServiceProvider
             SendEmailVerificationNotification::class,
         ],
 
+        BusinessInvited::class => [],
+
         PaymentSuccessful::class => [
             MakePayout::class,
         ],
@@ -46,7 +49,9 @@ class EventServiceProvider extends ServiceProvider
      *
      * @var array
      */
-    protected $observers = [];
+    protected $observers = [
+        Space::class => SpaceObserver::class,
+    ];
 
     /**
      * Register any events for your application.

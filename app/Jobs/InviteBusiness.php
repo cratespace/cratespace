@@ -4,7 +4,6 @@ namespace App\Jobs;
 
 use App\Models\User;
 use Illuminate\Bus\Queueable;
-use App\Events\BusinessInvited;
 use App\Exceptions\UserAlreadyOnboard;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
@@ -20,16 +19,16 @@ class InviteBusiness implements ShouldQueue
     use SerializesModels;
 
     /**
-     * The invite business action class instance.
+     * The instance of the user being invited.
      *
-     * @var \App\Actions\Business\InviteBusiness
+     * @var \App\Models\User
      */
-    protected $action;
+    protected $user;
 
     /**
      * Create a new job instance.
      *
-     * @param \App\Actions\Business\InviteBusiness $action
+     * @param \App\Models\User $user
      *
      * @return void
      */
@@ -46,9 +45,7 @@ class InviteBusiness implements ShouldQueue
     public function handle(InviteBusinessAction $action)
     {
         try {
-            $invitation = $action->invite($this->user);
-
-            BusinessInvited::dispatch($invitation);
+            $action->invite($this->user);
         } catch (UserAlreadyOnboard $e) {
             $this->fail($e);
         }
