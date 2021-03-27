@@ -3,7 +3,7 @@
         <template #title>
             <div>
                 <div>
-                    <logo :title="config('app.name')" classes="h-16 w-auto text-blue-500"></logo>
+                    <logo :title="config('app.name')" classes="h-16 w-16 text-blue-500"></logo>
                 </div>
 
                 <h4 class="mt-6 font-semibold text-xl text-gray-800">Login to your account</h4>
@@ -42,7 +42,7 @@
 
                 <div class="mt-6">
                     <p>
-                        Don't have an account yet? <app-link :href="route('register')">create account</app-link>.
+                        Don't have an account yet? <app-link :href="route('register')">Create account</app-link>.
                     </p>
                 </div>
             </form>

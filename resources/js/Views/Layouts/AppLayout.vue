@@ -4,7 +4,7 @@
         <header>
             <navbar class="bg-blue-800">
                 <template #logo>
-                    <logo classes="h-8 w-auto text-blue-500" :title="config('app.name')"></logo>
+                    <logo classes="h-8 w-8 text-blue-500" :title="config('app.name')"></logo>
                 </template>
 
                 <template #linksleft>
@@ -52,7 +52,6 @@
 </template>
 
 <script>
-import axios from 'axios';
 import Logo from '@/Views/Components/Logos/Logo';
 import Navbar from '@/Views/Components/Navbars/Navbar';
 import NavbarLink from '@/Views/Components/Navbars/NavbarLink';
@@ -76,7 +75,7 @@ export default {
 
     methods: {
         logout() {
-            this.$inertia.post(this.route('logout'));
+            this.$inertia.post(route('logout'));
         }
     }
 }

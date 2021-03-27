@@ -3,7 +3,7 @@
         <template #title>
             <div>
                 <div>
-                    <logo :title="config('app.name')" classes="h-16 w-auto text-blue-500"></logo>
+                    <logo :title="config('app.name')" classes="h-16 w-16 text-blue-500"></logo>
                 </div>
 
                 <h4 class="mt-6 font-semibold text-xl text-gray-800">Create new account</h4>
@@ -21,6 +21,10 @@
                 </div>
 
                 <div class="mt-6 block">
+                    <app-input type="tel" v-model="form.phone" :error="form.errors.phone" label="Phone number" placeholder="0765895534" required></app-input>
+                </div>
+
+                <div class="mt-6 block">
                     <app-input type="email" v-model="form.email" :error="form.errors.email" label="Email address" placeholder="john.doe@example.com" required></app-input>
                 </div>
 
@@ -28,7 +32,17 @@
                     <app-input type="password" v-model="form.password" :error="form.errors.password" label="Password" placeholder="cattleFarmer1576@!" required></app-input>
                 </div>
 
-                <div class="mt-6 block">
+                <div class="mt-6">
+                    <p class="font-normal text-xs text-gray-400">
+                        By clicking "Create account", you agree to Cratespace's <app-link href="#">Terms of Use</app-link> and acknowledge you have read the <app-link href="#">Privacy Policy</app-link>.
+                    </p>
+                </div>
+
+                <div class="mt-6 flex items-center justify-between">
+                    <app-button href="#" :link="true" mode="secondary">
+                        Request invite
+                    </app-button>
+
                     <app-button type="submit" mode="primary" :class="{ 'opacity-25': form.processing }" :loading="form.processing">
                         Create account <span class="ml-1">&rarr;</span>
                     </app-button>
@@ -36,7 +50,7 @@
 
                 <div class="mt-6">
                     <p>
-                        Already an account? <app-link :href="route('login')">Log in</app-link>
+                        Already have an account? <app-link :href="route('login')">Log in</app-link>
                     </p>
                 </div>
             </form>
@@ -67,7 +81,9 @@ export default {
             form: this.$inertia.form({
                 name: null,
                 email: null,
+                phone: null,
                 password: null,
+                type: 'customer',
                 remember: true
             }),
         }
