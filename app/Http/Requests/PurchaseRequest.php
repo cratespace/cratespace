@@ -60,7 +60,7 @@ class PurchaseRequest extends FormRequest
         try {
             $this->merge([
                 'customer' => $this->user()->customerId(),
-                'product' => $this->route('product')->toArray(),
+                'product' => $this->route('product')->details(),
             ]);
         } catch (Throwable $e) {
             $this->failedAuthorization($e);

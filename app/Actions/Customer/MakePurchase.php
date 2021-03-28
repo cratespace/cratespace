@@ -37,8 +37,8 @@ class MakePurchase implements MakesPurchases
      */
     public function purchase(Product $product, array $details)
     {
-        return $product->placeOrder(
-            $this->paymentGateway->charge($product->fullPrice(), $details)
-        );
+        $payment = $this->paymentGateway->charge($product->fullPrice(), $details);
+
+        return $product->placeOrder($payment);
     }
 }

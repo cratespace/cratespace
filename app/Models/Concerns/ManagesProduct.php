@@ -90,4 +90,14 @@ trait ManagesProduct
             return ! is_null($this->reserved_at) || $this->order()->exists();
         }
     }
+
+    /**
+     * Get the details regarding the product.
+     *
+     * @return array
+     */
+    public function details(): array
+    {
+        return $this->toArray();
+    }
 }
