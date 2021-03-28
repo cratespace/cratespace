@@ -2,12 +2,11 @@
 
 namespace App\Http\Controllers\Business;
 
-use App\Models\Business;
 use App\Jobs\InviteBusiness;
-use Illuminate\Http\Request;
 use App\Actions\Auth\CreateNewUser;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\BusinessRequest;
+use App\Actions\Auth\UpdateUserProfile;
 use App\Http\Responses\BusinessResponse;
 
 class BusinessController extends Controller
@@ -43,12 +42,15 @@ class BusinessController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param \Illuminate\Http\Request $request
-     * @param \App\Models\Business     $business
+     * @param \App\Http\Requests\BusinessRequest  $request
+     * @param \App\Actions\Auth\UpdateUserProfile $updater
      *
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Business $business)
+    public function update(BusinessRequest $request, UpdateUserProfile $updater)
     {
+        $updater->update($user = $request->user(), $request->validated());
+
+        return BusinessResponse::dispatch($user);
     }
 }

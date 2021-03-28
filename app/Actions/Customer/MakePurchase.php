@@ -2,7 +2,6 @@
 
 namespace App\Actions\Customer;
 
-use App\Events\OrderPlaced;
 use App\Contracts\Billing\Product;
 use App\Contracts\Actions\MakesPurchases;
 use App\Billing\PaymentGateways\PaymentGateway;
@@ -38,12 +37,8 @@ class MakePurchase implements MakesPurchases
      */
     public function purchase(Product $product, array $details)
     {
-        $payment = $this->paymentGateway->charge($product->fullPrice(), $details);
-
-        $order = $product->placeOrder($payment);
-
-        OrderPlaced::dispatch($order);
-
-        return $order;
+        return $product->placeOrder(
+            $this->paymentGateway->charge($product->fullPrice(), $details)
+        );
     }
 }

@@ -18,9 +18,35 @@ class AuthenticationTest extends TestCase
         $response->assertStatus(200);
     }
 
-    public function testUsersCanAuthenticateUsingTheLoginScreen()
+    public function testUserCanAuthenticateThroughJson()
     {
         $user = create(User::class);
+
+        $response = $this->postJson('/login', [
+            'email' => $user->email,
+            'password' => 'password',
+        ]);
+
+        $response->assertStatus(200);
+        $this->assertAuthenticated();
+    }
+
+    public function testBusinessUsersCanAuthenticateUsingTheLoginScreen()
+    {
+        $user = User::factory()->asBusiness()->create();
+
+        $response = $this->post('/login', [
+            'email' => $user->email,
+            'password' => 'password',
+        ]);
+
+        $this->assertAuthenticated();
+        $response->assertRedirect(RouteServiceProvider::HOME);
+    }
+
+    public function testCustomerUsersCanAuthenticateUsingTheLoginScreen()
+    {
+        $user = User::factory()->asCustomer()->create();
 
         $response = $this->post('/login', [
             'email' => $user->email,
@@ -41,5 +67,16 @@ class AuthenticationTest extends TestCase
         ]);
 
         $this->assertGuest();
+    }
+
+    public function testCustomersCannotAccessBusinessArea()
+    {
+        $user = User::factory()->asCustomer()->create();
+
+        $this->signIn($user);
+
+        $response = $this->get('/home');
+
+        $response->assertRedirect('/');
     }
 }

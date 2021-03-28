@@ -12,7 +12,7 @@ Route::get('/', function (Request $request) {
 })->name('welcome');
 
 Route::group([
-    'middleware' => ['auth:sentinel', 'auth.business', 'verified'],
+    'middleware' => ['auth:sentinel', 'business', 'verified'],
 ], function (): void {
     Route::get('/home', fn () => Inertia::render('Business/Home'))->name('home');
 

@@ -3,12 +3,12 @@
 namespace App\Models\Concerns;
 
 use Carbon\Carbon;
+use App\Events\OrderPlaced;
 use App\Events\ProductReleased;
 use App\Events\ProductReserved;
 use App\Contracts\Billing\Order;
 use App\Services\Stripe\Customer;
 use App\Contracts\Billing\Payment;
-use Illuminate\Database\Eloquent\Relations\HasOne;
 
 trait ManagesProduct
 {
@@ -73,6 +73,8 @@ trait ManagesProduct
             'amount' => $payment->amount(),
             'details' => $payment->toArray(),
         ]);
+
+        OrderPlaced::dispatch($order);
 
         return $order;
     }

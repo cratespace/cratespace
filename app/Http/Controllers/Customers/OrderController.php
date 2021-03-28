@@ -29,8 +29,11 @@ class OrderController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function store(PurchaseRequest $request, Product $product, MakesPurchases $purchaser)
-    {
+    public function store(
+        PurchaseRequest $request,
+        Product $product,
+        MakesPurchases $purchaser
+    ) {
         $order = $purchaser->purchase($product, $request->validated());
 
         if ($order === false) {

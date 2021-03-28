@@ -2,40 +2,31 @@
 
 namespace App\Http\Controllers\Business;
 
+use App\Models\Payout;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
-class OrderController extends Controller
+class PayoutController extends Controller
 {
     /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-    }
-
-    /**
-     * Update the specified resource in storage.
+     * Store a newly created resource in storage.
      *
      * @param \Illuminate\Http\Request $request
-     * @param int                      $id
      *
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function store(Request $request)
     {
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param int $id
+     * @param \App\Models\Payout $payout
      *
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Payout $payout)
     {
     }
 }

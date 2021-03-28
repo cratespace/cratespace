@@ -2,8 +2,9 @@
 
 namespace App\Actions\Auth;
 
+use App\Models\User;
+use App\Services\Stripe\Customer;
 use Illuminate\Contracts\Auth\Authenticatable;
-use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Cratespace\Sentinel\Contracts\Actions\UpdatesUserProfiles;
 
 class UpdateUserProfile implements UpdatesUserProfiles
@@ -18,34 +19,53 @@ class UpdateUserProfile implements UpdatesUserProfiles
      */
     public function update(Authenticatable $user, array $data): void
     {
-        if (isset($data['photo'])) {
-            $user->updateProfilePhoto($data['photo']);
-        }
-
-        if ($data['email'] !== $user->email && $user instanceof MustVerifyEmail) {
-            $this->updateInformation($user, $data, true);
-
-            $user->sendEmailVerificationNotification();
-        } else {
-            $this->updateInformation($user, $data, false);
-        }
+        $user->hasRole('Customer')
+            ? $this->updateCustomerProfile($user, $data)
+            : $this->updateBusinessProfile($user, $data);
     }
 
     /**
-     * Update the given user's profile information.
+     * Update business user details.
      *
-     * @param \Illuminate\Contracts\Auth\Authenticatable $user
-     * @param array                                      $data
-     * @param bool                                       $verified
+     * @param \App\Models\User $user
+     * @param array            $data
      *
      * @return void
      */
-    protected function updateInformation(Authenticatable $user, array $data, bool $verified = true): void
+    protected function updateBusinessProfile(User $user, array $data): void
     {
-        $user->forceFill(array_merge([
-            'name' => $data['name'],
-            'username' => $data['username'],
+        $user->profile->update([
+            'name' => $data['business'],
             'email' => $data['email'],
-        ], $verified ? ['email_verified_at' => null] : []))->save();
+            'phone' => $data['phone'],
+            'registration_number' => $data['registration_number'],
+            'business_profile' => [
+                'name' => $data['business'],
+                'mcc' => $data['mcc'],
+                'support_phone' => $data['phone'],
+                'support_email' => $data['email'],
+                'url' => $data['url'],
+            ],
+        ]);
+    }
+
+    /**
+     * Update customer profile details.
+     *
+     * @param \App\Models\User $user
+     * @param array            $data
+     *
+     * @return void
+     */
+    protected function updateCustomerProfile(User $user, array $data): void
+    {
+        $customer = new Customer($user->customerId());
+
+        $customer->update([
+            'name' => $data['name'],
+            'email' => $data['email'],
+            'phone' => $data['phone'],
+            'address' => (array) $user->address,
+        ]);
     }
 }
