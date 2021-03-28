@@ -104,9 +104,9 @@ class User extends Authenticatable
     /**
      * Get the user's profile.
      *
-     * @return \Illuminate\Database\Eloquent\Model
+     * @return \Illuminate\Database\Eloquent\Model|null
      */
-    public function getProfileAttribute(): Model
+    public function getProfileAttribute(): ?Model
     {
         return $this->hasRole('Business') ? $this->business : $this->customer;
     }

@@ -23,75 +23,93 @@
                         <template #content>
                             <div>
                                 <div class="flex items-center justify-between">
-                                    <div class="mr-3 flex-1 rounded-xl border border-gray-200 overflow-hidden">
+                                    <label for="origin" class="cursor-pointer relative mr-3 flex-1 rounded-xl border border-gray-200 overflow-hidden cursor-pointer">
                                         <div class="px-4 py-5 bg-white sm:px-6">
                                             <div>
-                                                <span class="text-xs uppercase font-semibold tracking-wide text-gray-500">From</span>
+                                                <span class="text-xs uppercase font-semibold tracking-wide text-gray-400">From</span>
+                                            </div>
+
+                                            <div>
+                                                <div>
+                                                    <div>
+                                                        <span class="text-xl font-bold">
+                                                            {{ origin }}
+                                                        </span>
+                                                    </div>
+
+                                                    <select name="origin" v-model="origin" class="cursor-pointer absolute w-full inset-0 border-none opacity-0">
+                                                        <option value="Colombo">Colombo</option>
+                                                        <option value="Jaffna">Jaffna</option>
+                                                        <option value="Trincomalee">Trincomalee</option>
+                                                    </select>
+                                                </div>
+
+                                                <div>
+                                                    <span class="text-gray-400 text-sm">Sri Lanka</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </label>
+
+                                    <label class="cursor-pointer relative ml-3 flex-1 rounded-xl border border-gray-200 overflow-hidden">
+                                        <div class="px-4 py-5 bg-white sm:px-6">
+                                            <div>
+                                                <span class="text-xs uppercase font-semibold tracking-wide text-gray-400">To</span>
                                             </div>
 
                                             <div>
                                                 <div>
                                                     <span class="text-xl font-bold">
-                                                        Colombo
+                                                        {{ destination }}
                                                     </span>
                                                 </div>
 
                                                 <div>
-                                                    <span class="text-sm">Sri Lanka</span>
+                                                    <span class="text-gray-400 text-sm">Sri Lanka</span>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
 
-                                    <div class="ml-3 flex-1 rounded-xl border border-gray-200 overflow-hidden">
-                                        <div class="px-4 py-5 bg-white sm:px-6">
-                                            <div>
-                                                <span class="text-xs uppercase font-semibold tracking-wide text-gray-500">To</span>
-                                            </div>
-
-                                            <div>
-                                                <div>
-                                                    <span class="text-xl font-bold">
-                                                        Jaffna
-                                                    </span>
-                                                </div>
-
-                                                <div>
-                                                    <span class="text-sm">Sri Lanka</span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
+                                        <select name="destination" v-model="destination" class="cursor-pointer absolute w-full inset-0 border-none opacity-0">
+                                            <option value="Colombo">Colombo</option>
+                                            <option value="Jaffna">Jaffna</option>
+                                            <option value="Trincomalee">Trincomalee</option>
+                                        </select>
+                                    </label>
                                 </div>
 
                                 <div class="mt-6 rounded-xl border border-gray-200 overflow-hidden">
-                                    <div class="flex items-center justify-between px-4 py-5 bg-white sm:px-6">
-                                        <div class="flex-1">
+                                    <div class=" flex items-center justify-between px-4 py-5 bg-white sm:px-6">
+                                        <div class="relative flatpickr flex-1" title="Toggle" data-toggle>
                                             <div>
-                                                <span class="text-xs uppercase font-semibold tracking-wide">Departure</span>
+                                                <span class="text-gray-400 text-xs uppercase font-semibold tracking-wide">Departure</span>
                                             </div>
 
                                             <div>
                                                 <div>
-                                                    <span class="text-xl font-bold">
-                                                        Fri, Mar 26
+                                                    <span class="cursor-pointer text-xl font-bold">
+                                                        <time :datetime="departure">{{ formatDate(departure) }}</time>
                                                     </span>
                                                 </div>
                                             </div>
+
+                                            <flat-pickr :config="flatPickrConfig" v-model="departure" name="departure" class="cursor-pointer absolute top-0 w-32 h-16 opacity-0"></flat-pickr>
                                         </div>
 
-                                        <div class="flex-1">
+                                        <div class="relative flatpickr flex-1">
                                             <div>
-                                                <span class="text-xs uppercase font-semibold tracking-wide">Arriving</span>
+                                                <span class="text-gray-400 text-xs uppercase font-semibold tracking-wide">Arriving</span>
                                             </div>
 
                                             <div>
                                                 <div>
-                                                    <span class="text-xl font-bold">
-                                                        Sun, Mar 28
+                                                    <span class="cursor-pointer text-xl font-bold">
+                                                        <time :datetime="arrival">{{ formatDate(arrival) }}</time>
                                                     </span>
                                                 </div>
                                             </div>
+
+                                            <flat-pickr :config="flatPickrConfig" v-model="arrival" name="arrival" class="cursor-pointer absolute top-0 w-32 h-16 opacity-0"></flat-pickr>
                                         </div>
                                     </div>
                                 </div>
@@ -113,23 +131,45 @@
 </template>
 
 <script>
+import moment from 'moment';
+import '../../../css/vendor/flatpickr.css';
 import flatPickr from 'vue-flatpickr-component';
-  import 'flatpickr/dist/flatpickr.css';
 import AppLink from '@/Views/Components/Base/Link';
 import AppButton from '@/Views/Components/Buttons/Button';
 import Card from '@/Views/Components/Cards/Card';
+import Dropdown from '@/Views/Components/Dropdowns/Dropdown';
+import DropdownLink from '@/Views/Components/Dropdowns/DropdownLink';
 
 export default {
     components: {
         AppLink,
         AppButton,
         Card,
-        flatPickr
+        flatPickr,
+        Dropdown,
+        DropdownLink,
     },
 
     data() {
         return {
-            date: null
+            origin: 'Colombo',
+            destination: 'Jaffna',
+
+            departure: Date.now(),
+            arrival: new Date().setDate(new Date().getDate() + 1),
+
+            flatPickrConfig: {
+                wrap: true,
+                altFormat: 'D, M j',
+                altInput: true,
+                dateFormat: 'Y-m-d',
+            }
+        }
+    },
+
+    methods: {
+        formatDate(date) {
+            return moment(date).format('ddd, MMM D');
         }
     }
 }

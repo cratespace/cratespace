@@ -9,7 +9,7 @@
                 <h4 class="mt-6 font-semibold text-xl text-gray-800">Create new account</h4>
 
                 <p class="mt-3 font-normal text-base text-gray-500">
-                    Let's get you all set up so you can verify your personal account and begin setting up your profile.
+                    If you are a business and wish to sell your freight spaces on Cratespace, you will have to request for an invite and cannot create an account directly.
                 </p>
             </div>
         </template>
@@ -50,7 +50,7 @@
 
                 <div class="mt-6">
                     <p>
-                        Already have an account? <app-link :href="route('login')">Log in</app-link>
+                        Already have an account? <app-link :href="route('login')">Sign in</app-link>
                     </p>
                 </div>
             </form>

@@ -47,12 +47,18 @@ return [
         ],
 
         'roles' => [
+            /*
+             * An administrator has permission to do anything.
+             */
             'Administrator' => [
                 'name' => 'Administrator',
                 'slug' => 'administrator',
                 'description' => 'An administrator has permission to do anything.',
             ],
 
+            /*
+             * Business users can manage spaces and orders aswell as purchase spaces.
+             */
             'Business' => [
                 'name' => 'Business',
                 'slug' => 'business',

@@ -8,7 +8,7 @@
                 </template>
 
                 <template #linksleft>
-                    <navbar-link :href="route('home')" :active="route().current('home')" class="text-gray-500 bg-tranparent hover:bg-tranparent focus:bg-tranparent">
+                    <navbar-link :href="route('welcome')" :active="route().current('welcome')" class="text-gray-500 bg-tranparent hover:bg-tranparent focus:bg-tranparent">
                         Listing
                     </navbar-link>
 
@@ -48,7 +48,7 @@
         </header>
 
         <!-- Main Content Area -->
-        <main class="py-4" role="main">
+        <main class="py-6 bg-gray-50" role="main">
             <div class="container mx-auto px-4 sm:px-6">
                 <slot></slot>
             </div>
