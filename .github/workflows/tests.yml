@@ -81,13 +81,6 @@ jobs:
           DB_USERNAME: root
         run: ./vendor/bin/phpunit --verbose
 
-      - name: 📚 Upload artifacts
-        uses: actions/upload-artifact@master
-        if: failure()
-        with:
-          name: Logs
-          path: ./storage/logs
-
   windows_tests:
     name: PHP ${{ matrix.php }} - ${{ matrix.stability }} - Windows
     runs-on: windows-latest
@@ -143,10 +136,3 @@ jobs:
           DB_CONNECTION: sqlite
           DB_DATABASE: ':memory:'
         run: vendor/bin/phpunit --verbose
-
-      - name: 📚 Upload artifacts
-        uses: actions/upload-artifact@master
-        if: failure()
-        with:
-          name: Logs
-          path: ./storage/logs
