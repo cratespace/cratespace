@@ -3,6 +3,7 @@
 namespace App\Services\Stripe;
 
 use Throwable;
+use Stripe\Stripe;
 use Stripe\StripeClient;
 use InvalidArgumentException;
 use Stripe\Util\LoggerInterface;
@@ -82,7 +83,7 @@ class Client implements ClientContract
      */
     public function logger(): LoggerInterface
     {
-        return $this->app->make(LoggerInterface::class);
+        return Stripe::getLogger();
     }
 
     /**

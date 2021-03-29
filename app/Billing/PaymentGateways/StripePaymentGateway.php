@@ -11,10 +11,12 @@ use App\Services\Stripe\Payment;
 use App\Events\PaymentSuccessful;
 use App\Services\Stripe\Customer;
 use Illuminate\Support\Facades\Auth;
-use App\Exceptions\InvalidCustomerException;
+use App\Actions\Auth\Traits\ManagesCustomers;
 
 class StripePaymentGateway extends PaymentGateway
 {
+    use ManagesCustomers;
+
     /**
      * Charge the customer the given amount.
      *
@@ -26,7 +28,7 @@ class StripePaymentGateway extends PaymentGateway
      */
     public function charge(int $amount, array $details, ?array $options = null)
     {
-        $customer = $this->getCustomer($details);
+        $customer = $this->getCustomer($details['customer'] ?? Auth::user());
 
         try {
             $payment = Payment::create([
@@ -60,22 +62,6 @@ class StripePaymentGateway extends PaymentGateway
         }
 
         return $payment;
-    }
-
-    /**
-     * Get instance of Stripe customer.
-     *
-     * @return \App\Services\Stripe\Customer
-     */
-    public function getCustomer(array $details): Customer
-    {
-        $stripeId = $details['customer'] ?? Auth::user()->customerId();
-
-        if (is_null($stripeId)) {
-            throw new InvalidCustomerException('User is not a valid Stripe customer');
-        }
-
-        return new Customer($stripeId);
     }
 
     /**
