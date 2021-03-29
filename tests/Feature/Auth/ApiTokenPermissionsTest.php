@@ -6,8 +6,9 @@ use Tests\TestCase;
 use App\Models\User;
 use Illuminate\Support\Str;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Cratespace\Preflight\Testing\Contracts\Postable;
 
-class ApiTokenPermissionsTest extends TestCase
+class ApiTokenPermissionsTest extends TestCase implements Postable
 {
     use RefreshDatabase;
 
@@ -29,8 +30,42 @@ class ApiTokenPermissionsTest extends TestCase
             ],
         ]);
 
+        $response->assertStatus(303);
         $this->assertTrue($user->fresh()->tokens->first()->can('delete'));
         $this->assertFalse($user->fresh()->tokens->first()->can('read'));
         $this->assertFalse($user->fresh()->tokens->first()->can('missing-permission'));
+    }
+
+    public function testValidPermissionsAreRequired()
+    {
+        $this->signIn($user = create(User::class));
+
+        $token = $user->tokens()->create([
+            'name' => 'Test Token',
+            'token' => Str::random(40),
+            'abilities' => ['create', 'read'],
+        ]);
+
+        $response = $this->put('/user/api-tokens/' . $token->id, $this->validParameters([
+            'permissions' => '',
+        ]));
+
+        $response->assertStatus(302);
+        $response->assertSessionHasErrors('permissions');
+    }
+
+    /**
+     * Provide only the necessary paramertes for a POST-able type request.
+     *
+     * @param array $overrides
+     *
+     * @return array
+     */
+    public function validParameters(array $overrides = []): array
+    {
+        return array_merge([
+            'name' => 'Test Token',
+            'permissions' => ['create', 'read'],
+        ], $overrides);
     }
 }

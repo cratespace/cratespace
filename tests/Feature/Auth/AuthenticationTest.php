@@ -6,8 +6,9 @@ use Tests\TestCase;
 use App\Models\User;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Cratespace\Preflight\Testing\Contracts\Postable;
 
-class AuthenticationTest extends TestCase
+class AuthenticationTest extends TestCase implements Postable
 {
     use RefreshDatabase;
 
@@ -22,10 +23,10 @@ class AuthenticationTest extends TestCase
     {
         $user = create(User::class);
 
-        $response = $this->postJson('/login', [
+        $response = $this->postJson('/login', $this->validParameters([
             'email' => $user->email,
             'password' => 'password',
-        ]);
+        ]));
 
         $response->assertStatus(200);
         $this->assertAuthenticated();
@@ -35,10 +36,10 @@ class AuthenticationTest extends TestCase
     {
         $user = User::factory()->asBusiness()->create();
 
-        $response = $this->post('/login', [
+        $response = $this->post('/login', $this->validParameters([
             'email' => $user->email,
             'password' => 'password',
-        ]);
+        ]));
 
         $this->assertAuthenticated();
         $response->assertRedirect(RouteServiceProvider::HOME);
@@ -48,23 +49,36 @@ class AuthenticationTest extends TestCase
     {
         $user = User::factory()->asCustomer()->create();
 
-        $response = $this->post('/login', [
+        $response = $this->post('/login', $this->validParameters([
             'email' => $user->email,
             'password' => 'password',
-        ]);
+        ]));
 
         $this->assertAuthenticated();
         $response->assertRedirect(RouteServiceProvider::HOME);
+    }
+
+    public function testUsersCanNotAuthenticateWithInvalidEmail()
+    {
+        $user = create(User::class);
+
+        $response = $this->post('/login', $this->validParameters([
+            'email' => '',
+            'password' => $user->password,
+        ]));
+
+        $this->assertGuest();
+        $response->assertSessionHasErrors('email');
     }
 
     public function testUsersCanNotAuthenticateWithInvalidPassword()
     {
         $user = create(User::class);
 
-        $this->post('/login', [
+        $this->post('/login', $this->validParameters([
             'email' => $user->email,
             'password' => 'wrong-password',
-        ]);
+        ]));
 
         $this->assertGuest();
     }
@@ -78,5 +92,20 @@ class AuthenticationTest extends TestCase
         $response = $this->get('/home');
 
         $response->assertRedirect('/');
+    }
+
+    /**
+     * Provide only the necessary paramertes for a POST-able type request.
+     *
+     * @param array $overrides
+     *
+     * @return array
+     */
+    public function validParameters(array $overrides = []): array
+    {
+        return array_merge([
+            'email' => null,
+            'password' => null,
+        ], $overrides);
     }
 }

@@ -49,7 +49,7 @@ class DeleteUser implements DeletesUsers
     {
         $user->deleteProfilePhoto();
 
-        $user->profile->delete();
+        optional($user->profile)->delete();
 
         $user->tokens->each->delete();
     }

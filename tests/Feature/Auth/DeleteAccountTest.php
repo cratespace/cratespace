@@ -14,7 +14,7 @@ class DeleteAccountTest extends TestCase
     {
         $this->withoutExceptionHandling();
 
-        $this->signIn($user = User::factory()->asBusiness()->create());
+        $this->signIn($user = create(User::class));
 
         $this->delete('/user/profile', ['password' => 'password']);
 
@@ -23,7 +23,7 @@ class DeleteAccountTest extends TestCase
 
     public function testCorrectPasswordMustBeProvidedBeforeAccountCanBeDeleted()
     {
-        $this->signIn($user = User::factory()->asBusiness()->create());
+        $this->signIn($user = create(User::class));
 
         $this->delete('/user/profile', ['password' => 'wrong-password']);
 

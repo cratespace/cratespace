@@ -38,6 +38,62 @@ class RegistrationTest extends TestCase implements Postable
         $customer->delete();
     }
 
+    public function testNewCustomerCanRegisterThroughJson()
+    {
+        $this->withoutExceptionHandling();
+
+        $this->createDefaults();
+
+        $response = $this->postJson('/register', $this->validParameters());
+
+        $this->assertAuthenticated();
+        $response->assertStatus(200);
+        $this->assertNotNull($id = Auth::user()->profile->stripe_id);
+
+        $customer = new Customer($id);
+        $customer->delete();
+    }
+
+    public function testValidNameIsRequired()
+    {
+        $response = $this->post('/register', $this->validParameters([
+            'name' => '',
+        ]));
+
+        $response->assertStatus(302);
+        $response->assertSessionHasErrors('name');
+    }
+
+    public function testValidEmailIsRequired()
+    {
+        $response = $this->post('/register', $this->validParameters([
+            'email' => '',
+        ]));
+
+        $response->assertStatus(302);
+        $response->assertSessionHasErrors('email');
+    }
+
+    public function testValidPhoneIsRequired()
+    {
+        $response = $this->post('/register', $this->validParameters([
+            'phone' => '',
+        ]));
+
+        $response->assertStatus(302);
+        $response->assertSessionHasErrors('phone');
+    }
+
+    public function testValidPasswordIsRequired()
+    {
+        $response = $this->post('/register', $this->validParameters([
+            'password' => '',
+        ]));
+
+        $response->assertStatus(302);
+        $response->assertSessionHasErrors('password');
+    }
+
     /**
      * Provide only the necessary paramertes for a POST-able type request.
      *
