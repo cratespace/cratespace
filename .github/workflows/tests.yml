@@ -91,13 +91,6 @@ jobs:
           STRIPE_SECRET: ${{ secrets.STRIPE_SECRET }}
         run: php artisan test --parallel
 
-      - name: 📚 Upload artifacts
-        uses: actions/upload-artifact@master
-        if: failure()
-        with:
-          name: Logs
-          path: ./storage/logs
-
   windows_tests:
     name: PHP ${{ matrix.php }} - ${{ matrix.stability }} - Windows
     runs-on: windows-latest
@@ -163,10 +156,3 @@ jobs:
           STRIPE_KEY: ${{ secrets.STRIPE_KEY }}
           STRIPE_SECRET: ${{ secrets.STRIPE_SECRET }}
         run: php artisan test --parallel
-
-      - name: 📚 Upload artifacts
-        uses: actions/upload-artifact@master
-        if: failure()
-        with:
-          name: Logs
-          path: ./storage/logs
