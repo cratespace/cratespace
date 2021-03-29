@@ -49,7 +49,10 @@ class BusinessController extends Controller
      */
     public function update(BusinessRequest $request, UpdateUserProfile $updater)
     {
-        $updater->update($user = $request->user(), $request->validated());
+        $updater->updateBusinessProfile(
+            $user = $request->user(),
+            $request->validated()
+        );
 
         return BusinessResponse::dispatch($user);
     }

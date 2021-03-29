@@ -10,10 +10,11 @@ class Address extends Value
      * @var array
      */
     protected $values = [
-        'street',
+        'line1',
+        'line2',
         'city',
         'state',
         'country',
-        'postcode',
+        'postal_code',
     ];
 }

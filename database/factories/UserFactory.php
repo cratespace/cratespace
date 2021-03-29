@@ -35,11 +35,11 @@ class UserFactory extends Factory
             'remember_token' => Str::random(10),
             'settings' => [],
             'address' => [
-                'street' => $this->faker->streetName,
+                'line1' => $this->faker->streetName,
                 'city' => $this->faker->city,
                 'state' => $this->faker->state,
                 'country' => $this->faker->country,
-                'postcode' => $this->faker->postcode,
+                'postal_code' => $this->faker->postcode,
             ],
             'locked' => false,
             'profile_photo_path' => null,

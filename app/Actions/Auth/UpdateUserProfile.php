@@ -3,21 +3,22 @@
 namespace App\Actions\Auth;
 
 use App\Models\User;
-use App\Services\Stripe\Customer;
-use Illuminate\Contracts\Auth\Authenticatable;
+use App\Actions\Auth\Traits\ManagesCustomers;
 use Cratespace\Sentinel\Contracts\Actions\UpdatesUserProfiles;
 
 class UpdateUserProfile implements UpdatesUserProfiles
 {
+    use ManagesCustomers;
+
     /**
      * Validate and update the given user's profile information.
      *
-     * @param \Illuminate\Contracts\Auth\Authenticatable $user
-     * @param array                                      $data
+     * @param \App\Models\User $user
+     * @param array            $data
      *
      * @return void
      */
-    public function update(Authenticatable $user, array $data): void
+    public function update(User $user, array $data): void
     {
         $user->hasRole('Customer')
             ? $this->updateCustomerProfile($user, $data)
@@ -32,7 +33,7 @@ class UpdateUserProfile implements UpdatesUserProfiles
      *
      * @return void
      */
-    protected function updateBusinessProfile(User $user, array $data): void
+    public function updateBusinessProfile(User $user, array $data): void
     {
         $user->profile->update([
             'name' => $data['business'],
@@ -57,15 +58,13 @@ class UpdateUserProfile implements UpdatesUserProfiles
      *
      * @return void
      */
-    protected function updateCustomerProfile(User $user, array $data): void
+    public function updateCustomerProfile(User $user, array $data): void
     {
-        $customer = new Customer($user->customerId());
-
-        $customer->update([
+        $this->getCustomer($user)->update([
             'name' => $data['name'],
             'email' => $data['email'],
             'phone' => $data['phone'],
-            'address' => (array) $user->address,
+            'address' => $user->address->details(),
         ]);
     }
 }

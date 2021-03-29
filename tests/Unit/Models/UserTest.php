@@ -27,20 +27,20 @@ class UserTest extends TestCase
     {
         $user = create(User::class, [
             'address' => [
-                'street' => '59 Martin Road',
+                'line1' => '59 Martin Road',
                 'city' => 'Jaffna',
                 'state' => 'Northern Province',
                 'country' => 'Sri Lanka',
-                'postcode' => 40000,
+                'postal_code' => 40000,
             ],
         ]);
 
         $this->assertInstanceOf(Address::class, $user->address);
-        $this->assertEquals('59 Martin Road', $user->address->street);
+        $this->assertEquals('59 Martin Road', $user->address->line1);
         $this->assertEquals('Jaffna', $user->address->city);
         $this->assertEquals('Northern Province', $user->address->state);
         $this->assertEquals('Sri Lanka', $user->address->country);
-        $this->assertEquals(40000, $user->address->postcode);
+        $this->assertEquals(40000, $user->address->postal_code);
     }
 
     public function testAddressValueThrowsExceptionForInvalidProperty()

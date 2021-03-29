@@ -191,14 +191,14 @@ class CreateNewBusinessTest extends TestCase implements Postable
         $response->assertSessionHasErrors('country');
     }
 
-    public function testPostcodeFieldIsRequired()
+    public function testPostalcodeFieldIsRequired()
     {
         $response = $this->post('/businesses', $this->validParameters([
-            'postcode' => '',
+            'postal_code' => '',
         ]));
 
         $response->assertStatus(302);
-        $response->assertSessionHasErrors('postcode');
+        $response->assertSessionHasErrors('postal_code');
     }
 
     public function testRegistrationNumberFieldIsRequired()
@@ -241,7 +241,7 @@ class CreateNewBusinessTest extends TestCase implements Postable
             'city' => 'Killinaboy',
             'state' => 'Munster',
             'country' => 'Ireland',
-            'postcode' => '48161',
+            'postal_code' => '48161',
             'registration_number' => '01234567',
             'mcc' => '4798',
             'invite' => false,

@@ -71,6 +71,16 @@ abstract class Value
     }
 
     /**
+     * Get all details as array.
+     *
+     * @return array
+     */
+    public function details(): array
+    {
+        return $this->details;
+    }
+
+    /**
      * Throw property does not exist exception.
      *
      * @param string $property

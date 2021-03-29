@@ -4,10 +4,11 @@ namespace Tests\Feature\Auth;
 
 use Tests\TestCase;
 use App\Models\User;
+use App\Services\Stripe\Customer;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Cratespace\Preflight\Testing\Contracts\Postable;
 
-class ProfileInformationTest extends TestCase implements Postable
+class AccountInformationTest extends TestCase implements Postable
 {
     use RefreshDatabase;
 
@@ -20,6 +21,21 @@ class ProfileInformationTest extends TestCase implements Postable
         $response->assertStatus(302);
         $this->assertEquals('Test Name', $user->fresh()->name);
         $this->assertEquals('test@example.com', $user->fresh()->email);
+    }
+
+    public function testCustomerProfileInformationCanBeUpdated()
+    {
+        $this->withoutExceptionHandling();
+
+        $this->signIn($user = User::factory()->asCustomer()->create());
+
+        $response = $this->put('/user/profile', $this->validParameters());
+
+        $response->assertStatus(302);
+        $this->assertEquals('Test Name', $user->fresh()->name);
+        $this->assertEquals('test@example.com', $user->fresh()->email);
+        $customer = new Customer($user->customerId());
+        $this->assertEquals('Test Name', $customer->name);
     }
 
     public function testValidNameIsRequired()
