@@ -28,7 +28,7 @@ class Order extends Model implements OrderContract
         'orderable_id',
         'orderable_type',
         'amount',
-        'payment_intent',
+        'payment',
         'note',
     ];
 
@@ -38,7 +38,7 @@ class Order extends Model implements OrderContract
      * @var array
      */
     protected $casts = [
-        'payment_intent' => PaymentCast::class,
+        'payment' => PaymentCast::class,
     ];
 
     /**

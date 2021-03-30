@@ -8,7 +8,7 @@ use App\Contracts\Billing\Product;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\PurchaseRequest;
 use App\Contracts\Actions\MakesPurchases;
-use App\Http\Responses\OrderCanceledResponse;
+use App\Http\Responses\OrderCancelledResponse;
 use App\Http\Responses\PurchaseFailedResponse;
 use App\Http\Responses\PurchaseSucceededResponse;
 
@@ -68,6 +68,6 @@ class OrderController extends Controller
     {
         CancelOrder::dispatch($order);
 
-        return OrderCanceledResponse::dipatch();
+        return OrderCancelledResponse::dipatch();
     }
 }

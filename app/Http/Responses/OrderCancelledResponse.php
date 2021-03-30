@@ -5,7 +5,7 @@ namespace App\Http\Responses;
 use Illuminate\Contracts\Support\Responsable;
 use Cratespace\Sentinel\Http\Responses\Response;
 
-class OrderCanceledResponse extends Response implements Responsable
+class OrderCancelledResponse extends Response implements Responsable
 {
     /**
      * Create an HTTP response that represents the object.
@@ -17,7 +17,7 @@ class OrderCanceledResponse extends Response implements Responsable
     public function toResponse($request)
     {
         return $request->expectsJson()
-            ? $this->json(['message' => __('Order cancelled')])
+            ? $this->json('', 204)
             : $this->back(303)->with('status', 'order-cancelled');
     }
 }

@@ -2,8 +2,6 @@
 
 namespace App\Contracts\Services;
 
-use App\Support\Service;
-
 interface Client
 {
     /**

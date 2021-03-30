@@ -28,7 +28,7 @@ class Payout extends Model implements PaymentContract
      * @var array
      */
     protected $casts = [
-        'payment_intent' => PaymentCast::class,
+        'payment' => PaymentCast::class,
         'paid_at' => 'datetime',
     ];
 
