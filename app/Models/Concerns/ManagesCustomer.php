@@ -3,6 +3,7 @@
 namespace App\Models\Concerns;
 
 use App\Models\Customer;
+use App\Services\Stripe\Resource;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use App\Services\Stripe\Customer as StripeCustomer;
 
@@ -61,5 +62,15 @@ trait ManagesCustomer
     public function customerId(): ?string
     {
         return $this->customer->stripe_id;
+    }
+
+    /**
+     * Get user instance as Stripe customer.
+     *
+     * @return \App\Services\Stripe\Resource
+     */
+    public function asStripeCustomer(): Resource
+    {
+        return new StripeCustomer($this->customerId());
     }
 }

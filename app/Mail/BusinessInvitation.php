@@ -46,6 +46,6 @@ class BusinessInvitation extends Mailable
                     'invitation' => $this->invitation,
                 ]),
             ]
-        )->subject(__('Business Invitation'));
+        )->subject(__('Cratespace Invitation'));
     }
 }

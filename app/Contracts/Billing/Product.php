@@ -54,4 +54,18 @@ interface Product
      * @return array
      */
     public function details(): array;
+
+    /**
+     * Get the order associated with the product.
+     *
+     * @return \App\Contracts\Billing\Order
+     */
+    public function getOrderDetails(): Order;
+
+    /**
+     * Determine if the product is nearing it's expiration.
+     *
+     * @return bool
+     */
+    public function nearingExpiration(): bool;
 }

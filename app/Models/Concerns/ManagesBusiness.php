@@ -2,11 +2,13 @@
 
 namespace App\Models\Concerns;
 
+use App\Models\Payout;
 use App\Models\Business;
 use App\Models\Invitation;
 use App\Events\BusinessInvited;
 use App\Exceptions\UserAlreadyOnboard;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 trait ManagesBusiness
 {
@@ -35,6 +37,16 @@ trait ManagesBusiness
                 'url' => $data['url'] ?? null,
             ],
         ]);
+    }
+
+    /**
+     * Get where the user business is base in.
+     *
+     * @return string
+     */
+    public function base(): string
+    {
+        return $this->user->address->country;
     }
 
     /**
@@ -85,5 +97,41 @@ trait ManagesBusiness
     public function business(): HasOne
     {
         return $this->hasOne(Business::class, 'user_id');
+    }
+
+    /**
+     * Get the credit amount that belongs to the business.
+     *
+     * @return int
+     */
+    public function getCreditAttribute(): int
+    {
+        if ($this->hasRole('Customer')) {
+            return 0;
+        }
+
+        return $this->payouts()->pluck('amount')->sum();
+    }
+
+    /**
+     * Make new payout to the user.
+     *
+     * @param array $details
+     *
+     * @return \App\Models\Payout
+     */
+    public function makePayout(array $details): Payout
+    {
+        return $this->payouts()->create($details);
+    }
+
+    /**
+     * Get user payouts details.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function payouts(): HasMany
+    {
+        return $this->hasMany(Payout::class, 'user_id');
     }
 }

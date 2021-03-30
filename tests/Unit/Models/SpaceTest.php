@@ -2,17 +2,20 @@
 
 namespace Tests\Unit\Models;
 
-use PHPUnit\Framework\TestCase;
+use Tests\TestCase;
+use App\Models\Space;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class SpaceTest extends TestCase
 {
-    /**
-     * A basic unit test example.
-     *
-     * @return void
-     */
-    public function test_example()
+    use RefreshDatabase;
+
+    public function testResource()
     {
-        $this->assertTrue(true);
+        $space = create(Space::class, [
+            'base' => $this->faker->country,
+        ]);
+
+        $this->assertEquals('spaces', $space->getTable());
     }
 }

@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers\Customers;
 
+use App\Jobs\CancelOrder;
+use App\Contracts\Billing\Order;
 use App\Contracts\Billing\Product;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\PurchaseRequest;
 use App\Contracts\Actions\MakesPurchases;
+use App\Http\Responses\OrderCanceledResponse;
 use App\Http\Responses\PurchaseFailedResponse;
 use App\Http\Responses\PurchaseSucceededResponse;
 
@@ -46,7 +49,7 @@ class OrderController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param int $id
+     * @param \App\Contracts\Billing\Order $order
      *
      * @return \Illuminate\Http\Response
      */
@@ -57,12 +60,14 @@ class OrderController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param int $id
+     * @param \App\Contracts\Billing\Order $order
      *
      * @return \Illuminate\Http\Response
      */
     public function destroy(Order $order)
     {
-        $order->cancel();
+        CancelOrder::dispatch($order);
+
+        return OrderCanceledResponse::dipatch();
     }
 }

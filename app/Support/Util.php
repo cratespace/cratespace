@@ -9,6 +9,18 @@ use League\ISO3166\ISO3166;
 class Util
 {
     /**
+     * Get the base class name of the given key string.
+     *
+     * @param string $key
+     *
+     * @return string
+     */
+    public static function className(string $key): string
+    {
+        return ucfirst(Str::singular($key));
+    }
+
+    /**
      * Get Alpha2 reference of given country name.
      *
      * @param string $name

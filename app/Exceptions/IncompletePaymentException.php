@@ -18,14 +18,14 @@ class IncompletePaymentException extends Exception
     /**
      * Create a new IncompletePayment instance.
      *
-     * @param \App\Contracts\Billing\Payment $payment
-     * @param string                         $message
-     * @param int                            $code
-     * @param \Throwable|null                $previous
+     * @param \App\Contracts\Billing\Payment|null $payment
+     * @param string                              $message
+     * @param int                                 $code
+     * @param \Throwable|null                     $previous
      *
      * @return void
      */
-    public function __construct(Payment $payment, string $message = '', int $code = 0, ?Throwable $previous = null)
+    public function __construct(?Payment $payment, string $message = '', int $code = 0, ?Throwable $previous = null)
     {
         parent::__construct($message, $code, $previous);
 

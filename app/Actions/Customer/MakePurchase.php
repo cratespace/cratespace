@@ -39,6 +39,6 @@ class MakePurchase implements MakesPurchases
     {
         $payment = $this->paymentGateway->charge($product->fullPrice(), $details);
 
-        return $product->placeOrder($payment);
+        return $payment ? $product->placeOrder($payment) : false;
     }
 }

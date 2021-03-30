@@ -2,7 +2,9 @@
 
 namespace App\Services\Stripe;
 
+use App\Support\Util;
 use App\Support\Money;
+use App\Contracts\Billing\Product;
 use App\Exceptions\PaymentActionRequired;
 use App\Exceptions\PaymentFailedException;
 use Stripe\PaymentIntent as StripePaymentIntent;
@@ -40,10 +42,7 @@ class Payment extends Resource implements PaymentContract
      */
     public function amount(): string
     {
-        return Money::format(
-            $this->rawAmount(),
-            $this->resource->currency
-        );
+        return Money::format($this->rawAmount(), $this->currency);
     }
 
     /**
@@ -53,7 +52,7 @@ class Payment extends Resource implements PaymentContract
      */
     public function rawAmount(): int
     {
-        return $this->resource->amount;
+        return $this->amount;
     }
 
     /**
@@ -63,7 +62,7 @@ class Payment extends Resource implements PaymentContract
      */
     public function clientSecret(): string
     {
-        return $this->resource->client_secret;
+        return $this->client_secret;
     }
 
     /**
@@ -73,7 +72,7 @@ class Payment extends Resource implements PaymentContract
      */
     public function requiresPaymentMethod(): bool
     {
-        return $this->resource->status === StripePaymentIntent::STATUS_REQUIRES_PAYMENT_METHOD;
+        return $this->status === StripePaymentIntent::STATUS_REQUIRES_PAYMENT_METHOD;
     }
 
     /**
@@ -83,7 +82,7 @@ class Payment extends Resource implements PaymentContract
      */
     public function requiresAction(): bool
     {
-        return $this->resource->status === StripePaymentIntent::STATUS_REQUIRES_ACTION;
+        return $this->status === StripePaymentIntent::STATUS_REQUIRES_ACTION;
     }
 
     /**
@@ -103,7 +102,7 @@ class Payment extends Resource implements PaymentContract
      */
     public function isCancelled(): bool
     {
-        return $this->resource->status === StripePaymentIntent::STATUS_CANCELED;
+        return $this->status === StripePaymentIntent::STATUS_CANCELED;
     }
 
     /**
@@ -113,7 +112,21 @@ class Payment extends Resource implements PaymentContract
      */
     public function isSucceeded(): bool
     {
-        return $this->resource->status === StripePaymentIntent::STATUS_SUCCEEDED;
+        return $this->status === StripePaymentIntent::STATUS_SUCCEEDED;
+    }
+
+    /**
+     * Get the product the payment is for.
+     *
+     * @return \App\Conracts\Billing\Product|null
+     */
+    public function product(): ?Product
+    {
+        $productDetails = $this->metadata['product'];
+
+        $productClass = Util::className($productDetails['key']);
+
+        return $productClass::find($productDetails['id']);
     }
 
     /**

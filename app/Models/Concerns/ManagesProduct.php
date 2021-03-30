@@ -70,8 +70,8 @@ trait ManagesProduct
         $order = $this->order()->create([
             'user_id' => $this->merchant()->id,
             'customer_id' => Customer::native($payment->customer)->id,
-            'amount' => $payment->amount(),
-            'details' => $payment->toArray(),
+            'amount' => $payment->rawAmount(),
+            'payment_intent' => $payment->id,
         ]);
 
         OrderPlaced::dispatch($order);
@@ -92,12 +92,34 @@ trait ManagesProduct
     }
 
     /**
+     * Determine if the product is nearing it's expiration.
+     *
+     * @return bool
+     */
+    public function nearingExpiration(): bool
+    {
+        return $this->schedule->nearingDeparture();
+    }
+
+    /**
      * Get the details regarding the product.
      *
      * @return array
      */
     public function details(): array
     {
-        return $this->toArray();
+        return array_merge($this->toArray(), [
+            'key' => $this->getTable(),
+        ]);
+    }
+
+    /**
+     * Get the order associated with the product.
+     *
+     * @return \App\Contracts\Billing\Order
+     */
+    public function getOrderDetails(): Order
+    {
+        return $this->order;
     }
 }

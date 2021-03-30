@@ -3,6 +3,9 @@
 namespace App\Models;
 
 use App\Support\Money;
+use App\Contracts\Billing\Order;
+use App\Models\Casts\PaymentCast;
+use App\Contracts\Billing\Product;
 use Illuminate\Database\Eloquent\Model;
 use App\Contracts\Billing\Payment as PaymentContract;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -25,6 +28,7 @@ class Payout extends Model implements PaymentContract
      * @var array
      */
     protected $casts = [
+        'payment_intent' => PaymentCast::class,
         'paid_at' => 'datetime',
     ];
 
@@ -66,5 +70,25 @@ class Payout extends Model implements PaymentContract
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+
+    /**
+     * Get the product the payout was made for.
+     *
+     * @return \App\Contracts\Billing\Product
+     */
+    public function product(): Product
+    {
+        return $this->payment_intent->product();
+    }
+
+    /**
+     * Get the order details the payout was made for.
+     *
+     * @return \App\Contracts\Billing\Order
+     */
+    public function order(): Order
+    {
+        return $this->product()->order;
     }
 }

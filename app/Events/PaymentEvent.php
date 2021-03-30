@@ -2,6 +2,7 @@
 
 namespace App\Events;
 
+use App\Models\User;
 use App\Models\Business;
 use App\Contracts\Billing\Payment;
 use Illuminate\Queue\SerializesModels;
@@ -31,5 +32,15 @@ class PaymentEvent
     public function __construct(?Payment $payment = null)
     {
         $this->payment = $payment;
+    }
+
+    /**
+     * Get the merchant the product belongs to.
+     *
+     * @return \App\Models\User|null
+     */
+    public function business(): ?User
+    {
+        return optional($this->payment->product())->merchant();
     }
 }

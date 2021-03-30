@@ -2,13 +2,13 @@
 
 namespace App\Models;
 
+use App\Models\Traits\Orderable;
 use App\Contracts\Billing\Product;
 use App\Models\Casts\ScheduleCast;
 use App\Models\Concerns\ManagesProduct;
 use Illuminate\Database\Eloquent\Model;
 use Cratespace\Preflight\Models\Traits\Hashable;
 use Cratespace\Preflight\Models\Traits\Directable;
-use Illuminate\Database\Eloquent\Relations\HasOne;
 use Cratespace\Preflight\Models\Traits\Presentable;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -20,6 +20,7 @@ class Space extends Model implements Product
     use Hashable;
     use Directable;
     use ManagesProduct;
+    use Orderable;
 
     /**
      * The accessors to append to the model's array form.
@@ -82,15 +83,5 @@ class Space extends Model implements Product
     public function owner(): BelongsTo
     {
         return $this->belongsTo(User::class, 'user_id');
-    }
-
-    /**
-     * Get the order details of the space.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasOne
-     */
-    public function order(): HasOne
-    {
-        return $this->hasOne(Order::class, 'product_id');
     }
 }
