@@ -15,7 +15,7 @@
         "ext-intl": "*",
         "ext-json": "*",
         "cratespace/preflight": "^3.4",
-        "cratespace/sentinel": "^2.7.1",
+        "cratespace/sentinel": "^2.8.0",
         "dompdf/dompdf": "^1.0",
         "fideloper/proxy": "^4.4",
         "fruitcake/laravel-cors": "^2.0",
