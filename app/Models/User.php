@@ -82,6 +82,7 @@ class User extends Authenticatable
         'sessions',
         'two_factor_enabled',
         'profile',
+        'credit',
     ];
 
     /**

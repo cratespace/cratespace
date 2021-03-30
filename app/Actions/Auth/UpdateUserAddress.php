@@ -31,8 +31,8 @@ class UpdateUserAddress implements UpdatesUserProfiles
             ],
         ])->save();
 
-        if ($user->hasRole('Customer')) {
-            $this->getCustomer($user)->update(['address' => $address]);
+        if ($user->isCustomer()) {
+            $user->asStripeCustomer()->update(['address' => $address]);
         }
     }
 }

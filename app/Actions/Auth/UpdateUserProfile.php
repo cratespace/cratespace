@@ -60,7 +60,7 @@ class UpdateUserProfile implements UpdatesUserProfiles
      */
     public function updateCustomerProfile(User $user, array $data): void
     {
-        $this->getCustomer($user)->update([
+        $user->asStripeCustomer()->update([
             'name' => $data['name'],
             'email' => $data['email'],
             'phone' => $data['phone'],

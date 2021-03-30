@@ -3,6 +3,7 @@
 namespace App\Actions\Auth;
 
 use App\Models\User;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Cratespace\Sentinel\Contracts\Actions\UpdatesUserProfiles;
 
 class UpdateUserAccount implements UpdatesUserProfiles
@@ -47,7 +48,7 @@ class UpdateUserAccount implements UpdatesUserProfiles
             'email' => $data['email'],
         ], $verified ? ['email_verified_at' => null] : []))->save();
 
-        if ($user->hasRole('Customer')) {
+        if ($user->isCustomer()) {
             app(UpdateUserProfile::class)->updateCustomerProfile($user, $data);
         }
     }
