@@ -93,14 +93,15 @@ abstract class Resource
     /**
      * Create new Stripe customer.
      *
-     * @param array $data
+     * @param array      $data
+     * @param array|null $options
      *
      * @return \App\Services\Stripe\Resource
      */
-    public static function create(array $data): Resource
+    public static function create(array $data, ?array $options = null): Resource
     {
         return new static(
-            static::createService()->create(static::fillable($data))
+            static::createService()->create(static::fillable($data), $options)
         );
     }
 
