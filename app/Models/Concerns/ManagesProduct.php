@@ -13,13 +13,23 @@ use App\Contracts\Billing\Payment;
 trait ManagesProduct
 {
     /**
+     * The unique code used to identify the product.
+     *
+     * @return string
+     */
+    public function code(): string
+    {
+        return $this->code;
+    }
+
+    /**
      * Get the owner of the product.
      *
      * @return mixed
      */
     public function merchant()
     {
-        return $this->user;
+        return $this->owner;
     }
 
     /**
@@ -86,9 +96,11 @@ trait ManagesProduct
      */
     public function available(): bool
     {
-        if ($this->departs_at->isBefore(Carbon::now())) {
-            return ! is_null($this->reserved_at) || $this->order()->exists();
+        if ($this->departs_at->isAfter(Carbon::now())) {
+            return is_null($this->reserved_at) && ! $this->order()->exists();
         }
+
+        return false;
     }
 
     /**

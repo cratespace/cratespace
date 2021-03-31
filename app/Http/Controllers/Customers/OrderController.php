@@ -27,19 +27,16 @@ class OrderController extends Controller
      * Store a newly created resource in storage.
      *
      * @param \App\Http\Requests\PurchaseRequest    $request
-     * @param \App\Contracts\Billing\Product        $product
      * @param \App\Contracts\Actions\MakesPurchases $purchaser
+     * @param \App\Contracts\Billing\Product        $product
      *
      * @return \Illuminate\Http\Response
      */
-    public function store(
-        PurchaseRequest $request,
-        Product $product,
-        MakesPurchases $purchaser
-    ) {
+    public function store(PurchaseRequest $request, MakesPurchases $purchaser, Product $product)
+    {
         $order = $purchaser->purchase($product, $request->validated());
 
-        if ($order === false) {
+        if (! $order) {
             return PurchaseFailedResponse::dispatch();
         }
 

@@ -41,7 +41,7 @@ class SpaceFactory extends Factory
             'tax' => round($price * 0.05), // 5% tax
             'type' => $this->faker->randomElement(['Local', 'International']),
             'user_id' => $user->id,
-            'base' => $user->business->country,
+            'base' => $user->address->country,
         ];
     }
 }

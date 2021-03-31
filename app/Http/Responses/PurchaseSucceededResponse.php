@@ -2,8 +2,8 @@
 
 namespace App\Http\Responses;
 
-use Cratespace\Sentinel\Http\Responses\Response;
 use Illuminate\Contracts\Support\Responsable;
+use Cratespace\Sentinel\Http\Responses\Response;
 
 class PurchaseSucceededResponse extends Response implements Responsable
 {
@@ -16,6 +16,8 @@ class PurchaseSucceededResponse extends Response implements Responsable
      */
     public function toResponse($request)
     {
-        return $request->expectsJson() ? $this->json() : $this->redirectTo('/');
+        return $request->expectsJson()
+            ? $this->json($this->content, 201)
+            : $this->redirectTo('/', 303)->with('status', 'order-placed');
     }
 }

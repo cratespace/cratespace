@@ -9,7 +9,7 @@ class AppServiceProvider extends ServiceProvider
     /**
      * Cratespace application version.
      */
-    public const APP_VERION = '2.7.4';
+    public const APP_VERION = '2.0.1';
 
     /**
      * Register any application services.

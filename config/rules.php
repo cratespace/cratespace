@@ -137,7 +137,6 @@ return [
         'phone' => ['sometimes', 'string', 'regex:/(0)[0-9]{9}/'],
         'business' => ['sometimes', 'string', 'max:255'],
         'payment_method' => ['required', 'string'],
-        'purchase_token' => ['required', 'string'],
         'customer' => ['required', 'string'],
     ],
 ];

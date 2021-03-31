@@ -39,6 +39,8 @@ class Customer extends Resource
      */
     public static function native(string $id): User
     {
-        return NativeCustomer::where('stripe_id', $id)->account();
+        return NativeCustomer::where('stripe_id', $id)
+            ->firstOrFail()
+            ->account();
     }
 }

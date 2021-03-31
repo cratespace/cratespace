@@ -53,9 +53,9 @@ class Customer extends Model
     /**
      * Get the user account the customer profile belongs to.
      *
-     * @return \App\Models\User
+     * @return \App\Models\User|null
      */
-    public function account()
+    public function account(): ?User
     {
         return $this->user;
     }

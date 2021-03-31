@@ -2,6 +2,7 @@
 
 namespace App\Models\Traits;
 
+use App\Models\Order;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
 
 trait Orderable

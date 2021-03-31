@@ -4,7 +4,6 @@ namespace App\Http\Requests;
 
 use Throwable;
 use App\Rules\PaymentMethodRule;
-use App\Rules\PurchaseTokenRule;
 use Illuminate\Foundation\Http\FormRequest;
 use Cratespace\Sentinel\Http\Requests\Concerns\AuthorizesRequests;
 use Cratespace\Sentinel\Http\Requests\Traits\InputValidationRules;
@@ -22,7 +21,7 @@ class PurchaseRequest extends FormRequest
     public function authorize()
     {
         if ($this->user()->isCustomer()) {
-            return $this->route('product')->available();
+            return $this->product->available();
         }
 
         return false;
@@ -41,12 +40,6 @@ class PurchaseRequest extends FormRequest
                 'string',
                 $this->container->make(PaymentMethodRule::class),
             ],
-            'purchase_token' => [
-                'required',
-                'string',
-                $this->container->make(PurchaseTokenRule::class),
-            ],
-            'product' => ['required', 'array'],
         ]);
     }
 
@@ -60,7 +53,6 @@ class PurchaseRequest extends FormRequest
         try {
             $this->merge([
                 'customer' => $this->user()->customerId(),
-                'product' => $this->route('product')->details(),
             ]);
         } catch (Throwable $e) {
             $this->failedAuthorization($e);

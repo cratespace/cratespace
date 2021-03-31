@@ -5,6 +5,13 @@ namespace App\Contracts\Billing;
 interface Product
 {
     /**
+     * The unique code used to identify the product.
+     *
+     * @return string
+     */
+    public function code(): string;
+
+    /**
      * Get the owner of the product.
      *
      * @return mixed

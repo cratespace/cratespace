@@ -7,6 +7,7 @@ use App\Http\Controllers\Business\SpaceController;
 use App\Http\Controllers\Business\BusinessController;
 use App\Http\Controllers\Business\InviteBusinessController;
 use App\Http\Controllers\Auth\UpdateUserAddressInformationController;
+use App\Http\Controllers\Customers\OrderController as CustomerOrderController;
 
 Route::get('/', function (Request $request) {
     return Inertia::render('Welcome/Show');
@@ -16,6 +17,9 @@ Route::group([
     'middleware' => ['auth:sentinel', 'verified'],
 ], function (): void {
     Route::put('/user/address', [UpdateUserAddressInformationController::class, '__invoke'])->name('user.address');
+
+    Route::post('/orders/{product}', [CustomerOrderController::class, 'store'])->name('orders.store');
+    Route::delete('/orders', [CustomerOrderController::class, 'destroy'])->name('orders.destroy');
 
     Route::group([
         'middleware' => ['business'],

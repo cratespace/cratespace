@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Models\Space;
+use App\Contracts\Billing\Product;
 use App\Actions\Customer\MakePurchase;
 use Illuminate\Support\ServiceProvider;
 use App\Actions\Product\CreateNewProduct;
@@ -44,6 +46,7 @@ class BillingServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        $this->registerProducts();
     }
 
     /**
@@ -54,5 +57,15 @@ class BillingServiceProvider extends ServiceProvider
     public function registerPaymentGateway(): void
     {
         $this->app->singleton(PaymentGateway::class, StripePaymentGateway::class);
+    }
+
+    /**
+     * Register product lineup.
+     *
+     * @return void
+     */
+    public function registerProducts(): void
+    {
+        $this->app->bind(Product::class, Space::class);
     }
 }

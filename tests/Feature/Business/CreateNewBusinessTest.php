@@ -78,6 +78,9 @@ class CreateNewBusinessTest extends TestCase implements Postable
         ]));
 
         $response->assertStatus(303);
+
+        $business = User::whereName('Father Jack Hackett')->first();
+        $this->assertTrue($business->invited());
     }
 
     public function testOnlyBusinessUserCanBeInvited()

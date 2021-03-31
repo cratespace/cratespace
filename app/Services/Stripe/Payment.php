@@ -2,9 +2,7 @@
 
 namespace App\Services\Stripe;
 
-use App\Support\Util;
 use App\Support\Money;
-use App\Contracts\Billing\Product;
 use App\Exceptions\PaymentActionRequired;
 use App\Exceptions\PaymentFailedException;
 use Stripe\PaymentIntent as StripePaymentIntent;
@@ -113,20 +111,6 @@ class Payment extends Resource implements PaymentContract
     public function isSucceeded(): bool
     {
         return $this->status === StripePaymentIntent::STATUS_SUCCEEDED;
-    }
-
-    /**
-     * Get the product the payment is for.
-     *
-     * @return \App\Conracts\Billing\Product|null
-     */
-    public function product(): ?Product
-    {
-        $productDetails = $this->metadata['product'];
-
-        $productClass = Util::className($productDetails['key']);
-
-        return $productClass::find($productDetails['id']);
     }
 
     /**
