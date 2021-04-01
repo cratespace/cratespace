@@ -39,14 +39,14 @@ class CreateNewOrder implements CreatesNewResources
     /**
      * Create a new resource.
      *
-     * @param mixed $model
+     * @param mixed $resource
      * @param array $data
      *
      * @return mixed
      */
-    public function create($model, array $data)
+    public function create($resource, array $data)
     {
-        $order = $this->purchaser->purchase($model, $data);
+        $order = $this->purchaser->purchase($resource, $data);
 
         $this->destroyer->destroy($data['payment_token']);
 

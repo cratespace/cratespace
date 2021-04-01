@@ -38,8 +38,7 @@ class MakePurchase implements MakesPurchases
     public function purchase(Product $product, array $details)
     {
         $payment = $this->paymentGateway->charge(
-            $product->fullPrice(),
-            $this->attachMetaDetails($product, $details)
+            $product->fullAmount(), $this->attachMetaDetails($product, $details)
         );
 
         return $product->placeOrder($payment);
@@ -57,9 +56,8 @@ class MakePurchase implements MakesPurchases
     {
         return array_merge($details, [
             'metadata' => [
-                'product_class' => get_class($product),
-                'product_id' => $product->id,
-                'merchant' => $product->merchant()->name,
+                'product_code' => $product->code(),
+                'merchant_registration_number' => $product->merchant()->registration_number,
             ],
         ]);
     }

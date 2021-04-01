@@ -59,11 +59,11 @@ trait ManagesProduct
     }
 
     /**
-     * Get full price of product in integer value.
+     * Get full amount inclusive of tax for product in integer value.
      *
      * @return int
      */
-    public function fullPrice(): int
+    public function fullAmount(): int
     {
         return $this->price + ($this->tax ?? 0);
     }

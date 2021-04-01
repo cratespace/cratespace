@@ -2,17 +2,27 @@
 
 namespace App\Providers;
 
-use App\Models\Space;
+use App\Models\Order;
+use App\Models\Business;
+use App\Models\Customer;
+use App\Models\Invitation;
 use App\Events\OrderPlaced;
-use App\Events\OrderCanceled;
 use App\Events\PaymentFailed;
 use App\Listeners\MakePayout;
+use App\Events\OrderCancelled;
 use App\Events\BusinessInvited;
 use App\Events\ProductReleased;
 use App\Events\ProductReserved;
-use App\Observers\SpaceObserver;
+use App\Observers\OrderObserver;
 use App\Events\PaymentSuccessful;
+use App\Observers\BusinessObserver;
+use App\Observers\CustomerObserver;
+use App\Observers\InvitationObserver;
 use Illuminate\Auth\Events\Registered;
+use App\Listeners\SendPaymentFailedNotification;
+use App\Listeners\SendOrderCancelledNotification;
+use App\Listeners\SendBusinessInvitedNotification;
+use App\Listeners\SendPaymentRefundedNotification;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 
@@ -28,20 +38,32 @@ class EventServiceProvider extends ServiceProvider
             SendEmailVerificationNotification::class,
         ],
 
-        BusinessInvited::class => [],
+        BusinessInvited::class => [
+            SendBusinessInvitedNotification::class,
+        ],
 
         PaymentSuccessful::class => [
             MakePayout::class,
         ],
 
-        PaymentFailed::class => [],
-        PaymentRefunded::class => [],
+        PaymentFailed::class => [
+            SendPaymentFailedNotification::class,
+        ],
+
+        PaymentRefunded::class => [
+            SendPaymentRefundedNotification::class,
+        ],
 
         ProductReserved::class => [],
         ProductReleased::class => [],
 
-        OrderPlaced::class => [],
-        OrderCanceled::class => [],
+        OrderPlaced::class => [
+            SendNewOrderPlacedNotification::class,
+        ],
+
+        OrderCancelled::class => [
+            SendOrderCancelledNotification::class,
+        ],
     ];
 
     /**
@@ -49,7 +71,12 @@ class EventServiceProvider extends ServiceProvider
      *
      * @var array
      */
-    protected $observers = [];
+    protected $observers = [
+        Order::class => OrderObserver::class,
+        Business::class => BusinessObserver::class,
+        Customer::class => CustomerObserver::class,
+        Invitation::class => InvitationObserver::class,
+    ];
 
     /**
      * Register any events for your application.
@@ -68,8 +95,8 @@ class EventServiceProvider extends ServiceProvider
      */
     public function registerObservers(): void
     {
-        foreach ($this->observers as $model => $observer) {
-            $model::observe($observer);
-        }
+        collect($this->observers)->each(
+            fn ($observer, $model) => $model::observe($observer)
+        );
     }
 }

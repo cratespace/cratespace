@@ -2,13 +2,16 @@
 
 namespace App\Http\Controllers\Customers;
 
+use Throwable;
+use Inertia\Inertia;
+use Inertia\Response;
 use App\Jobs\CancelOrder;
 use App\Contracts\Billing\Order;
 use App\Contracts\Billing\Product;
 use App\Http\Requests\OrderRequest;
 use App\Http\Controllers\Controller;
 use App\Actions\Product\CreateNewOrder;
-use App\Exceptions\PaymentFailedException;
+use Illuminate\Contracts\Support\Responsable;
 use App\Actions\Customer\GeneratePaymentToken;
 use App\Http\Responses\OrderCancelledResponse;
 use App\Http\Responses\PurchaseFailedResponse;
@@ -19,11 +22,16 @@ class OrderController extends Controller
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response
+     * @param \App\Actions\Customer\GeneratePaymentToken $generator
+     * @param \App\Contracts\Billing\Product             $product
+     *
+     * @return \Inertia\Response
      */
-    public function create(GeneratePaymentToken $generator, Product $product)
+    public function create(GeneratePaymentToken $generator, Product $product): Response
     {
-        $generator->generate($product);
+        return Inertia::render('Orders/Create', [
+            'payementToken' => $generator->generate($product),
+        ]);
     }
 
     /**
@@ -34,15 +42,15 @@ class OrderController extends Controller
      * @param \App\Actions\Customer\DestroyPaymentToken $destroyer
      * @param \App\Contracts\Billing\Product            $product
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\Support\Responsable
      */
-    public function store(OrderRequest $request, Product $product)
+    public function store(OrderRequest $request, Product $product): Responsable
     {
         try {
             $order = $this->app(CreateNewOrder::class)->create(
                 $product, $request->validated()
             );
-        } catch (PaymentFailedException $e) {
+        } catch (Throwable $e) {
             return PurchaseFailedResponse::dispatch($e->getMessage());
         }
 
@@ -54,10 +62,11 @@ class OrderController extends Controller
      *
      * @param \App\Contracts\Billing\Order $order
      *
-     * @return \Illuminate\Http\Response
+     * @return \Inertia\Response
      */
-    public function show(Order $order)
+    public function show(Order $order): Response
     {
+        return Inertia::render('Orders/Show', compact('order'));
     }
 
     /**
@@ -65,9 +74,9 @@ class OrderController extends Controller
      *
      * @param \App\Contracts\Billing\Order $order
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\Support\Responsable
      */
-    public function destroy(Order $order)
+    public function destroy(Order $order): Responsable
     {
         CancelOrder::dispatch($order);
 

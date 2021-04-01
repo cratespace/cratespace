@@ -17,7 +17,7 @@ class PurchaseSucceededResponse extends Response implements Responsable
     public function toResponse($request)
     {
         return $request->expectsJson()
-            ? $this->json($this->content, 201)
-            : $this->redirectTo('/', 303)->with('status', 'order-placed');
+            ? $this->json($this->content, $request->method() === 'PUT' ? 200 : 201)
+            : $this->redirectToRoute('listing', [], 303)->with('status', 'order-placed');
     }
 }

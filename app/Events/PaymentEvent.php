@@ -37,10 +37,14 @@ class PaymentEvent
     /**
      * Get the merchant the product belongs to.
      *
-     * @return \App\Models\User|null
+     * @return \App\Models\User
      */
-    public function business(): ?User
+    public function business(): User
     {
-        return optional($this->payment->product())->merchant();
+        $business = Business::findUsingRegistrationNumber(
+            $this->payment->metadata['merchant_registration_number']
+        );
+
+        return $business->user;
     }
 }

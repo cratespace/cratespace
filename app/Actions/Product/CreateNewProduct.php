@@ -11,18 +11,18 @@ class CreateNewProduct implements CreatesNewResources
     /**
      * Create a new resource.
      *
-     * @param mixed $model
+     * @param mixed $resource
      * @param array $data
      *
      * @return mixed
      */
-    public function create($model, array $data)
+    public function create($resource, array $data)
     {
-        if (! (new $model()) instanceof Product) {
-            throw new LogicException("Model class [{$model}] does not comply with the product contract");
+        if (! (new $resource()) instanceof Product) {
+            throw new LogicException("Model class [{$resource}] does not comply with the product contract");
         }
 
-        $product = $model::create($data);
+        $product = $resource::create($data);
 
         return $product;
     }

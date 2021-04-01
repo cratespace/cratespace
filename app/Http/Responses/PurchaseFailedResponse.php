@@ -2,8 +2,8 @@
 
 namespace App\Http\Responses;
 
-use Cratespace\Sentinel\Http\Responses\Response;
 use Illuminate\Contracts\Support\Responsable;
+use Cratespace\Sentinel\Http\Responses\Response;
 
 class PurchaseFailedResponse extends Response implements Responsable
 {
@@ -16,6 +16,8 @@ class PurchaseFailedResponse extends Response implements Responsable
      */
     public function toResponse($request)
     {
-        return $request->expectsJson() ? $this->json() : $this->redirectTo('/');
+        return $request->expectsJson()
+            ? $this->json(['error' => $this->content], 422)
+            : $this->redirectToRoute('listing', [], 303)->with('status', 'puchase-failed');
     }
 }

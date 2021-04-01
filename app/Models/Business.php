@@ -56,4 +56,16 @@ class Business extends Model
     {
         return $this->belongsTo(User::class, 'user_id');
     }
+
+    /**
+     * Find the business with the given registration number.
+     *
+     * @param string $number
+     *
+     * @return \App\Models\Business
+     */
+    public static function findUsingRegistrationNumber(string $number): Business
+    {
+        return static::where('registration_number', $number)->firstOrFail();
+    }
 }
