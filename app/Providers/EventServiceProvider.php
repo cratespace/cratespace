@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Models\User;
 use App\Models\Order;
 use App\Models\Business;
 use App\Models\Customer;
@@ -13,6 +14,7 @@ use App\Events\OrderCancelled;
 use App\Events\BusinessInvited;
 use App\Events\ProductReleased;
 use App\Events\ProductReserved;
+use App\Observers\UserObserver;
 use App\Observers\OrderObserver;
 use App\Events\PaymentSuccessful;
 use App\Observers\BusinessObserver;
@@ -72,6 +74,7 @@ class EventServiceProvider extends ServiceProvider
      * @var array
      */
     protected $observers = [
+        User::class => UserObserver::class,
         Order::class => OrderObserver::class,
         Business::class => BusinessObserver::class,
         Customer::class => CustomerObserver::class,
