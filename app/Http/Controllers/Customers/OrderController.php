@@ -10,6 +10,7 @@ use App\Contracts\Billing\Order;
 use App\Contracts\Billing\Product;
 use App\Http\Requests\OrderRequest;
 use App\Http\Controllers\Controller;
+use Illuminate\Http\RedirectResponse;
 use App\Actions\Product\CreateNewOrder;
 use Illuminate\Contracts\Support\Responsable;
 use App\Actions\Customer\GeneratePaymentToken;
@@ -42,9 +43,9 @@ class OrderController extends Controller
      * @param \App\Actions\Customer\DestroyPaymentToken $destroyer
      * @param \App\Contracts\Billing\Product            $product
      *
-     * @return \Illuminate\Contracts\Support\Responsable
+     * @return \Illuminate\Contracts\Support\Responsable|\Illuminate\Http\RedirectResponse
      */
-    public function store(OrderRequest $request, Product $product): Responsable
+    public function store(OrderRequest $request, Product $product)
     {
         try {
             $order = $this->app(CreateNewOrder::class)->create(

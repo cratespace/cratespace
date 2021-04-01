@@ -21,10 +21,6 @@ use App\Observers\BusinessObserver;
 use App\Observers\CustomerObserver;
 use App\Observers\InvitationObserver;
 use Illuminate\Auth\Events\Registered;
-use App\Listeners\SendPaymentFailedNotification;
-use App\Listeners\SendOrderCancelledNotification;
-use App\Listeners\SendBusinessInvitedNotification;
-use App\Listeners\SendPaymentRefundedNotification;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 
@@ -40,32 +36,20 @@ class EventServiceProvider extends ServiceProvider
             SendEmailVerificationNotification::class,
         ],
 
-        BusinessInvited::class => [
-            SendBusinessInvitedNotification::class,
-        ],
+        BusinessInvited::class => [],
 
         PaymentSuccessful::class => [
             MakePayout::class,
         ],
 
-        PaymentFailed::class => [
-            SendPaymentFailedNotification::class,
-        ],
-
-        PaymentRefunded::class => [
-            SendPaymentRefundedNotification::class,
-        ],
+        PaymentFailed::class => [],
+        PaymentRefunded::class => [],
 
         ProductReserved::class => [],
         ProductReleased::class => [],
 
-        OrderPlaced::class => [
-            SendNewOrderPlacedNotification::class,
-        ],
-
-        OrderCancelled::class => [
-            SendOrderCancelledNotification::class,
-        ],
+        OrderPlaced::class => [],
+        OrderCancelled::class => [],
     ];
 
     /**

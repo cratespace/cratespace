@@ -18,6 +18,6 @@ class PurchaseSucceededResponse extends Response implements Responsable
     {
         return $request->expectsJson()
             ? $this->json($this->content, $request->method() === 'PUT' ? 200 : 201)
-            : $this->redirectToRoute('listing', [], 303)->with('status', 'order-placed');
+            : $this->redirectToRoute('welcome', [], 303)->with('status', 'order-placed');
     }
 }
