@@ -7,8 +7,8 @@ use App\Contracts\Billing\Order;
 use App\Contracts\Billing\Product;
 use App\Http\Requests\OrderRequest;
 use App\Http\Controllers\Controller;
-use App\Contracts\Actions\MakesPurchases;
-use App\Actions\Customer\DestroyPaymentToken;
+use App\Actions\Product\CreateNewOrder;
+use App\Exceptions\PaymentFailedException;
 use App\Actions\Customer\GeneratePaymentToken;
 use App\Http\Responses\OrderCancelledResponse;
 use App\Http\Responses\PurchaseFailedResponse;
@@ -36,18 +36,14 @@ class OrderController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function store(
-        OrderRequest $request,
-        MakesPurchases $purchaser,
-        DestroyPaymentToken $destroyer,
-        Product $product
-    ) {
-        $order = $purchaser->purchase($product, $request->validated());
-
-        $destroyer->destroy($request->payment_token);
-
-        if (! $order) {
-            return PurchaseFailedResponse::dispatch();
+    public function store(OrderRequest $request, Product $product)
+    {
+        try {
+            $order = $this->app(CreateNewOrder::class)->create(
+                $product, $request->validated()
+            );
+        } catch (PaymentFailedException $e) {
+            return PurchaseFailedResponse::dispatch($e->getMessage());
         }
 
         return PurchaseSucceededResponse::dispatch($order);

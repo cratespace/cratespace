@@ -7,10 +7,10 @@ interface CreatesNewResources
     /**
      * Create a new resource.
      *
-     * @param string $model
+     * @param mixed $model
      * @param array  $data
      *
      * @return mixed
      */
-    public function create(string $model, array $data);
+    public function create($model, array $data);
 }

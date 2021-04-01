@@ -10,6 +10,7 @@ use App\Services\Stripe\Payment;
 use App\Events\PaymentSuccessful;
 use App\Services\Stripe\Customer;
 use App\Services\Stripe\Resource;
+use App\Exceptions\PaymentFailedException;
 
 class StripePaymentGateway extends PaymentGateway
 {
@@ -39,13 +40,13 @@ class StripePaymentGateway extends PaymentGateway
                 'confirmation_method' => 'automatic',
             ], $options);
         } catch (Throwable $e) {
-            Stripe::logger()->error($e->getMessage());
+            Stripe::logger()->error($message = $e->getMessage());
 
             PaymentFailed::dispatch(array_merge($details, [
-                'context' => $e->getMessage(),
+                'context' => $message,
             ]));
 
-            return false;
+            throw new PaymentFailedException(null, $message);
         }
 
         $payment->validate();

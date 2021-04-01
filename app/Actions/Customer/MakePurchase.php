@@ -42,7 +42,7 @@ class MakePurchase implements MakesPurchases
             $this->attachMetaDetails($product, $details)
         );
 
-        return $payment ? $product->placeOrder($payment) : false;
+        return $product->placeOrder($payment);
     }
 
     /**
