@@ -3,12 +3,13 @@
 namespace App\Http\Requests;
 
 use Throwable;
+use App\Rules\PaymentTokenRule;
 use App\Rules\PaymentMethodRule;
 use Illuminate\Foundation\Http\FormRequest;
 use Cratespace\Sentinel\Http\Requests\Concerns\AuthorizesRequests;
 use Cratespace\Sentinel\Http\Requests\Traits\InputValidationRules;
 
-class PurchaseRequest extends FormRequest
+class OrderRequest extends FormRequest
 {
     use InputValidationRules;
     use AuthorizesRequests;
@@ -39,6 +40,11 @@ class PurchaseRequest extends FormRequest
                 'required',
                 'string',
                 $this->container->make(PaymentMethodRule::class),
+            ],
+            'payment_token' => [
+                'required',
+                'string',
+                $this->container->make(PaymentTokenRule::class),
             ],
         ]);
     }

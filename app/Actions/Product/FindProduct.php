@@ -4,8 +4,9 @@ namespace App\Actions\Product;
 
 use App\Products\Finder;
 use App\Contracts\Billing\Product;
+use App\Contracts\Actions\FindsProducts;
 
-class FindProduct
+class FindProduct implements FindsProducts
 {
     /**
      * The product finder instance.

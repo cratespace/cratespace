@@ -9,6 +9,8 @@ use App\Events\ProductReserved;
 use App\Contracts\Billing\Order;
 use App\Services\Stripe\Customer;
 use App\Contracts\Billing\Payment;
+use Illuminate\Support\Facades\Crypt;
+use Illuminate\Database\Eloquent\Model;
 
 trait ManagesProduct
 {

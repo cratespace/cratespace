@@ -2,39 +2,58 @@
 
 namespace App\Products;
 
+use App\Support\Util;
 use App\Contracts\Billing\Product;
-use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Support\Facades\Crypt;
 
 class Finder
 {
     /**
-     * The Cratespace application instance.
+     * The products module manifest.
      *
-     * @var \Illuminate\Contracts\Foundation\Application
+     * @var \App\Products\Manifest
      */
-    protected $app;
+    protected $manifest;
 
     /**
      * Create new instance of product finder.
      *
-     * @param \Illuminate\Contracts\Foundation\Application $app
+     * @param \App\Products\Manifest $manifest
      *
      * @return void
      */
-    public function __construct(Application $app)
+    public function __construct(Manifest $manifest)
     {
-        $this->app = $app;
+        $this->manifest = $manifest;
     }
 
+    /**
+     * Find the appropriate product from the given code.
+     *
+     * @param string $code
+     *
+     * @return \App\Contracts\Billing\Product
+     */
     public function find(string $code): Product
     {
-        $productClass = $this->makeValidClassName(
-            $this->identifyCode($code)
-        );
+        [$model, $id] = $this->identifyCode($code);
 
-        return $this->app
-            ->make($productClass)
-            ->where('code', $code)
-            ->firstOrFail();
+        return $model::findOrFail($id);
+    }
+
+    /**
+     * Decrypt and validate product class name.
+     *
+     * @param string $code
+     *
+     * @return array
+     */
+    public function identifyCode(string $code): array
+    {
+        [$class, $id] = explode('-', Crypt::decryptString($code));
+
+        $this->manifest->validateProductClass($class);
+
+        return [Util::className($class), $id];
     }
 }

@@ -26,7 +26,7 @@ class SpaceFactory extends Factory
         $user = User::factory()->asBusiness()->create();
 
         return [
-            'code' => strtoupper(Str::random(12)),
+            'code' => null,
             'departs_at' => now()->addMonths(rand(1, 3)),
             'arrives_at' => now()->addMonths(rand(2, 3)),
             'reserved_at' => null,

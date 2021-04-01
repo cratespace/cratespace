@@ -49,9 +49,7 @@ class EventServiceProvider extends ServiceProvider
      *
      * @var array
      */
-    protected $observers = [
-        Space::class => SpaceObserver::class,
-    ];
+    protected $observers = [];
 
     /**
      * Register any events for your application.

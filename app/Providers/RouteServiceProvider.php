@@ -4,8 +4,8 @@ namespace App\Providers;
 
 use Illuminate\Http\Request;
 use App\Contracts\Billing\Product;
-use App\Actions\Product\FindProduct;
 use Illuminate\Support\Facades\Route;
+use App\Contracts\Actions\FindsProducts;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
@@ -73,7 +73,7 @@ class RouteServiceProvider extends ServiceProvider
     protected function configureProductRouteBinding(): void
     {
         Route::bind('product', function (string $productCode): Product {
-            return $this->app->make(FindProduct::class)->find($productCode);
+            return $this->app->make(FindsProducts::class)->find($productCode);
         });
     }
 }

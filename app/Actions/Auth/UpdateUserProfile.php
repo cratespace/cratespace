@@ -3,13 +3,10 @@
 namespace App\Actions\Auth;
 
 use App\Models\User;
-use App\Actions\Auth\Traits\ManagesCustomers;
 use Cratespace\Sentinel\Contracts\Actions\UpdatesUserProfiles;
 
 class UpdateUserProfile implements UpdatesUserProfiles
 {
-    use ManagesCustomers;
-
     /**
      * Validate and update the given user's profile information.
      *

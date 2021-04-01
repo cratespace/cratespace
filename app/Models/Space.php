@@ -7,7 +7,7 @@ use App\Contracts\Billing\Product;
 use App\Models\Casts\ScheduleCast;
 use App\Models\Concerns\ManagesProduct;
 use Illuminate\Database\Eloquent\Model;
-use Cratespace\Preflight\Models\Traits\Hashable;
+use App\Models\Traits\HasEncryptableCode;
 use Cratespace\Preflight\Models\Traits\Directable;
 use Cratespace\Preflight\Models\Traits\Presentable;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -17,8 +17,8 @@ class Space extends Model implements Product
 {
     use HasFactory;
     use Presentable;
-    use Hashable;
     use Directable;
+    use HasEncryptableCode;
     use ManagesProduct;
     use Orderable;
 
