@@ -2,11 +2,16 @@
 
 namespace App\Http\Requests;
 
+use Throwable;
+use App\Rules\PaymentTokenRule;
+use App\Rules\PaymentMethodRule;
 use Illuminate\Foundation\Http\FormRequest;
 use Cratespace\Sentinel\Http\Requests\Concerns\AuthorizesRequests;
+use Cratespace\Sentinel\Http\Requests\Traits\InputValidationRules;
 
 class OrderRequest extends FormRequest
 {
+    use InputValidationRules;
     use AuthorizesRequests;
 
     /**
@@ -16,7 +21,11 @@ class OrderRequest extends FormRequest
      */
     public function authorize()
     {
-        return $this->isAllowed('delete', $this->route('order'));
+        if ($this->user()->isCustomer()) {
+            return $this->product->available();
+        }
+
+        return false;
     }
 
     /**
@@ -26,6 +35,43 @@ class OrderRequest extends FormRequest
      */
     public function rules()
     {
-        return [];
+        return $this->getRulesFor('order', [
+            'payment_method' => [
+                'required',
+                'string',
+                $this->container->make(PaymentMethodRule::class),
+            ],
+            'payment_token' => [
+                'required',
+                'string',
+                $this->container->make(PaymentTokenRule::class),
+            ],
+        ]);
+    }
+
+    /**
+     * Prepare the data for validation.
+     *
+     * @return void
+     */
+    protected function prepareForValidation(): void
+    {
+        try {
+            $this->merge([
+                'customer' => $this->user()->customerId(),
+            ]);
+        } catch (Throwable $e) {
+            $this->failedAuthorization($e);
+        }
+    }
+
+    /**
+     * Get custom messages for validator errors.
+     *
+     * @return array
+     */
+    public function messages()
+    {
+        return ['customer' => 'Only valid customers can purchase from Cratespace'];
     }
 }

@@ -2,8 +2,7 @@
 
 namespace App\Models\Casts;
 
-use App\Billing\Stripe\Payment;
-use App\Contracts\Billing\Client;
+use App\Services\Stripe\Payment;
 use Illuminate\Contracts\Database\Eloquent\CastsAttributes;
 
 class PaymentCast implements CastsAttributes
@@ -24,9 +23,7 @@ class PaymentCast implements CastsAttributes
             return null;
         }
 
-        return new Payment(
-            app(Client::class)->getIntent(json_decode($value, true)['id'])
-        );
+        return new Payment($value);
     }
 
     /**
@@ -41,6 +38,6 @@ class PaymentCast implements CastsAttributes
      */
     public function set($model, $key, $value, $attributes)
     {
-        return json_encode($value);
+        return $value;
     }
 }

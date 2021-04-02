@@ -11,18 +11,6 @@
                     <navbar-link :href="route('home')" :active="route().current('home')" class="text-white bg-blue-900 hover:bg-blue-900 focus:bg-blue-900">
                         Home
                     </navbar-link>
-
-                    <navbar-link href="/" :active="false" class="text-white bg-blue-900 hover:bg-blue-900 focus:bg-blue-900">
-                        Orders
-                    </navbar-link>
-
-                    <navbar-link href="/" :active="false" class="text-white bg-blue-900 hover:bg-blue-900 focus:bg-blue-900">
-                        Spaces
-                    </navbar-link>
-
-                    <navbar-link href="/" :active="false" class="text-white bg-blue-900 hover:bg-blue-900 focus:bg-blue-900">
-                        Support
-                    </navbar-link>
                 </template>
 
                 <template #linksright>
@@ -64,7 +52,6 @@
 </template>
 
 <script>
-import axios from 'axios';
 import Logo from '@/Views/Components/Logos/Logo';
 import Navbar from '@/Views/Components/Navbars/Navbar';
 import NavbarLink from '@/Views/Components/Navbars/NavbarLink';
@@ -88,7 +75,7 @@ export default {
 
     methods: {
         logout() {
-            this.$inertia.post(this.route('logout'));
+            this.$inertia.post(route('logout'));
         }
     }
 }

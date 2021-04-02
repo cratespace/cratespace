@@ -2,24 +2,32 @@
 
 namespace App\Providers;
 
-use App\Billing\Gateways\Gateway;
-use App\Billing\Gateways\StripeGateway;
+use App\Models\Space;
+use App\Contracts\Billing\Product;
+use App\Actions\Product\FindProduct;
+use App\Actions\Customer\MakePurchase;
 use Illuminate\Support\ServiceProvider;
-use App\Actions\Purchases\CalculatePayout;
-use App\Contracts\Actions\CalculatesAmount;
+use App\Contracts\Actions\FindsProducts;
+use App\Actions\Product\CreateNewProduct;
+use App\Contracts\Actions\MakesPurchases;
+use App\Contracts\Actions\CreatesNewResources;
+use App\Billing\PaymentGateways\PaymentGateway;
 use Cratespace\Sentinel\Providers\Traits\HasActions;
+use App\Billing\PaymentGateways\StripePaymentGateway;
 
 class BillingServiceProvider extends ServiceProvider
 {
     use HasActions;
 
     /**
-     * The billing/purchase action classes.
+     * The sentinel action classes.
      *
      * @var array
      */
     protected $actions = [
-        CalculatesAmount::class => CalculatePayout::class,
+        MakesPurchases::class => MakePurchase::class,
+        CreatesNewResources::class => CreateNewProduct::class,
+        FindsProducts::class => FindProduct::class,
     ];
 
     /**
@@ -30,6 +38,8 @@ class BillingServiceProvider extends ServiceProvider
     public function register()
     {
         $this->registerPaymentGateway();
+
+        $this->registerActions();
     }
 
     /**
@@ -39,16 +49,26 @@ class BillingServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        $this->registerActions();
+        $this->registerProducts();
     }
 
     /**
-     * Register payment gateways to the application.
+     * Register payment gateway instance.
      *
      * @return void
      */
-    protected function registerPaymentGateway(): void
+    public function registerPaymentGateway(): void
     {
-        $this->app->singleton(Gateway::class, StripeGateway::class);
+        $this->app->singleton(PaymentGateway::class, StripePaymentGateway::class);
+    }
+
+    /**
+     * Register product lineup.
+     *
+     * @return void
+     */
+    public function registerProducts(): void
+    {
+        $this->app->bind(Product::class, Space::class);
     }
 }

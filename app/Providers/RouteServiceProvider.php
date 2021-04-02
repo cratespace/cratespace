@@ -2,11 +2,13 @@
 
 namespace App\Providers;
 
-use Illuminate\Cache\RateLimiting\Limit;
-use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\RateLimiter;
+use App\Contracts\Billing\Product;
 use Illuminate\Support\Facades\Route;
+use App\Contracts\Actions\FindsProducts;
+use Illuminate\Cache\RateLimiting\Limit;
+use Illuminate\Support\Facades\RateLimiter;
+use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
 
 class RouteServiceProvider extends ServiceProvider
 {
@@ -37,6 +39,8 @@ class RouteServiceProvider extends ServiceProvider
     {
         $this->configureRateLimiting();
 
+        $this->configureProductRouteBinding();
+
         $this->routes(function () {
             Route::prefix('api')
                 ->middleware('api')
@@ -54,10 +58,22 @@ class RouteServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    protected function configureRateLimiting()
+    protected function configureRateLimiting(): void
     {
         RateLimiter::for('api', function (Request $request) {
             return Limit::perMinute(60)->by(optional($request->user())->id ?: $request->ip());
+        });
+    }
+
+    /**
+     * Find product using the given product code.
+     *
+     * @return void
+     */
+    protected function configureProductRouteBinding(): void
+    {
+        Route::bind('product', function (string $productCode): Product {
+            return $this->app->make(FindsProducts::class)->find($productCode);
         });
     }
 }

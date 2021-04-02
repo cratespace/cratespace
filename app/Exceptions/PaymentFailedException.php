@@ -7,9 +7,9 @@ use App\Contracts\Billing\Payment;
 class PaymentFailedException extends IncompletePaymentException
 {
     /**
-     * Create a new PaymentFailedException instance.
+     * Create a new PaymentFailure instance.
      *
-     * @param \App\Billing\Attributes\Payment $payment
+     * @param \App\Contracts\Billing\Payment $payment
      *
      * @return \App\Exceptions\PaymentFailedException
      */

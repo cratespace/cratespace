@@ -2,7 +2,9 @@
 
 namespace App\Contracts\Billing;
 
-interface Payment
+use Illuminate\Contracts\Support\Arrayable;
+
+interface Payment extends Arrayable
 {
     /**
      * Get the total amount that will be paid.
@@ -19,9 +21,9 @@ interface Payment
     public function rawAmount(): int;
 
     /**
-     * Determine the status of the order.
+     * Determine if the payment was successfully completed.
      *
-     * @return string
+     * @return bool
      */
-    public function status(): string;
+    public function paid(): bool;
 }

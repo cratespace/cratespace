@@ -2,21 +2,11 @@
 
 namespace App\Rules;
 
-use App\Contracts\Billing\Client;
+use App\Services\Stripe\PaymentMethod;
 use Illuminate\Contracts\Validation\Rule;
 
 class PaymentMethodRule implements Rule
 {
-    /**
-     * Create a new rule instance.
-     *
-     * @return void
-     */
-    public function __construct(Client $client)
-    {
-        $this->client = $client;
-    }
-
     /**
      * Determine if the validation rule passes.
      *
@@ -27,7 +17,7 @@ class PaymentMethodRule implements Rule
      */
     public function passes($attribute, $value)
     {
-        return ! is_null($this->client->getMethod($value));
+        return ! is_null(PaymentMethod::getStripeObject($value));
     }
 
     /**
@@ -37,6 +27,6 @@ class PaymentMethodRule implements Rule
      */
     public function message()
     {
-        return 'The validation error message.';
+        return 'The payment method provided is invalid.';
     }
 }

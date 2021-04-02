@@ -16,6 +16,10 @@ return [
 
     'secret' => env('STRIPE_SECRET'),
 
+    'account' => env('STRIPE_ACCOUNT'),
+
+    'client_id' => env('STRIPE_CLIENT_ID'),
+
     /*
     |--------------------------------------------------------------------------
     | Currency

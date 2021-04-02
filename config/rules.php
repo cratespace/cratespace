@@ -20,12 +20,12 @@ return [
     ],
 
     /*
-     * Use Registration Validation Rules.
+     * Customer Registration Validation Rules.
      */
     'register' => [
         'name' => ['required', 'string', 'max:255'],
         'business' => ['exclude_if:type,customer', 'string', 'max:255'],
-        'phone' => ['sometimes', 'string', 'regex:/(0)[0-9]{9}/'],
+        'phone' => ['sometimes', 'string', 'regex:/(07)[0-9]{8}/'],
         'email' => [
             'required',
             'string',
@@ -35,6 +35,37 @@ return [
         ],
         'password' => ['required', 'string', new PasswordRule()],
         'type' => ['sometimes', 'string', Rule::in(['business', 'customer'])],
+    ],
+
+    /*
+     * Business User Input Validation Rules.
+     */
+    'business' => [
+        'registration_number' => [
+            'required',
+            'string',
+            'max:255',
+            'unique:businesses,registration_number',
+        ],
+        'mcc' => [
+            'required',
+            'string',
+            'max:255',
+            'unique:businesses,mcc',
+        ],
+        'url' => ['sometimes', 'url', 'string', 'max:255'],
+        'invite' => ['sometimes'],
+    ],
+
+    /*
+     * Address Inputs Validation Rules.
+     */
+    'address' => [
+        'line1' => ['required', 'string', 'max:255'],
+        'city' => ['required', 'string', 'max:255'],
+        'state' => ['required', 'string', 'max:255'],
+        'country' => ['required', 'string', 'max:255'],
+        'postal_code' => ['required', 'string', 'max:255'],
     ],
 
     /*
@@ -49,7 +80,7 @@ return [
     ],
 
     /*
-     * User Account Password Update Validation Rules.
+     * Use Account Password Update Validation Rules.
      */
     'update_password' => [
         'current_password' => ['required', 'string'],
@@ -63,17 +94,15 @@ return [
     ],
 
     /*
-     * User Business Profile Information Update Validation Rules.
+     * Business Invitaion Parameters Validation Rules.
      */
-    'business' => [
-        'name' => ['required', 'string', 'max:255'],
-        'description' => ['nullable', 'string'],
-        'photo' => ['sometimes', 'image', 'max:1024'],
-        'street' => ['required', 'string', 'max:255'],
-        'city' => ['required', 'string', 'max:255'],
-        'state' => ['required', 'string', 'max:255'],
-        'country' => ['required', 'string', 'max:255'],
-        'postcode' => ['required', 'string', 'max:255'],
+    'invitation' => [
+        'email' => ['required', 'email', 'unique:invitations,email'],
+        'role' => [
+            'required',
+            'string',
+            Rule::in(['Business', 'Administrator']),
+        ],
     ],
 
     /*
@@ -108,7 +137,6 @@ return [
         'phone' => ['sometimes', 'string', 'regex:/(0)[0-9]{9}/'],
         'business' => ['sometimes', 'string', 'max:255'],
         'payment_method' => ['required', 'string'],
-        'purchase_token' => ['required', 'string'],
         'customer' => ['required', 'string'],
     ],
 ];

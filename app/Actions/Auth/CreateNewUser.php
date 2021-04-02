@@ -3,11 +3,9 @@
 namespace App\Actions\Auth;
 
 use App\Models\User;
-use Illuminate\Support\Str;
+use App\Support\Util;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
-use App\Actions\Business\CreateNewBusiness;
-use App\Actions\Business\CreateNewCustomer;
 use Cratespace\Sentinel\Contracts\Actions\CreatesNewUsers;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableUser;
 
@@ -22,9 +20,13 @@ class CreateNewUser implements CreatesNewUsers
      */
     public function create(array $data): AuthenticatableUser
     {
-        return DB::transaction(function () use ($data) {
-            return tap($this->createUser($data), function (AuthenticatableUser $user) {
-                return $user;
+        return DB::transaction(function () use ($data): User {
+            return tap($this->createUser($data), function (User $user) use ($data): void {
+                ($business = $this->isForBusiness($data))
+                    ? $user->createAsBusiness($data)
+                    : $user->createAsCustomer($data);
+
+                $user->assignRole($business ? 'Business' : 'Customer');
             });
         });
     }
@@ -38,52 +40,35 @@ class CreateNewUser implements CreatesNewUsers
      */
     protected function createUser(array $data): User
     {
-        $user = User::create([
+        return User::create([
             'name' => $data['name'],
             'email' => $data['email'],
-            'username' => $this->makeUsername($data['name']),
+            'username' => Util::makeUsername($data['name']),
             'password' => Hash::make($data['password']),
+            'settings' => $this->setDefaultSettings(),
+            'locked' => $data['type'] === 'customer' ? false : true,
         ]);
-
-        $this->createUserProfile($user, $data);
-
-        return $user;
     }
 
     /**
-     * Create user profile according to user type.
+     * Determine if the user is a business user or a customer.
      *
-     * @param \App\Models\User $user
-     * @param array            $data
+     * @param array $data
      *
-     * @return \App\Models\User
+     * @return bool
      */
-    protected function createUserProfile(User $user, array $data): User
+    protected function isForBusiness(array $data): bool
     {
-        $data['user'] = $user;
-
-        $data['type'] === 'business'
-            ? app(CreateNewBusiness::class)->create($data)
-            : app(CreateNewCustomer::class)->create($data);
-
-        return $user->fresh();
+        return isset($data['type']) && $data['type'] === 'business';
     }
 
     /**
-     * Generate unique username from first name.
+     * Get default user settings array.
      *
-     * @param string $name
-     *
-     * @return string
+     * @return array
      */
-    protected function makeUsername(string $name): string
+    protected function setDefaultSettings(): array
     {
-        $name = trim($name);
-
-        if (User::where('username', 'like', '%' . $name . '%')->count() !== 0) {
-            return Str::studly("{$name}-" . Str::random('5'));
-        }
-
-        return Str::studly($name);
+        return config('defaults.users.settings');
     }
 }

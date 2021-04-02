@@ -2,14 +2,31 @@
 
 namespace App\Providers;
 
-use Stripe\StripeClient;
-use App\Billing\Stripe\Client;
-use Stripe\StripeClientInterface;
+use Stripe\Stripe;
+use App\Services\Stripe\Client;
+use App\Services\Stripe\Logger;
+use Stripe\Util\LoggerInterface;
 use Illuminate\Support\ServiceProvider;
-use App\Contracts\Billing\Client as ClientContract;
+use App\Contracts\Services\Client as ClientContract;
 
 class StripeServiceProvider extends ServiceProvider
 {
+    /**
+     * Bootstrap any package services.
+     *
+     * @return void
+     */
+    public function boot()
+    {
+        $this->registerLogger();
+
+        Stripe::setAppInfo(
+            'Cratespace',
+            config('app.version'),
+            'https://cratespace.biz'
+        );
+    }
+
     /**
      * Register services.
      *
@@ -18,6 +35,34 @@ class StripeServiceProvider extends ServiceProvider
     public function register()
     {
         $this->registerClient();
+
+        $this->bindLogger();
+    }
+
+    /**
+     * Bind the Stripe logger interface to the Cashier logger.
+     *
+     * @return void
+     */
+    protected function bindLogger(): void
+    {
+        $this->app->bind(LoggerInterface::class, function ($app) {
+            return new Logger(
+                $app->make('log')->channel(config('billing.logger'))
+            );
+        });
+    }
+
+    /**
+     * Register the Stripe logger.
+     *
+     * @return void
+     */
+    protected function registerLogger(): void
+    {
+        if (config('billing.logger')) {
+            Stripe::setLogger($this->app->make(LoggerInterface::class));
+        }
     }
 
     /**
@@ -27,10 +72,16 @@ class StripeServiceProvider extends ServiceProvider
      */
     protected function registerClient(): void
     {
-        $this->app->singleton(StripeClientInterface::class, function ($app) {
-            return new StripeClient($app['config']->get('billing.secret'));
+        $this->app->singleton('stripe.client', function ($app) {
+            $client = new Client($app);
+
+            $client->make();
+
+            return $client;
         });
 
-        $this->app->singleton(ClientContract::class, Client::class);
+        $this->app->singleton(ClientContract::class, function ($app) {
+            return $app->make('stripe.client');
+        });
     }
 }

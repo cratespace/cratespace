@@ -6,6 +6,7 @@ use App\Models\Space;
 use App\Http\Requests\SpaceRequest;
 use App\Http\Controllers\Controller;
 use App\Http\Responses\SpaceResponse;
+use App\Contracts\Actions\CreatesNewResources;
 
 class SpaceController extends Controller
 {
@@ -41,13 +42,14 @@ class SpaceController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param \Illuminate\Http\Request $request
+     * @param \App\Http\Requests\SpaceRequest            $request
+     * @param \App\Contracts\Actions\CreatesNewResources $creator
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function store(SpaceRequest $request)
+    public function store(SpaceRequest $request, CreatesNewResources $creator)
     {
-        $space = $request->user()->spaces()->create($request->validated());
+        $space = $creator->create(Space::class, $request->validated());
 
         return SpaceResponse::dispatch($space);
     }

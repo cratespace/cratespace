@@ -3,23 +3,17 @@
 namespace Tests\Feature\Auth;
 
 use Tests\TestCase;
-use App\Models\User;
-use App\Models\Business;
-use App\Contracts\Billing\Client;
+use App\Services\Stripe\Customer;
+use Illuminate\Support\Facades\Auth;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\Feature\Auth\Concerns\CreateDefaultUser;
 use Cratespace\Preflight\Testing\Contracts\Postable;
 
 class RegistrationTest extends TestCase implements Postable
 {
     use RefreshDatabase;
-
-    protected function setUp(): void
-    {
-        parent::setUp();
-
-        $this->createRolesAndPermissions();
-    }
+    use CreateDefaultUser;
 
     public function testRegistrationScreenCanBeRendered()
     {
@@ -28,68 +22,36 @@ class RegistrationTest extends TestCase implements Postable
         $response->assertStatus(200);
     }
 
-    public function testNewBusinessUsersCanRegister()
+    public function testNewCustomerCanRegister()
     {
         $this->withoutExceptionHandling();
+
+        $this->createDefaults();
 
         $response = $this->post('/register', $this->validParameters());
 
         $this->assertAuthenticated();
-        $this->assertCount(1, Business::all());
         $response->assertRedirect(RouteServiceProvider::HOME);
+        $this->assertNotNull($id = Auth::user()->profile->stripe_id);
+
+        $customer = new Customer($id);
+        $customer->delete();
     }
 
-    public function testNewBusinessUsersCanRegisterThroughJsonRequest()
+    public function testNewCustomerCanRegisterThroughJson()
     {
         $this->withoutExceptionHandling();
+
+        $this->createDefaults();
 
         $response = $this->postJson('/register', $this->validParameters());
 
         $this->assertAuthenticated();
-        $this->assertCount(1, Business::all());
         $response->assertStatus(200);
-    }
+        $this->assertNotNull($id = Auth::user()->profile->stripe_id);
 
-    public function testNewCustomerUsersCanRegister()
-    {
-        $this->withoutExceptionHandling();
-
-        $response = $this->post('/register', $this->validParameters([
-            'type' => 'customer',
-        ]));
-
-        $this->assertAuthenticated();
-        $this->assertCount(0, Business::all());
-        $response->assertRedirect(RouteServiceProvider::HOME);
-
-        $user = User::whereName('Test User')->first();
-        $customer = app(Client::class)->getCustomer($user->customer->stripe_id);
-
-        $this->assertNotNull($customer);
-        $this->assertEquals('test@example.com', $customer->email);
-        $this->assertEquals('Test User', $customer->name);
-        $this->assertEquals('0775018795', $customer->phone);
-    }
-
-    public function testNewCustomerUsersCanRegisterThroughJson()
-    {
-        $this->withoutExceptionHandling();
-
-        $response = $this->postJson('/register', $this->validParameters([
-            'type' => 'customer',
-        ]));
-
-        $this->assertAuthenticated();
-        $this->assertCount(0, Business::all());
-        $response->assertStatus(200);
-
-        $user = User::whereName('Test User')->first();
-        $customer = app(Client::class)->getCustomer($user->customer->stripe_id);
-
-        $this->assertNotNull($customer);
-        $this->assertEquals('test@example.com', $customer->email);
-        $this->assertEquals('Test User', $customer->name);
-        $this->assertEquals('0775018795', $customer->phone);
+        $customer = new Customer($id);
+        $customer->delete();
     }
 
     public function testValidNameIsRequired()
@@ -98,7 +60,7 @@ class RegistrationTest extends TestCase implements Postable
             'name' => '',
         ]));
 
-        $this->assertGuest();
+        $response->assertStatus(302);
         $response->assertSessionHasErrors('name');
     }
 
@@ -108,8 +70,18 @@ class RegistrationTest extends TestCase implements Postable
             'email' => '',
         ]));
 
-        $this->assertGuest();
+        $response->assertStatus(302);
         $response->assertSessionHasErrors('email');
+    }
+
+    public function testValidPhoneIsRequired()
+    {
+        $response = $this->post('/register', $this->validParameters([
+            'phone' => '',
+        ]));
+
+        $response->assertStatus(302);
+        $response->assertSessionHasErrors('phone');
     }
 
     public function testValidPasswordIsRequired()
@@ -118,40 +90,8 @@ class RegistrationTest extends TestCase implements Postable
             'password' => '',
         ]));
 
-        $this->assertGuest();
+        $response->assertStatus(302);
         $response->assertSessionHasErrors('password');
-    }
-
-    public function testBusinessIsOptionalIfRegisteringAsCustomer()
-    {
-        $response = $this->post('/register', $this->validParameters([
-            'business' => '',
-            'type' => 'customer',
-        ]));
-
-        $this->assertAuthenticated();
-        $response->assertRedirect(RouteServiceProvider::HOME);
-    }
-
-    public function testValidTypeIsRequired()
-    {
-        $response = $this->post('/register', $this->validParameters([
-            'type' => 'editor',
-        ]));
-
-        $this->assertGuest();
-        $response->assertSessionHasErrors('type');
-    }
-
-    public function testBusinessIsRequiredIfRegisteringAsBusiness()
-    {
-        $response = $this->post('/register', $this->validParameters([
-            'business' => '',
-            'type' => 'business',
-        ]));
-
-        $this->assertGuest();
-        $response->assertSessionHasErrors('business');
     }
 
     /**
@@ -164,12 +104,11 @@ class RegistrationTest extends TestCase implements Postable
     public function validParameters(array $overrides = []): array
     {
         return array_merge([
-            'name' => 'Test User',
-            'business' => 'Example, Inc.',
-            'phone' => '0775018795',
-            'email' => 'test@example.com',
-            'password' => 'password',
-            'type' => 'business',
+            'name' => 'Father Jack Hackett',
+            'email' => 'fr.j.hackett@craggyisle.com',
+            'phone' => '0712345678',
+            'password' => 'dontTellMeImStillInThatFekingIsland',
+            'type' => 'customer',
         ], $overrides);
     }
 }

@@ -3,48 +3,33 @@
 namespace App\Models;
 
 use App\Support\Money;
-use App\Jobs\CancelOrder;
+use App\Events\OrderCanceled;
 use App\Models\Casts\PaymentCast;
-use App\Models\Traits\Directable;
-use App\Contracts\Purchases\Product;
+use App\Contracts\Billing\Product;
 use Illuminate\Database\Eloquent\Model;
-use App\Models\Concerns\DeterminesEligibility;
-use App\Contracts\Purchases\Order as OrderContract;
+use App\Contracts\Billing\Order as OrderContract;
+use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Order extends Model implements OrderContract
 {
     use HasFactory;
-    use Directable;
-    use DeterminesEligibility;
-
-    /**
-     * The accessors to append to the model's array form.
-     *
-     * @var array
-     */
-    protected $appends = ['path'];
 
     /**
      * The attributes that are mass assignable.
      *
-     * @var array
+     * @var string[]
      */
     protected $fillable = [
-        'confirmation_number',
-        'name',
-        'email',
-        'phone',
-        'business',
-        'price',
-        'tax',
-        'total',
-        'note',
-        'space_id',
         'user_id',
         'customer_id',
-        'details',
+        'confirmation_number',
+        'orderable_id',
+        'orderable_type',
+        'amount',
+        'payment',
+        'note',
     ];
 
     /**
@@ -53,21 +38,11 @@ class Order extends Model implements OrderContract
      * @var array
      */
     protected $casts = [
-        'details' => PaymentCast::class,
+        'payment' => PaymentCast::class,
     ];
 
     /**
-     * Get the space the order belongs to.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
-    public function space(): BelongsTo
-    {
-        return $this->belongsTo(Space::class, 'space_id');
-    }
-
-    /**
-     * Get the business the order belongs to.
+     * Get the business the order was placed at.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
@@ -77,7 +52,7 @@ class Order extends Model implements OrderContract
     }
 
     /**
-     * Get the customer the order belongs to.
+     * Get the customer the order was placed for.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
@@ -87,13 +62,23 @@ class Order extends Model implements OrderContract
     }
 
     /**
+     * Get the order belonging to the product.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\MorphTo
+     */
+    public function orderable(): MorphTo
+    {
+        return $this->morphTo();
+    }
+
+    /**
      * Get the total amount that will be paid.
      *
      * @return string
      */
     public function amount(): string
     {
-        return Money::format($this->total);
+        return Money::format($this->amount);
     }
 
     /**
@@ -103,36 +88,50 @@ class Order extends Model implements OrderContract
      */
     public function rawAmount(): int
     {
-        return (int) $this->total;
+        return $this->amount;
     }
 
     /**
-     * Determine the status of the order.
+     * Determine if the payment was successfully completed.
      *
-     * @return string
+     * @return bool
      */
-    public function status(): string
+    public function paid(): bool
     {
-        return ! is_null($this->confirmation_number) ? 'confirmed' : 'pending';
+        return true;
     }
 
     /**
-     * Get the product this order belongs to.
+     * Get the product associated with this order.
      *
-     * @return \App\Contracts\Purchases\Product
+     * @return \App\Contracts\Billing\Product
      */
     public function product(): Product
     {
-        return $this->space;
+        return $this->orderable;
     }
 
     /**
-     * Cancel the order.
+     * Cancel this order.
      *
      * @return void
      */
     public function cancel(): void
     {
-        CancelOrder::dispatch($this);
+        $this->product()->release();
+
+        OrderCanceled::dispatch($this);
+
+        $this->delete();
+    }
+
+    /**
+     * Determine if the order can be cancelled.
+     *
+     * @return bool
+     */
+    public function canCancel(): bool
+    {
+        return ! $this->product()->nearingExpiration();
     }
 }

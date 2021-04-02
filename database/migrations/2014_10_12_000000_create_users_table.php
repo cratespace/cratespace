@@ -18,17 +18,13 @@ class CreateUsersTable extends Migration
             $table->string('name');
             $table->string('username')->unique();
             $table->string('email')->unique();
-            $table->string('phone')->nullable();
             $table->timestamp('email_verified_at')->nullable();
             $table->text('profile_photo_path')->nullable();
             $table->text('two_factor_secret')->nullable();
             $table->text('two_factor_recovery_codes')->nullable();
             $table->json('settings')->nullable();
+            $table->json('address')->nullable();
             $table->boolean('locked')->default(false);
-            $table->foreignId('role_id')
-                ->nullable()
-                ->constrained('roles')
-                ->onDelete('cascade');
             $table->rememberToken();
             $table->timestamps();
 

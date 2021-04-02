@@ -2,13 +2,15 @@
 
 namespace App\Models;
 
-use App\Models\Concerns\ManagesRoles;
+use App\Models\Casts\AddressCast;
+use App\Models\Casts\SettingsCast;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Concerns\ManagesBusiness;
 use App\Models\Concerns\ManagesCustomer;
 use Illuminate\Notifications\Notifiable;
-use Illuminate\Database\Eloquent\Relations\HasOne;
 use Cratespace\Sentinel\Models\Traits\HasApiTokens;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Cratespace\Preflight\Models\Concerns\ManagesRoles;
 use Cratespace\Sentinel\Models\Traits\HasProfilePhoto;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -17,14 +19,15 @@ use Cratespace\Sentinel\Models\Traits\TwoFactorAuthenticatable;
 
 class User extends Authenticatable
 {
-    use HasApiTokens;
-    use HasFactory;
-    use HasProfilePhoto;
     use Notifiable;
-    use InteractsWithSessions;
-    use TwoFactorAuthenticatable;
+    use HasFactory;
+    use HasApiTokens;
     use ManagesRoles;
     use ManagesCustomer;
+    use ManagesBusiness;
+    use HasProfilePhoto;
+    use InteractsWithSessions;
+    use TwoFactorAuthenticatable;
 
     /**
      * The attributes that are mass assignable.
@@ -37,14 +40,12 @@ class User extends Authenticatable
         'password',
         'username',
         'settings',
+        'profile',
+        'address',
         'locked',
         'profile_photo_path',
         'two_factor_secret',
         'two_factor_recovery_codes',
-        'stripe_id',
-        'pm_type',
-        'pm_last_four',
-        'role_id',
     ];
 
     /**
@@ -57,7 +58,6 @@ class User extends Authenticatable
         'remember_token',
         'two_factor_recovery_codes',
         'two_factor_secret',
-        'role_id',
     ];
 
     /**
@@ -68,7 +68,8 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
         'two_factor_enabled' => 'boolean',
-        'settings' => 'array',
+        'address' => AddressCast::class,
+        'settings' => SettingsCast::class,
     ];
 
     /**
@@ -81,6 +82,7 @@ class User extends Authenticatable
         'sessions',
         'two_factor_enabled',
         'profile',
+        'credit',
     ];
 
     /**
@@ -88,36 +90,26 @@ class User extends Authenticatable
      *
      * @var array
      */
-    protected $with = ['role'];
+    protected $with = ['roles'];
 
     /**
-     * Get the appropriate user profile.
+     * Get the route key for the model.
+     *
+     * @return string
+     */
+    public function getRouteKeyName(): string
+    {
+        return 'username';
+    }
+
+    /**
+     * Get the user's profile.
      *
      * @return \Illuminate\Database\Eloquent\Model|null
      */
     public function getProfileAttribute(): ?Model
     {
-        return $this->business ?? $this->customer;
-    }
-
-    /**
-     * Get business details of the user.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasOne
-     */
-    public function business(): HasOne
-    {
-        return $this->hasOne(Business::class, 'user_id');
-    }
-
-    /**
-     * Get customer details of the user.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasOne
-     */
-    public function customer(): HasOne
-    {
-        return $this->hasOne(Customer::class, 'user_id');
+        return $this->hasRole('Business') ? $this->business : $this->customer;
     }
 
     /**

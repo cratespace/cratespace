@@ -13,9 +13,6 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        $this->call([
-            DefaultAuthorizationsSeeder::class,
-            DefaultUserSeeder::class,
-        ]);
+        $this->call([DefaultUserSeeder::class]);
     }
 }

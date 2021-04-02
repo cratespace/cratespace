@@ -23,10 +23,10 @@ class SpaceFactory extends Factory
      */
     public function definition()
     {
-        $user = User::factory()->withBusiness()->create();
+        $user = User::factory()->asBusiness()->create();
 
         return [
-            'code' => strtoupper(Str::random(12)),
+            'code' => null,
             'departs_at' => now()->addMonths(rand(1, 3)),
             'arrives_at' => now()->addMonths(rand(2, 3)),
             'reserved_at' => null,
@@ -41,7 +41,7 @@ class SpaceFactory extends Factory
             'tax' => round($price * 0.05), // 5% tax
             'type' => $this->faker->randomElement(['Local', 'International']),
             'user_id' => $user->id,
-            'base' => $user->business->country,
+            'base' => $user->address->country,
         ];
     }
 }

@@ -30,21 +30,4 @@ class SpacePolicy
 
         return false;
     }
-
-    /**
-     * Determine whether the user can purchase the product.
-     *
-     * @param \App\Models\User  $user
-     * @param \App\Models\Space $space
-     *
-     * @return mixed
-     */
-    public function purchase(User $user, Space $space)
-    {
-        if ($user->role->can('purchase') || $user->role->can('*')) {
-            return ! $space->reserved() && ! $space->expired();
-        }
-
-        return false;
-    }
 }

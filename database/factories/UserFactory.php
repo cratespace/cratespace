@@ -2,12 +2,12 @@
 
 namespace Database\Factories;
 
-use App\Models\Role;
 use App\Models\User;
 use App\Models\Business;
 use App\Models\Customer;
 use Illuminate\Support\Str;
-use App\Contracts\Billing\Client;
+use Cratespace\Preflight\Models\Role;
+use App\Services\Stripe\Customer as StripeCustomer;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class UserFactory extends Factory
@@ -30,11 +30,19 @@ class UserFactory extends Factory
             'name' => $this->faker->name,
             'username' => $this->faker->unique()->userName,
             'email' => $this->faker->unique()->safeEmail,
-            'phone' => $this->faker->phoneNumber,
             'email_verified_at' => now(),
             'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
             'remember_token' => Str::random(10),
-            'settings' => [],
+            'settings' => [
+                'notifications' => ['mail', 'database'],
+            ],
+            'address' => [
+                'line1' => $this->faker->streetName,
+                'city' => $this->faker->city,
+                'state' => $this->faker->state,
+                'country' => $this->faker->country,
+                'postal_code' => $this->faker->postcode,
+            ],
             'locked' => false,
             'profile_photo_path' => null,
             'two_factor_secret' => null,
@@ -43,52 +51,48 @@ class UserFactory extends Factory
     }
 
     /**
-     * Indicate that the user should have a business profile.
+     * Create a business profile for the user.
      *
      * @return \Database\Factories\UserFactory
      */
-    public function withBusiness(): UserFactory
+    public function asBusiness(): UserFactory
     {
-        $role = Role::firstOrCreate(['name' => 'Business', 'slug' => 'business']);
-
         return $this->has(
             Business::factory()
-                ->state(function (array $attributes, User $user) use ($role) {
-                    $user->assignRole($role);
+                ->state(function (array $attributes, User $user) {
+                    $user->assignRole(
+                        Role::firstOrCreate(['name' => 'Business', 'slug' => 'business'])
+                    );
 
-                    return [
-                        'name' => $this->faker->unique()->company,
-                        'user_id' => $user->id,
-                        'credit' => 0.00,
-                    ];
+                    return ['user_id' => $user->id];
                 }),
             'business'
         );
     }
 
     /**
-     * Indicate that the user should have a customer profile.
+     * Create a customer profile for the user.
      *
      * @return \Database\Factories\UserFactory
      */
     public function asCustomer(): UserFactory
     {
-        $role = Role::firstOrCreate(['name' => 'Customer', 'slug' => 'customer']);
-
         return $this->has(
             Customer::factory()
-                ->state(function (array $attributes, User $user) use ($role) {
-                    $user->assignRole($role);
-
-                    $customer = app(Client::class)->createCustomer([
+                ->state(function (array $attributes, User $user) {
+                    $customer = StripeCustomer::create([
                         'name' => $user->name,
                         'email' => $user->email,
                         'phone' => $user->phone,
                     ]);
 
+                    $user->assignRole(
+                        Role::firstOrCreate(['name' => 'Customer', 'slug' => 'customer'])
+                    );
+
                     return [
-                        'user_id' => $user->id,
                         'stripe_id' => $customer->id,
+                        'user_id' => $user->id,
                     ];
                 }),
             'customer'

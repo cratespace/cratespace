@@ -11,16 +11,27 @@ class OrderPolicy
     use HandlesAuthorization;
 
     /**
-     * Determine whether the user can view the model.
+     * Determine whether the user can create models.
+     *
+     * @param \App\Models\User $user
+     *
+     * @return mixed
+     */
+    public function create(User $user)
+    {
+    }
+
+    /**
+     * Determine whether the user can update the model.
      *
      * @param \App\Models\User  $user
      * @param \App\Models\Order $order
      *
      * @return mixed
      */
-    public function view(User $user, Order $order)
+    public function update(User $user, Order $order)
     {
-        return $user->is($order->customer);
+        return $user->is($order->user);
     }
 
     /**
@@ -33,6 +44,10 @@ class OrderPolicy
      */
     public function delete(User $user, Order $order)
     {
-        return $user->is($order->customer);
+        if ($user->is($order->user) || $user->is($order->customer)) {
+            return $order->canCancel();
+        }
+
+        return false;
     }
 }

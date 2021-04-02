@@ -14,11 +14,24 @@ class EmailVerificationTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function testEmailVerificationScreenCanBeRendered()
+    public function testEmailVerificationScreenCanBeRenderedForBusiness()
     {
         $this->withoutExceptionHandling();
 
-        $user = User::factory()->withBusiness()->create([
+        $user = User::factory()->asBusiness()->create([
+            'email_verified_at' => null,
+        ]);
+
+        $response = $this->signIn($user)->get('/email/verify');
+
+        $response->assertStatus(200);
+    }
+
+    public function testEmailVerificationScreenCanBeRenderedForCustomer()
+    {
+        $this->withoutExceptionHandling();
+
+        $user = User::factory()->asCustomer()->create([
             'email_verified_at' => null,
         ]);
 
@@ -31,7 +44,7 @@ class EmailVerificationTest extends TestCase
     {
         Event::fake();
 
-        $user = User::factory()->withBusiness()->create([
+        $user = User::factory()->asBusiness()->create([
             'email_verified_at' => null,
         ]);
 
@@ -50,7 +63,7 @@ class EmailVerificationTest extends TestCase
 
     public function testEmailIsNotVerifiedWithInvalidHash()
     {
-        $user = User::factory()->withBusiness()->create([
+        $user = User::factory()->asBusiness()->create([
             'email_verified_at' => null,
         ]);
 

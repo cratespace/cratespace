@@ -2,6 +2,7 @@
 
 namespace App\Events;
 
+use App\Models\User;
 use App\Models\Business;
 use App\Contracts\Billing\Payment;
 use Illuminate\Queue\SerializesModels;
@@ -28,18 +29,22 @@ class PaymentEvent
      *
      * @return void
      */
-    public function __construct(Payment $payment)
+    public function __construct(?Payment $payment = null)
     {
         $this->payment = $payment;
     }
 
     /**
-     * Get the business the payment is for.
+     * Get the merchant the product belongs to.
      *
-     * @return \App\Models\Business
+     * @return \App\Models\User
      */
-    public function business(): Business
+    public function business(): User
     {
-        return Business::find($this->payment->metadata['businessId']);
+        $business = Business::findUsingRegistrationNumber(
+            $this->payment->metadata['merchant_registration_number']
+        );
+
+        return $business->user;
     }
 }

@@ -3,7 +3,7 @@
         <template #title>
             <div>
                 <div>
-                    <logo :title="config('app.name')" classes="h-16 w-auto text-blue-500"></logo>
+                    <logo :title="config('app.name')" classes="h-16 w-16 text-blue-500"></logo>
                 </div>
 
                 <h4 class="mt-6 font-semibold text-xl text-gray-800">Confirm your password</h4>

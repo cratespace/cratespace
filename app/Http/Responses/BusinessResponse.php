@@ -16,6 +16,8 @@ class BusinessResponse extends Response implements Responsable
      */
     public function toResponse($request)
     {
-        return $request->expectsJson() ? $this->json('', 201) : $this->back(303);
+        return $request->expectsJson()
+            ? $this->json($this->content ?? '', 201)
+            : $this->back(303);
     }
 }

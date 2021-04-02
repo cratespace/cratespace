@@ -3,7 +3,7 @@
 namespace App\Models\Casts;
 
 use Carbon\Carbon;
-use App\Models\Values\ScheduleValue;
+use App\Models\Values\Schedule;
 use Illuminate\Contracts\Database\Eloquent\CastsAttributes;
 
 class ScheduleCast implements CastsAttributes
@@ -20,9 +20,9 @@ class ScheduleCast implements CastsAttributes
      */
     public function get($model, string $key, $value, array $attributes)
     {
-        return new ScheduleValue(
-            Carbon::parse($attributes['departs_at'])->format('M j, Y g:ia'),
-            Carbon::parse($attributes['arrives_at'])->format('M j, Y g:ia')
+        return new Schedule(
+            $this->parse($attributes['departs_at'])->format('M j, Y g:ia'),
+            $this->parse($attributes['arrives_at'])->format('M j, Y g:ia')
         );
     }
 
@@ -39,8 +39,20 @@ class ScheduleCast implements CastsAttributes
     public function set($model, string $key, $value, array $attributes)
     {
         return [
-            'departs_at' => Carbon::parse($value->departsAt)->toDateTimeString(),
-            'arrives_at' => Carbon::parse($value->arrivesAt)->toDateTimeString(),
+            'departs_at' => $this->parse($value->departsAt)->toDateTimeString(),
+            'arrives_at' => $this->parse($value->arrivesAt)->toDateTimeString(),
         ];
+    }
+
+    /**
+     * Parse the given datetime value to Carbon instance.
+     *
+     * @param \Carbon\Carbon|string $datetime
+     *
+     * @return \Carbon\Carbon
+     */
+    protected function parse($datetime): Carbon
+    {
+        return Carbon::parse($datetime);
     }
 }

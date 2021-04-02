@@ -2,16 +2,27 @@
 
 namespace App\Providers;
 
-use App\Models\Space;
+use App\Models\User;
+use App\Models\Order;
+use App\Models\Business;
+use App\Models\Customer;
+use App\Models\Invitation;
 use App\Events\OrderPlaced;
-use App\Events\OrderCanceled;
 use App\Events\PaymentFailed;
-use App\Events\SpaceReleased;
-use App\Events\SpaceReserved;
 use App\Listeners\MakePayout;
-use App\Observers\SpaceObserver;
+use App\Events\OrderCancelled;
+use App\Events\BusinessInvited;
+use App\Events\ProductReleased;
+use App\Events\ProductReserved;
+use App\Observers\UserObserver;
+use App\Observers\OrderObserver;
 use App\Events\PaymentSuccessful;
+use App\Observers\BusinessObserver;
+use App\Observers\CustomerObserver;
+use App\Observers\InvitationObserver;
 use Illuminate\Auth\Events\Registered;
+use App\Listeners\SendNewOrderPlacedNotification;
+use App\Listeners\SendOrderPlacedSuccessfullyEmail;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 
@@ -27,6 +38,8 @@ class EventServiceProvider extends ServiceProvider
             SendEmailVerificationNotification::class,
         ],
 
+        BusinessInvited::class => [],
+
         PaymentSuccessful::class => [
             MakePayout::class,
         ],
@@ -34,11 +47,15 @@ class EventServiceProvider extends ServiceProvider
         PaymentFailed::class => [],
         PaymentRefunded::class => [],
 
-        SpaceReserved::class => [],
-        SpaceReleased::class => [],
+        ProductReserved::class => [],
+        ProductReleased::class => [],
 
-        OrderPlaced::class => [],
-        OrderCanceled::class => [],
+        OrderPlaced::class => [
+            SendOrderPlacedSuccessfullyEmail::class,
+            SendNewOrderPlacedNotification::class,
+        ],
+
+        OrderCancelled::class => [],
     ];
 
     /**
@@ -47,7 +64,11 @@ class EventServiceProvider extends ServiceProvider
      * @var array
      */
     protected $observers = [
-        Space::class => SpaceObserver::class,
+        User::class => UserObserver::class,
+        Order::class => OrderObserver::class,
+        Business::class => BusinessObserver::class,
+        Customer::class => CustomerObserver::class,
+        Invitation::class => InvitationObserver::class,
     ];
 
     /**
@@ -67,8 +88,8 @@ class EventServiceProvider extends ServiceProvider
      */
     public function registerObservers(): void
     {
-        foreach ($this->observers as $model => $observer) {
-            $model::observe($observer);
-        }
+        collect($this->observers)->each(
+            fn ($observer, $model) => $model::observe($observer)
+        );
     }
 }

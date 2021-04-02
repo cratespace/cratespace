@@ -1,5 +1,5 @@
+import config from './Config';
 import axios from 'axios';
-import config from './Config/config';
 import { createApp, h } from 'vue';
 import {
     App as InertiaApp,
@@ -25,7 +25,7 @@ createApp({
             resolveComponent: (name) => require(`./Views/${name}`).default,
         }),
 })
-    .mixin({ methods: { route, diffForHumans, config } })
+    .mixin({ methods: { route, config, diffForHumans } })
     .use(InertiaPlugin)
     .mount(app);
 

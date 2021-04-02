@@ -32,6 +32,18 @@ class SpaceRequest extends FormRequest
      */
     public function rules()
     {
-        return $this->getRulesFor('space');
+        return $this->getRulesFor('space', [
+            'user_id' => ['required', 'integer', 'exists:App\Models\User,id'],
+        ]);
+    }
+
+    /**
+     * Prepare the data for validation.
+     *
+     * @return void
+     */
+    protected function prepareForValidation()
+    {
+        $this->merge(['user_id' => $this->user()->id]);
     }
 }

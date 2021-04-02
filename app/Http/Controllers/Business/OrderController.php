@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Business;
 
-use App\Models\Order;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
@@ -18,39 +17,25 @@ class OrderController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     *
-     * @param \App\Models\Order $order
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Order $order)
-    {
-    }
-
-    /**
      * Update the specified resource in storage.
      *
      * @param \Illuminate\Http\Request $request
-     * @param \App\Models\Order        $order
+     * @param int                      $id
      *
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Order $order)
+    public function update(Request $request, $id)
     {
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param \App\Models\Order $order
+     * @param int $id
      *
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Order $order)
+    public function destroy($id)
     {
-        $order->cancel();
-
-        return response('', 204);
     }
 }

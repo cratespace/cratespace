@@ -12,11 +12,11 @@ class DeleteAccountTest extends TestCase
 
     public function testUserAccountsCanBeDeleted()
     {
+        $this->withoutExceptionHandling();
+
         $this->signIn($user = create(User::class));
 
-        $response = $this->delete('/user/profile', [
-            'password' => 'password',
-        ]);
+        $this->delete('/user/profile', ['password' => 'password']);
 
         $this->assertNull($user->fresh());
     }
@@ -25,9 +25,7 @@ class DeleteAccountTest extends TestCase
     {
         $this->signIn($user = create(User::class));
 
-        $response = $this->delete('/user/profile', [
-            'password' => 'wrong-password',
-        ]);
+        $this->delete('/user/profile', ['password' => 'wrong-password']);
 
         $this->assertNotNull($user->fresh());
     }

@@ -7,8 +7,9 @@ use App\Models\User;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Auth\Notifications\ResetPassword;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Cratespace\Preflight\Testing\Contracts\Postable;
 
-class PasswordResetTest extends TestCase
+class PasswordResetTest extends TestCase implements Postable
 {
     use RefreshDatabase;
 
@@ -25,9 +26,18 @@ class PasswordResetTest extends TestCase
 
         $user = create(User::class);
 
-        $this->post('/forgot-password', ['email' => $user->email]);
+        $this->post('/forgot-password', $this->validParameters(['email' => $user->email]));
 
         Notification::assertSentTo($user, ResetPassword::class);
+    }
+
+    public function testValidEmailRequired()
+    {
+        $user = create(User::class);
+
+        $response = $this->post('/forgot-password', $this->validParameters(['email' => '']));
+
+        $response->assertSessionHasErrors('email');
     }
 
     public function testResetPasswordScreenCanBeRendered()
@@ -36,7 +46,7 @@ class PasswordResetTest extends TestCase
 
         $user = create(User::class);
 
-        $this->post('/forgot-password', ['email' => $user->email]);
+        $this->post('/forgot-password', $this->validParameters(['email' => $user->email]));
 
         Notification::assertSentTo($user, ResetPassword::class, function ($notification) {
             $response = $this->get('/reset-password/' . $notification->token);
@@ -53,7 +63,7 @@ class PasswordResetTest extends TestCase
 
         $user = create(User::class);
 
-        $this->post('/forgot-password', ['email' => $user->email]);
+        $this->post('/forgot-password', $this->validParameters(['email' => $user->email]));
 
         Notification::assertSentTo($user, ResetPassword::class, function ($notification) use ($user) {
             $response = $this->post('/reset-password', [
@@ -67,5 +77,19 @@ class PasswordResetTest extends TestCase
 
             return true;
         });
+    }
+
+    /**
+     * Provide only the necessary paramertes for a POST-able type request.
+     *
+     * @param array $overrides
+     *
+     * @return array
+     */
+    public function validParameters(array $overrides = []): array
+    {
+        return array_merge([
+            'email' => '',
+        ], $overrides);
     }
 }

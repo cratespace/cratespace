@@ -4,12 +4,12 @@ namespace App\Jobs;
 
 use Throwable;
 use Illuminate\Bus\Queueable;
-use App\Contracts\Purchases\Order;
+use App\Contracts\Billing\Order;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
-use App\Actions\Orders\CancelOrder as CancelOrderAction;
+use App\Actions\Product\CancelOrder as CancelOrderAction;
 
 class CancelOrder implements ShouldQueue
 {
@@ -21,14 +21,14 @@ class CancelOrder implements ShouldQueue
     /**
      * Instance of order.
      *
-     * @var \App\Contracts\Purchases\Order
+     * @var \App\Contracts\Billing\Order
      */
     protected $order;
 
     /**
      * Create a new job instance.
      *
-     * @param \App\Contracts\Purchases\Order $order
+     * @param \App\Contracts\Billing\Order $order
      *
      * @return void
      */
@@ -44,6 +44,10 @@ class CancelOrder implements ShouldQueue
      */
     public function handle(CancelOrderAction $action)
     {
-        $action->cancel($this->order);
+        try {
+            $action->cancel($this->order);
+        } catch (Throwable $e) {
+            $this->fail($e);
+        }
     }
 }
