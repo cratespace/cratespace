@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Actions\Customer;
+namespace App\Billing\PaymentTokens;
 
 use App\Models\PaymentToken as PaymentTokenModel;
 

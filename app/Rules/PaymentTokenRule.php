@@ -3,21 +3,21 @@
 namespace App\Rules;
 
 use Illuminate\Contracts\Validation\Rule;
-use App\Actions\Customer\ValidatePaymentToken;
+use App\Billing\PaymentTokens\ValidatePaymentToken;
 
 class PaymentTokenRule implements Rule
 {
     /**
      * The payment token validator instance.
      *
-     * @var \App\Actions\Customer\ValidatePaymentToken
+     * @var \App\Billing\PaymentTokens\ValidatePaymentToken
      */
     protected $tokenValidator;
 
     /**
      * Create a new rule instance.
      *
-     * @param \App\Actions\Customer\ValidatePaymentToken $tokenValidator
+     * @param \App\Billing\PaymentTokens\ValidatePaymentToken $tokenValidator
      *
      * @return void
      */

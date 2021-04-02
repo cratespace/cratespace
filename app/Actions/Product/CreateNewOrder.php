@@ -3,15 +3,15 @@
 namespace App\Actions\Product;
 
 use App\Contracts\Actions\MakesPurchases;
-use App\Actions\Customer\DestroyPaymentToken;
 use App\Contracts\Actions\CreatesNewResources;
+use App\Billing\PaymentTokens\DestroyPaymentToken;
 
 class CreateNewOrder implements CreatesNewResources
 {
     /**
      * The purchase maker instance.
      *
-     * @var \App\Contracts\Actions\MakesPurchases
+     * @var \App\Billing\PaymentTokens\DestroyPaymentToken
      */
     protected $purchaser;
 
@@ -25,8 +25,8 @@ class CreateNewOrder implements CreatesNewResources
     /**
      * Create new instace of CreateNewOrder action class.
      *
-     * @param \App\Contracts\Actions\MakesPurchases     $purchaser
-     * @param \App\Actions\Customer\DestroyPaymentToken $destroyer
+     * @param \App\Billing\PaymentTokens\DestroyPaymentToken $purchaser
+     * @param \App\Actions\Customer\DestroyPaymentToken      $destroyer
      *
      * @return void
      */

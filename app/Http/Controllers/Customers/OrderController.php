@@ -10,21 +10,20 @@ use App\Contracts\Billing\Order;
 use App\Contracts\Billing\Product;
 use App\Http\Requests\OrderRequest;
 use App\Http\Controllers\Controller;
-use Illuminate\Http\RedirectResponse;
 use App\Actions\Product\CreateNewOrder;
 use Illuminate\Contracts\Support\Responsable;
-use App\Actions\Customer\GeneratePaymentToken;
 use App\Http\Responses\OrderCancelledResponse;
 use App\Http\Responses\PurchaseFailedResponse;
 use App\Http\Responses\PurchaseSucceededResponse;
+use App\Billing\PaymentTokens\GeneratePaymentToken;
 
 class OrderController extends Controller
 {
     /**
      * Show the form for creating a new resource.
      *
-     * @param \App\Actions\Customer\GeneratePaymentToken $generator
-     * @param \App\Contracts\Billing\Product             $product
+     * @param \App\Billing\PaymentTokens\GeneratePaymentToken $generator
+     * @param \App\Contracts\Billing\Product                  $product
      *
      * @return \Inertia\Response
      */

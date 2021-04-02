@@ -16,8 +16,8 @@ use App\Mail\OrderPlacedSuccessfully;
 use Illuminate\Support\Facades\Event;
 use App\Exceptions\InvalidProductException;
 use Illuminate\Support\Facades\Notification;
-use App\Actions\Customer\GeneratePaymentToken;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use App\Billing\PaymentTokens\GeneratePaymentToken;
 use Cratespace\Preflight\Testing\Contracts\Postable;
 use App\Notifications\NewOrderPlaced as NewOrderPlacedNotification;
 
