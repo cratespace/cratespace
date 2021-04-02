@@ -2,16 +2,24 @@
 
 namespace Tests\Feature\Customer;
 
+use Throwable;
 use Tests\TestCase;
 use App\Models\User;
 use App\Models\Space;
+use App\Events\OrderPlaced;
 use App\Events\PaymentFailed;
+use App\Services\Stripe\Payment;
 use App\Events\PaymentSuccessful;
 use App\Contracts\Billing\Product;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\OrderPlacedSuccessfully;
 use Illuminate\Support\Facades\Event;
+use App\Exceptions\InvalidProductException;
+use Illuminate\Support\Facades\Notification;
 use App\Actions\Customer\GeneratePaymentToken;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Cratespace\Preflight\Testing\Contracts\Postable;
+use App\Notifications\NewOrderPlaced as NewOrderPlacedNotification;
 
 class PurchaseTest extends TestCase implements Postable
 {
@@ -22,6 +30,7 @@ class PurchaseTest extends TestCase implements Postable
         Event::fake([
             PaymentFailed::class,
             PaymentSuccessful::class,
+            OrderPlaced::class,
         ]);
 
         $this->withoutExceptionHandling();
@@ -42,6 +51,370 @@ class PurchaseTest extends TestCase implements Postable
 
         $response->assertStatus(303);
         $this->assertFalse($product->available());
+    }
+
+    public function testValidNameRequired()
+    {
+        Event::fake([
+            PaymentFailed::class,
+            PaymentSuccessful::class,
+            OrderPlaced::class,
+        ]);
+
+        $customer = User::factory()->asCustomer()->create();
+        $product = create(Space::class);
+
+        $this->signIn($customer);
+
+        $token = $this->generatePyamentToken($product);
+
+        $response = $this->post(
+            '/orders/' . $product->code(),
+            $this->validParameters([
+                'name' => '',
+                'payment_token' => $token,
+            ])
+        );
+
+        $response->assertStatus(302);
+        $response->assertSessionHasErrors('name');
+        $this->assertTrue($product->available());
+    }
+
+    public function testValidEmailRequired()
+    {
+        Event::fake([
+            PaymentFailed::class,
+            PaymentSuccessful::class,
+            OrderPlaced::class,
+        ]);
+
+        $customer = User::factory()->asCustomer()->create();
+        $product = create(Space::class);
+
+        $this->signIn($customer);
+
+        $token = $this->generatePyamentToken($product);
+
+        $response = $this->post(
+            '/orders/' . $product->code(),
+            $this->validParameters([
+                'email' => '',
+                'payment_token' => $token,
+            ])
+        );
+
+        $response->assertStatus(302);
+        $response->assertSessionHasErrors('email');
+        $this->assertTrue($product->available());
+    }
+
+    public function testValidPaymentMethodRequired()
+    {
+        Event::fake([
+            PaymentFailed::class,
+            PaymentSuccessful::class,
+            OrderPlaced::class,
+        ]);
+
+        $customer = User::factory()->asCustomer()->create();
+        $product = create(Space::class);
+
+        $this->signIn($customer);
+
+        $token = $this->generatePyamentToken($product);
+
+        $response = $this->post(
+            '/orders/' . $product->code(),
+            $this->validParameters([
+                'payment_method' => '',
+                'payment_token' => $token,
+            ])
+        );
+
+        $response->assertStatus(302);
+        $response->assertSessionHasErrors('payment_method');
+        $this->assertTrue($product->available());
+    }
+
+    public function testValidPaymentTokenRequired()
+    {
+        Event::fake([
+            PaymentFailed::class,
+            PaymentSuccessful::class,
+            OrderPlaced::class,
+        ]);
+
+        $customer = User::factory()->asCustomer()->create();
+        $product = create(Space::class);
+
+        $this->signIn($customer);
+
+        $response = $this->post(
+            '/orders/' . $product->code(),
+            $this->validParameters([
+                'payment_token' => '',
+            ])
+        );
+
+        $response->assertStatus(302);
+        $response->assertSessionHasErrors('payment_token');
+        $this->assertTrue($product->available());
+    }
+
+    public function testValidProductDetailsAreRequired()
+    {
+        $this->withoutExceptionHandling();
+
+        Event::fake([
+            PaymentFailed::class,
+            PaymentSuccessful::class,
+            OrderPlaced::class,
+        ]);
+
+        $customer = User::factory()->asCustomer()->create();
+        $product = create(Space::class);
+
+        $this->signIn($customer);
+
+        $token = $this->generatePyamentToken($product);
+
+        try {
+            $response = $this->post(
+                '/orders/DFHO8Q73EGWHQW8D',
+                $this->validParameters([
+                    'payment_token' => $token,
+                ])
+            );
+        } catch (Throwable $e) {
+            $this->assertInstanceOf(InvalidProductException::class, $e);
+            $this->assertEquals('Product with code [DFHO8Q73EGWHQW8D] does not exist', $e->getMessage());
+            $this->assertTrue($product->available());
+
+            return;
+        }
+
+        $this->fail();
+    }
+
+    public function testCustomerDetailsAreaAutoInjected()
+    {
+        Event::fake([
+            PaymentFailed::class,
+            PaymentSuccessful::class,
+            OrderPlaced::class,
+        ]);
+
+        $customer = User::factory()->asCustomer()->create();
+        $product = create(Space::class);
+
+        $this->signIn($customer);
+
+        $token = $this->generatePyamentToken($product);
+
+        $response = $this->post(
+            '/orders/' . $product->code(),
+            $this->validParameters([
+                'customer' => '',
+                'payment_token' => $token,
+            ])
+        );
+
+        $response->assertStatus(303);
+        $this->assertFalse($product->available());
+    }
+
+    public function testNewPaymentIsCreated()
+    {
+        $this->withoutExceptionHandling();
+
+        Event::fake([
+            PaymentFailed::class,
+            PaymentSuccessful::class,
+            OrderPlaced::class,
+        ]);
+
+        $customer = User::factory()->asCustomer()->create();
+        $product = create(Space::class);
+
+        $this->signIn($customer);
+
+        $token = $this->generatePyamentToken($product);
+
+        $response = $this->post(
+            '/orders/' . $product->code(),
+            $this->validParameters([
+                'payment_token' => $token,
+            ])
+        );
+
+        $response->assertStatus(303);
+        $this->assertInstanceOf(Payment::class, $product->order->payment);
+        $this->assertEquals('succeeded', $product->order->payment->status);
+        $this->assertEquals($customer->customerId(), $product->order->payment->customer);
+    }
+
+    public function testPaymentSuccessfulEventIsDispatched()
+    {
+        $this->withoutExceptionHandling();
+
+        Event::fake([
+            PaymentFailed::class,
+            PaymentSuccessful::class,
+            OrderPlaced::class,
+        ]);
+
+        $customer = User::factory()->asCustomer()->create();
+        $product = create(Space::class);
+
+        $this->signIn($customer);
+
+        $token = $this->generatePyamentToken($product);
+
+        $response = $this->post(
+            '/orders/' . $product->code(),
+            $this->validParameters([
+                'payment_token' => $token,
+            ])
+        );
+
+        $response->assertStatus(303);
+
+        Event::assertDispatched(function (PaymentSuccessful $event) use ($product) {
+            return $event->payment->id === $product->order->payment->id;
+        });
+    }
+
+    public function testOrderPlacedEventIsDispatched()
+    {
+        $this->withoutExceptionHandling();
+
+        Event::fake([
+            PaymentFailed::class,
+            PaymentSuccessful::class,
+            OrderPlaced::class,
+        ]);
+
+        $customer = User::factory()->asCustomer()->create();
+        $product = create(Space::class);
+
+        $this->signIn($customer);
+
+        $token = $this->generatePyamentToken($product);
+
+        $response = $this->post(
+            '/orders/' . $product->code(),
+            $this->validParameters([
+                'payment_token' => $token,
+            ])
+        );
+
+        $response->assertStatus(303);
+
+        Event::assertDispatched(function (OrderPlaced $event) use ($product) {
+            return $event->order->is($product->order);
+        });
+    }
+
+    public function testNewOrderPlacedNotificationIsSentToBusiness()
+    {
+        $this->withoutExceptionHandling();
+
+        Mail::fake();
+        Notification::fake();
+        Event::fake([
+            PaymentFailed::class,
+            PaymentSuccessful::class,
+        ]);
+
+        $customer = User::factory()->asCustomer()->create();
+        $product = create(Space::class);
+
+        $this->signIn($customer);
+
+        $token = $this->generatePyamentToken($product);
+
+        $response = $this->post(
+            '/orders/' . $product->code(),
+            $this->validParameters([
+                'payment_token' => $token,
+            ])
+        );
+
+        $response->assertStatus(303);
+
+        Notification::assertSentTo(
+            [$product->merchant()], NewOrderPlacedNotification::class
+        );
+    }
+
+    public function testNewOrderPlacedMailIsSentToBusiness()
+    {
+        $this->withoutExceptionHandling();
+
+        Mail::fake();
+        Notification::fake();
+        Event::fake([
+            PaymentFailed::class,
+            PaymentSuccessful::class,
+        ]);
+
+        $customer = User::factory()->asCustomer()->create();
+        $product = create(Space::class);
+
+        $this->signIn($customer);
+
+        $token = $this->generatePyamentToken($product);
+
+        $response = $this->post(
+            '/orders/' . $product->code(),
+            $this->validParameters([
+                'payment_token' => $token,
+            ])
+        );
+
+        $response->assertStatus(303);
+
+        Notification::assertSentTo(
+            [$product->merchant()],
+            NewOrderPlacedNotification::class,
+            function ($notification, $channels) use ($product) {
+                return $notification->toMail($product->merchant())->hasTo(
+                    $product->merchant()->email
+                );
+            }
+        );
+    }
+
+    public function testNewOrderPlacedMailIsSentToCustomer()
+    {
+        $this->withoutExceptionHandling();
+
+        Mail::fake();
+        Event::fake([
+            PaymentFailed::class,
+            PaymentSuccessful::class,
+        ]);
+
+        $customer = User::factory()->asCustomer()->create();
+        $product = create(Space::class);
+
+        $this->signIn($customer);
+
+        $token = $this->generatePyamentToken($product);
+
+        $response = $this->post(
+            '/orders/' . $product->code(),
+            $this->validParameters([
+                'payment_token' => $token,
+            ])
+        );
+
+        $response->assertStatus(303);
+
+        Mail::assertQueued(function (OrderPlacedSuccessfully $mail) use ($customer) {
+            return $mail->hasTo($customer->email);
+        });
     }
 
     /**

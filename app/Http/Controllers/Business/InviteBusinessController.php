@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Business;
 
 use App\Models\User;
+use App\Models\Invitation;
 use App\Jobs\InviteBusiness;
 use App\Http\Controllers\Controller;
 use App\Http\Responses\BusinessResponse;
@@ -18,10 +19,26 @@ class InviteBusinessController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function __invoke(InviteBusinessRequest $request, User $user)
+    public function store(InviteBusinessRequest $request, User $user)
     {
         InviteBusiness::dispatch($user);
 
         return BusinessResponse::dispatch($request);
+    }
+
+    /**
+     * Accept a business invitation.
+     *
+     * @param \Laravel\Jetstream\TeamInvitation $invitation
+     *
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function update(Invitation $invitation)
+    {
+        $invitation->accept();
+
+        return redirect('/register')->banner(
+            __('Great! You have accepted the invitation to join Cratespace.'),
+        );
     }
 }

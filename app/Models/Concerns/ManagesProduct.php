@@ -9,8 +9,6 @@ use App\Events\ProductReserved;
 use App\Contracts\Billing\Order;
 use App\Services\Stripe\Customer;
 use App\Contracts\Billing\Payment;
-use Illuminate\Support\Facades\Crypt;
-use Illuminate\Database\Eloquent\Model;
 
 trait ManagesProduct
 {
@@ -83,7 +81,7 @@ trait ManagesProduct
             'user_id' => $this->merchant()->id,
             'customer_id' => Customer::native($payment->customer)->id,
             'amount' => $payment->rawAmount(),
-            'payment_intent' => $payment->id,
+            'payment' => $payment->id,
         ]);
 
         OrderPlaced::dispatch($order);

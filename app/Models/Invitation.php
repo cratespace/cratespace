@@ -26,4 +26,14 @@ class Invitation extends Model
     {
         return $this->belongsTo(User::class, 'user_id');
     }
+
+    /**
+     * Accept this invitation.
+     *
+     * @return void
+     */
+    public function accept(): void
+    {
+        $this->forceFill(['accepted' => true])->saveQuietly();
+    }
 }

@@ -21,6 +21,8 @@ use App\Observers\BusinessObserver;
 use App\Observers\CustomerObserver;
 use App\Observers\InvitationObserver;
 use Illuminate\Auth\Events\Registered;
+use App\Listeners\SendNewOrderPlacedNotification;
+use App\Listeners\SendOrderPlacedSuccessfullyEmail;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 
@@ -48,7 +50,11 @@ class EventServiceProvider extends ServiceProvider
         ProductReserved::class => [],
         ProductReleased::class => [],
 
-        OrderPlaced::class => [],
+        OrderPlaced::class => [
+            SendOrderPlacedSuccessfullyEmail::class,
+            SendNewOrderPlacedNotification::class,
+        ],
+
         OrderCancelled::class => [],
     ];
 

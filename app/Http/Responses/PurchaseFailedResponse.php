@@ -18,6 +18,6 @@ class PurchaseFailedResponse extends Response implements Responsable
     {
         return $request->expectsJson()
             ? $this->json(['error' => $this->content], 422)
-            : $this->redirectToRoute('listing', [], 303)->with('status', 'puchase-failed');
+            : $this->redirectToRoute('welcome', [], 303)->with('status', 'puchase-failed');
     }
 }

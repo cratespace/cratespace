@@ -5,6 +5,8 @@ namespace App\Products;
 use App\Support\Util;
 use App\Contracts\Billing\Product;
 use Illuminate\Support\Facades\Crypt;
+use App\Exceptions\InvalidProductException;
+use Illuminate\Contracts\Encryption\DecryptException;
 
 class Finder
 {
@@ -50,7 +52,11 @@ class Finder
      */
     public function identifyCode(string $code): array
     {
-        [$class, $id] = explode('-', Crypt::decryptString($code));
+        try {
+            [$class, $id] = explode('-', Crypt::decryptString($code));
+        } catch (DecryptException $e) {
+            throw new InvalidProductException("Product with code [{$code}] does not exist");
+        }
 
         $this->manifest->validateProductClass($class);
 

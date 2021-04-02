@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\User;
 use App\Models\Invitation;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -22,7 +23,9 @@ class InvitationFactory extends Factory
     public function definition()
     {
         return [
-            //
+            'user_id' => User::factory()->asBusiness()->create(),
+            'email' => $this->faker->email,
+            'accepted' => false,
         ];
     }
 }

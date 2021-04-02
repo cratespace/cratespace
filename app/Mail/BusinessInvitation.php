@@ -40,7 +40,7 @@ class BusinessInvitation extends Mailable
     public function build()
     {
         return $this->markdown(
-            'emails.businesses.business-invitation',
+            'emails.businesses.invitations.new-invitation',
             [
                 'acceptUrl' => URL::signedRoute('invitations.accept', [
                     'invitation' => $this->invitation,

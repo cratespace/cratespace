@@ -22,6 +22,7 @@
         "guzzlehttp/guzzle": "^7.3",
         "inertiajs/inertia-laravel": "^0.3.5",
         "laravel/framework": "^8.12",
+        "laravel/telescope": "^4.4",
         "laravel/tinker": "^2.5",
         "league/iso3166": "^3.0",
         "moneyphp/money": "^3.3",
@@ -44,7 +45,9 @@
     },
     "extra": {
         "laravel": {
-            "dont-discover": []
+            "dont-discover": [
+                "laravel/telescope"
+            ]
         }
     },
     "autoload": {
