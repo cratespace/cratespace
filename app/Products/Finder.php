@@ -46,12 +46,12 @@ class Finder
             try {
                 $product = $this->identifyUsingCode($code);
             } catch (DecryptException $e) {
-                throw new InvalidProductException("Product with code [{$code}] does not exist");
+                $product = $e;
             }
+        }
 
-            if (! $product instanceof Product) {
-                throw $e;
-            }
+        if (! $product instanceof Product) {
+            throw new InvalidProductException("Product with code [{$code}] does not exist");
         }
 
         return $product;
