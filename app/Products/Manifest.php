@@ -76,10 +76,10 @@ class Manifest
      */
     public function get(Store $product): Product
     {
-        $class = app($product->class);
+        $class = app($product->productable_type);
 
-        if (! is_null($product->product_id) && $product instanceof Model) {
-            return get_class($class)::findOrFail($product->product_id);
+        if (! is_null($product->productable_id) && $product instanceof Model) {
+            return get_class($class)::findOrFail($product->productable_id);
         }
 
         return $class;
@@ -106,8 +106,8 @@ class Manifest
     {
         return [
             'code' => $product->code(),
-            'product_id' => $product->id ?? null,
-            'class' => get_class($product),
+            'productable_id' => $product->id ?? null,
+            'productable_type' => get_class($product),
         ];
     }
 }

@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\MorphTo;
 use App\Contracts\Billing\Product as ProductContract;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
@@ -15,7 +16,21 @@ class Product extends Model
      *
      * @var string[]
      */
-    protected $fillable = ['code', 'product_id', 'class'];
+    protected $fillable = [
+        'code',
+        'productable_id',
+        'productable_type',
+    ];
+
+    /**
+     * Get the model belonging to the product.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\MorphTo
+     */
+    public function productable(): MorphTo
+    {
+        return $this->morphTo();
+    }
 
     /**
      * Determine if the given product is already stored.

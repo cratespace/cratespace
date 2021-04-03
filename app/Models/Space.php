@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Models\Traits\Orderable;
 use App\Contracts\Billing\Product;
 use App\Models\Casts\ScheduleCast;
+use App\Models\Traits\Productable;
 use App\Models\Concerns\ManagesProduct;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Traits\HasEncryptableCode;
@@ -20,6 +21,7 @@ class Space extends Model implements Product
     use Directable;
     use HasEncryptableCode;
     use ManagesProduct;
+    use Productable;
     use Orderable;
 
     /**

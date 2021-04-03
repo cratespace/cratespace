@@ -46,7 +46,7 @@ class Order extends Model implements OrderContract
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function user(): BelongsTo
+    public function business(): BelongsTo
     {
         return $this->belongsTo(User::class, 'user_id');
     }
