@@ -27,15 +27,11 @@ class PurchaseTest extends TestCase implements Postable
 
     public function testPurchaseProduct()
     {
-        $this->withoutExceptionHandling();
-
         Event::fake([
             PaymentFailed::class,
             PaymentSuccessful::class,
             OrderPlaced::class,
         ]);
-
-        $this->withoutExceptionHandling();
 
         $customer = User::factory()->asCustomer()->create();
         $product = create(Space::class);
@@ -228,8 +224,6 @@ class PurchaseTest extends TestCase implements Postable
 
     public function testNewPaymentIsCreated()
     {
-        $this->withoutExceptionHandling();
-
         Event::fake([
             PaymentFailed::class,
             PaymentSuccessful::class,
@@ -258,8 +252,6 @@ class PurchaseTest extends TestCase implements Postable
 
     public function testPaymentSuccessfulEventIsDispatched()
     {
-        $this->withoutExceptionHandling();
-
         Event::fake([
             PaymentFailed::class,
             PaymentSuccessful::class,
@@ -289,8 +281,6 @@ class PurchaseTest extends TestCase implements Postable
 
     public function testOrderPlacedEventIsDispatched()
     {
-        $this->withoutExceptionHandling();
-
         Event::fake([
             PaymentFailed::class,
             PaymentSuccessful::class,
@@ -320,8 +310,6 @@ class PurchaseTest extends TestCase implements Postable
 
     public function testNewOrderPlacedNotificationIsSentToBusiness()
     {
-        $this->withoutExceptionHandling();
-
         Mail::fake();
         Notification::fake();
         Event::fake([
@@ -352,8 +340,6 @@ class PurchaseTest extends TestCase implements Postable
 
     public function testNewOrderPlacedMailIsSentToBusiness()
     {
-        $this->withoutExceptionHandling();
-
         Mail::fake();
         Notification::fake();
         Event::fake([
@@ -390,8 +376,6 @@ class PurchaseTest extends TestCase implements Postable
 
     public function testNewOrderPlacedMailIsSentToCustomer()
     {
-        $this->withoutExceptionHandling();
-
         Mail::fake();
         Event::fake([
             PaymentFailed::class,

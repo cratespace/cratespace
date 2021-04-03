@@ -35,10 +35,7 @@ class ProductStorageServiceProvider extends ServiceProvider
      */
     protected function registerManifest(): void
     {
-        $this->app->singleton(
-            Manifest::class,
-            fn ($app) => new Manifest($app)
-        );
+        $this->app->singleton(Manifest::class);
     }
 
     /**

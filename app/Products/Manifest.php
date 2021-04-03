@@ -2,30 +2,31 @@
 
 namespace App\Products;
 
+use App\Models\Product as Store;
 use App\Contracts\Billing\Product;
+use Illuminate\Database\Eloquent\Model;
 use App\Exceptions\InvalidProductException;
 use App\Exceptions\ProductNotFoundException;
-use Illuminate\Contracts\Foundation\Application;
 
 class Manifest
 {
     /**
-     * The products storage.
+     * The product storage instance.
      *
-     * @var array
+     * @var \App\Models\Product
      */
-    protected $products = [];
+    protected $store;
 
     /**
      * Create new instance of products storage manifest.
      *
-     * @param \Illuminate\Contracts\Foundation\Application $app
+     * @param \App\Models\Product $store
      *
      * @return void
      */
-    public function __construct(Application $app)
+    public function __construct(Store $store)
     {
-        $this->app = $app;
+        $this->store = $store;
     }
 
     /**
@@ -38,14 +39,16 @@ class Manifest
     public function store($product): void
     {
         if (! is_object($product)) {
-            $product = $this->app->make($product);
+            $product = app($product);
         }
 
         if (! $product instanceof Product) {
             throw new InvalidProductException('Not a valid product');
         }
 
-        $this->products[$product->code()] = $product;
+        if (! $this->store->has($product)) {
+            $this->store->create($this->details($product));
+        }
     }
 
     /**
@@ -57,8 +60,8 @@ class Manifest
      */
     public function match(string $code): Product
     {
-        if (array_key_exists($code, $this->products)) {
-            return $this->get($code);
+        if ($product = $this->store->findUsingCode($code)) {
+            return $this->get($product);
         }
 
         throw new ProductNotFoundException("Product with code [{$code}] does not exist or has not been registered");
@@ -67,18 +70,44 @@ class Manifest
     /**
      * Get the product instance from storage.
      *
-     * @param string $code
+     * @param \App\Models\Product $product
      *
      * @return App\Contracts\Billing\Product
      */
-    public function get(string $code): Product
+    public function get(Store $product): Product
     {
-        $product = $this->products[$code];
+        $class = app($product->class);
 
-        if (! is_object($product)) {
-            return $this->app->make($product);
+        if (! is_null($product->product_id) && $product instanceof Model) {
+            return get_class($class)::findOrFail($product->product_id);
         }
 
-        return $product;
+        return $class;
+    }
+
+    /**
+     * Get instance of product storage.
+     *
+     * @return \App\Models\Product
+     */
+    public function storage(): Store
+    {
+        return $this->store;
+    }
+
+    /**
+     * Get product details for registration.
+     *
+     * @param \App\Contracts\Billing\Product $product
+     *
+     * @return array
+     */
+    protected function details(Product $product): array
+    {
+        return [
+            'code' => $product->code(),
+            'product_id' => $product->id ?? null,
+            'class' => get_class($product),
+        ];
     }
 }
