@@ -35,6 +35,8 @@ class Manifest
      * @param \App\Contracts\Billing\Product|string $product
      *
      * @return void
+     *
+     * @throws \App\Exceptions\InvalidProductException
      */
     public function store($product): void
     {
@@ -57,6 +59,8 @@ class Manifest
      * @param string $code
      *
      * @return \App\Contracts\Billing\Product
+     *
+     * @throws \App\Exceptions\ProductNotFoundException
      */
     public function match(string $code): Product
     {
@@ -73,12 +77,14 @@ class Manifest
      * @param \App\Models\Product $product
      *
      * @return App\Contracts\Billing\Product
+     *
+     * @throws \Illuminate\Database\Eloquent\ModelNotFoundException
      */
     public function get(Store $product): Product
     {
         $class = app($product->productable_type);
 
-        if (! is_null($product->productable_id) && $product instanceof Model) {
+        if (! is_null($product->productable_id) && $class instanceof Model) {
             return get_class($class)::findOrFail($product->productable_id);
         }
 

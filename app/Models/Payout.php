@@ -79,7 +79,9 @@ class Payout extends Model implements PaymentContract
      */
     public function product(): Product
     {
-        return $this->payment_intent->product();
+        return app(Finder::class)->find(
+            $this->payment->metadata['product_code']
+        );
     }
 
     /**

@@ -38,12 +38,14 @@ class Client implements ClientContract
      * Create new instance of Cratespace application.
      *
      * @param \Illuminate\Contracts\Foundation\Application $app
+     * @param \Stripe\StripeClientInterface|null           $stripe
      *
      * @return void
      */
-    public function __construct(Application $app)
+    public function __construct(Application $app, ?StripeClientInterface $stripe = null)
     {
         $this->app = $app;
+        $this->stripe = $stripe;
     }
 
     /**
@@ -55,7 +57,9 @@ class Client implements ClientContract
      */
     public function make(array $config = [])
     {
-        $this->stripe = new StripeClient($this->options($config));
+        if (is_null($this->stripe)) {
+            $this->stripe = new StripeClient($this->options($config));
+        }
 
         return $this->stripe;
     }

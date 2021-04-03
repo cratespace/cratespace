@@ -2,10 +2,8 @@
 
 namespace App\Products;
 
-use App\Support\Util;
 use App\Contracts\Billing\Product;
 use Illuminate\Support\Facades\Crypt;
-use Illuminate\Database\Eloquent\Model;
 use App\Exceptions\InvalidProductException;
 use App\Exceptions\ProductNotFoundException;
 use Illuminate\Contracts\Encryption\DecryptException;
@@ -37,16 +35,40 @@ class Finder
      * @param string $code
      *
      * @return \App\Contracts\Billing\Product
+     *
+     * @throws \App\Exceptions\ProductNotFoundException
      */
     public function find(string $code): Product
     {
         try {
             $product = $this->manifest->match($code);
         } catch (ProductNotFoundException $e) {
-            $product = $this->resolve($this->identifyUsingCode($code));
+            try {
+                $product = $this->identifyUsingCode($code);
+            } catch (DecryptException $e) {
+                throw new InvalidProductException("Product with code [{$code}] does not exist");
+            }
+
+            if (! $product instanceof Product) {
+                throw $e;
+            }
         }
 
         return $product;
+    }
+
+    /**
+     * Parse the product code to identify product class and ID.
+     *
+     * @param string $code
+     *
+     * @return \App\Contracts\Billing\Product
+     *
+     * @throws \Illuminate\Contracts\Encryption\DecryptException
+     */
+    public function identifyUsingCode(string $code): Product
+    {
+        return $this->resolve(explode('-', Crypt::decryptString($code)));
     }
 
     /**
@@ -60,32 +82,6 @@ class Finder
     {
         [$class, $id] = $details;
 
-        if (is_string($class)) {
-            $class = app($class);
-        }
-
-        if ($class instanceof Model) {
-            return $class::findOrFail($id);
-        }
-
-        return new $class($id);
-    }
-
-    /**
-     * Parse the product code to identify product class and ID.
-     *
-     * @param string $code
-     *
-     * @return array
-     */
-    public function identifyUsingCode(string $code): array
-    {
-        try {
-            [$class, $id] = explode('-', Crypt::decryptString($code));
-        } catch (DecryptException $e) {
-            throw new InvalidProductException("Product with code [{$code}] does not exist");
-        }
-
-        return [Util::className($class), $id];
+        return $class::find($id) ?? new $class($id);
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Services\Stripe;
 
+use stdClass;
 use App\Support\Money;
 use App\Exceptions\PaymentActionRequired;
 use App\Exceptions\PaymentFailedException;
@@ -128,5 +129,15 @@ class Payment extends Resource implements PaymentContract
         } elseif ($this->requiresAction()) {
             throw PaymentActionRequired::incomplete($this);
         }
+    }
+
+    /**
+     * Get payment metadata as object.
+     *
+     * @return \stdClass
+     */
+    public function meta(): stdClass
+    {
+        return (object) $this->metadata;
     }
 }
