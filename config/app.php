@@ -180,6 +180,7 @@ return [
         App\Providers\PreflightServiceProvider::class,
         App\Providers\StripeServiceProvider::class,
         App\Providers\BillingServiceProvider::class,
+        App\Providers\ProductStorageServiceProvider::class,
     ],
 
     /*

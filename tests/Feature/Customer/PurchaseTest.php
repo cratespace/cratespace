@@ -27,6 +27,8 @@ class PurchaseTest extends TestCase implements Postable
 
     public function testPurchaseProduct()
     {
+        $this->withoutExceptionHandling();
+
         Event::fake([
             PaymentFailed::class,
             PaymentSuccessful::class,
@@ -43,7 +45,7 @@ class PurchaseTest extends TestCase implements Postable
         $token = $this->generatePyamentToken($product);
 
         $response = $this->post(
-            '/orders/' . $product->code(),
+            '/checkout/' . $product->code(),
             $this->validParameters([
                 'payment_token' => $token,
             ])
@@ -69,7 +71,7 @@ class PurchaseTest extends TestCase implements Postable
         $token = $this->generatePyamentToken($product);
 
         $response = $this->post(
-            '/orders/' . $product->code(),
+            '/checkout/' . $product->code(),
             $this->validParameters([
                 'name' => '',
                 'payment_token' => $token,
@@ -97,7 +99,7 @@ class PurchaseTest extends TestCase implements Postable
         $token = $this->generatePyamentToken($product);
 
         $response = $this->post(
-            '/orders/' . $product->code(),
+            '/checkout/' . $product->code(),
             $this->validParameters([
                 'email' => '',
                 'payment_token' => $token,
@@ -125,7 +127,7 @@ class PurchaseTest extends TestCase implements Postable
         $token = $this->generatePyamentToken($product);
 
         $response = $this->post(
-            '/orders/' . $product->code(),
+            '/checkout/' . $product->code(),
             $this->validParameters([
                 'payment_method' => '',
                 'payment_token' => $token,
@@ -151,7 +153,7 @@ class PurchaseTest extends TestCase implements Postable
         $this->signIn($customer);
 
         $response = $this->post(
-            '/orders/' . $product->code(),
+            '/checkout/' . $product->code(),
             $this->validParameters([
                 'payment_token' => '',
             ])
@@ -181,7 +183,7 @@ class PurchaseTest extends TestCase implements Postable
 
         try {
             $response = $this->post(
-                '/orders/DFHO8Q73EGWHQW8D',
+                '/checkout/DFHO8Q73EGWHQW8D',
                 $this->validParameters([
                     'payment_token' => $token,
                 ])
@@ -213,7 +215,7 @@ class PurchaseTest extends TestCase implements Postable
         $token = $this->generatePyamentToken($product);
 
         $response = $this->post(
-            '/orders/' . $product->code(),
+            '/checkout/' . $product->code(),
             $this->validParameters([
                 'customer' => '',
                 'payment_token' => $token,
@@ -242,7 +244,7 @@ class PurchaseTest extends TestCase implements Postable
         $token = $this->generatePyamentToken($product);
 
         $response = $this->post(
-            '/orders/' . $product->code(),
+            '/checkout/' . $product->code(),
             $this->validParameters([
                 'payment_token' => $token,
             ])
@@ -272,7 +274,7 @@ class PurchaseTest extends TestCase implements Postable
         $token = $this->generatePyamentToken($product);
 
         $response = $this->post(
-            '/orders/' . $product->code(),
+            '/checkout/' . $product->code(),
             $this->validParameters([
                 'payment_token' => $token,
             ])
@@ -303,7 +305,7 @@ class PurchaseTest extends TestCase implements Postable
         $token = $this->generatePyamentToken($product);
 
         $response = $this->post(
-            '/orders/' . $product->code(),
+            '/checkout/' . $product->code(),
             $this->validParameters([
                 'payment_token' => $token,
             ])
@@ -335,7 +337,7 @@ class PurchaseTest extends TestCase implements Postable
         $token = $this->generatePyamentToken($product);
 
         $response = $this->post(
-            '/orders/' . $product->code(),
+            '/checkout/' . $product->code(),
             $this->validParameters([
                 'payment_token' => $token,
             ])
@@ -367,7 +369,7 @@ class PurchaseTest extends TestCase implements Postable
         $token = $this->generatePyamentToken($product);
 
         $response = $this->post(
-            '/orders/' . $product->code(),
+            '/checkout/' . $product->code(),
             $this->validParameters([
                 'payment_token' => $token,
             ])
@@ -404,7 +406,7 @@ class PurchaseTest extends TestCase implements Postable
         $token = $this->generatePyamentToken($product);
 
         $response = $this->post(
-            '/orders/' . $product->code(),
+            '/checkout/' . $product->code(),
             $this->validParameters([
                 'payment_token' => $token,
             ])

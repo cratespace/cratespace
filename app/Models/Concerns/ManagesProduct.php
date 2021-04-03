@@ -9,6 +9,7 @@ use App\Events\ProductReserved;
 use App\Contracts\Billing\Order;
 use App\Services\Stripe\Customer;
 use App\Contracts\Billing\Payment;
+use App\Contracts\Billing\Product;
 
 trait ManagesProduct
 {

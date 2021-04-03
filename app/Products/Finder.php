@@ -5,20 +5,22 @@ namespace App\Products;
 use App\Support\Util;
 use App\Contracts\Billing\Product;
 use Illuminate\Support\Facades\Crypt;
+use Illuminate\Database\Eloquent\Model;
 use App\Exceptions\InvalidProductException;
+use App\Exceptions\ProductNotFoundException;
 use Illuminate\Contracts\Encryption\DecryptException;
 
 class Finder
 {
     /**
-     * The products module manifest.
+     * The product storage manifest instance.
      *
      * @var \App\Products\Manifest
      */
     protected $manifest;
 
     /**
-     * Create new instance of product finder.
+     * Create new product finder instance.
      *
      * @param \App\Products\Manifest $manifest
      *
@@ -30,7 +32,7 @@ class Finder
     }
 
     /**
-     * Find the appropriate product from the given code.
+     * Find a product using the given product code.
      *
      * @param string $code
      *
@@ -38,27 +40,51 @@ class Finder
      */
     public function find(string $code): Product
     {
-        [$model, $id] = $this->identifyCode($code);
+        try {
+            $product = $this->manifest->match($code);
+        } catch (ProductNotFoundException $e) {
+            $product = $this->resolve($this->identifyUsingCode($code));
+        }
 
-        return $model::findOrFail($id);
+        return $product;
     }
 
     /**
-     * Decrypt and validate product class name.
+     * Resolve the product instance.
+     *
+     * @param array $details
+     *
+     * @return \App\Contracts\Billing\Product
+     */
+    protected function resolve(array $details): Product
+    {
+        [$class, $id] = $details;
+
+        if (is_string($class)) {
+            $class = app($class);
+        }
+
+        if ($class instanceof Model) {
+            return $class::findOrFail($id);
+        }
+
+        return new $class($id);
+    }
+
+    /**
+     * Parse the product code to identify product class and ID.
      *
      * @param string $code
      *
      * @return array
      */
-    public function identifyCode(string $code): array
+    public function identifyUsingCode(string $code): array
     {
         try {
             [$class, $id] = explode('-', Crypt::decryptString($code));
         } catch (DecryptException $e) {
             throw new InvalidProductException("Product with code [{$code}] does not exist");
         }
-
-        $this->manifest->validateProductClass($class);
 
         return [Util::className($class), $id];
     }
