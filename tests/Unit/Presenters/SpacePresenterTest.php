@@ -2,17 +2,22 @@
 
 namespace Tests\Unit\Presenters;
 
-use PHPUnit\Framework\TestCase;
+use Tests\TestCase;
+use App\Models\Space;
+use App\Support\Money;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class SpacePresenterTest extends TestCase
 {
-    /**
-     * A basic unit test example.
-     *
-     * @return void
-     */
-    public function test_example()
+    use RefreshDatabase;
+
+    public function testFormatPrice()
     {
-        $this->assertTrue(true);
+        $space = create(Space::class);
+
+        $this->assertEquals(
+            Money::format($space->fullAmount()),
+            $space->present()->price
+        );
     }
 }
