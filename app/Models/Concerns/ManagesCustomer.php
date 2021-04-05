@@ -35,6 +35,16 @@ trait ManagesCustomer
     }
 
     /**
+     * Determine if the user is a customer.
+     *
+     * @return bool
+     */
+    public function isCustomer(): bool
+    {
+        return ! is_null($this->customer) && ! is_null($this->customerId());
+    }
+
+    /**
      * Get user business profile details.
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasOne

@@ -21,6 +21,10 @@ trait ManagesBusiness
      */
     public function createAsBusiness(?array $data = null): void
     {
+        if (is_null($data)) {
+            $data = $this->toArray();
+        }
+
         Business::create([
             'user_id' => $this->id,
             'type' => 'standard',
@@ -37,6 +41,16 @@ trait ManagesBusiness
                 'url' => $data['url'] ?? null,
             ],
         ]);
+    }
+
+    /**
+     * Determine if the user is a customer.
+     *
+     * @return bool
+     */
+    public function isBusiness(): bool
+    {
+        return ! is_null($this->business) && ! is_null($this->businessId());
     }
 
     /**

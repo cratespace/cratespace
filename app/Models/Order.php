@@ -3,7 +3,9 @@
 namespace App\Models;
 
 use App\Support\Money;
-use App\Events\OrderCanceled;
+use Illuminate\Support\Str;
+use App\Filters\OrderFilter;
+use App\Events\OrderCancelled;
 use App\Models\Casts\PaymentCast;
 use App\Contracts\Billing\Product;
 use Illuminate\Database\Eloquent\Model;
@@ -11,6 +13,7 @@ use App\Contracts\Billing\Order as OrderContract;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
 class Order extends Model implements OrderContract
 {
@@ -112,6 +115,18 @@ class Order extends Model implements OrderContract
     }
 
     /**
+     * Confirm order for customer.
+     *
+     * @return void
+     */
+    public function confirm(): void
+    {
+        $this->forceFill([
+            'confirmation_number' => Str::random(40),
+        ])->saveQuietly();
+    }
+
+    /**
      * Cancel this order.
      *
      * @return void
@@ -120,7 +135,7 @@ class Order extends Model implements OrderContract
     {
         $this->product()->release();
 
-        OrderCanceled::dispatch($this);
+        OrderCancelled::dispatch($this);
 
         $this->delete();
     }
@@ -133,5 +148,17 @@ class Order extends Model implements OrderContract
     public function canCancel(): bool
     {
         return ! $this->product()->nearingExpiration();
+    }
+
+    /**
+     * List all latest orders.
+     *
+     * @param \App\Filters\OrderFilter|null $request
+     *
+     * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
+     */
+    public static function listing(?OrderFilter $filter = null): LengthAwarePaginator
+    {
+        return Order::latest()->paginate();
     }
 }

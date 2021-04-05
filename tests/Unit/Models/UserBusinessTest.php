@@ -17,17 +17,17 @@ class UserBusinessTest extends TestCase
 
         $user->createAsBusiness([
             'type' => 'standard',
-            'name' => $data['business'],
-            'email' => $data['email'],
-            'phone' => $data['phone'],
-            'registration_number' => $data['registration_number'],
+            'business' => 'Example, Inc.',
+            'email' => $user->email,
+            'phone' => $user->phone,
+            'registration_number' => 1234567,
             'business_type' => 'company',
             'business_profile' => [
-                'name' => $data['business'],
-                'mcc' => $data['mcc'] ?? null,
-                'support_phone' => $data['phone'],
-                'support_email' => $data['email'],
-                'url' => $data['url'] ?? null,
+                'name' => 'Example, Inc.',
+                'mcc' => 1234,
+                'support_phone' => $user->phone,
+                'support_email' => $user->email,
+                'url' => 'www.example.com',
             ],
         ]);
 

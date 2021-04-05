@@ -2,8 +2,15 @@
 
 namespace App\Http\Controllers\Business;
 
+use Inertia\Inertia;
+use App\Jobs\CancelOrder;
+use App\Filters\OrderFilter;
 use Illuminate\Http\Request;
+use App\Contracts\Billing\Order;
 use App\Http\Controllers\Controller;
+use App\Http\Responses\OrderResponse;
+use Illuminate\Contracts\Support\Responsable;
+use App\Http\Responses\OrderCancelledResponse;
 
 class OrderController extends Controller
 {
@@ -12,30 +19,42 @@ class OrderController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(OrderFilter $filter)
     {
+        return Inertia::render('Business/Orders/Index', [
+            'orders' => Order::listing($filter),
+        ]);
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param \Illuminate\Http\Request $request
-     * @param int                      $id
+     * @param \App\Contracts\Billing\Order $order
      *
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Order $order)
     {
+        if (! (bool) $request->confirm) {
+            return $this->destroy($order);
+        }
+
+        $order->confirm();
+
+        return OrderResponse::dispatch();
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param int $id
+     * @param \App\Contracts\Billing\Order $order
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\Support\Responsable
      */
-    public function destroy($id)
+    public function destroy(Order $order): Responsable
     {
+        CancelOrder::dispatch($order);
+
+        return OrderCancelledResponse::dipatch();
     }
 }
