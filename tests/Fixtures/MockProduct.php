@@ -17,7 +17,14 @@ class MockProduct implements Product
      *
      * @var int
      */
-    protected $id = 1;
+    public $id = 1;
+
+    /**
+     * The unique code used to identify the product.
+     *
+     * @var string
+     */
+    protected $code;
 
     /**
      * Datetime stamp indicating whether this product has been reserved.
@@ -40,9 +47,11 @@ class MockProduct implements Product
      *
      * @return void
      */
-    public function __construct(int $id)
+    public function __construct(?int $id = null)
     {
         $this->id = $id;
+
+        $this->generateCode();
     }
 
     /**
@@ -52,8 +61,18 @@ class MockProduct implements Product
      */
     public function code(): string
     {
-        return Crypt::encryptString(
-            get_class($this) . '-' . $this->id
+        return $this->code;
+    }
+
+    /**
+     * The unique code used to identify the product.
+     *
+     * @return void
+     */
+    public function generateCode(): void
+    {
+        $this->code = Crypt::encryptString(
+            get_class($this) . '-' . $this->id ?? 1
         );
     }
 
@@ -171,5 +190,15 @@ class MockProduct implements Product
         }
 
         throw new InvalidProductException("Product with ID {$id} was not found");
+    }
+
+    /**
+     * Destroy the mock product instance.
+     *
+     * @return void
+     */
+    public function __destruct()
+    {
+        m::close();
     }
 }

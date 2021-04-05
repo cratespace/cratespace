@@ -4,10 +4,8 @@ namespace App\Providers;
 
 use App\Models\Space;
 use App\Contracts\Billing\Product;
-use App\Actions\Product\FindProduct;
 use App\Actions\Customer\MakePurchase;
 use Illuminate\Support\ServiceProvider;
-use App\Contracts\Actions\FindsProducts;
 use App\Actions\Product\CreateNewProduct;
 use App\Contracts\Actions\MakesPurchases;
 use App\Contracts\Actions\CreatesNewResources;
@@ -27,7 +25,6 @@ class BillingServiceProvider extends ServiceProvider
     protected $actions = [
         MakesPurchases::class => MakePurchase::class,
         CreatesNewResources::class => CreateNewProduct::class,
-        FindsProducts::class => FindProduct::class,
     ];
 
     /**
@@ -38,8 +35,6 @@ class BillingServiceProvider extends ServiceProvider
     public function register()
     {
         $this->registerPaymentGateway();
-
-        $this->registerActions();
     }
 
     /**
@@ -50,6 +45,8 @@ class BillingServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->registerProducts();
+
+        $this->registerActions();
     }
 
     /**

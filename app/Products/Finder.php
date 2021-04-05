@@ -2,8 +2,10 @@
 
 namespace App\Products;
 
+use ReflectionClass;
 use App\Contracts\Billing\Product;
 use Illuminate\Support\Facades\Crypt;
+use Illuminate\Database\Eloquent\Model;
 use App\Exceptions\InvalidProductException;
 use App\Exceptions\ProductNotFoundException;
 use Illuminate\Contracts\Encryption\DecryptException;
@@ -43,15 +45,11 @@ class Finder
         try {
             $product = $this->manifest->match($code);
         } catch (ProductNotFoundException $e) {
-            try {
-                $product = $this->identifyUsingCode($code);
-            } catch (DecryptException $e) {
-                $product = $e;
-            }
+            $product = $this->identifyUsingCode($code);
         }
 
         if (! $product instanceof Product) {
-            throw new InvalidProductException("Product with code [{$code}] does not exist");
+            $this->throwInvalidProductException($code);
         }
 
         return $product;
@@ -68,20 +66,52 @@ class Finder
      */
     public function identifyUsingCode(string $code): Product
     {
-        return $this->resolve(explode('-', Crypt::decryptString($code)));
+        try {
+            [$class, $id] = explode('-', Crypt::decryptString($code));
+        } catch (DecryptException $e) {
+            $this->throwInvalidProductException($code);
+        }
+
+        return $this->resolve($class, $id);
     }
 
     /**
      * Resolve the product instance.
      *
-     * @param array $details
+     * @param string   $class
+     * @param int|null $id
      *
      * @return \App\Contracts\Billing\Product
      */
-    protected function resolve(array $details): Product
+    protected function resolve(string $class, ?int $id = null): Product
     {
-        [$class, $id] = $details;
+        return $this->isModel($class, $id) ? $class::find($id) : new $class($id);
+    }
 
-        return $class::find($id) ?? new $class($id);
+    /**
+     * Determine if the given class is a model.
+     *
+     * @param string   $class
+     * @param int|null $id
+     *
+     * @return bool
+     */
+    protected function isModel(string $class, ?int $id = null): bool
+    {
+        return (new ReflectionClass($class))->isSubclassOf(Model::class) && ! is_null($id);
+    }
+
+    /**
+     * Throw exception because product with given code does not exist.
+     *
+     * @param string $code
+     *
+     * @return void
+     *
+     * @throws \App\Exceptions\InvalidProductException
+     */
+    protected function throwInvalidProductException(string $code): void
+    {
+        throw new InvalidProductException("Product with code [{$code}] does not exist");
     }
 }

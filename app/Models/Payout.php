@@ -2,7 +2,9 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use App\Support\Money;
+use App\Products\Finder;
 use App\Contracts\Billing\Order;
 use App\Models\Casts\PaymentCast;
 use App\Contracts\Billing\Product;
@@ -60,6 +62,16 @@ class Payout extends Model implements PaymentContract
     public function paid(): bool
     {
         return ! is_null($this->paid_at);
+    }
+
+    /**
+     * Mark payout as payed.
+     *
+     * @return void
+     */
+    public function pay(): void
+    {
+        $this->forceFill(['paid_at' => Carbon::now()])->saveQuietly();
     }
 
     /**

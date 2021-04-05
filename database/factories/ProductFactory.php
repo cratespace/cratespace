@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\Product;
+use Tests\Fixtures\MockProduct;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class ProductFactory extends Factory
@@ -21,8 +22,12 @@ class ProductFactory extends Factory
      */
     public function definition()
     {
+        $product = new MockProduct(1);
+
         return [
-            //
+            'code' => $product->code(),
+            'productable_id' => $product->id,
+            'productable_type' => get_class($product),
         ];
     }
 }

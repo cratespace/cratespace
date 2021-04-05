@@ -19,7 +19,7 @@ class MakeNewPayout
     public function make(User $user, Payment $payment): Payout
     {
         return $user->makePayout([
-            'payment_intent' => $payment->id,
+            'payment' => $payment->id,
             'amount' => $this->calculatePayoutAmount($payment->rawAmount()),
             'service_percentage' => $this->getServicePercentage(),
         ]);

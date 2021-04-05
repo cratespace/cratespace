@@ -45,7 +45,9 @@ class Manifest
         }
 
         if (! $product instanceof Product) {
-            throw new InvalidProductException('Not a valid product');
+            $product = get_class($product);
+
+            throw new InvalidProductException("Product [{$product}] is not a valid product");
         }
 
         if (! $this->store->has($product)) {

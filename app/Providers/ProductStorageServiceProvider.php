@@ -4,10 +4,24 @@ namespace App\Providers;
 
 use App\Products\Finder;
 use App\Products\Manifest;
+use App\Actions\Product\FindProduct;
 use Illuminate\Support\ServiceProvider;
+use App\Contracts\Actions\FindsProducts;
+use Cratespace\Sentinel\Providers\Traits\HasActions;
 
 class ProductStorageServiceProvider extends ServiceProvider
 {
+    use HasActions;
+
+    /**
+     * The sentinel action classes.
+     *
+     * @var array
+     */
+    protected $actions = [
+        FindsProducts::class => FindProduct::class,
+    ];
+
     /**
      * Register services.
      *
@@ -16,6 +30,8 @@ class ProductStorageServiceProvider extends ServiceProvider
     public function register()
     {
         $this->registerManifest();
+
+        $this->registerFinder();
     }
 
     /**
@@ -25,7 +41,7 @@ class ProductStorageServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        $this->registerFinder();
+        $this->registerActions();
     }
 
     /**
@@ -45,9 +61,6 @@ class ProductStorageServiceProvider extends ServiceProvider
      */
     protected function registerFinder(): void
     {
-        $this->app->singleton(
-            Finder::class,
-            fn ($app) => new Finder($app->make(Manifest::class))
-        );
+        $this->app->singleton(Finder::class);
     }
 }
