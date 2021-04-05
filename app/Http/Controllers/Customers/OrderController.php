@@ -29,7 +29,7 @@ class OrderController extends Controller
      */
     public function create(GeneratePaymentToken $generator, Product $product): Response
     {
-        return Inertia::render('Orders/Create', [
+        return Inertia::render('Customer/Orders/Create', [
             'payementToken' => $generator->generate($product),
         ]);
     }
@@ -66,7 +66,7 @@ class OrderController extends Controller
      */
     public function show(Order $order): Response
     {
-        return Inertia::render('Orders/Show', compact('order'));
+        return Inertia::render('Customer/Orders/Show', compact('order'));
     }
 
     /**

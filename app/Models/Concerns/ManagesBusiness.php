@@ -21,6 +21,10 @@ trait ManagesBusiness
      */
     public function createAsBusiness(?array $data = null): void
     {
+        if (is_null($data)) {
+            $data = $this->toArray();
+        }
+
         Business::create([
             'user_id' => $this->id,
             'type' => 'standard',
@@ -37,6 +41,36 @@ trait ManagesBusiness
                 'url' => $data['url'] ?? null,
             ],
         ]);
+    }
+
+    /**
+     * Determine if the user is a customer.
+     *
+     * @return bool
+     */
+    public function isBusiness(): bool
+    {
+        return ! is_null($this->business) && ! is_null($this->businessId());
+    }
+
+    /**
+     * Get user business profile details.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function business(): HasOne
+    {
+        return $this->hasOne(Business::class, 'user_id');
+    }
+
+    /**
+     * Get the user business registration number.
+     *
+     * @return string
+     */
+    public function businessId(): string
+    {
+        return $this->business->registration_number;
     }
 
     /**
@@ -87,16 +121,6 @@ trait ManagesBusiness
     public function invitation(): HasOne
     {
         return $this->hasOne(Invitation::class, 'user_id');
-    }
-
-    /**
-     * Get user business profile details.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasOne
-     */
-    public function business(): HasOne
-    {
-        return $this->hasOne(Business::class, 'user_id');
     }
 
     /**

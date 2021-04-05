@@ -25,4 +25,13 @@ class BusinessTest extends TestCase
 
         $this->assertInstanceOf(Profile::class, $business->business_profile);
     }
+
+    public function testFindUsingRegistrationNumber()
+    {
+        $business = create(Business::class);
+
+        $found = Business::findUsingRegistrationNumber($business->registration_number);
+
+        $this->assertTrue($business->is($found));
+    }
 }

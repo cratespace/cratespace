@@ -37,6 +37,7 @@ class User extends Authenticatable
     protected $fillable = [
         'name',
         'email',
+        'phone',
         'password',
         'username',
         'settings',
@@ -109,7 +110,7 @@ class User extends Authenticatable
      */
     public function getProfileAttribute(): ?Model
     {
-        return $this->hasRole('Business') ? $this->business : $this->customer;
+        return $this->isCustomer() ? $this->customer : $this->business;
     }
 
     /**

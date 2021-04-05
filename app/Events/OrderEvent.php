@@ -40,7 +40,7 @@ class OrderEvent
      */
     public function business(): User
     {
-        return $this->order->user;
+        return $this->order->business;
     }
 
     /**

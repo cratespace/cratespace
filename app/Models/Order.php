@@ -3,18 +3,23 @@
 namespace App\Models;
 
 use App\Support\Money;
-use App\Events\OrderCanceled;
+use App\Filters\OrderFilter;
+use App\Events\OrderCancelled;
 use App\Models\Casts\PaymentCast;
 use App\Contracts\Billing\Product;
+use App\Facades\ConfirmationNumber;
 use Illuminate\Database\Eloquent\Model;
 use App\Contracts\Billing\Order as OrderContract;
+use Cratespace\Preflight\Models\Traits\Filterable;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
 class Order extends Model implements OrderContract
 {
     use HasFactory;
+    use Filterable;
 
     /**
      * The attributes that are mass assignable.
@@ -46,7 +51,7 @@ class Order extends Model implements OrderContract
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function user(): BelongsTo
+    public function business(): BelongsTo
     {
         return $this->belongsTo(User::class, 'user_id');
     }
@@ -112,6 +117,36 @@ class Order extends Model implements OrderContract
     }
 
     /**
+     * Determine if the order has been cofirmed.
+     *
+     * @return bool
+     */
+    public function confirmed(): bool
+    {
+        if (! is_null($this->confirmation_number)) {
+            return ConfirmationNumber::validate($this->confirmation_number);
+        }
+
+        return false;
+    }
+
+    /**
+     * Confirm order for customer.
+     *
+     * @return void
+     */
+    public function confirm(): void
+    {
+        if (! is_null($this->confirmation_number)) {
+            return;
+        }
+
+        $this->forceFill([
+            'confirmation_number' => ConfirmationNumber::generate(),
+        ])->saveQuietly();
+    }
+
+    /**
      * Cancel this order.
      *
      * @return void
@@ -120,7 +155,7 @@ class Order extends Model implements OrderContract
     {
         $this->product()->release();
 
-        OrderCanceled::dispatch($this);
+        OrderCancelled::dispatch($this);
 
         $this->delete();
     }
@@ -133,5 +168,17 @@ class Order extends Model implements OrderContract
     public function canCancel(): bool
     {
         return ! $this->product()->nearingExpiration();
+    }
+
+    /**
+     * List all latest orders.
+     *
+     * @param \App\Filters\OrderFilter|null $request
+     *
+     * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
+     */
+    public static function listing(?OrderFilter $filter = null): LengthAwarePaginator
+    {
+        return Order::latest()->filter($filter)->paginate();
     }
 }

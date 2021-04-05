@@ -43,6 +43,7 @@ class CreateNewUser implements CreatesNewUsers
         return User::create([
             'name' => $data['name'],
             'email' => $data['email'],
+            'phone' => $data['phone'],
             'username' => Util::makeUsername($data['name']),
             'password' => Hash::make($data['password']),
             'settings' => $this->setDefaultSettings(),

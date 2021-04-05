@@ -14,7 +14,7 @@ return [
 
     'name' => env('APP_NAME', 'Cratespace'),
 
-    'version' => env('APP_VERSION', '2.0.1'),
+    'version' => env('APP_VERSION', '2.2.0'),
 
     /*
     |--------------------------------------------------------------------------
@@ -180,6 +180,7 @@ return [
         App\Providers\PreflightServiceProvider::class,
         App\Providers\StripeServiceProvider::class,
         App\Providers\BillingServiceProvider::class,
+        App\Providers\ProductStorageServiceProvider::class,
     ],
 
     /*

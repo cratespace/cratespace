@@ -21,7 +21,8 @@ Route::group([
 ], function (): void {
     Route::put('/user/address', [UpdateUserAddressInformationController::class, '__invoke'])->name('user.address');
 
-    Route::post('/orders/{product}', [CustomerOrderController::class, 'store'])->name('orders.store');
+    Route::get('/checkout/{product}', [CustomerOrderController::class, 'create'])->name('orders.create');
+    Route::post('/checkout/{product}', [CustomerOrderController::class, 'store'])->name('orders.store');
     Route::delete('/orders', [CustomerOrderController::class, 'destroy'])->name('orders.destroy');
 
     Route::group([

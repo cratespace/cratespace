@@ -2,16 +2,15 @@
 
 namespace App\Providers;
 
-use App\Models\Space;
-use App\Contracts\Billing\Product;
-use App\Actions\Product\FindProduct;
+use App\Models\Order;
+use App\Orders\ConfirmationNumber;
 use App\Actions\Customer\MakePurchase;
 use Illuminate\Support\ServiceProvider;
-use App\Contracts\Actions\FindsProducts;
 use App\Actions\Product\CreateNewProduct;
 use App\Contracts\Actions\MakesPurchases;
 use App\Contracts\Actions\CreatesNewResources;
 use App\Billing\PaymentGateways\PaymentGateway;
+use App\Contracts\Billing\Order as OrderContract;
 use Cratespace\Sentinel\Providers\Traits\HasActions;
 use App\Billing\PaymentGateways\StripePaymentGateway;
 
@@ -27,7 +26,6 @@ class BillingServiceProvider extends ServiceProvider
     protected $actions = [
         MakesPurchases::class => MakePurchase::class,
         CreatesNewResources::class => CreateNewProduct::class,
-        FindsProducts::class => FindProduct::class,
     ];
 
     /**
@@ -38,8 +36,6 @@ class BillingServiceProvider extends ServiceProvider
     public function register()
     {
         $this->registerPaymentGateway();
-
-        $this->registerActions();
     }
 
     /**
@@ -49,7 +45,9 @@ class BillingServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        $this->registerProducts();
+        $this->registerOrderManager();
+
+        $this->registerActions();
     }
 
     /**
@@ -63,12 +61,14 @@ class BillingServiceProvider extends ServiceProvider
     }
 
     /**
-     * Register product lineup.
+     * Register order manager.
      *
      * @return void
      */
-    public function registerProducts(): void
+    public function registerOrderManager(): void
     {
-        $this->app->bind(Product::class, Space::class);
+        $this->app->bind(OrderContract::class, Order::class);
+
+        $this->app->bind(ConfirmationNumber::class);
     }
 }

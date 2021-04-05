@@ -11,6 +11,7 @@ return [
             'name' => 'Thavarshan Thayananthajothy',
             'username' => 'Thavarshan',
             'email' => 'tjthavarshan@gmail.com',
+            'phone' => '0775018795',
             'password' => '$2y$10$X71vOqkxROWZBhbWxwvf9eHvN8kFjDmDO5Cjsfk5dIKOKGqkxyWNq', // alphaxion77
             'email_verified_at' => now(),
             'remember_token' => Str::random(10),
