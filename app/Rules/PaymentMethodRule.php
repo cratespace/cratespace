@@ -2,6 +2,7 @@
 
 namespace App\Rules;
 
+use Throwable;
 use App\Services\Stripe\PaymentMethod;
 use Illuminate\Contracts\Validation\Rule;
 
@@ -17,7 +18,11 @@ class PaymentMethodRule implements Rule
      */
     public function passes($attribute, $value)
     {
-        return ! is_null(PaymentMethod::getStripeObject($value));
+        try {
+            return ! is_null(PaymentMethod::getStripeObject($value));
+        } catch (Throwable $e) {
+            return false;
+        }
     }
 
     /**

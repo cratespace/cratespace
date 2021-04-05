@@ -132,6 +132,18 @@ class Payment extends Resource implements PaymentContract
     }
 
     /**
+     * Cancel payment.
+     *
+     * @return void
+     */
+    public function cancel(): void
+    {
+        static::createService()->cancel($this->id, [
+            'cancellation_reason' => 'abandoned',
+        ]);
+    }
+
+    /**
      * Get payment metadata as object.
      *
      * @return \stdClass
