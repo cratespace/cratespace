@@ -18,7 +18,7 @@ class CreateOrdersTable extends Migration
             $table->string('payment')->nullable();
             $table->foreignId('user_id')->constrained('users');
             $table->foreignId('customer_id')->constrained('users');
-            $table->unsignedBigInteger('confirmation_number')->nullable();
+            $table->unsignedBigInteger('confirmation_number')->nullable()->unique();
             $table->unsignedBigInteger('orderable_id')->index();
             $table->string('orderable_type', 50);
             $table->unsignedInteger('amount');

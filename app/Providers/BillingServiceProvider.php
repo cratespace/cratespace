@@ -3,8 +3,7 @@
 namespace App\Providers;
 
 use App\Models\Order;
-use App\Models\Space;
-use App\Contracts\Billing\Product;
+use App\Orders\ConfirmationNumber;
 use App\Actions\Customer\MakePurchase;
 use Illuminate\Support\ServiceProvider;
 use App\Actions\Product\CreateNewProduct;
@@ -69,5 +68,7 @@ class BillingServiceProvider extends ServiceProvider
     public function registerOrderManager(): void
     {
         $this->app->bind(OrderContract::class, Order::class);
+
+        $this->app->bind(ConfirmationNumber::class);
     }
 }

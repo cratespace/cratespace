@@ -3,13 +3,14 @@
 namespace App\Models;
 
 use App\Support\Money;
-use Illuminate\Support\Str;
 use App\Filters\OrderFilter;
 use App\Events\OrderCancelled;
 use App\Models\Casts\PaymentCast;
 use App\Contracts\Billing\Product;
+use App\Facades\ConfirmationNumber;
 use Illuminate\Database\Eloquent\Model;
 use App\Contracts\Billing\Order as OrderContract;
+use Cratespace\Preflight\Models\Traits\Filterable;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -18,6 +19,7 @@ use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 class Order extends Model implements OrderContract
 {
     use HasFactory;
+    use Filterable;
 
     /**
      * The attributes that are mass assignable.
@@ -115,14 +117,32 @@ class Order extends Model implements OrderContract
     }
 
     /**
+     * Determine if the order has been cofirmed.
+     *
+     * @return bool
+     */
+    public function confirmed(): bool
+    {
+        if (! is_null($this->confirmation_number)) {
+            return ConfirmationNumber::validate($this->confirmation_number);
+        }
+
+        return false;
+    }
+
+    /**
      * Confirm order for customer.
      *
      * @return void
      */
     public function confirm(): void
     {
+        if (! is_null($this->confirmation_number)) {
+            return;
+        }
+
         $this->forceFill([
-            'confirmation_number' => Str::random(40),
+            'confirmation_number' => ConfirmationNumber::generate(),
         ])->saveQuietly();
     }
 
@@ -159,6 +179,6 @@ class Order extends Model implements OrderContract
      */
     public static function listing(?OrderFilter $filter = null): LengthAwarePaginator
     {
-        return Order::latest()->paginate();
+        return Order::latest()->filter($filter)->paginate();
     }
 }
