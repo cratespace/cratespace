@@ -7,6 +7,7 @@ use Tests\TestCase;
 use App\Models\User;
 use App\Models\Space;
 use App\Models\Values\Schedule;
+use Illuminate\Support\Facades\Event;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class SpaceTest extends TestCase
@@ -105,6 +106,8 @@ class SpaceTest extends TestCase
 
     public function testReserveAndRelease()
     {
+        Event::fake();
+
         $space = create(Space::class);
 
         $space->reserve();

@@ -40,6 +40,26 @@ trait ManagesBusiness
     }
 
     /**
+     * Get user business profile details.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function business(): HasOne
+    {
+        return $this->hasOne(Business::class, 'user_id');
+    }
+
+    /**
+     * Get the user business registration number.
+     *
+     * @return string
+     */
+    public function businessId(): string
+    {
+        return $this->business->registration_number;
+    }
+
+    /**
      * Get where the user business is base in.
      *
      * @return string
@@ -87,16 +107,6 @@ trait ManagesBusiness
     public function invitation(): HasOne
     {
         return $this->hasOne(Invitation::class, 'user_id');
-    }
-
-    /**
-     * Get user business profile details.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasOne
-     */
-    public function business(): HasOne
-    {
-        return $this->hasOne(Business::class, 'user_id');
     }
 
     /**

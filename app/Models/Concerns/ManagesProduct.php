@@ -97,8 +97,8 @@ trait ManagesProduct
      */
     public function available(): bool
     {
-        if ($this->departs_at->isAfter(Carbon::now())) {
-            return is_null($this->reserved_at) && ! $this->order()->exists();
+        if (! $this->expired()) {
+            return ! $this->reserved();
         }
 
         return false;

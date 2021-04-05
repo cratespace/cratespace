@@ -109,7 +109,7 @@ class User extends Authenticatable
      */
     public function getProfileAttribute(): ?Model
     {
-        return $this->hasRole('Business') ? $this->business : $this->customer;
+        return $this->isCustomer() ? $this->customer : $this->business;
     }
 
     /**
