@@ -3,13 +3,14 @@
 namespace App\Mail;
 
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Contracts\Queue\ShouldQueue;
 
-class OrderPlacedSuccessfully extends Mailable
+class OrderPlacedSuccessfully extends Mailable implements ShouldQueue
 {
-    use Queueable, SerializesModels;
+    use Queueable;
+    use SerializesModels;
 
     /**
      * Create a new message instance.
@@ -18,7 +19,6 @@ class OrderPlacedSuccessfully extends Mailable
      */
     public function __construct()
     {
-        //
     }
 
     /**

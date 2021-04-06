@@ -7,8 +7,9 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Contracts\Queue\ShouldQueue;
 
-class BusinessInvitation extends Mailable
+class BusinessInvitation extends Mailable implements ShouldQueue
 {
     use Queueable;
     use SerializesModels;

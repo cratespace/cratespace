@@ -37,7 +37,7 @@ class InviteBusinessTest extends TestCase
 
         app(InviteBusiness::class)->invite($user);
 
-        Mail::assertSent(BusinessInvitation::class);
+        Mail::assertQueued(BusinessInvitation::class);
 
         $this->assertTrue($user->invited());
     }

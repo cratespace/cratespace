@@ -7,8 +7,9 @@ use Illuminate\Mail\Mailable;
 use App\Contracts\Billing\Order;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Contracts\Queue\ShouldQueue;
 
-class NewOrderPlaced extends Mailable
+class NewOrderPlaced extends Mailable implements ShouldQueue
 {
     use Queueable;
     use SerializesModels;
@@ -41,7 +42,7 @@ class NewOrderPlaced extends Mailable
     {
         return $this->markdown(
             'emails.businesses.orders.new-order', [
-                'orderUrl' => URL::signedRoute('order.show', [
+                'orderUrl' => URL::signedRoute('orders.show', [
                     'order' => $this->order,
                 ]),
             ]

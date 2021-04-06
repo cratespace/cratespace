@@ -2,6 +2,8 @@
 
 namespace Tests;
 
+use Tests\Support\AssertEloquent;
+use Tests\Support\AssertViewData;
 use Illuminate\Foundation\Testing\WithFaker;
 use Cratespace\Preflight\Testing\Concerns\CreatesNewUser;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
@@ -15,4 +17,12 @@ abstract class TestCase extends BaseTestCase
     use InteractsWithNetwork;
     use CreatesNewUser;
     use WithFaker;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        AssertEloquent::registerMacros();
+        AssertViewData::registerMacros();
+    }
 }

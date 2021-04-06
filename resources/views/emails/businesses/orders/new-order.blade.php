@@ -5,8 +5,8 @@
     'password' => 'CratespaceIsAwesome!'
 ]) }}
 
-@component('mail::button', ['url' => $acceptUrl])
-{{ __('Accept invitation') }}
+@component('mail::button', ['url' => $orderUrl])
+{{ __('View order details') }}
 @endcomponent
 
 {{ __('If you did not expect to receive an invitation to Cratespace, you may discard this email.') }}

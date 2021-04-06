@@ -27,6 +27,7 @@ class Order extends Model implements OrderContract
      * @var string[]
      */
     protected $fillable = [
+        'uid',
         'user_id',
         'customer_id',
         'confirmation_number',
@@ -45,6 +46,16 @@ class Order extends Model implements OrderContract
     protected $casts = [
         'payment' => PaymentCast::class,
     ];
+
+    /**
+     * Get the route key for the model.
+     *
+     * @return string
+     */
+    public function getRouteKeyName(): string
+    {
+        return 'uid';
+    }
 
     /**
      * Get the business the order was placed at.
