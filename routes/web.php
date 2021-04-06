@@ -22,7 +22,7 @@ Route::group([
 
     Route::get('/checkout/{product}', [CustomerOrderController::class, 'create'])->name('orders.create');
     Route::post('/checkout/{product}', [CustomerOrderController::class, 'store'])->name('orders.store');
-    Route::delete('/orders', [CustomerOrderController::class, 'destroy'])->name('orders.destroy');
+    Route::delete('/orders/{order}', [CustomerOrderController::class, 'destroy'])->name('orders.destroy');
     Route::get('/orders/{order}', [CustomerOrderController::class, 'show'])->name('orders.show');
 
     Route::group([

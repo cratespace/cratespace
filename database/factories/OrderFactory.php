@@ -34,6 +34,7 @@ class OrderFactory extends Factory
         // ]);
 
         return [
+            'uid' => rand(9999, 99999),
             'confirmation_number' => null,
             'amount' => $space->fullAmount(),
             'note' => $this->faker->paragraph(),
