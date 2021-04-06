@@ -110,8 +110,10 @@ class SpaceController extends Controller
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function destroy(SpaceRequest $request, Space $space)
+    public function destroy(Space $space)
     {
+        $this->authorize('manage', $space);
+
         $space->delete();
 
         return SpaceResponse::dispatch();
