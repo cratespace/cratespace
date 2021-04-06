@@ -9,6 +9,11 @@ use App\Exceptions\InvalidPurchaseTokenException;
 class FakePaymentGateway extends PaymentGateway
 {
     /**
+     * Fake credit card number used for testing purposes.
+     */
+    public const TEST_CARD_NUMBER = '4242424242424242';
+
+    /**
      * The total amount paid.
      *
      * @var int
