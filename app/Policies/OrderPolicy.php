@@ -31,7 +31,7 @@ class OrderPolicy
      */
     public function update(User $user, Order $order)
     {
-        return $user->is($order->user);
+        return $user->is($order->business);
     }
 
     /**
@@ -44,7 +44,7 @@ class OrderPolicy
      */
     public function delete(User $user, Order $order)
     {
-        if ($user->is($order->user) || $user->is($order->customer)) {
+        if ($user->is($order->business) || $user->is($order->customer)) {
             return $order->canCancel();
         }
 
