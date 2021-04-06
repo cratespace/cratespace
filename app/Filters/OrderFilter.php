@@ -12,7 +12,7 @@ class OrderFilter extends Filter
      *
      * @var array
      */
-    protected $filters = ['filter'];
+    protected $filters = ['confirmation_number'];
 
     /**
      * Filter the query by a given attribute value.
@@ -21,8 +21,8 @@ class OrderFilter extends Filter
      *
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    protected function filter(string $attribute): Builder
+    protected function confirmationNumber(string $number): Builder
     {
-        return $this->builder->whereAttribute($attribute);
+        return $this->builder->where('confirmation_number', $number);
     }
 }

@@ -173,16 +173,16 @@
         },
         {
             "name": "cratespace/preflight",
-            "version": "v3.4.0",
+            "version": "v3.4.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cratespace/preflight.git",
-                "reference": "6d59271221e633ae08b6a1d9f054e7005340d4f7"
+                "reference": "762cb500a535b4683d7ec8ea0dcf16888e5e087c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cratespace/preflight/zipball/6d59271221e633ae08b6a1d9f054e7005340d4f7",
-                "reference": "6d59271221e633ae08b6a1d9f054e7005340d4f7",
+                "url": "https://api.github.com/repos/cratespace/preflight/zipball/762cb500a535b4683d7ec8ea0dcf16888e5e087c",
+                "reference": "762cb500a535b4683d7ec8ea0dcf16888e5e087c",
                 "shasum": ""
             },
             "require": {
@@ -238,7 +238,7 @@
                 "issues": "https://github.com/cratespace/preflight/issues",
                 "source": "https://github.com/cratespace/preflight"
             },
-            "time": "2021-03-19T11:40:56+00:00"
+            "time": "2021-04-05T17:11:14+00:00"
         },
         {
             "name": "cratespace/sentinel",

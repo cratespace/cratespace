@@ -7,6 +7,7 @@ use App\Jobs\CancelOrder;
 use App\Filters\OrderFilter;
 use Illuminate\Http\Request;
 use App\Contracts\Billing\Order;
+use App\Models\Order as OrderModel;
 use App\Http\Controllers\Controller;
 use App\Http\Responses\OrderResponse;
 use Illuminate\Contracts\Support\Responsable;
@@ -21,6 +22,8 @@ class OrderController extends Controller
      */
     public function index(OrderFilter $filter)
     {
+        $this->authorize('manage', new OrderModel());
+
         return Inertia::render('Business/Orders/Index', [
             'orders' => Order::listing($filter),
         ]);

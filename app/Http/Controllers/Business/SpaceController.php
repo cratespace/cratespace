@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Business;
 
+use Inertia\Inertia;
 use App\Models\Space;
 use App\Http\Requests\SpaceRequest;
 use App\Http\Controllers\Controller;
@@ -27,6 +28,9 @@ class SpaceController extends Controller
      */
     public function index()
     {
+        $this->authorize('manage', new Space());
+
+        return Inertia::render('Business/Spaces/Index');
     }
 
     /**
@@ -37,6 +41,8 @@ class SpaceController extends Controller
     public function create()
     {
         $this->authorize('manage', new Space());
+
+        return Inertia::render('Business/Spaces/Create');
     }
 
     /**
@@ -64,6 +70,8 @@ class SpaceController extends Controller
     public function show(Space $space)
     {
         $this->authorize('manage', $space);
+
+        return Inertia::render('Business/Spaces/Show', compact('space'));
     }
 
     /**
@@ -76,6 +84,8 @@ class SpaceController extends Controller
     public function edit(Space $space)
     {
         $this->authorize('manage', $space);
+
+        return Inertia::render('Business/Spaces/Edit', compact('space'));
     }
 
     /**
@@ -100,9 +110,9 @@ class SpaceController extends Controller
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function destroy(Space $space)
+    public function destroy(SpaceRequest $request, Space $space)
     {
-        $this->authorize('manage', $space);
+        $space->delete();
 
         return SpaceResponse::dispatch();
     }
