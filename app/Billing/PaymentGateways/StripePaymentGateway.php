@@ -10,6 +10,7 @@ use App\Services\Stripe\Payment;
 use App\Events\PaymentSuccessful;
 use App\Services\Stripe\Customer;
 use App\Services\Stripe\Resource;
+use App\Contracts\Billing\Product;
 use App\Exceptions\PaymentFailedException;
 
 class StripePaymentGateway extends PaymentGateway
@@ -58,6 +59,18 @@ class StripePaymentGateway extends PaymentGateway
         }
 
         return $payment;
+    }
+
+    /**
+     * Generate valid test payment token.
+     *
+     * @param \App\Contracts\Billing\Product|null $product
+     *
+     * @return string
+     */
+    public function getValidTestToken(?Product $product = null): string
+    {
+        return $this->createTokenGenerator()->generate($product);
     }
 
     /**

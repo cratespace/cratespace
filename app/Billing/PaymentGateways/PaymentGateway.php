@@ -2,6 +2,9 @@
 
 namespace App\Billing\PaymentGateways;
 
+use App\Contracts\Billing\Product;
+use App\Billing\PaymentTokens\GeneratePaymentToken;
+
 abstract class PaymentGateway
 {
     /**
@@ -30,6 +33,15 @@ abstract class PaymentGateway
     abstract public function charge(int $amount, array $details, ?array $options = null);
 
     /**
+     * Generate valid test payment token.
+     *
+     * @param \App\Contracts\Billing\Product|null $product
+     *
+     * @return string
+     */
+    abstract public function getValidTestToken(?Product $product = null): string;
+
+    /**
      * Determine if the charge was succesful.
      *
      * @return bool
@@ -37,5 +49,15 @@ abstract class PaymentGateway
     public function successful(): bool
     {
         return $this->successful;
+    }
+
+    /**
+     * Get instance of payment token generator.
+     *
+     * @return \App\Billing\PaymentTokens\GeneratePaymentToken
+     */
+    protected function createTokenGenerator(): GeneratePaymentToken
+    {
+        return app(GeneratePaymentToken::class);
     }
 }

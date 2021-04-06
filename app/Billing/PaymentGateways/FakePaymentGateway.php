@@ -2,6 +2,8 @@
 
 namespace App\Billing\PaymentGateways;
 
+use Tests\Fixtures\MockProduct;
+use App\Contracts\Billing\Product;
 use App\Exceptions\InvalidPurchaseTokenException;
 
 class FakePaymentGateway extends PaymentGateway
@@ -31,6 +33,22 @@ class FakePaymentGateway extends PaymentGateway
         $this->total += $amount;
 
         $this->successful = true;
+    }
+
+    /**
+     * Generate valid test payment token.
+     *
+     * @param \App\Contracts\Billing\Product|null $product
+     *
+     * @return string
+     */
+    public function getValidTestToken(?Product $product = null): string
+    {
+        if (is_null($product)) {
+            $product = new MockProduct(1);
+        }
+
+        return $this->createTokenGenerator()->generate($product);
     }
 
     protected function validPaymentToken(string $token)
