@@ -6,8 +6,8 @@ use Carbon\Carbon;
 use Tests\TestCase;
 use App\Models\User;
 use App\Models\Space;
+use App\Models\Product;
 use App\Models\Values\Schedule;
-use Illuminate\Support\Facades\Event;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class SpaceTest extends TestCase
@@ -88,32 +88,25 @@ class SpaceTest extends TestCase
         $this->assertTrue($space->schedule->nearingDeparture());
     }
 
-    public function testItCanPresentTotalPrice()
+    public function testHasPathAttribute()
     {
-        $space = create(Space::class, ['price' => 900, 'tax' => 100]);
-
-        $this->assertEquals('$10.00', $space->present()->price);
-    }
-
-    public function testDetermineReservedStatus()
-    {
-        $space = create(Space::class, [
-            'reserved_at' => now(),
-        ]);
-
-        $this->assertTrue($space->reserved());
-    }
-
-    public function testReserveAndRelease()
-    {
-        Event::fake();
-
         $space = create(Space::class);
 
-        $space->reserve();
-        $this->assertNotNull($space->fresh()->reserved_at);
+        $this->assertEquals(route('spaces.show', $space), $space->path);
+    }
 
-        $space->release();
-        $this->assertNull($space->fresh()->reserved_at);
+    public function testProductableTrait()
+    {
+        $space = create(Space::class);
+
+        $this->assertInstanceOf(Product::class, $space->product);
+    }
+
+    public function testProductStoreRecord()
+    {
+        $space = create(Space::class);
+        $store = new Product();
+
+        $this->assertTrue($store->where('code', $space->code)->exists());
     }
 }

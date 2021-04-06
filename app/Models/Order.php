@@ -174,11 +174,12 @@ class Order extends Model implements OrderContract
      * List all latest orders.
      *
      * @param \App\Filters\OrderFilter|null $request
+     * @param int                           $perPage
      *
      * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
      */
-    public static function listing(?OrderFilter $filter = null): LengthAwarePaginator
+    public static function listing(?OrderFilter $filter = null, int $perPage = 15): LengthAwarePaginator
     {
-        return Order::latest()->filter($filter)->paginate();
+        return Order::latest()->filter($filter)->paginate($perPage);
     }
 }
