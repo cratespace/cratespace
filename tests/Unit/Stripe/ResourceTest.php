@@ -27,6 +27,10 @@ class ResourceTest extends TestCase
         } catch (Throwable $e) {
             $this->assertInstanceOf(InvalidArgumentException::class, $e);
             $this->assertEquals('Property [mock_reosurce] does not exist within Stripe client', $e->getMessage());
+
+            return;
         }
+
+        $this->fail();
     }
 }

@@ -6,7 +6,10 @@ use Tests\TestCase;
 use App\Rules\PaymentMethodRule;
 use App\Services\Stripe\PaymentMethod;
 
-class PaymentMethodTest extends TestCase
+/**
+ * @group Stripe
+ */
+class PaymentMethodRuleTest extends TestCase
 {
     public function testValidateTestPaymentMethod()
     {

@@ -2,14 +2,22 @@
 
 namespace Tests\Unit\Products;
 
+use Mockery as m;
 use Tests\TestCase;
 use App\Support\Money;
 use Tests\Fixtures\MockProduct;
+use App\Contracts\Billing\Order;
+use App\Contracts\Billing\Payment;
 use App\Contracts\Billing\Product;
 use Illuminate\Support\Facades\Crypt;
 
 class ProductTest extends TestCase
 {
+    protected function tearDown(): void
+    {
+        m::close();
+    }
+
     public function testInstantiation()
     {
         $product = new MockProduct('test_product');
@@ -52,5 +60,14 @@ class ProductTest extends TestCase
         $product = new MockProduct('test_product');
 
         $this->assertEquals($product->fullAmount(), $product->rawAmount());
+    }
+
+    public function testGetOrderDetails()
+    {
+        $product = new MockProduct('test_product');
+
+        $product->placeOrder(m::mock(Payment::class));
+
+        $this->assertInstanceOf(Order::class, $product->getOrderDetails());
     }
 }

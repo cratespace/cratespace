@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Event;
 use App\Orders\ValidateConfirmationNumber;
 use App\Contracts\Billing\Order as OrderContract;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class OrderTest extends TestCase
 {
@@ -102,5 +103,22 @@ class OrderTest extends TestCase
         $order = create(Order::class);
 
         $this->assertInstanceOf(Payment::class, $order->payment);
+    }
+
+    public function testRetrievingAnOrderByConfirmationNumber()
+    {
+        $order = create(Order::class, [
+            'confirmation_number' => 'ORDERCONFIRMATION1234',
+        ]);
+
+        $foundOrder = Order::findByConfirmationNumber('ORDERCONFIRMATION1234');
+
+        $this->assertEquals($order->id, $foundOrder->id);
+    }
+
+    public function testRetrievingANonexistentOrderByConfirmationNumberThrowsAnException()
+    {
+        $this->expectException(ModelNotFoundException::class);
+        Order::findByConfirmationNumber('NONEXISTENTCONFIRMATIONNUMBER');
     }
 }

@@ -193,4 +193,16 @@ class Order extends Model implements OrderContract
     {
         return Order::latest()->filter($filter)->paginate($perPage);
     }
+
+    /**
+     * Find an order with the given confirmation number.
+     *
+     * @param string $confirmationNumber
+     *
+     * @return \App\Models\Order
+     */
+    public static function findByConfirmationNumber(string $confirmationNumber): Order
+    {
+        return static::where('confirmation_number', $confirmationNumber)->firstOrFail();
+    }
 }

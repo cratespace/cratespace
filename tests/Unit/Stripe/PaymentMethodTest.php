@@ -6,6 +6,9 @@ use Tests\TestCase;
 use App\Services\Stripe\Customer;
 use App\Services\Stripe\PaymentMethod;
 
+/**
+ * @group Stripe
+ */
 class PaymentMethodTest extends TestCase
 {
     /**

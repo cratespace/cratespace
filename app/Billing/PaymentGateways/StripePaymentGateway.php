@@ -38,17 +38,13 @@ class StripePaymentGateway extends PaymentGateway
         $customer = $this->getCustomer($details['customer']);
 
         try {
-            $payment = Payment::create([
+            $payment = Payment::create($this->defaultOptions([
                 'amount' => (int) $amount,
-                'currency' => Money::preferredCurrency(),
                 'customer' => $customer->id,
                 'payment_method' => $details['payment_method'],
                 'receipt_email' => $customer->email,
-                'description' => 'Cratespace purchase',
                 'metadata' => $details['metadata'],
-                'confirm' => true,
-                'confirmation_method' => 'automatic',
-            ], $options);
+            ]), $options);
         } catch (Throwable $e) {
             Stripe::logger()->error($message = $e->getMessage());
 
@@ -80,5 +76,15 @@ class StripePaymentGateway extends PaymentGateway
     public function getCustomer(string $id): Resource
     {
         return new Customer($id);
+    }
+
+    public function defaultOptions(array $overrides = []): array
+    {
+        return array_merge([
+            'currency' => Money::preferredCurrency(),
+            'description' => 'Cratespace purchase',
+            'confirm' => true,
+            'confirmation_method' => 'automatic',
+        ], $overrides);
     }
 }

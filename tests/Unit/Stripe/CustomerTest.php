@@ -7,6 +7,9 @@ use App\Services\Stripe\Customer;
 use App\Services\Stripe\Resource;
 use Illuminate\Support\Collection;
 
+/**
+ * @group Stripe
+ */
 class CustomerTest extends TestCase
 {
     public function testCreateCustomer()

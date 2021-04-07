@@ -21,6 +21,9 @@ use App\Billing\PaymentTokens\GeneratePaymentToken;
 use Cratespace\Preflight\Testing\Contracts\Postable;
 use App\Notifications\NewOrderPlaced as NewOrderPlacedNotification;
 
+/**
+ * @group Stripe
+ */
 class PurchaseTest extends TestCase implements Postable
 {
     use RefreshDatabase;

@@ -7,6 +7,9 @@ use App\Support\Money;
 use App\Services\Stripe\Refund;
 use App\Services\Stripe\Payment;
 
+/**
+ * @group Stripe
+ */
 class RefundTest extends TestCase
 {
     public function testCreateRefund()

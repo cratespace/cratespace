@@ -3,15 +3,18 @@
 namespace Tests\Unit\Stripe;
 
 use Mockery as m;
+use Stripe\Stripe;
+use Tests\TestCase;
 use Psr\Log\LoggerInterface;
 use App\Services\Stripe\Logger;
-use PHPUnit\Framework\TestCase;
 use Stripe\Util\LoggerInterface as StripeLoggerInterface;
 
 class LoggerTest extends TestCase
 {
     protected function tearDown(): void
     {
+        config(['billing.logger' => null]);
+
         m::close();
     }
 
@@ -32,5 +35,43 @@ class LoggerTest extends TestCase
         $log = $logger->error('Error message.', []);
 
         $this->assertNull($log);
+    }
+
+    public function testTheLoggerUsesALogChannel()
+    {
+        $channel = m::mock(LoggerInterface::class);
+        $channel->shouldReceive('error')
+            ->once()
+            ->with('foo', ['bar']);
+
+        $this->mock('log', function ($logger) use ($channel) {
+            $logger->shouldReceive('channel')
+                ->with('default')
+                ->once()
+                ->andReturn($channel);
+        });
+
+        config(['billing.logger' => 'default']);
+
+        $logger = $this->app->make(StripeLoggerInterface::class);
+
+        $log = $logger->error('foo', ['bar']);
+
+        $this->assertNull($log);
+    }
+
+    public function testItUsesAConfiguredLogger()
+    {
+        $this->channel = 'default';
+
+        $this->refreshApplication();
+
+        $logger = Stripe::getLogger();
+
+        $this->assertInstanceOf(
+            Logger::class,
+            $logger,
+            'Failed asserting that Stripe uses the Cashier logger.'
+        );
     }
 }
