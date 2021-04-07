@@ -78,12 +78,12 @@ class Finder
     /**
      * Resolve the product instance.
      *
-     * @param string   $class
-     * @param int|null $id
+     * @param string $class
+     * @param string $id
      *
      * @return \App\Contracts\Billing\Product
      */
-    protected function resolve(string $class, ?int $id = null): Product
+    protected function resolve(string $class, string $id): Product
     {
         return $this->isModel($class, $id) ? $class::find($id) : new $class($id);
     }
@@ -91,14 +91,14 @@ class Finder
     /**
      * Determine if the given class is a model.
      *
-     * @param string   $class
-     * @param int|null $id
+     * @param string $class
+     * @param string $id
      *
      * @return bool
      */
-    protected function isModel(string $class, ?int $id = null): bool
+    protected function isModel(string $class, string $id): bool
     {
-        return (new ReflectionClass($class))->isSubclassOf(Model::class) && ! is_null($id);
+        return (new ReflectionClass($class))->isSubclassOf(Model::class) && is_numeric($id);
     }
 
     /**

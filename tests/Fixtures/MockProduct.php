@@ -13,11 +13,11 @@ use App\Exceptions\InvalidProductException;
 class MockProduct implements Product
 {
     /**
-     * Mock product ID.
+     * Mock product name.
      *
-     * @var int
+     * @var string
      */
-    public $id = 1;
+    public $name;
 
     /**
      * The unique code used to identify the product.
@@ -43,13 +43,13 @@ class MockProduct implements Product
     /**
      * Create new instance of product.
      *
-     * @param int $id
+     * @param string $name
      *
      * @return void
      */
-    public function __construct(?int $id = null)
+    public function __construct(string $name)
     {
-        $this->id = $id;
+        $this->name = $name;
 
         $this->generateCode();
     }
@@ -65,6 +65,16 @@ class MockProduct implements Product
     }
 
     /**
+     * The name used to identify the product.
+     *
+     * @return string
+     */
+    public function name(): string
+    {
+        return $this->name;
+    }
+
+    /**
      * The unique code used to identify the product.
      *
      * @return void
@@ -72,7 +82,7 @@ class MockProduct implements Product
     public function generateCode(): void
     {
         $this->code = Crypt::encryptString(
-            get_class($this) . '-' . $this->id ?? 1
+            get_class($this) . '-' . $this->name
         );
     }
 

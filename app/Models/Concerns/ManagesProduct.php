@@ -24,6 +24,16 @@ trait ManagesProduct
     }
 
     /**
+     * The name used to identify the product.
+     *
+     * @return string
+     */
+    public function name(): string
+    {
+        return $this->id;
+    }
+
+    /**
      * Get the owner of the product.
      *
      * @return mixed

@@ -28,7 +28,7 @@ class FinderTest extends TestCase
 
     public function testFindProduct()
     {
-        $product = new MockProduct(1);
+        $product = new MockProduct('test_product');
         $manifest = m::mock(Manifest::class);
         $manifest->shouldReceive('match')
             ->once()
@@ -55,11 +55,11 @@ class FinderTest extends TestCase
 
     public function testFindProductUsingCode()
     {
-        $product = new MockProduct(1);
+        $product = new MockProduct('test_product');
         $finder = new Finder(m::mock(Manifest::class));
         $found = $finder->identifyUsingCode($product->code());
 
         $this->assertInstanceOf(Product::class, $found);
-        $this->assertEquals($product->id, $found->id);
+        $this->assertEquals($product->name(), $found->name());
     }
 }

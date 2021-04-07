@@ -14,7 +14,7 @@ class FindProductTest extends TestCase
 
     public function testFindProduct()
     {
-        $product = new MockProduct(1);
+        $product = new MockProduct('test_product');
         $manifest = $this->app->make(Manifest::class);
         $manifest->store($product);
 

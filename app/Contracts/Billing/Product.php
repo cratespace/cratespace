@@ -12,6 +12,13 @@ interface Product
     public function code(): string;
 
     /**
+     * The name used to identify the product.
+     *
+     * @return string
+     */
+    public function name(): string;
+
+    /**
      * Get the owner of the product.
      *
      * @return mixed

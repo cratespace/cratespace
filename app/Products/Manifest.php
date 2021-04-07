@@ -2,9 +2,9 @@
 
 namespace App\Products;
 
+use Throwable;
 use App\Models\Product as Store;
 use App\Contracts\Billing\Product;
-use Illuminate\Database\Eloquent\Model;
 use App\Exceptions\InvalidProductException;
 use App\Exceptions\ProductNotFoundException;
 
@@ -84,13 +84,15 @@ class Manifest
      */
     public function get(Store $product): Product
     {
-        $class = app($product->productable_type);
+        $hasName = ! is_numeric($product->productable_id);
 
-        if (! is_null($product->productable_id) && $class instanceof Model) {
-            return get_class($class)::findOrFail($product->productable_id);
+        if ($hasName) {
+            return app()->make($product->productable_type, [
+                'name' => $product->productable_id,
+            ]);
         }
 
-        return $class;
+        return ($product->productable_type)::findOrFail($product->productable_id);
     }
 
     /**
@@ -114,7 +116,7 @@ class Manifest
     {
         return [
             'code' => $product->code(),
-            'productable_id' => $product->id ?? null,
+            'productable_id' => $product->name(),
             'productable_type' => get_class($product),
         ];
     }

@@ -50,7 +50,7 @@ class PayoutTest extends TestCase
 
     public function testCanGetProductDetails()
     {
-        $product = new MockProduct(1);
+        $product = new MockProduct('test_product');
 
         $payment = StripePayment::create([
             'amount' => 1000,
@@ -70,6 +70,6 @@ class PayoutTest extends TestCase
         ]);
 
         $this->assertInstanceOf(Product::class, $payout->product());
-        $this->assertEquals($product->id, $payout->product()->id);
+        $this->assertEquals($product->name(), $payout->product()->name());
     }
 }

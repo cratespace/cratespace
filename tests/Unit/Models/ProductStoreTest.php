@@ -13,12 +13,12 @@ class ProductStoreTest extends TestCase
 
     public function testIdentifyExistingProductCode()
     {
-        $product1 = new MockProduct(1);
-        $product2 = new MockProduct(2);
+        $product1 = new MockProduct('test_product_1');
+        $product2 = new MockProduct('test_product_2');
 
         Product::create([
             'code' => $product1->code(),
-            'productable_id' => $product1->id,
+            'productable_id' => $product1->name(),
             'productable_type' => get_class($product1),
         ]);
 
@@ -28,12 +28,12 @@ class ProductStoreTest extends TestCase
 
     public function testFindUsingProductCode()
     {
-        $product1 = new MockProduct(1);
-        $product2 = new MockProduct(2);
+        $product1 = new MockProduct('test_product_1');
+        $product2 = new MockProduct('test_product_2');
 
         Product::create([
             'code' => $product1->code(),
-            'productable_id' => $product1->id,
+            'productable_id' => $product1->name(),
             'productable_type' => get_class($product1),
         ]);
 
