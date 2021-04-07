@@ -7,6 +7,7 @@ use Tests\TestCase;
 use App\Models\User;
 use App\Models\Space;
 use App\Models\Product;
+use App\Filters\SpaceFilter;
 use App\Models\Values\Schedule;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
@@ -108,5 +109,36 @@ class SpaceTest extends TestCase
         $store = new Product();
 
         $this->assertTrue($store->where('code', $space->code)->exists());
+    }
+
+    public function testListingQuery()
+    {
+        // Available spaces.
+        $availableSpaces = create(Space::class, [
+            'reserved_at' => null,
+        ], 20);
+
+        // Reserved spaces.
+        $reservedSpaces = create(Space::class, [
+            'reserved_at' => Carbon::now(),
+        ], 20);
+
+        // Expired spaces.
+        $expiredSpaces = create(Space::class, [
+            'departs_at' => Carbon::yesterday(),
+        ], 20);
+
+        $query = Space::listing(new SpaceFilter(request()));
+
+        $this->assertEquals(20, $query->count());
+        $this->assertTrue($query->get()->contains(function ($space) use ($availableSpaces) {
+            return $availableSpaces->contains($space);
+        }));
+        $this->assertFalse($query->get()->contains(function ($space) use ($reservedSpaces) {
+            return $reservedSpaces->contains($space);
+        }));
+        $this->assertFalse($query->get()->contains(function ($space) use ($expiredSpaces) {
+            return $expiredSpaces->contains($space);
+        }));
     }
 }

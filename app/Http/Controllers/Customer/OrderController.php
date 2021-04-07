@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Customers;
+namespace App\Http\Controllers\Customer;
 
 use Throwable;
 use Inertia\Inertia;
