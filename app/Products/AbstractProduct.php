@@ -2,9 +2,11 @@
 
 namespace App\Products;
 
+use App\Support\Money;
+use App\Contracts\Billing\Payable;
 use Illuminate\Support\Facades\Crypt;
 
-abstract class AbstractProduct
+abstract class AbstractProduct implements Payable
 {
     /**
      * The name used to identify the product.
@@ -100,6 +102,26 @@ abstract class AbstractProduct
     public function reserved(): bool
     {
         return ! is_null($this->reservedAt) && ! is_null($this->order);
+    }
+
+    /**
+     * Get the total amount that will be paid.
+     *
+     * @return string
+     */
+    public function amount(): string
+    {
+        return Money::format($this->fullAmount());
+    }
+
+    /**
+     * Get the raw total amount that will be paid.
+     *
+     * @return int
+     */
+    public function rawAmount(): int
+    {
+        return $this->fullAmount();
     }
 
     /**

@@ -2,7 +2,9 @@
 
 namespace Tests\Unit\Billing;
 
+use Mockery as m;
 use Tests\TestCase;
+use Illuminate\Support\Str;
 use Tests\Fixtures\MockProduct;
 use App\Services\Stripe\Customer;
 use App\Contracts\Billing\Payment;
@@ -12,6 +14,11 @@ use App\Billing\PaymentGateways\StripePaymentGateway;
 
 class StripePaymentGatewayTest extends TestCase
 {
+    protected function tearDown(): void
+    {
+        m::close();
+    }
+
     public function testInstantiation()
     {
         $paymentGateway = new StripePaymentGateway();
@@ -21,12 +28,14 @@ class StripePaymentGatewayTest extends TestCase
 
     public function testGetCustomer()
     {
-        $customer = Customer::create([
-            'name' => $this->faker->name,
-            'email' => $this->faker->email,
-            'phone' => $this->faker->phoneNumber,
-        ]);
-        $paymentGateway = new StripePaymentGateway();
+        $customer = m::mock(Customer::class);
+        $customer->id = $id = Str::random(40);
+        $paymentGateway = m::mock(StripePaymentGateway::class);
+        $paymentGateway->shouldReceive('getCustomer')
+            ->once()
+            ->with($id)
+            ->andReturn($customer);
+
         $paymentCustomer = $paymentGateway->getCustomer($customer->id);
 
         $this->assertInstanceOf(Customer::class, $paymentCustomer);
