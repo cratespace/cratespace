@@ -2,36 +2,40 @@
 
 namespace Tests\Unit\Actions;
 
+use Mockery as m;
 use Tests\TestCase;
+use Illuminate\Support\Str;
 use Tests\Fixtures\MockProduct;
 use App\Contracts\Billing\Order;
-use App\Services\Stripe\Customer;
-use Illuminate\Support\Facades\Event;
 use App\Actions\Product\CreateNewOrder;
+use App\Contracts\Actions\MakesPurchases;
+use App\Billing\PaymentTokens\DestroyPaymentToken;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use App\Billing\PaymentTokens\GeneratePaymentToken;
 
 class CreateNewOrderTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function testCreateOrder()
+    public function testCreateMockOrder()
     {
-        Event::fake();
-
+        $order = m::mock(Order::class);
         $product = new MockProduct(1);
+        $token = Str::random(40);
 
-        $creator = $this->app->make(CreateNewOrder::class);
+        $destroyer = m::mock(DestroyPaymentToken::class);
+        $destroyer->shouldReceive('destroy')
+            ->once()
+            ->with($token);
+        $purchaser = m::mock(MakesPurchases::class);
+        $purchaser->shouldReceive('purchase')
+            ->once()
+            ->with($product, ['payment_token' => $token])
+            ->andReturn($order);
 
-        $order = $creator->create($product, array_merge($details = [
-            'name' => 'James Silverman',
-            'email' => 'j.silvermo@monster.com',
-            'phone' => '0712345678',
-            'payment_method' => 'pm_card_visa',
-            'payment_token' => $token = $this->app->make(GeneratePaymentToken::class)->generate($product),
-        ], ['customer' => Customer::create($details)->id]));
+        $creator = new CreateNewOrder($purchaser, $destroyer);
+        $orderPlaced = $creator->create($product, ['payment_token' => $token]);
 
-        $this->assertInstanceOf(Order::class, $order);
-        $this->assertDatabaseMissing('payment_tokens', ['token' => $token]);
+        $this->assertInstanceOf(Order::class, $orderPlaced);
+        $this->assertEquals($order, $orderPlaced);
     }
 }

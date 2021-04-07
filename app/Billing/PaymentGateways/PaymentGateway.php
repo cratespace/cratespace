@@ -2,11 +2,20 @@
 
 namespace App\Billing\PaymentGateways;
 
-use App\Contracts\Billing\Product;
-use App\Billing\PaymentTokens\GeneratePaymentToken;
+use Closure;
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Crypt;
+use Illuminate\Contracts\Encryption\DecryptException;
 
 abstract class PaymentGateway
 {
+    /**
+     * List of generated payment tokens.
+     *
+     * @var array
+     */
+    protected $tokens = [];
+
     /**
      * Indicate if the charge was performed successfully.
      *
@@ -15,11 +24,11 @@ abstract class PaymentGateway
     protected $successful = false;
 
     /**
-     * The callback to run during a charge process.
+     * The callback to run before the first charge.
      *
      * @var \Closure
      */
-    protected static $duringCharge;
+    protected static $beforeFirstChargeCallback;
 
     /**
      * Charge the customer the given amount.
@@ -33,13 +42,48 @@ abstract class PaymentGateway
     abstract public function charge(int $amount, array $details, ?array $options = null);
 
     /**
-     * Generate valid test payment token.
+     * Generate a valid token used only for testing.
      *
-     * @param \App\Contracts\Billing\Product|null $product
+     * @param string|int|null $encodable
      *
      * @return string
      */
-    abstract public function getValidTestToken(?Product $product = null): string;
+    public function getValidTestToken($encodable = null): string
+    {
+        $token = ! is_null($encodable)
+            ? Crypt::encrypt($encodable)
+            : 'fake-tok_' . Str::random(24);
+
+        $this->tokens[] = $token;
+
+        return $token;
+    }
+
+    /**
+     * Validate the given payment test token.
+     *
+     * @param string $token
+     *
+     * @return bool
+     */
+    public function validateTestToken(string $token): bool
+    {
+        $decrypted = null;
+
+        try {
+            $decrypted = Crypt::decrypt($token);
+        } catch (DecryptException $e) {
+            if (! Str::contains($token, 'fake-tok_')) {
+                return false;
+            }
+        }
+
+        if (in_array($decrypted ?? $token, $this->tokens)) {
+            return true;
+        }
+
+        return false;
+    }
 
     /**
      * Determine if the charge was succesful.
@@ -52,12 +96,14 @@ abstract class PaymentGateway
     }
 
     /**
-     * Get instance of payment token generator.
+     * Register a callback that should be run before the initial charge.
      *
-     * @return \App\Billing\PaymentTokens\GeneratePaymentToken
+     * @param \Closure|null $callback
+     *
+     * @return void
      */
-    protected function createTokenGenerator(): GeneratePaymentToken
+    public static function useBeforeFirstCharge(?Closure $callback = null): void
     {
-        return app(GeneratePaymentToken::class);
+        static::$beforeFirstChargeCallback = $callback;
     }
 }

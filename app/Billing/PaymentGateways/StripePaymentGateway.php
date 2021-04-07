@@ -10,7 +10,6 @@ use App\Services\Stripe\Payment;
 use App\Events\PaymentSuccessful;
 use App\Services\Stripe\Customer;
 use App\Services\Stripe\Resource;
-use App\Contracts\Billing\Product;
 use App\Exceptions\PaymentFailedException;
 
 class StripePaymentGateway extends PaymentGateway
@@ -23,9 +22,19 @@ class StripePaymentGateway extends PaymentGateway
      * @param array|null $options
      *
      * @return mixed
+     *
+     * @throws \App\Exceptions\PaymentFailedException
      */
     public function charge(int $amount, array $details, ?array $options = null)
     {
+        if (! is_null(static::$beforeFirstChargeCallback)) {
+            $callback = static::$beforeFirstChargeCallback;
+
+            static::useBeforeFirstCharge(null);
+
+            call_user_func($callback, $this);
+        }
+
         $customer = $this->getCustomer($details['customer']);
 
         try {
@@ -59,18 +68,6 @@ class StripePaymentGateway extends PaymentGateway
         }
 
         return $payment;
-    }
-
-    /**
-     * Generate valid test payment token.
-     *
-     * @param \App\Contracts\Billing\Product|null $product
-     *
-     * @return string
-     */
-    public function getValidTestToken(?Product $product = null): string
-    {
-        return $this->createTokenGenerator()->generate($product);
     }
 
     /**

@@ -2,8 +2,8 @@
 
 namespace App\Billing\PaymentGateways;
 
-use Tests\Fixtures\MockProduct;
-use App\Contracts\Billing\Product;
+use Mockery as m;
+use App\Contracts\Billing\Payment;
 use App\Exceptions\InvalidPurchaseTokenException;
 
 class FakePaymentGateway extends PaymentGateway
@@ -18,7 +18,17 @@ class FakePaymentGateway extends PaymentGateway
      *
      * @var int
      */
-    protected $total = 0;
+    protected $charges = [];
+
+    /**
+     * Create new instance of Fake payment gateway.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->charges = collect();
+    }
 
     /**
      * Charge the customer the given amount.
@@ -31,33 +41,25 @@ class FakePaymentGateway extends PaymentGateway
      */
     public function charge(int $amount, array $details, ?array $options = null)
     {
-        if (! $this->validPaymentToken($details['token'])) {
-            throw new InvalidPurchaseTokenException();
+        if (! is_null(static::$beforeFirstChargeCallback)) {
+            $callback = static::$beforeFirstChargeCallback;
+
+            static::useBeforeFirstCharge(null);
+
+            call_user_func($callback, $this);
         }
 
-        $this->total += $amount;
+        if (! $this->validateTestToken($details['token'])) {
+            throw new InvalidPurchaseTokenException("Token [{$details['token']}] is invalid");
+        }
 
         $this->successful = true;
-    }
 
-    /**
-     * Generate valid test payment token.
-     *
-     * @param \App\Contracts\Billing\Product|null $product
-     *
-     * @return string
-     */
-    public function getValidTestToken(?Product $product = null): string
-    {
-        if (is_null($product)) {
-            $product = new MockProduct(1);
-        }
+        $payment = m::mock(Payment::class);
 
-        return $this->createTokenGenerator()->generate($product);
-    }
+        $payment->amount = $amount;
+        $this->charges[] = $amount;
 
-    protected function validPaymentToken(string $token)
-    {
-        return true;
+        return $payment;
     }
 }
