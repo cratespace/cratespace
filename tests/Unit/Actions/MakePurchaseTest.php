@@ -34,7 +34,7 @@ class MakePurchaseTest extends TestCase
     {
         $paymentGateway = $this->app->make(PaymentGateway::class);
         $token = $paymentGateway->getValidTestToken();
-        $product = new MockProduct(1);
+        $product = new MockProduct('test_product');
         $purchaser = new MakePurchase($paymentGateway);
 
         $order = $purchaser->purchase($product, [
@@ -42,6 +42,6 @@ class MakePurchaseTest extends TestCase
         ]);
 
         $this->assertInstanceOf(Order::class, $order);
-        $this->assertEquals($product->fullAmount(), $order->payment->amount);
+        $this->assertEquals($product->fullAmount(), $order->payment->rawAmount());
     }
 }

@@ -15,7 +15,7 @@ class ValidatePaymentTokenTest extends TestCase
 
     public function testPaymentTokenValidation()
     {
-        $product = new MockProduct(1);
+        $product = new MockProduct('test_product');
         $store = new PaymentToken();
         $generator = new GeneratePaymentToken($store);
         $validator = new ValidatePaymentToken($store);

@@ -15,7 +15,7 @@ class GeneratePaymentTokenTest extends TestCase
 
     public function testGeneratePaymentToken()
     {
-        $product = new MockProduct(1);
+        $product = new MockProduct('test_product');
         $generator = new GeneratePaymentToken(new PaymentToken());
 
         $token = $generator->generate($product);

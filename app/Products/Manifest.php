@@ -2,9 +2,10 @@
 
 namespace App\Products;
 
-use Throwable;
+use ReflectionClass;
 use App\Models\Product as Store;
 use App\Contracts\Billing\Product;
+use Illuminate\Database\Eloquent\Model;
 use App\Exceptions\InvalidProductException;
 use App\Exceptions\ProductNotFoundException;
 
@@ -33,15 +34,16 @@ class Manifest
      * Store a product and record it into the manifest.
      *
      * @param \App\Contracts\Billing\Product|string $product
+     * @param string|null                           $name
      *
      * @return void
      *
      * @throws \App\Exceptions\InvalidProductException
      */
-    public function store($product): void
+    public function store($product, ?string $name = null): void
     {
         if (! is_object($product)) {
-            $product = app($product);
+            $product = $this->resolve($product, $name);
         }
 
         if (! $product instanceof Product) {
@@ -84,15 +86,39 @@ class Manifest
      */
     public function get(Store $product): Product
     {
-        $hasName = ! is_numeric($product->productable_id);
+        return $this->resolve(
+            $product->productable_type,
+            $product->productable_id
+        );
+    }
 
-        if ($hasName) {
-            return app()->make($product->productable_type, [
-                'name' => $product->productable_id,
-            ]);
-        }
+    /**
+     * Resolve the product instance.
+     *
+     * @param string $class
+     * @param string $id
+     *
+     * @return \App\Contracts\Billing\Product
+     */
+    public function resolve(string $class, string $id): Product
+    {
+        return $this->isModel($class, $id)
+            ? $class::findOrFail($id)
+            : new $class($id);
+    }
 
-        return ($product->productable_type)::findOrFail($product->productable_id);
+    /**
+     * Determine if the given class is a model.
+     *
+     * @param string $class
+     * @param string $id
+     *
+     * @return bool
+     */
+    protected function isModel(string $class, string $id): bool
+    {
+        return (new ReflectionClass($class))->isSubclassOf(Model::class) &&
+            is_numeric($id);
     }
 
     /**

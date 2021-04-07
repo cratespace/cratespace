@@ -7,6 +7,13 @@ use Illuminate\Support\Facades\Crypt;
 abstract class AbstractProduct
 {
     /**
+     * The name used to identify the product.
+     *
+     * @var string
+     */
+    protected $name;
+
+    /**
      * The unique code used to identify the product.
      *
      * @var string

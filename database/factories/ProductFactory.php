@@ -22,7 +22,7 @@ class ProductFactory extends Factory
      */
     public function definition()
     {
-        $product = new MockProduct(1);
+        $product = new MockProduct('test_product');
 
         return [
             'code' => $product->code(),

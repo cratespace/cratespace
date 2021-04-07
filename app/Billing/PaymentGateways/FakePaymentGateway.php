@@ -2,8 +2,7 @@
 
 namespace App\Billing\PaymentGateways;
 
-use Mockery as m;
-use App\Contracts\Billing\Payment;
+use App\Billing\Natives\Payment;
 use App\Exceptions\InvalidPurchaseTokenException;
 
 class FakePaymentGateway extends PaymentGateway
@@ -55,11 +54,21 @@ class FakePaymentGateway extends PaymentGateway
 
         $this->successful = true;
 
-        $payment = m::mock(Payment::class);
+        $payment = new Payment($amount);
+        $payment->wasSuccessful(true);
 
-        $payment->amount = $amount;
         $this->charges[] = $amount;
 
         return $payment;
+    }
+
+    /**
+     * Get total charge amount.
+     *
+     * @return int
+     */
+    public function getTotalCharge(): int
+    {
+        return collect($this->charges)->sum();
     }
 }

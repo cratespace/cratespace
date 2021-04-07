@@ -19,7 +19,7 @@ class CreateNewOrderTest extends TestCase
     public function testCreateMockOrder()
     {
         $order = m::mock(Order::class);
-        $product = new MockProduct(1);
+        $product = new MockProduct('test_product');
         $token = Str::random(40);
 
         $destroyer = m::mock(DestroyPaymentToken::class);

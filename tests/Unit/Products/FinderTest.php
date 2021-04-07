@@ -56,7 +56,12 @@ class FinderTest extends TestCase
     public function testFindProductUsingCode()
     {
         $product = new MockProduct('test_product');
-        $finder = new Finder(m::mock(Manifest::class));
+        $manifest = m::mock(Manifest::class);
+        $manifest->shouldReceive('resolve')
+            ->once()
+            ->with(get_class($product), $product->name())
+            ->andReturn($product);
+        $finder = new Finder($manifest);
         $found = $finder->identifyUsingCode($product->code());
 
         $this->assertInstanceOf(Product::class, $found);
