@@ -92,7 +92,7 @@ abstract class AbstractProduct
      */
     public function reserved(): bool
     {
-        return ! is_null($this->reservedAt);
+        return ! is_null($this->reservedAt) && ! is_null($this->order);
     }
 
     /**
