@@ -4,6 +4,7 @@ namespace App\Notifications;
 
 use Illuminate\Bus\Queueable;
 use App\Contracts\Billing\Order;
+use App\Mail\OrderPlacedSuccessfully;
 use Illuminate\Notifications\Notification;
 use App\Mail\NewOrderPlaced as NewOrderPlacedMailable;
 
@@ -19,15 +20,23 @@ class NewOrderPlaced extends Notification
     protected $order;
 
     /**
+     * Indicated whether this notification is meant for customers.
+     *
+     * @var bool
+     */
+    protected $forCustomer = false;
+
+    /**
      * Create a new notification instance.
      *
      * @param \App\Contracts\Billing\Order $order
      *
      * @return void
      */
-    public function __construct(Order $order)
+    public function __construct(Order $order, bool $forCustomer = false)
     {
         $this->order = $order;
+        $this->forCustomer = $forCustomer;
     }
 
     /**
@@ -51,8 +60,11 @@ class NewOrderPlaced extends Notification
      */
     public function toMail($notifiable)
     {
-        return (new NewOrderPlacedMailable($this->order))
-            ->to($notifiable->email);
+        $mailable = $this->forCustomer
+            ? OrderPlacedSuccessfully::class
+            : NewOrderPlacedMailable::class;
+
+        return (new $mailable($this->order))->to($notifiable->email);
     }
 
     /**

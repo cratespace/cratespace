@@ -54,7 +54,6 @@ class EventServiceProvider extends ServiceProvider
         ProductReleased::class => [],
 
         OrderPlaced::class => [
-            SendOrderPlacedSuccessfullyEmail::class,
             SendNewOrderPlacedNotification::class,
         ],
 
