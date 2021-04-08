@@ -30,7 +30,9 @@ class BusinessTest extends TestCase
     {
         $business = create(Business::class);
 
-        $found = Business::findUsingRegistrationNumber($business->registration_number);
+        $found = Business::findUsingRegistrationNumber(
+            $business->registration_number
+        );
 
         $this->assertTrue($business->is($found));
     }

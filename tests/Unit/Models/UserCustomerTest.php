@@ -3,16 +3,24 @@
 namespace Tests\Feature\Models;
 
 use Tests\TestCase;
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class UserCustomerTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function testExample()
+    public function testCreateAsCustomer()
     {
-        $response = $this->get('/');
+        $user = create(User::class);
 
-        $response->assertStatus(200);
+        $user->createAsCustomer();
+
+        $user = $user->fresh();
+
+        $this->assertNotNull($user->profile->stripe_id);
+        $this->assertEquals($user->profile->stripe_id, $user->customerId());
+
+        $user->asStripeCustomer()->delete();
     }
 }
