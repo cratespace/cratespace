@@ -36,6 +36,11 @@ class DeleteUser implements DeletesUsers
      */
     protected function deleteUserResources(User $user): void
     {
+        optional($user->invitation)->delete();
+
+        $user->orders->each(fn ($order) => $order->delete());
+
+        $user->spaces->each(fn ($space) => $space->delete());
     }
 
     /**
