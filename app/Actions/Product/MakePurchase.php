@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Actions\Customer;
+namespace App\Actions\Product;
 
 use App\Contracts\Billing\Product;
 use App\Contracts\Actions\MakesPurchases;

@@ -6,7 +6,7 @@ use Mockery as m;
 use Tests\TestCase;
 use Tests\Fixtures\MockProduct;
 use App\Contracts\Billing\Order;
-use App\Actions\Customer\MakePurchase;
+use App\Actions\Product\MakePurchase;
 use App\Billing\PaymentGateways\PaymentGateway;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use App\Billing\PaymentGateways\FakePaymentGateway;
