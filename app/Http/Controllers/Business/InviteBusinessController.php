@@ -29,16 +29,12 @@ class InviteBusinessController extends Controller
     /**
      * Accept a business invitation.
      *
-     * @param \Laravel\Jetstream\TeamInvitation $invitation
+     * @param \App\Models\Invitation $invitation
      *
      * @return \Illuminate\Http\RedirectResponse
      */
     public function update(Invitation $invitation)
     {
         $invitation->accept();
-
-        return redirect('/register')->banner(
-            __('Great! You have accepted the invitation to join Cratespace.'),
-        );
     }
 }

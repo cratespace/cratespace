@@ -2,19 +2,16 @@
 
 use Inertia\Inertia;
 use App\Models\Invitation;
-use Illuminate\Http\Request;
 use App\Mail\BusinessInvitation;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Business\SpaceController;
+use App\Http\Controllers\Customer\ListingController;
 use App\Http\Controllers\Business\BusinessController;
 use App\Http\Controllers\Business\InviteBusinessController;
 use App\Http\Controllers\Auth\UpdateUserAddressInformationController;
-use App\Http\Controllers\Business\OrderController as BusinessOrderController;
-use App\Http\Controllers\Customers\OrderController as CustomerOrderController;
+use App\Http\Controllers\Customer\OrderController as CustomerOrderController;
 
-Route::get('/', function (Request $request) {
-    return Inertia::render('Welcome/Show');
-})->name('welcome');
+Route::get('/', [ListingController::class, '__invoke'])->name('welcome');
 
 Route::group([
     'middleware' => ['auth:sentinel', 'verified'],
@@ -23,7 +20,8 @@ Route::group([
 
     Route::get('/checkout/{product}', [CustomerOrderController::class, 'create'])->name('orders.create');
     Route::post('/checkout/{product}', [CustomerOrderController::class, 'store'])->name('orders.store');
-    Route::delete('/orders', [CustomerOrderController::class, 'destroy'])->name('orders.destroy');
+    Route::delete('/orders/{order}', [CustomerOrderController::class, 'destroy'])->name('orders.destroy');
+    Route::get('/orders/{order}', [CustomerOrderController::class, 'show'])->name('orders.show');
 
     Route::group([
         'middleware' => ['business'],
@@ -34,7 +32,6 @@ Route::group([
         Route::post('/businesses/invite/{user}', [InviteBusinessController::class, 'store'])->name('business.invite');
 
         Route::resource('spaces', SpaceController::class);
-        Route::get('/orders/{order}', [BusinessOrderController::class, 'show'])->name('orders.show');
     });
 });
 

@@ -2,36 +2,10 @@
 
 namespace App\Mail;
 
-use Illuminate\Bus\Queueable;
-use Illuminate\Mail\Mailable;
-use App\Contracts\Billing\Order;
 use Illuminate\Support\Facades\URL;
-use Illuminate\Queue\SerializesModels;
 
-class NewOrderPlaced extends Mailable
+class NewOrderPlaced extends OrderMail
 {
-    use Queueable;
-    use SerializesModels;
-
-    /**
-     * The instance of the order.
-     *
-     * @var \App\Contracts\Billing\Order
-     */
-    public $order;
-
-    /**
-     * Create a new message instance.
-     *
-     * @param \App\Contracts\Billing\Order $order
-     *
-     * @return void
-     */
-    public function __construct(Order $order)
-    {
-        $this->order = $order;
-    }
-
     /**
      * Build the message.
      *
@@ -41,7 +15,7 @@ class NewOrderPlaced extends Mailable
     {
         return $this->markdown(
             'emails.businesses.orders.new-order', [
-                'orderUrl' => URL::signedRoute('order.show', [
+                'orderUrl' => URL::signedRoute('orders.show', [
                     'order' => $this->order,
                 ]),
             ]

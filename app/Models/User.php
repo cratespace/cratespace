@@ -122,4 +122,18 @@ class User extends Authenticatable
     {
         return $this->hasMany(Space::class, 'user_id');
     }
+
+    /**
+     * Get business details of the user.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function orders(): HasMany
+    {
+        if ($this->isCustomer()) {
+            return $this->hasMany(Order::class, 'customer_id');
+        }
+
+        return $this->hasMany(Order::class, 'user_id');
+    }
 }

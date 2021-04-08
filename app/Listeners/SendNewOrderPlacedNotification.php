@@ -20,5 +20,9 @@ class SendNewOrderPlacedNotification implements ShouldQueue
         $event->business()->notify(
             new NewOrderPlaced($event->order)
         );
+
+        $event->customer()->notify(
+            new NewOrderPlaced($event->order, true)
+        );
     }
 }

@@ -1,10 +1,10 @@
 <?php
 
-namespace Tests\Unit\Billing;
+namespace Tests\Unit\Queries;
 
 use PHPUnit\Framework\TestCase;
 
-class PaymentGatewayTest extends TestCase
+class OrderQueryTest extends TestCase
 {
     /**
      * A basic unit test example.

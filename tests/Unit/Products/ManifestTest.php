@@ -30,7 +30,7 @@ class ManifestTest extends TestCase
 
     public function testStoreProduct()
     {
-        $product = new MockProduct(1);
+        $product = new MockProduct('test_product');
         $manifest = new Manifest(new Product());
 
         $manifest->store($product);
@@ -52,10 +52,10 @@ class ManifestTest extends TestCase
 
     public function testMatchProduct()
     {
-        $product = new MockProduct(1);
+        $product = new MockProduct('test_product');
         $store = Product::create([
             'code' => $product->code(),
-            'productable_id' => null,
+            'productable_id' => $product->name(),
             'productable_type' => get_class($product),
         ]);
         $manifest = new Manifest($store);

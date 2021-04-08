@@ -2,6 +2,7 @@
 
 namespace App\Products;
 
+use ReflectionClass;
 use App\Models\Product as Store;
 use App\Contracts\Billing\Product;
 use Illuminate\Database\Eloquent\Model;
@@ -33,15 +34,16 @@ class Manifest
      * Store a product and record it into the manifest.
      *
      * @param \App\Contracts\Billing\Product|string $product
+     * @param string|null                           $name
      *
      * @return void
      *
      * @throws \App\Exceptions\InvalidProductException
      */
-    public function store($product): void
+    public function store($product, ?string $name = null): void
     {
         if (! is_object($product)) {
-            $product = app($product);
+            $product = $this->resolve($product, $name);
         }
 
         if (! $product instanceof Product) {
@@ -74,6 +76,22 @@ class Manifest
     }
 
     /**
+     * Determine if the store has this product.
+     *
+     * @param \App\Contracts\Billing\Product|string $product
+     *
+     * @return bool
+     */
+    public function has($product): bool
+    {
+        if (! is_string($product)) {
+            return $this->store->has($product);
+        }
+
+        return ! is_null($this->store->findUsingCode($product));
+    }
+
+    /**
      * Get the product instance from storage.
      *
      * @param \App\Models\Product $product
@@ -84,13 +102,39 @@ class Manifest
      */
     public function get(Store $product): Product
     {
-        $class = app($product->productable_type);
+        return $this->resolve(
+            $product->productable_type,
+            $product->productable_id
+        );
+    }
 
-        if (! is_null($product->productable_id) && $class instanceof Model) {
-            return get_class($class)::findOrFail($product->productable_id);
-        }
+    /**
+     * Resolve the product instance.
+     *
+     * @param string $class
+     * @param string $id
+     *
+     * @return \App\Contracts\Billing\Product
+     */
+    public function resolve(string $class, string $id): Product
+    {
+        return $this->isModel($class, $id)
+            ? $class::findOrFail($id)
+            : new $class($id);
+    }
 
-        return $class;
+    /**
+     * Determine if the given class is a model.
+     *
+     * @param string $class
+     * @param string $id
+     *
+     * @return bool
+     */
+    protected function isModel(string $class, string $id): bool
+    {
+        return (new ReflectionClass($class))->isSubclassOf(Model::class) &&
+            is_numeric($id);
     }
 
     /**
@@ -114,7 +158,7 @@ class Manifest
     {
         return [
             'code' => $product->code(),
-            'productable_id' => $product->id ?? null,
+            'productable_id' => $product->name(),
             'productable_type' => get_class($product),
         ];
     }

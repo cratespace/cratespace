@@ -4,20 +4,16 @@ namespace Tests\Unit\Presenters;
 
 use Tests\TestCase;
 use App\Models\Space;
-use App\Support\Money;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class SpacePresenterTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function testFormatPrice()
+    public function testItCanPresentTotalPrice()
     {
-        $space = create(Space::class);
+        $space = create(Space::class, ['price' => 900, 'tax' => 100]);
 
-        $this->assertEquals(
-            Money::format($space->fullAmount()),
-            $space->present()->price
-        );
+        $this->assertEquals('$10.00', $space->present()->price);
     }
 }

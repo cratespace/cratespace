@@ -2,16 +2,32 @@
 
 namespace App\Billing\PaymentGateways;
 
+use App\Billing\Natives\Payment;
 use App\Exceptions\InvalidPurchaseTokenException;
 
 class FakePaymentGateway extends PaymentGateway
 {
     /**
+     * Fake credit card number used for testing purposes.
+     */
+    public const TEST_CARD_NUMBER = '4242424242424242';
+
+    /**
      * The total amount paid.
      *
      * @var int
      */
-    protected $total = 0;
+    protected $charges = [];
+
+    /**
+     * Create new instance of Fake payment gateway.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->charges = collect();
+    }
 
     /**
      * Charge the customer the given amount.
@@ -24,17 +40,35 @@ class FakePaymentGateway extends PaymentGateway
      */
     public function charge(int $amount, array $details, ?array $options = null)
     {
-        if (! $this->validPaymentToken($details['token'])) {
-            throw new InvalidPurchaseTokenException();
+        if (! is_null(static::$beforeFirstChargeCallback)) {
+            $callback = static::$beforeFirstChargeCallback;
+
+            static::useBeforeFirstCharge(null);
+
+            call_user_func($callback, $this);
         }
 
-        $this->total += $amount;
+        if (! $this->validateTestToken($details['token'])) {
+            throw new InvalidPurchaseTokenException("Token [{$details['token']}] is invalid");
+        }
 
         $this->successful = true;
+
+        $payment = new Payment($amount);
+        $payment->wasSuccessful(true);
+
+        $this->charges[] = $amount;
+
+        return $payment;
     }
 
-    protected function validPaymentToken(string $token)
+    /**
+     * Get total charge amount.
+     *
+     * @return int
+     */
+    public function getTotalCharge(): int
     {
-        return true;
+        return collect($this->charges)->sum();
     }
 }

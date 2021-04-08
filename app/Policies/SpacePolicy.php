@@ -25,7 +25,7 @@ class SpacePolicy
         }
 
         if ($user->hasRole('Business')) {
-            return $user->is($space->user);
+            return $user->is($space->owner);
         }
 
         return false;

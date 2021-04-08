@@ -22,23 +22,29 @@ class StripePaymentGateway extends PaymentGateway
      * @param array|null $options
      *
      * @return mixed
+     *
+     * @throws \App\Exceptions\PaymentFailedException
      */
     public function charge(int $amount, array $details, ?array $options = null)
     {
+        if (! is_null(static::$beforeFirstChargeCallback)) {
+            $callback = static::$beforeFirstChargeCallback;
+
+            static::useBeforeFirstCharge(null);
+
+            call_user_func($callback, $this);
+        }
+
         $customer = $this->getCustomer($details['customer']);
 
         try {
-            $payment = Payment::create([
+            $payment = Payment::create($this->defaultOptions([
                 'amount' => (int) $amount,
-                'currency' => Money::preferredCurrency(),
                 'customer' => $customer->id,
                 'payment_method' => $details['payment_method'],
                 'receipt_email' => $customer->email,
-                'description' => 'Cratespace purchase',
                 'metadata' => $details['metadata'],
-                'confirm' => true,
-                'confirmation_method' => 'automatic',
-            ], $options);
+            ]), $options);
         } catch (Throwable $e) {
             Stripe::logger()->error($message = $e->getMessage());
 
@@ -70,5 +76,15 @@ class StripePaymentGateway extends PaymentGateway
     public function getCustomer(string $id): Resource
     {
         return new Customer($id);
+    }
+
+    public function defaultOptions(array $overrides = []): array
+    {
+        return array_merge([
+            'currency' => Money::preferredCurrency(),
+            'description' => 'Cratespace purchase',
+            'confirm' => true,
+            'confirmation_method' => 'automatic',
+        ], $overrides);
     }
 }

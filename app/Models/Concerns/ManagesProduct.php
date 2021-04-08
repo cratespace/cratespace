@@ -24,6 +24,16 @@ trait ManagesProduct
     }
 
     /**
+     * The name used to identify the product.
+     *
+     * @return string
+     */
+    public function name(): string
+    {
+        return $this->id;
+    }
+
+    /**
      * Get the owner of the product.
      *
      * @return mixed
@@ -40,7 +50,7 @@ trait ManagesProduct
      */
     public function reserve(): void
     {
-        $this->update(['reserved_at' => now()]);
+        $this->update(['reserved_at' => Carbon::now()]);
 
         ProductReserved::dispatch($this);
     }

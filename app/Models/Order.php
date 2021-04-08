@@ -3,7 +3,6 @@
 namespace App\Models;
 
 use App\Support\Money;
-use App\Filters\OrderFilter;
 use App\Events\OrderCancelled;
 use App\Models\Casts\PaymentCast;
 use App\Contracts\Billing\Product;
@@ -14,7 +13,6 @@ use Cratespace\Preflight\Models\Traits\Filterable;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
 class Order extends Model implements OrderContract
 {
@@ -27,6 +25,7 @@ class Order extends Model implements OrderContract
      * @var string[]
      */
     protected $fillable = [
+        'uid',
         'user_id',
         'customer_id',
         'confirmation_number',
@@ -45,6 +44,16 @@ class Order extends Model implements OrderContract
     protected $casts = [
         'payment' => PaymentCast::class,
     ];
+
+    /**
+     * Get the route key for the model.
+     *
+     * @return string
+     */
+    public function getRouteKeyName(): string
+    {
+        return 'uid';
+    }
 
     /**
      * Get the business the order was placed at.
@@ -171,14 +180,14 @@ class Order extends Model implements OrderContract
     }
 
     /**
-     * List all latest orders.
+     * Find an order with the given confirmation number.
      *
-     * @param \App\Filters\OrderFilter|null $request
+     * @param string $confirmationNumber
      *
-     * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
+     * @return \App\Models\Order
      */
-    public static function listing(?OrderFilter $filter = null): LengthAwarePaginator
+    public static function findByConfirmationNumber(string $confirmationNumber): Order
     {
-        return Order::latest()->filter($filter)->paginate();
+        return static::where('confirmation_number', $confirmationNumber)->firstOrFail();
     }
 }

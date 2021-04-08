@@ -18,6 +18,7 @@ class OrderCancelledResponse extends Response implements Responsable
     {
         return $request->expectsJson()
             ? $this->json('', 204)
-            : $this->back(303)->with('status', 'order-cancelled');
+            : $this->redirectToRoute('welcome', [], 303)
+                ->with('status', 'order-cancelled');
     }
 }

@@ -1,17 +1,16 @@
 <?php
 
-namespace App\Http\Controllers\Customers;
+namespace App\Http\Controllers\Customer;
 
 use Throwable;
 use Inertia\Inertia;
+use App\Models\Order;
 use Inertia\Response;
 use App\Jobs\CancelOrder;
-use App\Contracts\Billing\Order;
 use App\Contracts\Billing\Product;
 use App\Http\Requests\OrderRequest;
 use App\Http\Controllers\Controller;
 use App\Actions\Product\CreateNewOrder;
-use Illuminate\Contracts\Support\Responsable;
 use App\Http\Responses\OrderCancelledResponse;
 use App\Http\Responses\PurchaseFailedResponse;
 use App\Http\Responses\PurchaseSucceededResponse;
@@ -72,14 +71,14 @@ class OrderController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param \App\Contracts\Billing\Order $order
+     * @param \App\Models\Order $order
      *
      * @return \Illuminate\Contracts\Support\Responsable
      */
-    public function destroy(Order $order): Responsable
+    public function destroy(Order $order)
     {
         CancelOrder::dispatch($order);
 
-        return OrderCancelledResponse::dipatch();
+        return OrderCancelledResponse::dispatch();
     }
 }

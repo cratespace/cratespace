@@ -11,7 +11,7 @@ class CreateNewOrder implements CreatesNewResources
     /**
      * The purchase maker instance.
      *
-     * @var \App\Billing\PaymentTokens\DestroyPaymentToken
+     * @var \App\Contracts\Actions\MakesPurchases
      */
     protected $purchaser;
 
@@ -25,8 +25,8 @@ class CreateNewOrder implements CreatesNewResources
     /**
      * Create new instace of CreateNewOrder action class.
      *
-     * @param \App\Billing\PaymentTokens\DestroyPaymentToken $purchaser
-     * @param \App\Actions\Customer\DestroyPaymentToken      $destroyer
+     * @param \App\Contracts\Actions\MakesPurchases     $purchaser
+     * @param \App\Actions\Customer\DestroyPaymentToken $destroyer
      *
      * @return void
      */

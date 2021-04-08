@@ -4,7 +4,6 @@ namespace Tests\Unit\Stripe;
 
 use Tests\TestCase;
 use App\Facades\Stripe;
-use App\Services\Stripe\Client;
 use Stripe\Util\LoggerInterface;
 use Stripe\Service\RefundService;
 use Stripe\StripeClientInterface;

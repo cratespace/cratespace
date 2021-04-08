@@ -5,11 +5,15 @@ namespace Tests\Unit\Stripe;
 use Throwable;
 use Tests\TestCase;
 use App\Support\Money;
+use Stripe\PaymentIntent;
 use App\Services\Stripe\Payment;
 use App\Exceptions\PaymentActionRequired;
 use App\Exceptions\PaymentFailedException;
 use App\Contracts\Billing\Payment as PaymentContract;
 
+/**
+ * @group Stripe
+ */
 class PaymentTest extends TestCase
 {
     public function testCreatePayment()
@@ -111,5 +115,41 @@ class PaymentTest extends TestCase
         }
 
         $this->fail();
+    }
+
+    public function testReturnItsRequiresPaymentMethodStatus()
+    {
+        $paymentIntent = new PaymentIntent();
+        $paymentIntent->status = 'requires_payment_method';
+        $payment = new Payment($paymentIntent);
+
+        $this->assertTrue($payment->requiresPaymentMethod());
+    }
+
+    public function testReturnItsRequiresActionStatus()
+    {
+        $paymentIntent = new PaymentIntent();
+        $paymentIntent->status = 'requires_action';
+        $payment = new Payment($paymentIntent);
+
+        $this->assertTrue($payment->requiresAction());
+    }
+
+    public function testReturnItsCancelledStatus()
+    {
+        $paymentIntent = new PaymentIntent();
+        $paymentIntent->status = 'canceled';
+        $payment = new Payment($paymentIntent);
+
+        $this->assertTrue($payment->isCancelled());
+    }
+
+    public function testReturnItsSucceededStatus()
+    {
+        $paymentIntent = new PaymentIntent();
+        $paymentIntent->status = 'succeeded';
+        $payment = new Payment($paymentIntent);
+
+        $this->assertTrue($payment->isSucceeded());
     }
 }

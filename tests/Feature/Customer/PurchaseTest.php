@@ -12,7 +12,6 @@ use App\Services\Stripe\Payment;
 use App\Events\PaymentSuccessful;
 use App\Contracts\Billing\Product;
 use Illuminate\Support\Facades\Mail;
-use App\Mail\OrderPlacedSuccessfully;
 use Illuminate\Support\Facades\Event;
 use App\Exceptions\InvalidProductException;
 use Illuminate\Support\Facades\Notification;
@@ -21,6 +20,9 @@ use App\Billing\PaymentTokens\GeneratePaymentToken;
 use Cratespace\Preflight\Testing\Contracts\Postable;
 use App\Notifications\NewOrderPlaced as NewOrderPlacedNotification;
 
+/**
+ * @group Stripe
+ */
 class PurchaseTest extends TestCase implements Postable
 {
     use RefreshDatabase;
@@ -376,7 +378,7 @@ class PurchaseTest extends TestCase implements Postable
 
     public function testNewOrderPlacedMailIsSentToCustomer()
     {
-        Mail::fake();
+        Notification::fake();
         Event::fake([
             PaymentFailed::class,
             PaymentSuccessful::class,
@@ -398,9 +400,15 @@ class PurchaseTest extends TestCase implements Postable
 
         $response->assertStatus(303);
 
-        Mail::assertQueued(function (OrderPlacedSuccessfully $mail) use ($customer) {
-            return $mail->hasTo($customer->email);
-        });
+        Notification::assertSentTo(
+            [$customer],
+            NewOrderPlacedNotification::class,
+            function ($notification, $channels) use ($customer) {
+                return $notification->toMail($customer)->hasTo(
+                    $customer->email
+                );
+            }
+        );
     }
 
     /**
@@ -428,7 +436,7 @@ class PurchaseTest extends TestCase implements Postable
             'name' => 'James Silverman',
             'email' => 'james.silver@monster.com',
             'phone' => '0723573567',
-            'business' => 'Cthulus',
+            'business' => 'Cthulu',
             'payment_method' => 'pm_card_visa',
         ], $overrides);
     }

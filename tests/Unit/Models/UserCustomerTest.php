@@ -2,21 +2,25 @@
 
 namespace Tests\Feature\Models;
 
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
+use App\Models\User;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class UserCustomerTest extends TestCase
 {
-    /**
-     * A basic feature test example.
-     *
-     * @return void
-     */
-    public function test_example()
-    {
-        $response = $this->get('/');
+    use RefreshDatabase;
 
-        $response->assertStatus(200);
+    public function testCreateAsCustomer()
+    {
+        $user = create(User::class);
+
+        $user->createAsCustomer();
+
+        $user = $user->fresh();
+
+        $this->assertNotNull($user->profile->stripe_id);
+        $this->assertEquals($user->profile->stripe_id, $user->customerId());
+
+        $user->asStripeCustomer()->delete();
     }
 }

@@ -18,6 +18,10 @@ class CancelPayout
     {
         $payout = $this->getPayout($payment->id);
 
+        if (is_null($payout)) {
+            return;
+        }
+
         $payout->delete();
     }
 
@@ -26,10 +30,10 @@ class CancelPayout
      *
      * @param string $id
      *
-     * @return \App\Models\Payout
+     * @return \App\Models\Payout|null
      */
-    protected function getPayout(string $id): Payout
+    protected function getPayout(string $id): ?Payout
     {
-        return Payout::wherePayment($id)->firstOrFail();
+        return Payout::wherePayment($id)->first();
     }
 }

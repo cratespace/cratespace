@@ -9,6 +9,7 @@ use App\Models\Concerns\ManagesProduct;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Traits\HasEncryptableCode;
 use Cratespace\Preflight\Models\Traits\Directable;
+use Cratespace\Preflight\Models\Traits\Filterable;
 use Cratespace\Preflight\Models\Traits\Presentable;
 use App\Contracts\Billing\Product as ProductContract;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -17,6 +18,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class Space extends Model implements ProductContract
 {
     use HasFactory;
+    use Filterable;
     use Presentable;
     use Directable;
     use HasEncryptableCode;

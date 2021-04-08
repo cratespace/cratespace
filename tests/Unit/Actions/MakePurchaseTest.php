@@ -2,32 +2,46 @@
 
 namespace Tests\Unit\Actions;
 
+use Mockery as m;
 use Tests\TestCase;
 use Tests\Fixtures\MockProduct;
 use App\Contracts\Billing\Order;
-use App\Services\Stripe\Customer;
-use Illuminate\Support\Facades\Event;
-use App\Contracts\Actions\MakesPurchases;
+use App\Actions\Product\MakePurchase;
+use App\Billing\PaymentGateways\PaymentGateway;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use App\Billing\PaymentGateways\FakePaymentGateway;
 
 class MakePurchaseTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function testPurchaseTest()
+    protected function setUp(): void
     {
-        Event::fake();
+        parent::setUp();
 
-        $product = new MockProduct(1);
+        $this->app->singleton(
+            PaymentGateway::class,
+            FakePaymentGateway::class
+        );
+    }
 
-        $purchaser = $this->app->make(MakesPurchases::class);
-        $order = $purchaser->purchase($product, array_merge($details = [
-            'name' => 'James Silverman',
-            'email' => 'j.silvermo@monster.com',
-            'phone' => '0712345678',
-            'payment_method' => 'pm_card_visa',
-        ], ['customer' => Customer::create($details)->id]));
+    protected function tearDown(): void
+    {
+        m::close();
+    }
+
+    public function testFakePurchaseTest()
+    {
+        $paymentGateway = $this->app->make(PaymentGateway::class);
+        $token = $paymentGateway->getValidTestToken();
+        $product = new MockProduct('test_product');
+        $purchaser = new MakePurchase($paymentGateway);
+
+        $order = $purchaser->purchase($product, [
+            'token' => $token,
+        ]);
 
         $this->assertInstanceOf(Order::class, $order);
+        $this->assertEquals($product->fullAmount(), $order->payment->rawAmount());
     }
 }

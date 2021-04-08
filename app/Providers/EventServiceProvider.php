@@ -13,6 +13,7 @@ use App\Events\PaymentFailed;
 use App\Listeners\MakePayout;
 use App\Events\OrderCancelled;
 use App\Events\BusinessInvited;
+use App\Events\PaymentRefunded;
 use App\Events\ProductReleased;
 use App\Events\ProductReserved;
 use App\Observers\UserObserver;
@@ -53,7 +54,6 @@ class EventServiceProvider extends ServiceProvider
         ProductReleased::class => [],
 
         OrderPlaced::class => [
-            SendOrderPlacedSuccessfullyEmail::class,
             SendNewOrderPlacedNotification::class,
         ],
 

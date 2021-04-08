@@ -2,9 +2,6 @@
 
 namespace App\Contracts\Billing;
 
-use App\Filters\OrderFilter;
-use Illuminate\Contracts\Pagination\LengthAwarePaginator;
-
 interface Order extends Payment
 {
     /**
@@ -27,13 +24,4 @@ interface Order extends Payment
      * @return void
      */
     public function cancel(): void;
-
-    /**
-     * List all latest orders.
-     *
-     * @param \App\Filters\OrderFilter|null $request
-     *
-     * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
-     */
-    public static function listing(?OrderFilter $filter = null): LengthAwarePaginator;
 }

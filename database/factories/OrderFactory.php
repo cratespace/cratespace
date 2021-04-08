@@ -27,19 +27,20 @@ class OrderFactory extends Factory
     {
         $space = create(Space::class);
 
-        $payment = Payment::create([
-            'amount' => 1000,
-            'currency' => Money::preferredCurrency(),
-            'payment_method' => 'pm_card_visa',
-        ]);
+        // $payment = Payment::create([
+        //     'amount' => 1000,
+        //     'currency' => Money::preferredCurrency(),
+        //     'payment_method' => 'pm_card_visa',
+        // ]);
 
         return [
+            'uid' => rand(9999, 99999),
             'confirmation_number' => null,
             'amount' => $space->fullAmount(),
             'note' => $this->faker->paragraph(),
             'user_id' => $space->user_id,
             'customer_id' => User::factory()->asCustomer()->create()->id,
-            'payment' => $payment->id,
+            'payment' => 'pi_1Icsx8Hzt2k6m3ozwEKphb27',
             'orderable_id' => $space->id,
             'orderable_type' => get_class($space),
         ];
