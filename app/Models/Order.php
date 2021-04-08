@@ -3,7 +3,6 @@
 namespace App\Models;
 
 use App\Support\Money;
-use App\Filters\OrderFilter;
 use App\Events\OrderCancelled;
 use App\Models\Casts\PaymentCast;
 use App\Contracts\Billing\Product;
@@ -14,7 +13,6 @@ use Cratespace\Preflight\Models\Traits\Filterable;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
 class Order extends Model implements OrderContract
 {
@@ -179,19 +177,6 @@ class Order extends Model implements OrderContract
     public function canCancel(): bool
     {
         return ! $this->product()->nearingExpiration();
-    }
-
-    /**
-     * List all latest orders.
-     *
-     * @param \App\Filters\OrderFilter|null $request
-     * @param int                           $perPage
-     *
-     * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
-     */
-    public static function listing(?OrderFilter $filter = null, int $perPage = 15): LengthAwarePaginator
-    {
-        return Order::latest()->filter($filter)->paginate($perPage);
     }
 
     /**

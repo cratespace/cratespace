@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Business;
 
 use Inertia\Inertia;
 use App\Jobs\CancelOrder;
+use App\Queries\OrderQuery;
 use App\Filters\OrderFilter;
 use Illuminate\Http\Request;
 use App\Contracts\Billing\Order;
@@ -18,14 +19,17 @@ class OrderController extends Controller
     /**
      * Display a listing of the resource.
      *
+     * @param \App\Queries\OrderQuery  $query
+     * @param \App\Filters\OrderFilter $filter
+     *
      * @return \Illuminate\Http\Response
      */
-    public function index(OrderFilter $filter)
+    public function index(OrderQuery $query, OrderFilter $filter)
     {
         $this->authorize('manage', new OrderModel());
 
         return Inertia::render('Business/Orders/Index', [
-            'orders' => Order::listing($filter),
+            'orders' => $query->listing($filter)->paginate(),
         ]);
     }
 

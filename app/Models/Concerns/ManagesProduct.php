@@ -50,7 +50,7 @@ trait ManagesProduct
      */
     public function reserve(): void
     {
-        $this->update(['reserved_at' => now()]);
+        $this->update(['reserved_at' => Carbon::now()]);
 
         ProductReserved::dispatch($this);
     }
