@@ -76,6 +76,22 @@ class Manifest
     }
 
     /**
+     * Determine if the store has this product.
+     *
+     * @param \App\Contracts\Billing\Product|string $product
+     *
+     * @return bool
+     */
+    public function has($product): bool
+    {
+        if (! is_string($product)) {
+            return $this->store->has($product);
+        }
+
+        return ! is_null($this->store->findUsingCode($product));
+    }
+
+    /**
      * Get the product instance from storage.
      *
      * @param \App\Models\Product $product
