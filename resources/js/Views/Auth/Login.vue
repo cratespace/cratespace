@@ -1,6 +1,6 @@
 <template>
     <auth-layout>
-        <template #title>
+        <template #left>
             <div>
                 <div>
                     <logo :title="config('app.name')" classes="h-16 w-16 text-blue-500"></logo>
@@ -12,40 +12,58 @@
                     Thank you for getting back to us. Let's access your account and get you started.
                 </p>
             </div>
+
+            <div class="mt-6">
+                <form @submit.prevent="login" class="w-full">
+                    <div class="block">
+                        <app-input type="email" v-model="form.email" :error="form.errors.email" label="Email address" placeholder="john.doe@example.com" required autofocus></app-input>
+                    </div>
+
+                    <div class="mt-6 block">
+                        <app-input type="password" v-model="form.password" :error="form.errors.password" label="Password" placeholder="cattleFarmer1576@!" required></app-input>
+                    </div>
+
+                    <div class="mt-6 flex items-center justify-between">
+                        <div>
+                            <checkbox id="remember" v-model:checked="form.remember" label="Stay signed in"></checkbox>
+                        </div>
+
+                        <div class="text-sm leading-5">
+                            <app-link :href="route('password.email')">Forgot your password?</app-link>
+                        </div>
+                    </div>
+
+                    <div class="mt-6 block">
+                        <app-button type="submit" mode="primary" :class="{ 'opacity-25': form.processing }" :loading="form.processing">
+                            Sign in <span class="ml-1">&rarr;</span>
+                        </app-button>
+                    </div>
+
+                    <div class="mt-6">
+                        <p>
+                            Don't have an account yet? <app-link :href="route('register')">Create account</app-link>.
+                        </p>
+                    </div>
+                </form>
+            </div>
         </template>
 
-        <template #form>
-            <form @submit.prevent="login" class="w-full">
-                <div class="block">
-                    <app-input type="email" v-model="form.email" :error="form.errors.email" label="Email address" placeholder="john.doe@example.com" required autofocus></app-input>
-                </div>
+        <template #right>
+            <div class="hidden md:block rounded-xl overflow-hidden h-full">
+                <div class="px-4 sm:px-6 py-5 bg-gradient-to-tl from-blue-700 to-blue-500 h-full">
+                    <div class="flex items-end justify-end h-full">
+                        <div class="lg:mb-6 lg:mr-6">
+                            <h3 class="text-right text-2xl text-white font-light max-w-sm">
+                                Linking you to your <span class="font-bold">customers</span>
+                            </h3>
 
-                <div class="mt-6 block">
-                    <app-input type="password" v-model="form.password" :error="form.errors.password" label="Password" placeholder="cattleFarmer1576@!" required></app-input>
-                </div>
-
-                <div class="mt-6 flex items-center justify-between">
-                    <div>
-                        <checkbox id="remember" v-model:checked="form.remember" label="Stay signed in"></checkbox>
-                    </div>
-
-                    <div class="text-sm leading-5">
-                        <app-link :href="route('password.email')">Forgot your password?</app-link>
+                            <h6 class="mt-6 text-right text-base text-white max-w-sm">
+                                Buy and sell on the platform with the largest network of active Logistics services.
+                            </h6>
+                        </div>
                     </div>
                 </div>
-
-                <div class="mt-6 block">
-                    <app-button type="submit" mode="primary" :class="{ 'opacity-25': form.processing }" :loading="form.processing">
-                        Sign in <span class="ml-1">&rarr;</span>
-                    </app-button>
-                </div>
-
-                <div class="mt-6">
-                    <p>
-                        Don't have an account yet? <app-link :href="route('register')">Create account</app-link>.
-                    </p>
-                </div>
-            </form>
+            </div>
         </template>
     </auth-layout>
 </template>

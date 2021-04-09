@@ -1,39 +1,45 @@
 <template>
     <auth-layout>
-        <template #title>
+        <template #left>
             <div>
                 <div>
-                    <logo :title="config('app.name')" classes="h-16 w-16 text-blue-500"></logo>
+                    <div>
+                        <logo :title="config('app.name')" classes="h-16 w-16 text-blue-500"></logo>
+                    </div>
+
+                    <h4 class="mt-6 font-semibold text-xl text-gray-800">Reset password</h4>
+
+                    <p class="mt-3 font-normal text-base text-gray-500">
+                        Create a new password for your account using the form below.
+                    </p>
                 </div>
 
-                <h4 class="mt-6 font-semibold text-xl text-gray-800">Reset password</h4>
+                <div class="mt-6">
+                    <form @submit.prevent="updatePassword" class="w-full">
+                        <div class="mt-6 block">
+                            <app-input type="email" v-model="form.email" autofocus :error="form.errors.email" label="Email address" placeholder="john.doe@example.com" required></app-input>
+                        </div>
 
-                <p class="mt-3 font-normal text-base text-gray-500">
-                    Create a new password for your account using the form below.
-                </p>
+                        <div class="mt-6 block">
+                            <app-input type="password" v-model="form.password" :error="form.errors.password" label="Password" placeholder="cattleFarmer1576@!" required autocomplete="new-password"></app-input>
+                        </div>
+
+                        <div class="mt-6 block">
+                            <app-input type="password" v-model="form.password_confirmation" label="Confirm password" placeholder="cattleFarmer1576@!" required autocomplete="new-password"></app-input>
+                        </div>
+
+                        <div class="mt-6 block">
+                            <app-button type="submit" mode="primary" :class="{ 'opacity-25': form.processing }" :loading="form.processing">
+                                Reset password <span class="ml-1">&rarr;</span>
+                            </app-button>
+                        </div>
+                    </form>
+                </div>
             </div>
         </template>
 
-        <template #form>
-            <form @submit.prevent="updatePassword" class="w-full">
-                <div class="mt-6 block">
-                    <app-input type="email" v-model="form.email" autofocus :error="form.errors.email" label="Email address" placeholder="john.doe@example.com" required></app-input>
-                </div>
+        <template #right>
 
-                <div class="mt-6 block">
-                    <app-input type="password" v-model="form.password" :error="form.errors.password" label="Password" placeholder="cattleFarmer1576@!" required autocomplete="new-password"></app-input>
-                </div>
-
-                <div class="mt-6 block">
-                    <app-input type="password" v-model="form.password_confirmation" label="Confirm password" placeholder="cattleFarmer1576@!" required autocomplete="new-password"></app-input>
-                </div>
-
-                <div class="mt-6 block">
-                    <app-button type="submit" mode="primary" :class="{ 'opacity-25': form.processing }" :loading="form.processing">
-                        Reset password <span class="ml-1">&rarr;</span>
-                    </app-button>
-                </div>
-            </form>
         </template>
     </auth-layout>
 </template>

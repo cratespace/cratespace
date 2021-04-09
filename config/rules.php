@@ -33,7 +33,7 @@ return [
             'max:255',
             Rule::unique(User::class),
         ],
-        'password' => ['required', 'string', new PasswordRule()],
+        'password' => ['required', 'string', new PasswordRule(), 'confirmed'],
         'type' => ['sometimes', 'string', Rule::in(['business', 'customer'])],
     ],
 

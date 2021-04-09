@@ -2,17 +2,36 @@
 
 namespace Tests\Unit\Queries;
 
-use PHPUnit\Framework\TestCase;
+use Tests\TestCase;
+use App\Models\Order;
+use App\Queries\OrderQuery;
+use App\Filters\OrderFilter;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class OrderQueryTest extends TestCase
 {
+    use RefreshDatabase;
+
     /**
-     * A basic unit test example.
+     * The query builder instance.
      *
-     * @return void
+     * @var \App\Queries\OrderQuery
      */
-    public function test_example()
+    protected $query;
+
+    protected function setUp(): void
     {
-        $this->assertTrue(true);
+        parent::setUp();
+
+        $this->query = new OrderQuery();
+    }
+
+    public function testOrderListing()
+    {
+        $orders = create(Order::class, [], 20);
+
+        $query = $this->query->listing(new OrderFilter(request()));
+
+        $this->assertCount(20, $query->get());
     }
 }

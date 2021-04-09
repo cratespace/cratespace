@@ -1,41 +1,47 @@
 <template>
     <auth-layout>
-        <template #title>
+        <template #left>
             <div>
                 <div>
-                    <logo :title="config('app.name')" classes="h-16 w-16 text-blue-500"></logo>
+                    <div>
+                        <logo :title="config('app.name')" classes="h-16 w-16 text-blue-500"></logo>
+                    </div>
+
+                    <h4 class="mt-6 font-semibold text-xl text-gray-800">Forgot your password?</h4>
+
+                    <p class="mt-3 font-normal text-base text-gray-500">
+                        If you don't remember your password, you can reset it here.
+                    </p>
                 </div>
 
-                <h4 class="mt-6 font-semibold text-xl text-gray-800">Forgot your password?</h4>
+                <div class="mt-6">
+                    <form @submit.prevent="requestLink" class="mt-6 w-full">
+                        <div class="block">
+                            <app-input type="email" v-model="form.email" :error="form.errors.email" label="Email address" placeholder="john.doe@example.com" autofocus required></app-input>
+                        </div>
 
-                <p class="mt-3 font-normal text-base text-gray-500">
-                    If you don't remember your password, you can reset it here.
-                </p>
+                        <div class="mt-6 flex items-center justify-between">
+                            <app-button type="submit" mode="primary" :class="{ 'opacity-25 cursor-not-allowed': form.processing || disabled }" :loading="form.processing">
+                                Send password reset link <span class="ml-1">&rarr;</span>
+                            </app-button>
+                        </div>
+
+                        <div class="mt-6">
+                            <action-message :on="form.recentlySuccessful">A password reset has been link sent to your email.</action-message>
+                        </div>
+
+                        <div class="mt-6">
+                            <p class="text-xs text-gray-500">
+                                Please enter the email address assigned to your account below, and then click the "Send password reset link" button. An email will immediately be sent to you with instructions on how to set a new password
+                            </p>
+                        </div>
+                    </form>
+                </div>
             </div>
         </template>
 
-        <template #form>
-            <form @submit.prevent="requestLink" class="w-full">
-                <div class="block">
-                    <app-input type="email" v-model="form.email" :error="form.errors.email" label="Email address" placeholder="john.doe@example.com" autofocus required></app-input>
-                </div>
+        <template #right>
 
-                <div class="mt-6 flex items-center justify-between">
-                    <app-button type="submit" mode="primary" :class="{ 'opacity-25 cursor-not-allowed': form.processing || disabled }" :loading="form.processing">
-                        Send password reset link <span class="ml-1">&rarr;</span>
-                    </app-button>
-                </div>
-
-                <div class="mt-6">
-                    <action-message :on="form.recentlySuccessful">A password reset has been link sent to your email.</action-message>
-                </div>
-
-                <div class="mt-6">
-                    <p class="text-xs text-gray-500">
-                        Please enter the email address assigned to your account below, and then click the "Send password reset link" button. An email will immediately be sent to you with instructions on how to set a new password
-                    </p>
-                </div>
-            </form>
         </template>
     </auth-layout>
 </template>
