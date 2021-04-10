@@ -239,6 +239,7 @@ class CreateNewBusinessTest extends TestCase implements Postable
             'email' => 'fr.j.hackett@craggyisle.com',
             'phone' => '0712345678',
             'password' => 'dontTellMeImStillInThatFekingIsland',
+            'password_confirmation' => 'dontTellMeImStillInThatFekingIsland',
             'type' => 'business',
             'line1' => 'Glenquin',
             'city' => 'Killinaboy',

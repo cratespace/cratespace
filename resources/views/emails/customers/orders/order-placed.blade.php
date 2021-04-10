@@ -1,5 +1,5 @@
 @component('mail::message')
-{{ __('A new order has been placed for space :space', ['space' => 'LGAW47RGL7EO28']) }}
+{{ __('Your order has been placed and is awaiting confirmation by the business.') }}
 
 {{ __('An account has already been created for you with password `:password`, you may accept this invitation by clicking the button below:', [
     'password' => 'CratespaceIsAwesome!'

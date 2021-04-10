@@ -2,6 +2,8 @@
 
 namespace App\Mail;
 
+use Illuminate\Support\Facades\URL;
+
 class OrderPlacedSuccessfully extends OrderMail
 {
     /**
@@ -11,6 +13,12 @@ class OrderPlacedSuccessfully extends OrderMail
      */
     public function build()
     {
-        return $this->view('view.name');
+        return $this->markdown(
+            'emails.customers.orders.order-placed', [
+                'orderUrl' => URL::signedRoute('orders.show', [
+                    'order' => $this->order,
+                ]),
+            ]
+        )->subject(__('Cratespace - Order Placed Successfully'));
     }
 }
