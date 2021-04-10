@@ -21,6 +21,7 @@
         "fruitcake/laravel-cors": "^2.0",
         "guzzlehttp/guzzle": "^7.3",
         "inertiajs/inertia-laravel": "^0.3.5",
+        "ipinfo/ipinfo": "^2.1",
         "laravel/framework": "^8.12",
         "laravel/telescope": "^4.4",
         "laravel/tinker": "^2.5",
