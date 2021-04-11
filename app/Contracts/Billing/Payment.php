@@ -12,4 +12,11 @@ interface Payment extends Payable, Arrayable
      * @return bool
      */
     public function paid(): bool;
+
+    /**
+     * Cancel payment.
+     *
+     * @return void
+     */
+    public function cancel(): void;
 }

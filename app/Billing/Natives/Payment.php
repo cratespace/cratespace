@@ -76,6 +76,15 @@ class Payment implements PaymentContract
     }
 
     /**
+     * Cancel payment.
+     *
+     * @return void
+     */
+    public function cancel(): void
+    {
+    }
+
+    /**
      * Get the instance as an array.
      *
      * @return array

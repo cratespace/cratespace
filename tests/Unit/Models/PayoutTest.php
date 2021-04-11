@@ -2,10 +2,12 @@
 
 namespace Tests\Unit\Models;
 
+use Mockery as m;
 use Tests\TestCase;
 use App\Models\User;
 use App\Models\Payout;
 use App\Support\Money;
+use Illuminate\Support\Str;
 use Tests\Fixtures\MockProduct;
 use App\Contracts\Billing\Payment;
 use App\Contracts\Billing\Product;
@@ -15,6 +17,11 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 class PayoutTest extends TestCase
 {
     use RefreshDatabase;
+
+    protected function tearDown(): void
+    {
+        m::close();
+    }
 
     public function testBelongsToBusiness()
     {
@@ -71,5 +78,24 @@ class PayoutTest extends TestCase
 
         $this->assertInstanceOf(Product::class, $payout->product());
         $this->assertEquals($product->name(), $payout->product()->name());
+    }
+
+    public function testFindUsingPaymentId()
+    {
+        $payment = m::mock(Payment::class);
+        $payment->id = Str::random(40);
+        $payment->amount = 1000;
+
+        $payout = Payout::create([
+            'payment' => $payment->id,
+            'amount' => $payment->amount,
+            'service_percentage' => 0.0,
+            'user_id' => User::factory()->asBusiness()->create()->id,
+            'paid_at' => null,
+        ]);
+
+        $found = Payout::findUsingPayment($payment->id);
+
+        $this->assertTrue($payout->is($found));
     }
 }

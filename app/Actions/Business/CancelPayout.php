@@ -13,27 +13,17 @@ class CancelPayout
      * @param \App\Contracts\Billing\Payment $payment
      *
      * @return void
+     *
+     * @throws \App\Exceptions\InvalidActionException
      */
     public function cancel(Payment $payment): void
     {
-        $payout = $this->getPayout($payment->id);
+        $payout = Payout::findUsingPayment($payment->id);
 
         if (is_null($payout)) {
             return;
         }
 
-        $payout->delete();
-    }
-
-    /**
-     * Get payout details.
-     *
-     * @param string $id
-     *
-     * @return \App\Models\Payout|null
-     */
-    protected function getPayout(string $id): ?Payout
-    {
-        return Payout::wherePayment($id)->first();
+        $payout->cancel();
     }
 }
