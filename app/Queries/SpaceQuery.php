@@ -2,12 +2,12 @@
 
 namespace App\Queries;
 
+use App\Facades\Ip;
 use App\Models\Space;
 use App\Models\Business;
 use App\Filters\SpaceFilter;
 use Illuminate\Support\Facades\DB;
 use Cratespace\Preflight\Queries\Query;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 
 class SpaceQuery extends Query
@@ -41,6 +41,7 @@ class SpaceQuery extends Query
                     ->from('orders')
                     ->whereColumn('orders.orderable_id', 'spaces.id');
             })
+            ->whereBase(Ip::countryName())
             ->whereNull('reserved_at')
             ->whereDate('departs_at', '>', now())
             ->filter($filters)

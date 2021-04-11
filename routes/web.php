@@ -2,6 +2,7 @@
 
 use Inertia\Inertia;
 use App\Models\Invitation;
+use Illuminate\Http\Request;
 use App\Mail\BusinessInvitation;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Business\SpaceController;
@@ -48,4 +49,8 @@ Route::get('/mailable', function () {
     $invitation = Invitation::find(1);
 
     return new BusinessInvitation($invitation);
+});
+
+Route::get('/ipinfo', function (Request $request) {
+    dd($request->ipinfo->ip);
 });

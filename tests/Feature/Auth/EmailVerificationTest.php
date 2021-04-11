@@ -42,6 +42,8 @@ class EmailVerificationTest extends TestCase
 
     public function testEmailCanBeVerified()
     {
+        $this->withoutExceptionHandling();
+
         Event::fake();
 
         $user = User::factory()->asBusiness()->create([

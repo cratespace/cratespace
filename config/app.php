@@ -178,6 +178,7 @@ return [
         App\Providers\TelescopeServiceProvider::class,
         App\Providers\SentinelServiceProvider::class,
         App\Providers\PreflightServiceProvider::class,
+        App\Providers\IpinfoServiceProvider::class,
         App\Providers\StripeServiceProvider::class,
         App\Providers\BillingServiceProvider::class,
         App\Providers\ProductStorageServiceProvider::class,
