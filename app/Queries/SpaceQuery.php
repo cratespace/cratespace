@@ -41,7 +41,9 @@ class SpaceQuery extends Query
                     ->from('orders')
                     ->whereColumn('orders.orderable_id', 'spaces.id');
             })
-            ->whereBase(Ip::countryName())
+            ->when(! is_null($country = Ip::countryName()), function ($query) use ($country) {
+                $query->whereBase($country);
+            })
             ->whereNull('reserved_at')
             ->whereDate('departs_at', '>', now())
             ->filter($filters)
