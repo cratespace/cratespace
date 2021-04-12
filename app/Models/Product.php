@@ -20,6 +20,16 @@ class Product extends Model
         'code',
         'productable_id',
         'productable_type',
+        'details',
+    ];
+
+    /**
+     * The attributes that should be cast to native types.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'details' => 'array',
     ];
 
     /**

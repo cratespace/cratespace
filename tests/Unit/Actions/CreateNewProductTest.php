@@ -32,7 +32,10 @@ class CreateNewProductTest extends TestCase
         $manifest = $this->app->make(Manifest::class);
         $creator = new CreateNewProduct($manifest);
 
-        $product = $creator->create(MockProduct::class, ['name' => 'test_product']);
+        $product = $creator->create(MockProduct::class, [
+            'name' => 'test_product',
+            'amount' => 1000,
+        ]);
 
         $this->assertInstanceOf(Product::class, $product);
         $this->assertTrue($manifest->has($product->code()));

@@ -2,6 +2,7 @@
 
 namespace App\Products;
 
+use Throwable;
 use ReflectionClass;
 use App\Models\Product as Store;
 use App\Contracts\Billing\Product;
@@ -102,39 +103,52 @@ class Manifest
      */
     public function get(Store $product): Product
     {
-        return $this->resolve(
-            $product->productable_type,
-            $product->productable_id
-        );
+        try {
+            return $product->productable();
+        } catch (Throwable $e) {
+            return $this->resolve(
+                $product->productable_type,
+                $product->productable_id,
+                is_string($product->details)
+                    ? json_decode($product->details, true)
+                    : $product->details ?? [],
+            );
+        }
     }
 
     /**
      * Resolve the product instance.
      *
-     * @param string $class
-     * @param string $id
+     * @param string     $class
+     * @param string     $id
+     * @param array|null $details
      *
      * @return \App\Contracts\Billing\Product
      */
-    public function resolve(string $class, string $id): Product
+    public function resolve(string $class, string $id, ?array $details = null): Product
     {
         return $this->isModel($class, $id)
             ? $class::findOrFail($id)
-            : new $class($id);
+            : new $class($id, $details);
     }
 
     /**
      * Determine if the given class is a model.
      *
-     * @param string $class
-     * @param string $id
+     * @param string      $class
+     * @param string|null $id
      *
      * @return bool
      */
-    protected function isModel(string $class, string $id): bool
+    protected function isModel(string $class, ?string $id = null): bool
     {
-        return (new ReflectionClass($class))->isSubclassOf(Model::class) &&
-            is_numeric($id);
+        $isNumeric = false;
+
+        if (! is_null($id)) {
+            $isNumeric = is_numeric($id);
+        }
+
+        return (new ReflectionClass($class))->isSubclassOf(Model::class) && $isNumeric;
     }
 
     /**
@@ -160,6 +174,7 @@ class Manifest
             'code' => $product->code(),
             'productable_id' => $product->name(),
             'productable_type' => get_class($product),
+            'details' => $product->details(),
         ];
     }
 }

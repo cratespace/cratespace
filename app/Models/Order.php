@@ -112,7 +112,7 @@ class Order extends Model implements OrderContract
      */
     public function paid(): bool
     {
-        return true;
+        return $this->payment->paid();
     }
 
     /**

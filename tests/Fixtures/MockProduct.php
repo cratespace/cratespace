@@ -67,7 +67,7 @@ class MockProduct extends AbstractProduct implements Product
      */
     public function fullAmount(): int
     {
-        return 1000;
+        return $this->details['amount'];
     }
 
     /**
@@ -103,11 +103,10 @@ class MockProduct extends AbstractProduct implements Product
      */
     public function details(): array
     {
-        return [
+        return array_merge($this->details, [
             'merchant' => $this->merchant()->id,
-            'id' => $this->id,
-            'amount' => $this->fullAmount(),
-        ];
+            'name' => $this->name,
+        ]);
     }
 
     /**

@@ -18,6 +18,7 @@ class CreateProductsTable extends Migration
             $table->string('code')->unique();
             $table->unsignedBigInteger('productable_id')->nullable();
             $table->string('productable_type', 50);
+            $table->json('details')->nullable();
             $table->timestamps();
         });
     }

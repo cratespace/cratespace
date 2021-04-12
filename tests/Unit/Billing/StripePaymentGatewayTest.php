@@ -46,7 +46,7 @@ class StripePaymentGatewayTest extends TestCase
     {
         Event::fake();
 
-        $product = new MockProduct('test_product');
+        $product = new MockProduct('test_product', ['amount' => 1000]);
         $paymentGateway = new StripePaymentGateway();
         $payment = $paymentGateway->charge($product->fullAmount(), array_merge($details = [
             'name' => 'James Silverman',

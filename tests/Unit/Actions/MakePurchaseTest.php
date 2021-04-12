@@ -34,7 +34,7 @@ class MakePurchaseTest extends TestCase
     {
         $paymentGateway = $this->app->make(PaymentGateway::class);
         $token = $paymentGateway->getValidTestToken();
-        $product = new MockProduct('test_product');
+        $product = new MockProduct('test_product', ['amount' => 1000]);
         $purchaser = new MakePurchase($paymentGateway);
 
         $order = $purchaser->purchase($product, [

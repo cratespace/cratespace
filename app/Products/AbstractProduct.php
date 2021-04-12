@@ -2,6 +2,7 @@
 
 namespace App\Products;
 
+use Throwable;
 use App\Support\Money;
 use App\Contracts\Billing\Payable;
 use Illuminate\Support\Facades\Crypt;
@@ -37,15 +38,37 @@ abstract class AbstractProduct implements Payable
     protected $order;
 
     /**
+     * All product related details.
+     *
+     * @var array|null
+     */
+    protected $details;
+
+    /**
+     * Details that may or may not be included in the product information.
+     *
+     * @var array
+     */
+    protected $attributes = [
+        'name',
+        'amount',
+        'description',
+        'metadata',
+        'package_dimensions',
+    ];
+
+    /**
      * Create new instance of product.
      *
-     * @param string $name
+     * @param string     $name
+     * @param array|null $details
      *
      * @return void
      */
-    public function __construct(string $name)
+    public function __construct(string $name, ?array $details = null)
     {
         $this->name = $name;
+        $this->details = $this->fillable($details);
 
         $this->generateCode();
     }
@@ -121,7 +144,25 @@ abstract class AbstractProduct implements Payable
      */
     public function rawAmount(): int
     {
-        return $this->fullAmount();
+        return $this->details['amount'] ?? $this->fullAmount();
+    }
+
+    /**
+     * Parse out the elements and return only the allowable details.
+     *
+     * @param array|null $details
+     *
+     * @return array
+     */
+    public function fillable(?array $details = null): array
+    {
+        if (is_null($details)) {
+            return [];
+        }
+
+        return array_filter($details, function ($key) {
+            return in_array($key, $this->attributes);
+        }, \ARRAY_FILTER_USE_KEY);
     }
 
     /**
@@ -133,6 +174,10 @@ abstract class AbstractProduct implements Payable
      */
     public function __get(string $key)
     {
-        return $this->{$key};
+        try {
+            return $this->{$key};
+        } catch (Throwable $e) {
+            return $this->details[$key];
+        }
     }
 }

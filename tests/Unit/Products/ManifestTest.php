@@ -30,7 +30,7 @@ class ManifestTest extends TestCase
 
     public function testStoreProduct()
     {
-        $product = new MockProduct('test_product');
+        $product = new MockProduct('test_product', ['amount' => 1000]);
         $manifest = new Manifest(new Product());
 
         $manifest->store($product);

@@ -50,14 +50,14 @@ class ProductTest extends TestCase
 
     public function testFormatPrice()
     {
-        $product = new MockProduct('test_product');
+        $product = new MockProduct('test_product', ['amount' => 1000]);
 
         $this->assertEquals(Money::format($product->fullAmount()), $product->amount());
     }
 
     public function testPrice()
     {
-        $product = new MockProduct('test_product');
+        $product = new MockProduct('test_product', ['amount' => 1000]);
 
         $this->assertEquals($product->fullAmount(), $product->rawAmount());
     }
