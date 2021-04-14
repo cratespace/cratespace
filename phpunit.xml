@@ -13,9 +13,6 @@
         <testsuite name="Console">
             <directory suffix="Test.php">./tests/Console</directory>
         </testsuite>
-        <testsuite name="Inertia">
-            <directory suffix="Test.php">./tests/Inertia</directory>
-        </testsuite>
     </testsuites>
     <coverage processUncoveredFiles="true">
         <include>
