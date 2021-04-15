@@ -2,7 +2,9 @@
 
 namespace App\Support\Concerns;
 
+use Illuminate\Routing\Pipeline;
 use Illuminate\Container\Container;
+use Illuminate\Contracts\Pipeline\Pipeline as PipelineContract;
 
 trait InteractsWithContainer
 {
@@ -21,5 +23,15 @@ trait InteractsWithContainer
         }
 
         return Container::getInstance()->make($abstract, $parameters);
+    }
+
+    /**
+     * Create new instance of pipeline handler.
+     *
+     * @return \Illuminate\Contracts\Pipeline\Pipeline
+     */
+    public function pipeline(): PipelineContract
+    {
+        return new Pipeline($this->app());
     }
 }

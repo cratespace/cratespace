@@ -1,7 +1,8 @@
 <?php
 
-return [
+use App\Providers\RouteServiceProvider;
 
+return [
     /*
     |--------------------------------------------------------------------------
     | Authentication Defaults
@@ -114,4 +115,32 @@ return [
 
     'password_timeout' => 10800,
 
+    /*
+     * Username / Email.
+     */
+    'username' => 'email',
+    'email' => 'email',
+
+    /*
+     * Home Path.
+     */
+    'home' => RouteServiceProvider::HOME,
+
+    /*
+     * Sentinel Routes Middleware
+     */
+    'middleware' => ['web'],
+
+    /*
+     * Rate Limiting.
+     */
+    'limiters' => [
+        'login' => 'login',
+        'two-factor' => 'two-factor',
+    ],
+
+    /*
+     * Additional middelware type classes to run when attempting to authenticate user.
+     */
+    'login_pipeline' => [],
 ];

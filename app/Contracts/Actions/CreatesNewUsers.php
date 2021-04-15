@@ -1,8 +1,8 @@
 <?php
 
-namespace Cratespace\Sentinel\Contracts\Actions;
+namespace App\Contracts\Actions;
 
-use Illuminate\Contracts\Auth\Authenticatable as User;
+use App\Models\User;
 
 interface CreatesNewUsers
 {
@@ -11,7 +11,7 @@ interface CreatesNewUsers
      *
      * @param array $data
      *
-     * @return \Illuminate\Contracts\Auth\Authenticatable
+     * @return \App\Model\User
      */
     public function create(array $data): User;
 }

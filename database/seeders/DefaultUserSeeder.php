@@ -2,11 +2,11 @@
 
 namespace Database\Seeders;
 
+use App\Models\Role;
 use App\Models\User;
+use App\Models\Permission;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Collection;
-use Cratespace\Preflight\Models\Role;
-use Cratespace\Preflight\Models\Permission;
 
 class DefaultUserSeeder extends Seeder
 {

@@ -5,7 +5,7 @@ namespace App\Actions\Auth;
 use Illuminate\Http\Request;
 use Cratespace\Sentinel\Sentinel\Config;
 use Illuminate\Contracts\Auth\StatefulGuard;
-use Cratespace\Sentinel\Contracts\Actions\AuthenticatesUsers;
+use App\Contracts\Actions\AuthenticatesUsers;
 
 class AuthenticateUser implements AuthenticatesUsers
 {

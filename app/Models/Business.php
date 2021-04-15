@@ -3,9 +3,9 @@
 namespace App\Models;
 
 use App\Models\Casts\ProfileCast;
+use App\Models\Traits\HasProfilePhoto;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Cratespace\Sentinel\Models\Traits\HasProfilePhoto;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Business extends Model

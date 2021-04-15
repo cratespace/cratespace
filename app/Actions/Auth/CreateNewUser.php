@@ -6,8 +6,7 @@ use App\Models\User;
 use App\Support\Util;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
-use Cratespace\Sentinel\Contracts\Actions\CreatesNewUsers;
-use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableUser;
+use App\Contracts\Actions\CreatesNewUsers;
 
 class CreateNewUser implements CreatesNewUsers
 {
@@ -16,9 +15,9 @@ class CreateNewUser implements CreatesNewUsers
      *
      * @param array $data
      *
-     * @return \Illuminate\Contracts\Auth\Authenticatable
+     * @return \App\Model\User
      */
-    public function create(array $data): AuthenticatableUser
+    public function create(array $data): User
     {
         return DB::transaction(function () use ($data): User {
             return tap($this->createUser($data), function (User $user) use ($data): void {

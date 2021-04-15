@@ -1,6 +1,6 @@
 <?php
 
-namespace Cratespace\Sentinel\Models\Traits;
+namespace App\Models\Traits;
 
 use BaconQrCode\Writer;
 use BaconQrCode\Renderer\Color\Rgb;

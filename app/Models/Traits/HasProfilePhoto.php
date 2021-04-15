@@ -1,6 +1,6 @@
 <?php
 
-namespace Cratespace\Sentinel\Models\Traits;
+namespace App\Models\Traits;
 
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;

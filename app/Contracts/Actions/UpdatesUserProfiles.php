@@ -1,6 +1,6 @@
 <?php
 
-namespace Cratespace\Sentinel\Contracts\Actions;
+namespace App\Contracts\Actions;
 
 use App\Models\User;
 

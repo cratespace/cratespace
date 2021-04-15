@@ -1,8 +1,8 @@
 <?php
 
-namespace Cratespace\Preflight\Models\Concerns;
+namespace App\Models\Concerns;
 
-use Cratespace\Preflight\Models\Role;
+use App\Models\Role;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 trait ManagesRoles

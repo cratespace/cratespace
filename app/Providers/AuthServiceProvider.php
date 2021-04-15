@@ -9,17 +9,55 @@ use App\Models\Invitation;
 use App\Policies\UserPolicy;
 use App\Policies\OrderPolicy;
 use App\Policies\SpacePolicy;
-use Illuminate\Auth\RequestGuard;
+use App\Actions\Auth\DeleteUser;
 use App\Policies\InvitationPolicy;
-use Illuminate\Contracts\Auth\Guard;
+use App\Actions\Auth\CreateNewUser;
+use App\Providers\Traits\HasActions;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Contracts\Foundation\Application;
-use Illuminate\Contracts\Auth\Guard as AuthGuard;
-use Illuminate\Contracts\Auth\Factory as AuthFactory;
+use App\Actions\Auth\AuthenticateUser;
+use App\Actions\Auth\ResetUserPassword;
+use App\Actions\Auth\UpdateUserProfile;
+use App\Contracts\Actions\DeletesUsers;
+use App\Actions\Auth\UpdateUserPassword;
+use App\Contracts\Actions\CreatesNewUsers;
+use Illuminate\Contracts\Auth\StatefulGuard;
+use App\Contracts\Actions\AuthenticatesUsers;
+use App\Contracts\Actions\ResetsUserPasswords;
+use App\Contracts\Actions\UpdatesUserProfiles;
+use App\Contracts\Actions\UpdatesUserPasswords;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 
 class AuthServiceProvider extends ServiceProvider
 {
+    use HasActions;
+
+    /**
+     * The list of classes (pipes) to be used for the authentication pipeline.
+     *
+     * @var array
+     */
+    protected static $loginPipeline = [
+        EnsureLoginIsNotThrottled::class,
+        RedirectIfTwoFactorAuthenticatable::class,
+        DenyLockedAccount::class,
+        AttemptToAuthenticate::class,
+        PrepareAuthenticatedSession::class,
+    ];
+
+    /**
+     * The sentinel action classes.
+     *
+     * @var array
+     */
+    protected $actions = [
+        AuthenticatesUsers::class => AuthenticateUser::class,
+        CreatesNewUsers::class => CreateNewUser::class,
+        ResetsUserPasswords::class => ResetUserPassword::class,
+        UpdatesUserPasswords::class => UpdateUserPassword::class,
+        UpdatesUserProfiles::class => UpdateUserProfile::class,
+        DeletesUsers::class => DeleteUser::class,
+    ];
+
     /**
      * The policy mappings for the application.
      *
@@ -33,6 +71,16 @@ class AuthServiceProvider extends ServiceProvider
     ];
 
     /**
+     * Register any application services.
+     *
+     * @return void
+     */
+    public function register(): void
+    {
+        $this->registerAuthGuard();
+    }
+
+    /**
      * Register any authentication / authorization services.
      *
      * @return void
@@ -40,38 +88,30 @@ class AuthServiceProvider extends ServiceProvider
     public function boot(): void
     {
         $this->registerPolicies();
+
+        $this->registerActions();
     }
 
     /**
-     * Configure the Sentinel authentication guard.
+     * Register default authentication guard implementation.
      *
      * @return void
      */
-    protected function configureGuard(): void
+    protected function registerAuthGuard(): void
     {
-        Auth::resolved(function (AuthFactory $auth) {
-            $auth->extend('sentinel', function (Application $app, string $name, array $config) use ($auth): AuthGuard {
-                return tap($this->createGuard($auth, $config), function (AuthGuard $guard): void {
-                    $this->app->refresh('request', $guard, 'setRequest');
-                });
-            });
-        });
+        $this->app->bind(
+            StatefulGuard::class,
+            fn () => Auth::guard(config('auth.defaults.guard'))
+        );
     }
 
     /**
-     * Register the guard.
+     * Get the list of classes (pipes) to be used for the authentication pipeline.
      *
-     * @param \Illuminate\Contracts\Auth\Factory $auth
-     * @param array                              $config
-     *
-     * @return \Illuminate\Auth\RequestGuard
+     * @return array
      */
-    protected function createGuard(AuthFactory $auth, array $config): RequestGuard
+    public static function loginPipeline(): array
     {
-        return new RequestGuard(
-            new Guard($auth, Config::expiration(), $config['provider']),
-            $this->app['request'],
-            $auth->createUserProvider($config['provider'] ?? null)
-        );
+        return static::$loginPipeline;
     }
 }
