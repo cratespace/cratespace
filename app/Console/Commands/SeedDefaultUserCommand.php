@@ -1,6 +1,6 @@
 <?php
 
-namespace Cratespace\Preflight\Console;
+namespace App\Console\Commands;
 
 use Throwable;
 use App\Models\User;

@@ -2,7 +2,7 @@
 
 namespace {{ namespace }};
 
-use Cratespace\Preflight\Presenters\Presenter;
+use App\Presenters\Presenter;
 
 class {{ class }} extends Presenter
 {
