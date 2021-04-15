@@ -1,0 +1,34 @@
+<?php
+
+namespace App\Actions\Auth\Traits;
+
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Contracts\Auth\Authenticatable;
+
+trait PasswordUpdater
+{
+    /**
+     * Update given user password field.
+     *
+     * @param \Illuminate\Contracts\Auth\Authenticatable $user
+     * @param string                                     $password
+     * @param bool                                       $remember
+     *
+     * @return void
+     */
+    protected function updatePassword(
+        Authenticatable $user,
+        string $password,
+        bool $remember = true
+    ): void {
+        DB::transaction(function () use ($user, $password, $remember) {
+            $user->forceFill(
+                array_merge([
+                    'password' => Hash::make($password),
+                ], $remember ? ['remember_token' => Str::random(60)] : [])
+            )->save();
+        });
+    }
+}

@@ -1,7 +1,6 @@
 <?php
 
 return [
-
     /*
     |--------------------------------------------------------------------------
     | Application Name
@@ -13,7 +12,7 @@ return [
     |
     */
 
-    'name' => env('APP_NAME', 'Laravel'),
+    'name' => env('APP_NAME', 'Cratespace'),
 
     /*
     |--------------------------------------------------------------------------
@@ -135,9 +134,8 @@ return [
     */
 
     'providers' => [
-
         /*
-         * Laravel Framework Service Providers...
+         * Cratespace Framework Service Providers...
          */
         Illuminate\Auth\AuthServiceProvider::class,
         Illuminate\Broadcasting\BroadcastServiceProvider::class,
@@ -165,6 +163,7 @@ return [
         /*
          * Package Service Providers...
          */
+        Laravel\Telescope\TelescopeServiceProvider::class,
 
         /*
          * Application Service Providers...
@@ -174,7 +173,9 @@ return [
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
-
+        App\Providers\TelescopeServiceProvider::class,
+        App\Providers\IpinfoServiceProvider::class,
+        App\Providers\StripeServiceProvider::class,
     ],
 
     /*
@@ -189,7 +190,6 @@ return [
     */
 
     'aliases' => [
-
         'App' => Illuminate\Support\Facades\App::class,
         'Arr' => Illuminate\Support\Arr::class,
         'Artisan' => Illuminate\Support\Facades\Artisan::class,
@@ -227,7 +227,5 @@ return [
         'URL' => Illuminate\Support\Facades\URL::class,
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
-
     ],
-
 ];
