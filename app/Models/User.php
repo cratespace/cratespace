@@ -8,6 +8,7 @@ use App\Models\Traits\HasApiTokens;
 use App\Models\Concerns\ManagesRoles;
 use App\Models\Traits\HasProfilePhoto;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Traits\Tappable;
 use App\Models\Concerns\ManagesBusiness;
 use App\Models\Concerns\ManagesCustomer;
 use Illuminate\Notifications\Notifiable;
@@ -19,6 +20,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class User extends Authenticatable
 {
+    use Tappable;
     use Notifiable;
     use HasFactory;
     // use HasApiTokens;

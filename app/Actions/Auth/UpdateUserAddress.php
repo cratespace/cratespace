@@ -3,7 +3,7 @@
 namespace App\Actions\Auth;
 
 use App\Models\User;
-use Cratespace\Sentinel\Contracts\Actions\UpdatesUserProfiles;
+use App\Contracts\Actions\UpdatesUserProfiles;
 
 class UpdateUserAddress implements UpdatesUserProfiles
 {

@@ -17,7 +17,7 @@ class UpdateUserProfile implements UpdatesUserProfiles
      */
     public function update(User $user, array $data): void
     {
-        $user->hasRole('Customer')
+        $user->isCustomer()
             ? $this->updateCustomerProfile($user, $data)
             : $this->updateBusinessProfile($user, $data);
     }

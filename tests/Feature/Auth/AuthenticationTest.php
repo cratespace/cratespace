@@ -3,6 +3,7 @@
 namespace Tests\Feature\Auth;
 
 use Tests\TestCase;
+use App\Models\User;
 use Tests\Contracts\Postable;
 
 class AuthenticationTest extends TestCase implements Postable

@@ -2,6 +2,7 @@
 
 namespace App\Models\Concerns;
 
+use App\Models\User;
 use App\Models\Customer;
 use App\Services\Stripe\Resource;
 use Illuminate\Database\Eloquent\Relations\HasOne;
@@ -14,9 +15,9 @@ trait ManagesCustomer
      *
      * @param array|null $data
      *
-     * @return void
+     * @return \App\Models\User
      */
-    public function createAsCustomer(?array $data = null): void
+    public function createAsCustomer(?array $data = null): User
     {
         if (is_null($data)) {
             $data = $this->toArray();
@@ -32,6 +33,8 @@ trait ManagesCustomer
             'user_id' => $this->id,
             'stripe_id' => $customer->id,
         ]);
+
+        return $this;
     }
 
     /**

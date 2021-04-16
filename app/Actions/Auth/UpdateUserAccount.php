@@ -3,8 +3,8 @@
 namespace App\Actions\Auth;
 
 use App\Models\User;
+use App\Contracts\Actions\UpdatesUserProfiles;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
-use Cratespace\Sentinel\Contracts\Actions\UpdatesUserProfiles;
 
 class UpdateUserAccount implements UpdatesUserProfiles
 {

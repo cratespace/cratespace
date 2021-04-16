@@ -20,13 +20,15 @@ class CreateNewUser implements CreatesNewUsers
     public function create(array $data): User
     {
         return DB::transaction(function () use ($data): User {
-            return tap($this->createUser($data), function (User $user) use ($data): void {
-                ($business = $this->isForBusiness($data))
-                    ? $user->createAsBusiness($data)
-                    : $user->createAsCustomer($data);
+            $user = $this->createUser($data);
 
-                $user->assignRole($business ? 'Business' : 'Customer');
+            $user->tap(function (User $user) use ($data): void {
+                $this->isForBusiness($data)
+                    ? $user->createAsBusiness($data)->assignRole('Business')
+                    : $user->createAsCustomer($data)->assignRole('Customer');
             });
+
+            return $user->fresh();
         });
     }
 
@@ -46,7 +48,7 @@ class CreateNewUser implements CreatesNewUsers
             'username' => Util::makeUsername($data['name']),
             'password' => Hash::make($data['password']),
             'settings' => $this->setDefaultSettings(),
-            'locked' => $data['type'] === 'customer' ? false : true,
+            'locked' => $this->isForBusiness($data) ? true : false,
         ]);
     }
 

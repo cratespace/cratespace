@@ -2,6 +2,7 @@
 
 namespace App\Models\Concerns;
 
+use App\Models\User;
 use App\Models\Payout;
 use App\Models\Business;
 use App\Models\Invitation;
@@ -17,9 +18,9 @@ trait ManagesBusiness
      *
      * @param array|null $data
      *
-     * @return void
+     * @return \App\Models\User
      */
-    public function createAsBusiness(?array $data = null): void
+    public function createAsBusiness(?array $data = null): User
     {
         if (is_null($data)) {
             $data = $this->toArray();
@@ -41,6 +42,8 @@ trait ManagesBusiness
                 'url' => $data['url'] ?? null,
             ],
         ]);
+
+        return $this;
     }
 
     /**
