@@ -1,8 +1,8 @@
 <?php
 
-namespace Cratespace\Sentinel\Limiters;
+namespace App\Limiters;
 
-use Cratespace\Sentinel\Sentinel\Config;
+use App\Auth\Config\Auth;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Cache\RateLimiter;
@@ -97,6 +97,6 @@ class LoginRateLimiter
      */
     protected function throttleKey(Request $request): string
     {
-        return Str::lower($request->input(Config::username())) . '|' . $request->ip();
+        return Str::lower($request->input(Auth::username())) . '|' . $request->ip();
     }
 }

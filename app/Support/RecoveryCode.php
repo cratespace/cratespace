@@ -1,6 +1,6 @@
 <?php
 
-namespace Cratespace\Sentinel\Support;
+namespace App\Support;
 
 use Illuminate\Support\Str;
 

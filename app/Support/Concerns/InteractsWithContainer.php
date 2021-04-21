@@ -32,6 +32,6 @@ trait InteractsWithContainer
      */
     public function pipeline(): PipelineContract
     {
-        return new Pipeline($this->app());
+        return new Pipeline($this->resolve());
     }
 }

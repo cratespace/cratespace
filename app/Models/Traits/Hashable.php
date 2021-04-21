@@ -1,6 +1,6 @@
 <?php
 
-namespace Cratespace\Preflight\Models\Traits;
+namespace App\Models\Traits;
 
 use Illuminate\Database\Eloquent\Model;
 use Cratespace\Preflight\Support\HashId;

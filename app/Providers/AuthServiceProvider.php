@@ -14,17 +14,26 @@ use App\Policies\InvitationPolicy;
 use App\Actions\Auth\CreateNewUser;
 use App\Providers\Traits\HasActions;
 use Illuminate\Support\Facades\Auth;
+use App\Actions\Auth\ConfirmPassword;
 use App\Actions\Auth\AuthenticateUser;
 use App\Actions\Auth\ResetUserPassword;
 use App\Actions\Auth\UpdateUserProfile;
 use App\Contracts\Actions\DeletesUsers;
 use App\Actions\Auth\UpdateUserPassword;
+use App\Auth\Middleware\DenyLockedAccount;
 use App\Contracts\Actions\CreatesNewUsers;
+use App\Contracts\Actions\ConfirmsPasswords;
 use Illuminate\Contracts\Auth\StatefulGuard;
 use App\Contracts\Actions\AuthenticatesUsers;
+use App\Auth\Middleware\AttemptToAuthenticate;
 use App\Contracts\Actions\ResetsUserPasswords;
 use App\Contracts\Actions\UpdatesUserProfiles;
 use App\Contracts\Actions\UpdatesUserPasswords;
+use App\Auth\Middleware\EnsureLoginIsNotThrottled;
+use App\Actions\Auth\ProvideTwoFactorAuthentication;
+use App\Auth\Middleware\PrepareAuthenticatedSession;
+use App\Contracts\Actions\ProvidesTwoFactorAuthentication;
+use App\Auth\Middleware\RedirectIfTwoFactorAuthenticatable;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 
 class AuthServiceProvider extends ServiceProvider
@@ -56,6 +65,8 @@ class AuthServiceProvider extends ServiceProvider
         UpdatesUserPasswords::class => UpdateUserPassword::class,
         UpdatesUserProfiles::class => UpdateUserProfile::class,
         DeletesUsers::class => DeleteUser::class,
+        ConfirmsPasswords::class => ConfirmPassword::class,
+        ProvidesTwoFactorAuthentication::class => ProvideTwoFactorAuthentication::class,
     ];
 
     /**

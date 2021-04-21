@@ -2,10 +2,9 @@
 
 namespace App\Http\Requests\Auth;
 
-use App\Auth\Config\Auth;
 use App\Http\Requests\Request;
 
-class LoginRequest extends Request
+class LogoutRequest extends Request
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -14,7 +13,7 @@ class LoginRequest extends Request
      */
     public function authorize(): bool
     {
-        return $this->isGuest();
+        return $this->isAuthenticated();
     }
 
     /**
@@ -24,14 +23,6 @@ class LoginRequest extends Request
      */
     public function rules(): array
     {
-        $username = Auth::username();
-
-        return $this->getRulesFor('login', [
-            $username => [
-                'required',
-                'string',
-                $username === 'email' ? 'email' : null,
-            ],
-        ]);
+        return [];
     }
 }

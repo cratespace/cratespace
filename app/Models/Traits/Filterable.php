@@ -1,8 +1,8 @@
 <?php
 
-namespace Cratespace\Preflight\Models\Traits;
+namespace App\Models\Traits;
 
-use Cratespace\Preflight\Filters\Filter;
+use App\Filters\Filter;
 use Illuminate\Database\Eloquent\Builder;
 
 trait Filterable

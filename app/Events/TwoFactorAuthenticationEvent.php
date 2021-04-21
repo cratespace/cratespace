@@ -1,15 +1,13 @@
 <?php
 
-namespace Cratespace\Sentinel\Events;
+namespace App\Events;
 
 use Illuminate\Foundation\Auth\User;
-use Cratespace\Sentinel\Support\HasUser;
 use Illuminate\Foundation\Events\Dispatchable;
 
 abstract class TwoFactorAuthenticationEvent
 {
     use Dispatchable;
-    use HasUser;
 
     /**
      * The user instance.

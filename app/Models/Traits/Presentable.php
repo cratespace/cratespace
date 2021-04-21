@@ -1,8 +1,8 @@
 <?php
 
-namespace Cratespace\Preflight\Models\Traits;
+namespace App\Models\Traits;
 
-use Cratespace\Preflight\Presenters\Presenter;
+use App\Presenters\Presenter;
 
 trait Presentable
 {

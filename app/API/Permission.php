@@ -21,7 +21,7 @@ class Permission implements PermissionContract
     public static $defaultPermissions = [];
 
     /**
-     * Determine if any permissions have been registered with Preflight.
+     * Determine if any permissions have been registered with Cratespace.
      *
      * @return bool
      */
@@ -59,7 +59,8 @@ class Permission implements PermissionContract
     }
 
     /**
-     * Return the permissions in the given list that are actually defined permissions for the application.
+     * Return the permissions in the given list that are
+     * actually defined permissions for the application.
      *
      * @param array $permissions
      *

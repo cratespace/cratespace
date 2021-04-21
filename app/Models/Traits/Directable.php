@@ -1,6 +1,6 @@
 <?php
 
-namespace Cratespace\Preflight\Models\Traits;
+namespace App\Models\Traits;
 
 use Illuminate\Support\Str;
 

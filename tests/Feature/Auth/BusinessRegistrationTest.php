@@ -4,14 +4,12 @@ namespace Tests\Feature\Auth;
 
 use Mockery as m;
 use Tests\TestCase;
-use App\Models\User;
 use Tests\Contracts\Postable;
 use Tests\Concerns\CreatesDefaultUser;
 use App\Providers\RouteServiceProvider;
-use App\Contracts\Actions\CreatesNewUsers;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
-class RegistrationTest extends TestCase implements Postable
+class BusinessRegistrationTest extends TestCase implements Postable
 {
     use RefreshDatabase;
     use CreatesDefaultUser;

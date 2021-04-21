@@ -3,13 +3,13 @@
 namespace App\Models\Traits;
 
 use BaconQrCode\Writer;
+use App\Support\RecoveryCode;
 use BaconQrCode\Renderer\Color\Rgb;
 use BaconQrCode\Renderer\ImageRenderer;
 use BaconQrCode\Renderer\RendererStyle\Fill;
-use Cratespace\Sentinel\Support\RecoveryCode;
 use BaconQrCode\Renderer\Image\SvgImageBackEnd;
 use BaconQrCode\Renderer\RendererStyle\RendererStyle;
-use Cratespace\Sentinel\Contracts\Actions\ProvidesTwoFactorAuthentication;
+use App\Contracts\Actions\ProvidesTwoFactorAuthentication;
 
 trait TwoFactorAuthenticatable
 {
