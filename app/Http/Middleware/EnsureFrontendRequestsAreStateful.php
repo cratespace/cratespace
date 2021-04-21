@@ -7,7 +7,6 @@ use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Pipeline;
 use Illuminate\Support\Collection;
-use Cratespace\Sentinel\Sentinel\Config;
 
 class EnsureFrontendRequestsAreStateful
 {
@@ -29,10 +28,10 @@ class EnsureFrontendRequestsAreStateful
 
                 return $next($request);
             },
-            config('sentinel.middleware.encrypt_cookies', \Illuminate\Cookie\Middleware\EncryptCookies::class),
+            config('api.stateful_middleware.encrypt_cookies', \Illuminate\Cookie\Middleware\EncryptCookies::class),
             \Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse::class,
             \Illuminate\Session\Middleware\StartSession::class,
-            config('sentinel.middleware.verify_csrf_token', \Illuminate\Foundation\Http\Middleware\VerifyCsrfToken::class),
+            config('api.stateful_middleware.verify_csrf_token', \Illuminate\Foundation\Http\Middleware\VerifyCsrfToken::class),
         ] : [])->then(function (Request $request) use ($next) {
             return $next($request);
         });
@@ -66,7 +65,7 @@ class EnsureFrontendRequestsAreStateful
         $domain = Str::replaceFirst('http://', '', $domain);
         $domain = Str::endsWith($domain, '/') ? $domain : "{$domain}/";
 
-        $stateful = array_filter(Config::stateful([[]]));
+        $stateful = array_filter(config('api.stateful'));
 
         return Str::is(Collection::make($stateful)->map(function ($uri) {
             return trim($uri) . '/*';

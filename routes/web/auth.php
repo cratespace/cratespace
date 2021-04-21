@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\RegistrationController;
 use App\Http\Controllers\Auth\AuthenticationController;
+use App\Http\Controllers\Auth\OtherBrowserSessionsController;
 use App\Http\Controllers\Auth\TwoFactorAuthenticationController;
 
 Route::group(['middleware' => ['guest']], function (): void {
