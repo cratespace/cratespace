@@ -34,6 +34,6 @@ class Auth
      */
     public static function __callStatic(string $name, $arguments)
     {
-        return static::config(Str::snake($name), ...$arguments);
+        return static::config(Str::snake($name), ...array_values($arguments));
     }
 }

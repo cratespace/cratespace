@@ -1,17 +1,17 @@
 <?php
 
-namespace Cratespace\Sentinel\Support;
+namespace App\Support;
 
-use Illuminate\Contracts\Auth\Authenticatable as User;
+use App\Models\User;
 
 trait HasUser
 {
     /**
      * Get the user instance.
      *
-     * @return \Illuminate\Contracts\Auth\Authenticatable
+     * @return \App\Models\User
      */
-    public function getUser(): User
+    public function user(): User
     {
         return $this->user;
     }

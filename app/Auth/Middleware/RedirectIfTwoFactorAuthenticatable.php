@@ -4,12 +4,13 @@ namespace App\Auth\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
+use App\Contracts\Auth\HandleAuthentication;
 use Illuminate\Contracts\Auth\Authenticatable;
 use App\Models\Traits\TwoFactorAuthenticatable;
 use App\Events\TwoFactorAuthenticationChallenged;
 use App\Http\Responses\Auth\TwoFactorChallengeResponse;
 
-class RedirectIfTwoFactorAuthenticatable extends Authenticate
+class RedirectIfTwoFactorAuthenticatable extends Authenticate implements HandleAuthentication
 {
     /**
      * Handle the incoming request.

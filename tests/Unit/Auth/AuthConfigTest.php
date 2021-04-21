@@ -13,4 +13,9 @@ class AuthConfigTest extends TestCase
 
         $this->assertEquals('bar', Auth::foo());
     }
+
+    public function testReturnsDefaultValueIfConfigValueNotFound()
+    {
+        $this->assertEquals('bar', Auth::foo('bar'));
+    }
 }

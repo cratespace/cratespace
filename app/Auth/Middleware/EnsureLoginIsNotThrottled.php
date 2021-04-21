@@ -5,9 +5,10 @@ namespace App\Auth\Middleware;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Auth\Events\Lockout;
+use App\Contracts\Auth\HandleAuthentication;
 use App\Http\Responses\Auth\LockoutResponse;
 
-class EnsureLoginIsNotThrottled extends Authenticate
+class EnsureLoginIsNotThrottled extends Authenticate implements HandleAuthentication
 {
     /**
      * Handle the incoming request.

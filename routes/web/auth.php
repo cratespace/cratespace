@@ -4,7 +4,9 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\RecoveryCodeController;
 use App\Http\Controllers\Auth\RegistrationController;
 use App\Http\Controllers\Auth\AuthenticationController;
+use App\Http\Controllers\Auth\ConfirmPasswordController;
 use App\Http\Controllers\Auth\OtherBrowserSessionsController;
+use App\Http\Controllers\Auth\ConfirmPasswordStatusController;
 use App\Http\Controllers\Auth\TwoFactorAuthenticationController;
 use App\Http\Controllers\Auth\TwoFactorAuthenticationStatusController;
 

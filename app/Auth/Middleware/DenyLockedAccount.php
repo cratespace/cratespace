@@ -4,8 +4,9 @@ namespace App\Auth\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
+use App\Contracts\Auth\HandleAuthentication;
 
-class DenyLockedAccount extends Authenticate
+class DenyLockedAccount extends Authenticate implements HandleAuthentication
 {
     /**
      * Handle an incoming request.

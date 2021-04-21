@@ -150,6 +150,6 @@ abstract class Authenticate
      */
     protected function username(): string
     {
-        return Auth::username(['email']);
+        return Auth::username('email');
     }
 }

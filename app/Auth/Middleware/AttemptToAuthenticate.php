@@ -4,8 +4,9 @@ namespace App\Auth\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
+use App\Contracts\Auth\HandleAuthentication;
 
-class AttemptToAuthenticate extends Authenticate
+class AttemptToAuthenticate extends Authenticate implements HandleAuthentication
 {
     /**
      * Handle the incoming request.

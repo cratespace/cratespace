@@ -1,16 +1,16 @@
 <?php
 
-namespace Cratespace\Sentinel\Jobs;
+namespace App\Jobs;
 
 use Throwable;
+use App\Support\HasUser;
 use Illuminate\Bus\Queueable;
 use Illuminate\Queue\SerializesModels;
-use Cratespace\Sentinel\Support\HasUser;
+use App\Contracts\Actions\DeletesUsers;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Contracts\Auth\Authenticatable;
-use Cratespace\Sentinel\Contracts\Actions\DeletesUsers;
 
 class DeleteUserJob implements ShouldQueue
 {
