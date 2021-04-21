@@ -52,7 +52,7 @@ class PersonalAccessToken extends Model
      *
      * @param string $token
      *
-     * @return \Cratespace\Sentinel\Models\PersonalAccessToken|null
+     * @return \App\Models\PersonalAccessToken|null
      */
     public static function findToken($token): ?PersonalAccessToken
     {
@@ -63,7 +63,9 @@ class PersonalAccessToken extends Model
         [$id, $token] = explode('|', $token, 2);
 
         if ($instance = static::find($id)) {
-            return hash_equals($instance->token, hash('sha256', $token)) ? $instance : null;
+            return hash_equals($instance->token, hash('sha256', $token))
+                ? $instance
+                : null;
         }
     }
 }

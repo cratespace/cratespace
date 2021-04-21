@@ -1,10 +1,12 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Auth\RecoveryCodeController;
 use App\Http\Controllers\Auth\RegistrationController;
 use App\Http\Controllers\Auth\AuthenticationController;
 use App\Http\Controllers\Auth\OtherBrowserSessionsController;
 use App\Http\Controllers\Auth\TwoFactorAuthenticationController;
+use App\Http\Controllers\Auth\TwoFactorAuthenticationStatusController;
 
 Route::group(['middleware' => ['guest']], function (): void {
     Route::get('/register', [RegistrationController::class, 'create'])->name('register');

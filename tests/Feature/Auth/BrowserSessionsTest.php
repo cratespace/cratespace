@@ -42,6 +42,21 @@ class BrowserSessionsTest extends TestCase implements Postable
         $response->assertSessionHasNoErrors();
     }
 
+    public function testValidPasswordIsRequired()
+    {
+        $user = create(User::class, [
+            'password' => Hash::make('cthuluEmployee'),
+        ]);
+
+        $response = $this->signIn($user)
+            ->delete('/user/other-browser-sessions', [
+                'password' => 'melvinEmployee',
+            ]);
+
+        $response->assertStatus(302);
+        $response->assertSessionHasErrors('password');
+    }
+
     /**
      * Provide only the necessary paramertes for a POST-able type request.
      *
