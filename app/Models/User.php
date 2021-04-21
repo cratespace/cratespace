@@ -23,7 +23,7 @@ class User extends Authenticatable
     use Tappable;
     use Notifiable;
     use HasFactory;
-    // use HasApiTokens;
+    use HasApiTokens;
     use ManagesRoles;
     use ManagesCustomer;
     use ManagesBusiness;

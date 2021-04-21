@@ -3,18 +3,18 @@
 namespace App\Models\Traits;
 
 use Illuminate\Support\Str;
+use App\Contracts\Auth\Access;
+use App\Actions\API\CreateAccessToken;
+use App\API\Tokens\PersonalAccessToken;
 use Illuminate\Database\Eloquent\Model;
-use Cratespace\Sentinel\Contracts\Auth\Access;
-use Cratespace\Sentinel\Actions\CreateAccessToken;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
-use Cratespace\Sentinel\Auth\Tokens\PersonalAccessToken;
 
 trait HasApiTokens
 {
     /**
      * The access token the user is using for the current request.
      *
-     * @var \Cratespace\Sentinel\Contracts\Auth\Access
+     * @var \App\Contracts\Auth\Access
      */
     protected $accessToken;
 
@@ -46,7 +46,7 @@ trait HasApiTokens
      * @param string $name
      * @param array  $abilities
      *
-     * @return \Cratespace\Sentinel\Actions\CreateAccessToken
+     * @return \App\Actions\CreateAccessToken
      */
     public function createToken(string $name, array $abilities = ['*']): CreateAccessToken
     {
@@ -62,7 +62,7 @@ trait HasApiTokens
     /**
      * Get the access token currently associated with the user.
      *
-     * @return \Cratespace\Sentinel\Contracts\Auth\Access
+     * @return \App\Contracts\Auth\Access
      */
     public function currentAccessToken(): Access
     {
@@ -72,7 +72,7 @@ trait HasApiTokens
     /**
      * Set the current access token for the user.
      *
-     * @param \Cratespace\Sentinel\Contracts\Auth\Access $accessToken
+     * @param \App\Contracts\Auth\Access $accessToken
      *
      * @return $this
      */
