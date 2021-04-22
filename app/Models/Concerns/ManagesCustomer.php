@@ -23,7 +23,7 @@ trait ManagesCustomer
             $data = $this->toArray();
         }
 
-        $customer = StripeCustomer::create([
+        $stripeProfile = StripeCustomer::create([
             'name' => $data['name'],
             'email' => $data['email'],
             'phone' => $data['phone'],
@@ -31,7 +31,7 @@ trait ManagesCustomer
 
         Customer::create([
             'user_id' => $this->id,
-            'stripe_id' => $customer->id,
+            'stripe_id' => $stripeProfile->id,
         ]);
 
         return $this;
