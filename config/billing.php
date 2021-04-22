@@ -85,4 +85,22 @@ return [
     */
 
     'service' => 0.03, // 3%
+
+    /*
+    |--------------------------------------------------------------------------
+    | Service Charge
+    |--------------------------------------------------------------------------
+    |
+    | This amount is by how much a percentage of the sales will be deducted
+    | from the business as charge for service provided by Cratespace.
+    |
+    */
+
+    'key_words' => [
+        'price',
+        'tax',
+        'subtotal',
+        'service',
+        'total',
+    ],
 ];

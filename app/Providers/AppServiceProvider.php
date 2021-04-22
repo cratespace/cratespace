@@ -2,12 +2,9 @@
 
 namespace App\Providers;
 
-use Illuminate\Contracts\Http\Kernel;
+use App\Support\Config;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\ServiceProvider;
-use App\Http\Middleware\ShareInertiaData;
-use App\Http\Middleware\HandleInertiaRequests;
-use App\Http\Middleware\EnsureFrontendRequestsAreStateful;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -18,6 +15,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
+        $this->registerCustomConfigRepository();
     }
 
     /**
@@ -28,26 +26,6 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->configureRedirectResponse();
-        $this->configureMiddleware();
-    }
-
-    /**
-     * Boot any Inertia related services.
-     *
-     * @return void
-     */
-    protected function configureMiddleware(): void
-    {
-        $kernel = $this->app->make(Kernel::class);
-
-        $kernel->appendMiddlewareToGroup('web', ShareInertiaData::class);
-
-        $kernel->appendToMiddlewarePriority(ShareInertiaData::class);
-        $kernel->appendToMiddlewarePriority(HandleInertiaRequests::class);
-
-        $kernel->prependToMiddlewarePriority(
-            EnsureFrontendRequestsAreStateful::class
-        );
     }
 
     /**
@@ -70,5 +48,15 @@ class AppServiceProvider extends ServiceProvider
                 'banner' => $message,
             ]);
         });
+    }
+
+    /**
+     * Register custom config repository class.
+     *
+     * @return void
+     */
+    protected function registerCustomConfigRepository(): void
+    {
+        $this->app->singleton(Config::class);
     }
 }
