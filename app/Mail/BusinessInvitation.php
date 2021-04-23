@@ -19,7 +19,7 @@ class BusinessInvitation extends Mailable implements ShouldQueue
      *
      * @var \App\Models\Invitation
      */
-    public $invitation;
+    protected $invitation;
 
     /**
      * Create a new message instance.
