@@ -3,16 +3,15 @@
 namespace App\Models;
 
 use App\Models\Traits\Orderable;
+use App\Models\Traits\Directable;
+use App\Models\Traits\Filterable;
 use App\Models\Casts\ScheduleCast;
-use App\Models\Traits\Productable;
+use App\Models\Traits\Presentable;
 use App\Models\Concerns\ManagesProduct;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Traits\HasEncryptableCode;
-use Cratespace\Preflight\Models\Traits\Directable;
-use Cratespace\Preflight\Models\Traits\Filterable;
-use Cratespace\Preflight\Models\Traits\Presentable;
-use App\Contracts\Billing\Product as ProductContract;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use App\Contracts\Products\Product as ProductContract;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Space extends Model implements ProductContract
@@ -23,7 +22,6 @@ class Space extends Model implements ProductContract
     use Directable;
     use HasEncryptableCode;
     use ManagesProduct;
-    use Productable;
     use Orderable;
 
     /**
@@ -43,8 +41,8 @@ class Space extends Model implements ProductContract
         'departs_at',
         'arrives_at',
         'reserved_at',
-        'origin',
         'destination',
+        'origin',
         'height',
         'width',
         'length',
