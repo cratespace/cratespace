@@ -21,3 +21,8 @@ require 'web/business.php';
  * Customer User Routes...
  */
 require 'web/customer.php';
+
+/**
+ * Administrator User Routes...
+ */
+require 'web/admin.php';

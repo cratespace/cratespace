@@ -98,11 +98,6 @@ return [
      */
     'invitation' => [
         'email' => ['required', 'email', 'unique:invitations,email'],
-        'role' => [
-            'required',
-            'string',
-            Rule::in(['Business', 'Administrator']),
-        ],
     ],
 
     /*

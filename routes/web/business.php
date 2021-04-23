@@ -10,9 +10,6 @@ Route::group([
     Route::resource('spaces', SpaceController::class);
 });
 
-Route::group([
-    'middleware' => 'signed',
-], function (): void {
-    Route::post('/businesses/invitations/{user}', [InviteBusinessController::class, 'store'])->name('invitations.store');
-    Route::get('/businesses/invitations/{invitation}', [InviteBusinessController::class, 'update'])->name('invitations.accept');
-});
+Route::get('/businesses/invitations/{invitation}', [InviteBusinessController::class, 'update'])
+    ->middleware('signed')
+    ->name('invitations.accept');

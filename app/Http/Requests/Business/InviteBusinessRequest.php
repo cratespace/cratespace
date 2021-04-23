@@ -16,11 +16,11 @@ class InviteBusinessRequest extends Request
      */
     public function authorize(): bool
     {
-        if (! $this->route('user')->hasRole('Business')) {
-            return false;
+        if ($this->business()->isBusiness()) {
+            return $this->isAllowed('create', new Invitation(), false);
         }
 
-        return $this->isAllowed('create', new Invitation(), false);
+        return false;
     }
 
     /**
@@ -34,16 +34,44 @@ class InviteBusinessRequest extends Request
     }
 
     /**
+     * Prepare the data for validation.
+     *
+     * @return void
+     */
+    protected function prepareForValidation(): void
+    {
+        $this->merge(['email' => $this->business()->email]);
+    }
+
+    /**
      * Handle a passed validation attempt.
      *
      * @param \Closure
      *
+     * @return void
+     */
+    public function tap(Closure $callback): void
+    {
+        call_user_func($callback, $this->user());
+    }
+
+    /**
+     * Get the business user the invitation will be sent to.
+     *
      * @return \App\Models\User
      */
-    public function tap(Closure $callback): User
+    protected function business(): User
     {
-        call_user_func($callback, $user = $this->route('user'));
+        return $this->route('user');
+    }
 
-        return $user;
+    /**
+     * Get custom messages for validator errors.
+     *
+     * @return array
+     */
+    public function messages()
+    {
+        return ['email' => __('This user has already been invited.')];
     }
 }

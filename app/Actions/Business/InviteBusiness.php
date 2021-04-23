@@ -3,7 +3,6 @@
 namespace App\Actions\Business;
 
 use App\Models\User;
-use RuntimeException;
 use App\Models\Invitation;
 use App\Events\BusinessInvited;
 use App\Mail\BusinessInvitation;

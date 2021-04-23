@@ -48,7 +48,7 @@ trait ManagesRoles
      *
      * @param string|null $role
      *
-     * @return \App\Models\Role|\Illuminate\Database\Eloquent\Collection|null $role
+     * @return mixed $role
      */
     public function findRole(?string $role = null)
     {
@@ -67,5 +67,15 @@ trait ManagesRoles
     public function roles(): BelongsToMany
     {
         return $this->belongsToMany(Role::class);
+    }
+
+    /**
+     * Determine if the user is an administrator.
+     *
+     * @return bool
+     */
+    public function isAdmin(): bool
+    {
+        return $this->hasRole('Administrator');
     }
 }

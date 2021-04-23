@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Models\Casts\AddressCast;
 use App\Models\Casts\SettingsCast;
+use App\Models\Traits\Responsible;
 use App\Models\Traits\HasApiTokens;
 use App\Models\Concerns\ManagesRoles;
 use App\Models\Traits\HasProfilePhoto;
@@ -23,6 +24,7 @@ class User extends Authenticatable
     use Tappable;
     use Notifiable;
     use HasFactory;
+    use Responsible;
     use HasApiTokens;
     use ManagesRoles;
     use ManagesCustomer;

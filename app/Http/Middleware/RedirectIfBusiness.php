@@ -18,7 +18,9 @@ class RedirectIfBusiness
      */
     public function handle(Request $request, Closure $next)
     {
-        if ($this->guard->check() && $this->guard->user()->isBusiness()) {
+        abort_if(is_null($request->user()), 403);
+
+        if ($request->user()->isBusiness()) {
             return redirect(RouteServiceProvider::HOME);
         }
 

@@ -5,7 +5,7 @@ namespace App\Http\Middleware;
 use Closure;
 use Illuminate\Http\Request;
 
-class RedirectIfCustomer
+class AllowAdministrator
 {
     /**
      * Handle an incoming request.
@@ -17,11 +17,9 @@ class RedirectIfCustomer
      */
     public function handle(Request $request, Closure $next)
     {
-        abort_if(is_null($request->user()), 403);
+        $isAdmin = ! is_null($request->user()) && $request->user()->isAdmin();
 
-        if ($request->user()->isCustomer()) {
-            return redirect(url('/'));
-        }
+        abort_unless($isAdmin, 403, 'You do not have admin privilages');
 
         return $next($request);
     }

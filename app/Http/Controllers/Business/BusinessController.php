@@ -40,7 +40,9 @@ class BusinessController extends Controller
     {
         $user = $creator->create($request->validated());
 
-        if ($request->has('invite')) {
+        if ((bool) $request->invite) {
+            $request->user()->setResponsibility($user);
+
             return redirect()->route('invitations.store', compact('user'));
         }
 

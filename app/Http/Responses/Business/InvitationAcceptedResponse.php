@@ -24,6 +24,6 @@ class InvitationAcceptedResponse extends Response implements Responsable
             : $this->redirectToRoute('password.reset', [
                 'email' => $this->content->email,
                 'token' => $token,
-            ]);
+            ], 303);
     }
 }
