@@ -6,6 +6,8 @@ use Tests\TestCase;
 use App\Models\Role;
 use App\Models\User;
 use Tests\Contracts\Postable;
+use Illuminate\Support\Facades\Queue;
+use Illuminate\Contracts\Auth\StatefulGuard;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class CreateNewBusinessTest extends TestCase implements Postable
@@ -36,7 +38,7 @@ class CreateNewBusinessTest extends TestCase implements Postable
 
     protected function tearDown(): void
     {
-        auth()->logout();
+        app(StatefulGuard::class)->logout();
     }
 
     public function testBusinessUserCanBeCreated()
@@ -46,11 +48,156 @@ class CreateNewBusinessTest extends TestCase implements Postable
         $response->assertStatus(303);
     }
 
-    public function testBusinessUserCanBeCreatedThroughJsonRequest()
+    public function testBusinessUserCanBeCreatedAndInvited()
     {
-        $response = $this->postJson('/businesses', $this->validParameters());
+        Queue::fake();
 
-        $response->assertStatus(201);
+        $response = $this->post('/businesses', $this->validParameters([
+            'invite' => true,
+        ]));
+
+        $response->assertStatus(302);
+    }
+
+    public function testOnlyBusinessUserCanBeInvited()
+    {
+        $response = $this->post('/businesses', $this->validParameters([
+            'invite' => true,
+            'type' => 'customer',
+        ]));
+
+        $response->assertStatus(302);
+        $response->assertSessionHasErrors('type');
+    }
+
+    public function testNameFieldIsRequired()
+    {
+        $response = $this->post('/businesses', $this->validParameters([
+            'name' => '',
+        ]));
+
+        $response->assertStatus(302);
+        $response->assertSessionHasErrors('name');
+    }
+
+    public function testEmailFieldIsRequired()
+    {
+        $response = $this->post('/businesses', $this->validParameters([
+            'email' => '',
+        ]));
+
+        $response->assertStatus(302);
+        $response->assertSessionHasErrors('email');
+    }
+
+    public function testBusinessFieldIsRequired()
+    {
+        $response = $this->post('/businesses', $this->validParameters([
+            'business' => '',
+        ]));
+
+        $response->assertStatus(302);
+        $response->assertSessionHasErrors('business');
+    }
+
+    public function testPhoneFieldIsRequired()
+    {
+        $response = $this->post('/businesses', $this->validParameters([
+            'phone' => '',
+        ]));
+
+        $response->assertStatus(302);
+        $response->assertSessionHasErrors('phone');
+    }
+
+    public function testTypeFieldIsRequired()
+    {
+        $response = $this->post('/businesses', $this->validParameters([
+            'type' => '',
+        ]));
+
+        $response->assertStatus(302);
+        $response->assertSessionHasErrors('type');
+    }
+
+    public function testPasswordFieldIsRequired()
+    {
+        $response = $this->post('/businesses', $this->validParameters([
+            'password' => '',
+        ]));
+
+        $response->assertStatus(302);
+        $response->assertSessionHasErrors('password');
+    }
+
+    public function testStreetFieldIsRequired()
+    {
+        $response = $this->post('/businesses', $this->validParameters([
+            'line1' => '',
+        ]));
+
+        $response->assertStatus(302);
+        $response->assertSessionHasErrors('line1');
+    }
+
+    public function testCityFieldIsRequired()
+    {
+        $response = $this->post('/businesses', $this->validParameters([
+            'city' => '',
+        ]));
+
+        $response->assertStatus(302);
+        $response->assertSessionHasErrors('city');
+    }
+
+    public function testStateFieldIsRequired()
+    {
+        $response = $this->post('/businesses', $this->validParameters([
+            'state' => '',
+        ]));
+
+        $response->assertStatus(302);
+        $response->assertSessionHasErrors('state');
+    }
+
+    public function testCountryFieldIsRequired()
+    {
+        $response = $this->post('/businesses', $this->validParameters([
+            'country' => '',
+        ]));
+
+        $response->assertStatus(302);
+        $response->assertSessionHasErrors('country');
+    }
+
+    public function testPostalcodeFieldIsRequired()
+    {
+        $response = $this->post('/businesses', $this->validParameters([
+            'postal_code' => '',
+        ]));
+
+        $response->assertStatus(302);
+        $response->assertSessionHasErrors('postal_code');
+    }
+
+    public function testRegistrationNumberFieldIsRequired()
+    {
+        $response = $this->post('/businesses', $this->validParameters([
+            'registration_number' => '',
+        ]));
+
+        $response->assertStatus(302);
+        $response->assertSessionHasErrors('registration_number');
+    }
+
+    public function testMCCFieldIsRequired()
+    {
+        $response = $this->post('/businesses', $this->validParameters([
+            'mcc' => '',
+        ]));
+
+        $response->assertStatus(302);
+        $response->assertSessionHasErrors('mcc');
     }
 
     /**
@@ -78,6 +225,7 @@ class CreateNewBusinessTest extends TestCase implements Postable
             'registration_number' => '01234567',
             'mcc' => '4798',
             'invite' => false,
+            'type' => 'business',
         ], $overrides);
     }
 }

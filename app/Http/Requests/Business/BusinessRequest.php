@@ -4,6 +4,7 @@ namespace App\Http\Requests\Business;
 
 use App\Models\User;
 use App\Http\Requests\Request;
+use Illuminate\Validation\Rule;
 
 class BusinessRequest extends Request
 {
@@ -24,6 +25,16 @@ class BusinessRequest extends Request
      */
     public function rules(): array
     {
-        return $this->getRulesFor(['register', 'business', 'address']);
+        return $this->getRulesFor([
+            'register',
+            'business',
+            'address'
+        ], [
+            'type' => [
+                'required',
+                'string',
+                Rule::in(['business'])
+            ],
+        ]);
     }
 }
