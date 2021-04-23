@@ -2,7 +2,7 @@
 
 namespace App\Contracts\Orders;
 
-interface ConfirmationNumberGenerator
+interface ConfirmationNumber extends ConfirmationNumberValidator
 {
     /**
      * Generate order confirmation number.

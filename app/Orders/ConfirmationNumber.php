@@ -2,18 +2,19 @@
 
 namespace App\Orders;
 
-use App\Contracts\Orders\ConfirmationNumberGenerator;
-use App\Contracts\Orders\ConfirmationNumberValidator;
-use App\Orders\GenerateConfirmationNumber as Generator;
-use App\Orders\ValidateConfirmationNumber as Validator;
+use App\Orders\Validators\LengthValidator;
+use App\Orders\Validators\AmbiguityValidator;
+use App\Orders\Validators\CharacterValidator;
+use App\Orders\Validators\UniquenessValidator;
 
-class ConfirmationNumber implements ConfirmationNumberGenerator, ConfirmationNumberValidator
+class ConfirmationNumber extends AbstractConfirmationNumber
 {
-    public function __construct(Generator $generator, Validator $validator)
-    {
-        $this->generator = $generator;
-        $this->validator = $validator;
-    }
+    /**
+     * The validators used by the routes.
+     *
+     * @var array
+     */
+    protected static $validators = [];
 
     /**
      * Generate order confirmation number.
@@ -22,7 +23,9 @@ class ConfirmationNumber implements ConfirmationNumberGenerator, ConfirmationNum
      */
     public function generate(): string
     {
-        return $this->generator->generate();
+        return substr(str_shuffle(str_repeat(
+            static::$characterPool, self::CHARACTER_LENGTH
+        )), 0, self::CHARACTER_LENGTH);
     }
 
     /**
@@ -34,6 +37,41 @@ class ConfirmationNumber implements ConfirmationNumberGenerator, ConfirmationNum
      */
     public function validate(string $confirmationNumber): bool
     {
-        return $this->validator->validate($confirmationNumber);
+        foreach (static::getValidators() as $validator) {
+            if (! $validator->validate($confirmationNumber)) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    /**
+     * Get the route validators for the instance.
+     *
+     * @return array
+     */
+    public static function getValidators()
+    {
+        if (! empty(static::$validators)) {
+            return static::$validators;
+        }
+
+        return static::$validators = [
+            new CharacterValidator(), new LengthValidator(),
+            new AmbiguityValidator(), new UniquenessValidator(),
+        ];
+    }
+
+    /**
+     * Set order confirmation number validators.
+     *
+     * @param array $validators
+     *
+     * @return void
+     */
+    public static function setValidators(array $validators = []): void
+    {
+        static::$validators = $validators;
     }
 }
