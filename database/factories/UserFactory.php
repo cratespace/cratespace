@@ -2,11 +2,11 @@
 
 namespace Database\Factories;
 
+use App\Models\Role;
 use App\Models\User;
 use App\Models\Business;
 use App\Models\Customer;
 use Illuminate\Support\Str;
-use Cratespace\Preflight\Models\Role;
 use App\Services\Stripe\Customer as StripeCustomer;
 use Illuminate\Database\Eloquent\Factories\Factory;
 

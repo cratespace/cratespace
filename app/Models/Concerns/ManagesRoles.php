@@ -10,9 +10,9 @@ trait ManagesRoles
     /**
      * Determine if user is assigned the given role.
      *
-     * @return bool
+     * @param \App\Models\Role|string $role
      *
-     * @param mixed $role
+     * @return bool
      */
     public function hasRole($role): bool
     {

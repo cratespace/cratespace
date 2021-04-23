@@ -8,6 +8,13 @@ use Illuminate\Database\Eloquent\Model;
 abstract class Presenter
 {
     /**
+     * Instance of model being presented.
+     *
+     * @var \Illuminate\Database\Eloquent\Model
+     */
+    protected $model;
+
+    /**
      * Create new view presenter instance.
      *
      * @param \Illuminate\Database\Eloquent\Model $model
@@ -34,20 +41,6 @@ abstract class Presenter
             return call_user_func([$this, $property]);
         }
 
-        return $this->handleExceptionThrow($property);
-    }
-
-    /**
-     * Throw exception if property or method does not exist in object.
-     *
-     * @param string $property
-     *
-     * @return void
-     *
-     * @throws \InvalidArgumentException
-     */
-    protected function handleExceptionThrow(string $property): void
-    {
         throw new InvalidArgumentException(sprintf('%s does not respond to the property or method "%s"', static::class, $property));
     }
 }
