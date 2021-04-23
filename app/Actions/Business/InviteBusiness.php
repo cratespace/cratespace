@@ -4,6 +4,7 @@ namespace App\Actions\Business;
 
 use App\Models\User;
 use App\Models\Invitation;
+use App\Events\BusinessInvited;
 use App\Mail\BusinessInvitation;
 use Illuminate\Support\Facades\Mail;
 
@@ -23,6 +24,8 @@ class InviteBusiness
         Mail::to($user->email)->send(
             new BusinessInvitation($invitation)
         );
+
+        BusinessInvited::dispatch($invitation);
 
         return $invitation;
     }

@@ -7,7 +7,6 @@ use RuntimeException;
 use App\Models\Payout;
 use App\Models\Business;
 use App\Models\Invitation;
-use App\Events\BusinessInvited;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
@@ -99,11 +98,7 @@ trait ManagesBusiness
             throw new RuntimeException('This user has already been invited');
         }
 
-        $invitation = $this->invitation()->create(['email' => $this->email]);
-
-        BusinessInvited::dispatch($invitation);
-
-        return $invitation;
+        return $this->invitation()->create(['email' => $this->email]);
     }
 
     /**
