@@ -17,7 +17,9 @@ class RedirectIfCustomer
      */
     public function handle(Request $request, Closure $next)
     {
-        abort_if(is_null($request->user()), 403);
+        if (is_null($request->user())) {
+            return redirect()->route('login');
+        }
 
         if ($request->user()->isCustomer()) {
             return redirect(url('/'));
