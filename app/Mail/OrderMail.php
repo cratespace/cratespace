@@ -4,7 +4,7 @@ namespace App\Mail;
 
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
-use App\Contracts\Billing\Order;
+use App\Contracts\Orders\Order;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
@@ -16,14 +16,14 @@ class OrderMail extends Mailable implements ShouldQueue
     /**
      * The instance of the order.
      *
-     * @var \App\Contracts\Billing\Order
+     * @var \App\Contracts\Orders\Order
      */
-    public $order;
+    protected $order;
 
     /**
      * Create a new message instance.
      *
-     * @param \App\Contracts\Billing\Order $order
+     * @param \App\Contracts\Orders\Order $order
      *
      * @return void
      */
