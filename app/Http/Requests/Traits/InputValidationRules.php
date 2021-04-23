@@ -3,6 +3,7 @@
 namespace App\Http\Requests\Traits;
 
 use App\Rules\PasswordRule;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Config;
 
 trait InputValidationRules
@@ -10,17 +11,29 @@ trait InputValidationRules
     /**
      * Get validation rules for specified validation category.
      *
-     * @param string $validationCategory
-     * @param array  $additionalRules
+     * @param string|array $validationCategory
+     * @param array        $additionalRules
      *
      * @return array
      */
-    protected function getRulesFor(string $validationCategory, array $additionalRules = []): array
+    protected function getRulesFor($validationCategory, array $additionalRules = []): array
     {
-        return array_merge(
-            Config::get("rules.{$validationCategory}", []),
-            $additionalRules
-        );
+        $rules = [];
+
+        if (is_string($validationCategory)) {
+            $validationCategory = Arr::wrap($validationCategory);
+        }
+
+        foreach ($validationCategory as $category) {
+            $rules = array_merge($rules, $this->getRules($category));
+        }
+
+        return array_merge($rules, $additionalRules);
+    }
+
+    public function getRules(string $category): array
+    {
+        return Config::get("rules.{$category}", []);
     }
 
     /**

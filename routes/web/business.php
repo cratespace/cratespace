@@ -13,5 +13,6 @@ Route::group([
 Route::group([
     'middleware' => 'signed',
 ], function (): void {
+    Route::post('/businesses/{user}', [InviteBusinessController::class, 'store'])->name('invitations.store');
     Route::get('/businesses/{invitation}', [InviteBusinessController::class, 'update'])->name('invitations.accept');
 });

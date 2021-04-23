@@ -4,12 +4,15 @@ namespace App\Actions\Auth;
 
 use App\Models\User;
 use App\Support\Util;
+use App\Actions\Traits\Fillable;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use App\Contracts\Actions\CreatesNewUsers;
 
 class CreateNewUser implements CreatesNewUsers
 {
+    use Fillable;
+
     /**
      * Create a newly registered user.
      *
@@ -20,7 +23,7 @@ class CreateNewUser implements CreatesNewUsers
     public function create(array $data): User
     {
         return DB::transaction(function () use ($data): User {
-            $user = $this->createUser($data);
+            $user = $this->createUser($this->filterFillable(User::class, $data));
 
             $user->tap(function (User $user) use ($data): void {
                 $this->isForBusiness($data)

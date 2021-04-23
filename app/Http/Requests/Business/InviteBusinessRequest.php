@@ -2,6 +2,8 @@
 
 namespace App\Http\Requests\Business;
 
+use Closure;
+use App\Models\User;
 use App\Models\Invitation;
 use App\Http\Requests\Request;
 
@@ -29,5 +31,19 @@ class InviteBusinessRequest extends Request
     public function rules(): array
     {
         return $this->getRulesFor('invitation');
+    }
+
+    /**
+     * Handle a passed validation attempt.
+     *
+     * @param \Closure
+     *
+     * @return \App\Models\User
+     */
+    public function tap(Closure $callback): User
+    {
+        call_user_func($callback, $user = $this->route('user'));
+
+        return $user;
     }
 }

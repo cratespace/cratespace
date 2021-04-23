@@ -2,9 +2,9 @@
 
 namespace App\Jobs;
 
+use Throwable;
 use App\Models\User;
 use Illuminate\Bus\Queueable;
-use App\Exceptions\UserAlreadyOnboard;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -46,7 +46,7 @@ class InviteBusiness implements ShouldQueue
     {
         try {
             $action->invite($this->user);
-        } catch (UserAlreadyOnboard $e) {
+        } catch (Throwable $e) {
             $this->fail($e);
         }
     }

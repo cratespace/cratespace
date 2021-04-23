@@ -3,11 +3,11 @@
 namespace App\Models\Concerns;
 
 use App\Models\User;
+use RuntimeException;
 use App\Models\Payout;
 use App\Models\Business;
 use App\Models\Invitation;
 use App\Events\BusinessInvited;
-use App\Exceptions\UserAlreadyOnboard;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
@@ -91,12 +91,12 @@ trait ManagesBusiness
      *
      * @return \App\Models\Invitation
      *
-     * @throws \App\Exceptions\UserAlreadyOnboard
+     * @throws \RuntimeException
      */
     public function invite(): Invitation
     {
         if ($this->invited()) {
-            throw new UserAlreadyOnboard('This user has already been invited');
+            throw new RuntimeException('This user has already been invited');
         }
 
         $invitation = $this->invitation()->create(['email' => $this->email]);
