@@ -4,12 +4,11 @@ namespace App\Models\Concerns;
 
 use Carbon\Carbon;
 use App\Events\OrderPlaced;
+use App\Contracts\Orders\Order;
 use App\Events\ProductReleased;
 use App\Events\ProductReserved;
-use App\Contracts\Billing\Order;
 use App\Services\Stripe\Customer;
 use App\Contracts\Billing\Payment;
-use App\Contracts\Billing\Product;
 
 trait ManagesProduct
 {
@@ -82,7 +81,7 @@ trait ManagesProduct
      *
      * @param \App\Contracts\Billing\Payment $payment
      *
-     * @return \App\Contracts\Billing\Order
+     * @return \App\Contracts\Orders\Order
      */
     public function placeOrder(Payment $payment): Order
     {
@@ -152,14 +151,14 @@ trait ManagesProduct
     public function details(): array
     {
         return array_merge($this->toArray(), [
-            'key' => $this->getTable(),
+            'product_type' => $this->getTable(),
         ]);
     }
 
     /**
      * Get the order associated with the product.
      *
-     * @return \App\Contracts\Billing\Order
+     * @return \App\Contracts\Orders\Order
      */
     public function getOrderDetails(): Order
     {

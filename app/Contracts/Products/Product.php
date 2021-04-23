@@ -2,6 +2,9 @@
 
 namespace App\Contracts\Products;
 
+use App\Contracts\Orders\Order;
+use App\Contracts\Billing\Payment;
+
 interface Product
 {
     /**
@@ -51,7 +54,7 @@ interface Product
      *
      * @param \App\Contracts\Billing\Payment $payment
      *
-     * @return \App\Contracts\Billing\Order
+     * @return \App\Contracts\Orders\Order
      */
     public function placeOrder(Payment $payment): Order;
 
@@ -72,7 +75,7 @@ interface Product
     /**
      * Get the order associated with the product.
      *
-     * @return \App\Contracts\Billing\Order
+     * @return \App\Contracts\Orders\Order
      */
     public function getOrderDetails(): Order;
 

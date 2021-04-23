@@ -2,7 +2,7 @@
 
 namespace App\Events;
 
-use App\Contracts\Billing\Product;
+use App\Contracts\Products\Product;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Broadcasting\InteractsWithSockets;
