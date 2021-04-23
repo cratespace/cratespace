@@ -14,7 +14,7 @@ class SeedDefaultUserCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'preflight:user';
+    protected $signature = 'cs:user';
 
     /**
      * The console command description.
@@ -57,6 +57,7 @@ class SeedDefaultUserCommand extends Command
             'name' => $this->ask('Full name'),
             'username' => $this->ask('Username'),
             'email' => $this->ask('Email address'),
+            'phone' => $this->ask('Phone number'),
             'password' => $this->ask('Password'),
             'email_verified_at' => now(),
             'remember_token' => Str::random(10),

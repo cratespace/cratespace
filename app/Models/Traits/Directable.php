@@ -13,9 +13,7 @@ trait Directable
      */
     public function getPathAttribute(): string
     {
-        $index = $this->index ?? $this->getIndex();
-
-        return route("{$index}.show", $this);
+        return route("{$this->getIndex()}.show", $this);
     }
 
     /**

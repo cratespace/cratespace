@@ -12,7 +12,7 @@ class PublishConfigJsCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'preflight:configjs';
+    protected $signature = 'cs:configjs';
 
     /**
      * The console command description.
