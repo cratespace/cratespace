@@ -1,11 +1,16 @@
 <?php
 
+use Inertia\Inertia;
 use Illuminate\Support\Facades\Route;
 
 /*
  * Landing Page Route...
  */
-Route::get('/', fn () => 'Hello');
+Route::get('/', function () {
+    auth()->logout();
+
+    return Inertia::render('Welcome/Index');
+})->name('welcome');
 
 /**
  * User Authentication Routes...

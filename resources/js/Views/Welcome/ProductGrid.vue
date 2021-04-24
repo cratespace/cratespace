@@ -137,7 +137,7 @@
                         </div>
 
                         <div class="mt-6">
-                            <app-button href="#" :link="true" class="justify-center w-full px-5 py-3">
+                            <app-button mode="primary" href="#" :link="true" class="justify-center w-full px-5 py-3">
                                 <span class="text-base">Buy for $12</span>
                             </app-button>
                         </div>

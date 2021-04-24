@@ -75,9 +75,9 @@ interface Product
     /**
      * Get the order associated with the product.
      *
-     * @return \App\Contracts\Orders\Order
+     * @return mixed
      */
-    public function getOrderDetails(): Order;
+    public function order();
 
     /**
      * Determine if the product is nearing it's expiration.

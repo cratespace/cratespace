@@ -101,6 +101,13 @@ class PublishConfigJsCommand extends Command
         return static::$configFile;
     }
 
+    /**
+     * Set the name of the file where all configurations will be published to.
+     *
+     * @param string $file
+     *
+     * @return void
+     */
     public static function setConfigFile(string $file): void
     {
         static::$configFile = $file;

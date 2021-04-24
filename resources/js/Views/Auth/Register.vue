@@ -1,39 +1,7 @@
 <template>
     <auth-layout>
         <template #left>
-            <div class="hidden md:block rounded-xl overflow-hidden h-full">
-                <div class="px-4 sm:px-6 py-5 bg-gradient-to-br from-blue-700 to-blue-500 h-full">
-                    <div>
-                        <logo :title="config('app.name')" classes="h-16 w-16 text-blue-500"></logo>
-                    </div>
-
-                    <div class="mt-6">
-                        <div>
-                            <h6 class="text-white font-bold">Get started quickly</h6>
-
-                            <p class="text-blue-100 text-sm">
-                                Integrate with developer-friendly APIs or choose low-code or pre-built solutions.
-                            </p>
-                        </div>
-
-                        <div class="mt-6">
-                            <h6 class="text-white font-bold">Support any business model</h6>
-
-                            <p class="text-blue-100 text-sm">
-                                E-commerce, subscriptions, SaaS platforms, marketplaces, and more – all within a unified platform.
-                            </p>
-                        </div>
-
-                        <div class="mt-6">
-                            <h6 class="text-white font-bold">Join millions of businesses</h6>
-
-                            <p class="text-blue-100 text-sm">
-                                Stripe is trusted by ambitious startups and enterprises of every size.
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <advertisement></advertisement>
         </template>
 
         <template #right>
@@ -104,20 +72,24 @@
 
 <script>
 import AuthLayout from '@/Views/Layouts/AuthLayout';
-import Logo from '@/Views/Components/Logos/Logo';
 import AppLink from '@/Views/Components/Base/Link';
 import AppInput from '@/Views/Components/Inputs/Input';
 import AppButton from '@/Views/Components/Buttons/Button';
 import Checkbox from '@/Views/Components/Inputs/Checkbox';
+import Logo from '@/Views/Components/Logos/Logo';
+import Advertisement from './Advertisement.vue';
 
 export default {
+    props: ['type'],
+
     components: {
         AuthLayout,
-        Logo,
         AppLink,
         AppInput,
         AppButton,
-        Checkbox
+        Checkbox,
+        Logo,
+        Advertisement
     },
 
     data() {
@@ -128,7 +100,7 @@ export default {
                 phone: null,
                 password: null,
                 password_confirmation: null,
-                type: 'customer',
+                type: this.type ? this.type : 'customer',
                 remember: true
             }),
         }

@@ -154,14 +154,4 @@ trait ManagesProduct
             'product_type' => $this->getTable(),
         ]);
     }
-
-    /**
-     * Get the order associated with the product.
-     *
-     * @return \App\Contracts\Orders\Order
-     */
-    public function getOrderDetails(): Order
-    {
-        return $this->order;
-    }
 }
