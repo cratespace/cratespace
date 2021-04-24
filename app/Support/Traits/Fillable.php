@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Actions\Traits;
+namespace App\Support\Traits;
 
 trait Fillable
 {

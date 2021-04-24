@@ -4,7 +4,7 @@ namespace App\Actions\Auth;
 
 use App\Models\User;
 use App\Support\Util;
-use App\Actions\Traits\Fillable;
+use App\Support\Traits\Fillable;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use App\Contracts\Actions\CreatesNewUsers;

@@ -2,7 +2,7 @@
 
 namespace App\Actions\Product;
 
-use App\Actions\Traits\Fillable;
+use App\Support\Traits\Fillable;
 use App\Contracts\Actions\CreatesNewResources;
 
 class CreateNewSpace implements CreatesNewResources
