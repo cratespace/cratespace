@@ -18,9 +18,9 @@ class CreateNewUser implements CreatesNewUsers
      *
      * @param array $data
      *
-     * @return \App\Model\User
+     * @return mixed
      */
-    public function create(array $data): User
+    public function create(array $data)
     {
         return DB::transaction(function () use ($data): User {
             $user = $this->createUser($this->filterFillable(User::class, $data));

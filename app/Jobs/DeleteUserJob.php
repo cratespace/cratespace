@@ -3,6 +3,7 @@
 namespace App\Jobs;
 
 use Throwable;
+use App\Models\User;
 use App\Support\HasUser;
 use Illuminate\Bus\Queueable;
 use Illuminate\Queue\SerializesModels;
@@ -10,7 +11,6 @@ use App\Contracts\Actions\DeletesUsers;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
-use Illuminate\Contracts\Auth\Authenticatable;
 
 class DeleteUserJob implements ShouldQueue
 {
@@ -23,18 +23,18 @@ class DeleteUserJob implements ShouldQueue
     /**
      * Instance of user requested to be deleted.
      *
-     * @var \Illuminate\Contracts\Auth\Authenticatable
+     * @var \App\Models\User
      */
     protected $user;
 
     /**
      * Create a new job instance.
      *
-     * @param \Illuminate\Contracts\Auth\Authenticatable
+     * @param \App\Models\User
      *
      * @return void
      */
-    public function __construct(Authenticatable $user)
+    public function __construct(User $user)
     {
         $this->user = $user;
     }
@@ -51,9 +51,7 @@ class DeleteUserJob implements ShouldQueue
         try {
             $deletor->delete($this->user);
         } catch (Throwable $e) {
-            logger()->error($e->getMessage(), ['user' => $this->user]);
-
-            throw $e;
+            $this->fail($e);
         }
     }
 }

@@ -3,7 +3,7 @@
 namespace App\Events;
 
 use App\Models\User;
-use App\Contracts\Billing\Order;
+use App\Contracts\Orders\Order;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Broadcasting\InteractsWithSockets;
@@ -17,14 +17,14 @@ class OrderEvent
     /**
      * The order instance.
      *
-     * @var \App\Models\Order
+     * @var \App\Contracts\Orders\Order
      */
     public $order;
 
     /**
      * Create a new event instance.
      *
-     * @param \App\Contracts\Purchases\Order $order
+     * @param \App\Contracts\Orders\Order $order
      *
      * @return void
      */

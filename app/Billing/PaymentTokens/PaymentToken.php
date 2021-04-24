@@ -9,7 +9,7 @@ abstract class PaymentToken
     /**
      * The payment token model instance.
      *
-     * @var \App\Models\PaymentToken]
+     * @var \App\Models\PaymentToken
      */
     protected $tokens;
 

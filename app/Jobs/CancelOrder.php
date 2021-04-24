@@ -4,7 +4,7 @@ namespace App\Jobs;
 
 use Throwable;
 use Illuminate\Bus\Queueable;
-use App\Contracts\Billing\Order;
+use App\Contracts\Orders\Order;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -21,14 +21,14 @@ class CancelOrder implements ShouldQueue
     /**
      * Instance of order.
      *
-     * @var \App\Contracts\Billing\Order
+     * @var \App\Contracts\Orders\Order
      */
     protected $order;
 
     /**
      * Create a new job instance.
      *
-     * @param \App\Contracts\Billing\Order $order
+     * @param \App\Contracts\Orders\Order $order
      *
      * @return void
      */

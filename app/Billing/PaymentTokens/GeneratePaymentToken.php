@@ -2,7 +2,7 @@
 
 namespace App\Billing\PaymentTokens;
 
-use App\Contracts\Billing\Product;
+use App\Contracts\Products\Product;
 use Illuminate\Support\Facades\Hash;
 
 class GeneratePaymentToken extends PaymentToken
@@ -10,7 +10,7 @@ class GeneratePaymentToken extends PaymentToken
     /**
      * Generate a new payment token.
      *
-     * @param \App\Contracts\Billing\Product $product
+     * @param \App\Contracts\Products\Product $product
      *
      * @return string
      */
