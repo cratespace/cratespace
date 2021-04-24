@@ -2,19 +2,14 @@
 
 namespace App\Models;
 
-use App\Support\Money;
-use App\Events\OrderCancelled;
 use App\Models\Casts\PaymentCast;
 use App\Models\Traits\Filterable;
-use App\Contracts\Products\Product;
-use App\Facades\ConfirmationNumber;
 use Illuminate\Database\Eloquent\Model;
-use App\Contracts\Orders\Order as OrderContract;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class Order extends Model implements OrderContract
+class Order extends Model
 {
     use HasFactory;
     use Filterable;
@@ -83,100 +78,6 @@ class Order extends Model implements OrderContract
     public function orderable(): MorphTo
     {
         return $this->morphTo();
-    }
-
-    /**
-     * Get the total amount that will be paid.
-     *
-     * @return string
-     */
-    public function amount(): string
-    {
-        return Money::format($this->amount);
-    }
-
-    /**
-     * Get the raw total amount that will be paid.
-     *
-     * @return int
-     */
-    public function rawAmount(): int
-    {
-        return $this->amount;
-    }
-
-    /**
-     * Determine if the payment was successfully completed.
-     *
-     * @return bool
-     */
-    public function paid(): bool
-    {
-        return true;
-    }
-
-    /**
-     * Get the product associated with this order.
-     *
-     * @return \App\Contracts\Billing\Product
-     */
-    public function product(): Product
-    {
-        return $this->orderable;
-    }
-
-    /**
-     * Determine if the order has been cofirmed.
-     *
-     * @return bool
-     */
-    public function confirmed(): bool
-    {
-        if (! is_null($this->confirmation_number)) {
-            return ConfirmationNumber::validate($this->confirmation_number);
-        }
-
-        return false;
-    }
-
-    /**
-     * Confirm order for customer.
-     *
-     * @return void
-     */
-    public function confirm(): void
-    {
-        if (! is_null($this->confirmation_number)) {
-            return;
-        }
-
-        $this->forceFill([
-            'confirmation_number' => ConfirmationNumber::generate(),
-        ])->saveQuietly();
-    }
-
-    /**
-     * Cancel this order.
-     *
-     * @return void
-     */
-    public function cancel(): void
-    {
-        $this->product()->release();
-
-        OrderCancelled::dispatch($this);
-
-        $this->delete();
-    }
-
-    /**
-     * Determine if the order can be cancelled.
-     *
-     * @return bool
-     */
-    public function canCancel(): bool
-    {
-        return ! $this->product()->nearingExpiration();
     }
 
     /**
