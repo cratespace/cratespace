@@ -1,17 +1,26 @@
 <?php
 
-namespace App\Models\Concerns;
+namespace App\Products\Products;
 
 use Carbon\Carbon;
 use App\Events\OrderPlaced;
 use App\Contracts\Orders\Order;
 use App\Events\ProductReleased;
 use App\Events\ProductReserved;
+use App\Models\Traits\Orderable;
 use App\Services\Stripe\Customer;
 use App\Contracts\Billing\Payment;
+use App\Contracts\Products\Product;
+use App\Models\Space as SpaceModel;
+use App\Models\Traits\HasEncryptableCode;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-trait ManagesProduct
+class Space extends SpaceModel implements Product
 {
+    use Orderable;
+    use HasFactory;
+    use HasEncryptableCode;
+
     /**
      * The unique code used to identify the product.
      *
