@@ -19,7 +19,7 @@ class AllowAdministrator
     {
         $isAdmin = ! is_null($request->user()) && $request->user()->isAdmin();
 
-        abort_unless($isAdmin, 403, 'You do not have admin privilages');
+        abort_unless($isAdmin, 403, 'You do not have admin privileges');
 
         return $next($request);
     }

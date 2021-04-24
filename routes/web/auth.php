@@ -1,13 +1,23 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Auth\PasswordController;
+use App\Http\Controllers\Auth\CsrfCookieController;
+use App\Http\Controllers\Auth\UserProfileController;
+use App\Http\Controllers\Auth\VerifyEmailController;
 use App\Http\Controllers\Auth\RecoveryCodeController;
 use App\Http\Controllers\Auth\RegistrationController;
+use App\Http\Controllers\Auth\PasswordResetController;
 use App\Http\Controllers\Auth\AuthenticationController;
 use App\Http\Controllers\Auth\ConfirmPasswordController;
+use App\Http\Controllers\Auth\TwoFactorQrCodeController;
+use App\Http\Controllers\Auth\UserProfilePhotoController;
+use App\Http\Controllers\Auth\PasswordResetLinkController;
 use App\Http\Controllers\Auth\OtherBrowserSessionsController;
 use App\Http\Controllers\Auth\ConfirmPasswordStatusController;
+use App\Http\Controllers\Auth\EmailVerificationPromptController;
 use App\Http\Controllers\Auth\TwoFactorAuthenticationController;
+use App\Http\Controllers\Auth\EmailVerificationNotificationController;
 use App\Http\Controllers\Auth\TwoFactorAuthenticationStatusController;
 
 Route::group(['middleware' => ['guest']], function (): void {
