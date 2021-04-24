@@ -7,7 +7,7 @@ use App\Http\Controllers\Business\InviteBusinessController;
 Route::group([
     'middleware' => 'auth.business',
 ], function (): void {
-    Route::resource('spaces', SpaceController::class);
+    //
 });
 
 Route::get('/businesses/invitations/{invitation}', [InviteBusinessController::class, 'update'])

@@ -6,6 +6,9 @@ use Tests\TestCase;
 use Illuminate\Http\Request;
 use App\Services\Ipinfo\Client;
 
+/**
+ * @group Ipinfo
+ */
 class ClientTest extends TestCase
 {
     public function testGetIpDetails()

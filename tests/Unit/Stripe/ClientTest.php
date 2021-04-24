@@ -11,6 +11,9 @@ use Stripe\Service\CustomerService;
 use Stripe\Service\PaymentIntentService;
 use Stripe\Service\PaymentMethodService;
 
+/**
+ * @group Stripe
+ */
 class ClientTest extends TestCase
 {
     public function testMakeInstance()
