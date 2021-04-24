@@ -2,7 +2,6 @@
 
 namespace App\Http\Requests\Business;
 
-use App\Models\User;
 use App\Models\Invitation;
 use App\Http\Requests\Request;
 

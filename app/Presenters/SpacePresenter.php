@@ -4,7 +4,6 @@ namespace App\Presenters;
 
 use App\Support\Money;
 use App\Contracts\Billing\Product;
-use Cratespace\Preflight\Presenters\Presenter;
 
 class SpacePresenter extends Presenter
 {

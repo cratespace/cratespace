@@ -36,6 +36,13 @@ class PublishConfigJsCommand extends Command
     protected $configPath;
 
     /**
+     * Config JSON file.
+     *
+     * @var string
+     */
+    protected static $configFile = 'items.json';
+
+    /**
      * Create a new command instance.
      *
      * @return void
@@ -57,7 +64,9 @@ class PublishConfigJsCommand extends Command
     {
         $this->publishConfigJs();
 
-        $this->info('Config items published to json file [items.json].');
+        $file = static::getConfigFile();
+
+        $this->info("Config items published to json file [{$file}].");
 
         return 0;
     }
@@ -73,12 +82,27 @@ class PublishConfigJsCommand extends Command
             $this->files->makeDirectory($this->configPath, 0777, true);
         }
 
-        $configItems = $this->configPath . \DIRECTORY_SEPARATOR . 'items.json';
+        $configItems = $this->configPath . \DIRECTORY_SEPARATOR . static::getConfigFile();
 
         if (! $this->files->exists($configItems)) {
             \touch($configItems);
         }
 
         $this->files->put($configItems, json_encode(config()->all()));
+    }
+
+    /**
+     * Get name of file where all configurations will be published.
+     *
+     * @return string
+     */
+    public static function getConfigFile(): string
+    {
+        return static::$configFile;
+    }
+
+    public static function setConfigFile(string $file): void
+    {
+        static::$configFile = $file;
     }
 }

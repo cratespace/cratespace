@@ -7,7 +7,6 @@ use App\Models\Space;
 use App\Models\Business;
 use App\Filters\SpaceFilter;
 use Illuminate\Support\Facades\DB;
-use Cratespace\Preflight\Queries\Query;
 use Illuminate\Database\Eloquent\Builder;
 
 class SpaceQuery extends Query
