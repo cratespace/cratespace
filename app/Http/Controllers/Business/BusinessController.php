@@ -5,11 +5,14 @@ namespace App\Http\Controllers\Business;
 use Inertia\Inertia;
 use App\Http\Controllers\Controller;
 use App\Contracts\Actions\CreatesNewUsers;
+use App\Http\Controllers\Traits\Invitable;
 use App\Http\Requests\Business\BusinessRequest;
 use App\Http\Responses\Business\BusinessResponse;
 
 class BusinessController extends Controller
 {
+    use Invitable;
+
     /**
      * Display a listing of the resource.
      *
@@ -43,7 +46,7 @@ class BusinessController extends Controller
         if ((bool) $request->invite) {
             $request->user()->setResponsibility($user);
 
-            return redirect()->route('invitations.store', compact('user'));
+            $this->invite($request, $user);
         }
 
         return BusinessResponse::dispatch($user);

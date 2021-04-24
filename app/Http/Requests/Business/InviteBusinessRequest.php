@@ -2,7 +2,6 @@
 
 namespace App\Http\Requests\Business;
 
-use Closure;
 use App\Models\User;
 use App\Models\Invitation;
 use App\Http\Requests\Request;
@@ -40,28 +39,26 @@ class InviteBusinessRequest extends Request
      */
     protected function prepareForValidation(): void
     {
-        $this->merge(['email' => $this->business()->email]);
-    }
+        $this->merge(['email' => $this->business('email')]);
 
-    /**
-     * Handle a passed validation attempt.
-     *
-     * @param \Closure
-     *
-     * @return void
-     */
-    public function tap(Closure $callback): void
-    {
-        call_user_func($callback, $this->user());
+        if ($this->user()->isAdmin()) {
+            $this->user()->setResponsibility($this->business());
+        }
     }
 
     /**
      * Get the business user the invitation will be sent to.
      *
-     * @return \App\Models\User
+     * @param string|null $attribute
+     *
+     * @return mixed
      */
-    protected function business(): User
+    protected function business(?string $attribute = null)
     {
+        if (! is_null($attribute)) {
+            return $this->route('user')->{$attribute};
+        }
+
         return $this->route('user');
     }
 

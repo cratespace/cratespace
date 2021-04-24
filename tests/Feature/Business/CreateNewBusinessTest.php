@@ -5,9 +5,9 @@ namespace Tests\Feature\Business;
 use Tests\TestCase;
 use App\Models\Role;
 use App\Models\User;
+use App\Jobs\InviteBusiness;
 use Tests\Contracts\Postable;
 use Illuminate\Support\Facades\Queue;
-use Illuminate\Contracts\Auth\StatefulGuard;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class CreateNewBusinessTest extends TestCase implements Postable
@@ -38,7 +38,7 @@ class CreateNewBusinessTest extends TestCase implements Postable
 
     protected function tearDown(): void
     {
-        app(StatefulGuard::class)->logout();
+        auth()->logout();
     }
 
     public function testBusinessUserCanBeCreated()
@@ -56,7 +56,9 @@ class CreateNewBusinessTest extends TestCase implements Postable
             'invite' => true,
         ]));
 
-        $response->assertStatus(302);
+        Queue::assertPushed(InviteBusiness::class);
+
+        $response->assertStatus(303);
     }
 
     public function testOnlyBusinessUserCanBeInvited()
