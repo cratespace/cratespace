@@ -174,6 +174,7 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
         App\Providers\BillingServiceProvider::class,
+        App\Providers\ProductFactoryServiceProvider::class,
         App\Providers\TelescopeServiceProvider::class,
         App\Providers\IpinfoServiceProvider::class,
         App\Providers\StripeServiceProvider::class,

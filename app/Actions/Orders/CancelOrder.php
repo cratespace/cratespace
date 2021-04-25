@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Actions\Product;
+namespace App\Actions\Orders;
 
+use App\Contracts\Orders\Order;
 use App\Events\PaymentRefunded;
 use App\Services\Stripe\Refund;
-use App\Contracts\Billing\Order;
 use App\Contracts\Billing\Payment;
 use Illuminate\Support\Facades\DB;
 use App\Actions\Business\CancelPayout;
@@ -14,7 +14,7 @@ class CancelOrder
     /**
      * Cancel the given order.
      *
-     * @param \App\Contracts\Billing\Order $order
+     * @param \App\Contracts\Orders\Order $order
      *
      * @return void
      */

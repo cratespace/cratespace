@@ -23,10 +23,10 @@
         "laravel-mix": "^6.0.18",
         "lodash": "^4.17.21",
         "moment": "^2.29.1",
-        "postcss": "^8.2.10",
+        "postcss": "^8.2.12",
         "postcss-import": "^14.0.1",
-        "stripe": "^8.144.0",
-        "tailwindcss": "^2.1.1",
+        "stripe": "^8.145.0",
+        "tailwindcss": "^2.1.2",
         "vue": "^3.0.11",
         "vue-flatpickr-component": "^9.0.3",
         "vue-loader": "^16.2.0"

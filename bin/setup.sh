@@ -2,9 +2,9 @@
 
 function main() {
     installProject
-    # if [ $? -eq 0 ]; then
-    #     php artisan cs:install
-    # fi
+    if [ $? -eq 0 ]; then
+        php artisan cs:install
+    fi
 }
 
 # Install Composer & JS dependencies, restructure project directories and compile assets.

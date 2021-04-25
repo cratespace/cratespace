@@ -2,7 +2,7 @@
 
 namespace App\Providers;
 
-use App\Models\Order;
+use App\Orders\Order;
 use App\Orders\ConfirmationNumber;
 use Illuminate\Support\ServiceProvider;
 use App\Billing\PaymentGateways\PaymentGateway;

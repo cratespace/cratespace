@@ -3,7 +3,7 @@
 namespace App\Notifications;
 
 use Illuminate\Bus\Queueable;
-use App\Contracts\Billing\Order;
+use App\Contracts\Orders\Order;
 use App\Mail\OrderPlacedSuccessfully;
 use Illuminate\Notifications\Notification;
 use App\Mail\NewOrderPlaced as NewOrderPlacedMailable;
@@ -15,7 +15,7 @@ class NewOrderPlaced extends Notification
     /**
      * The instance of the order.
      *
-     * @var \App\Contracts\Billing\Order
+     * @var \App\Contracts\Orders\Order
      */
     protected $order;
 
@@ -29,7 +29,7 @@ class NewOrderPlaced extends Notification
     /**
      * Create a new notification instance.
      *
-     * @param \App\Contracts\Billing\Order $order
+     * @param \App\Contracts\Orders\Order $order
      *
      * @return void
      */

@@ -7,12 +7,14 @@ use Illuminate\Foundation\Http\FormRequest;
 use App\Http\Requests\Traits\HasCustomValidator;
 use App\Http\Requests\Concerns\AuthorizesRequests;
 use App\Http\Requests\Traits\InputValidationRules;
+use App\Support\Concerns\InteractsWithContainer;
 
 abstract class Request extends FormRequest
 {
     use AuthorizesRequests;
     use InputValidationRules;
     use HasCustomValidator;
+    use InteractsWithContainer;
 
     /**
      * Handle a passed validation attempt.

@@ -22,6 +22,15 @@ interface Product
     public function name(): string;
 
     /**
+     * The unique code used to identify the product.
+     *
+     * @param string $code
+     *
+     * @return void
+     */
+    public function setCode(string $code): void;
+
+    /**
      * Get the owner of the product.
      *
      * @return mixed
