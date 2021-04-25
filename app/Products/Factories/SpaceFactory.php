@@ -5,6 +5,7 @@ namespace App\Products\Factories;
 use App\Products\Products\Space;
 use App\Support\Traits\Fillable;
 use App\Contracts\Products\Product;
+use Illuminate\Support\Facades\Crypt;
 
 class SpaceFactory extends Factory
 {
@@ -15,14 +16,7 @@ class SpaceFactory extends Factory
      *
      * @var string
      */
-    protected $product = Space::class;
-
-    /**
-     * The instance of the product.
-     *
-     * @var \App\Contracts\Products\Product
-     */
-    protected $productInstance;
+    protected $merchandise = Space::class;
 
     /**
      * Create new product instance.
@@ -33,6 +27,32 @@ class SpaceFactory extends Factory
      */
     public function make(array $data = []): Product
     {
+        $product = $this->getProductInstance();
+
+        abort_unless($this->user()->isResponsibleFor($product), 403);
+
+        return tap($product->create(
+            array_merge($this->parse($data), $this->options())
+        ), function (Product $product): void {
+            $product->setCode(Crypt::encrypt(
+                get_class($product) . '-' . $product->name()
+            ));
+        });
+    }
+
+    /**
+     * Get the default options used when manufacturing a new product.
+     *
+     * @param array $overrides
+     *
+     * @return array
+     */
+    protected function options(array $overrides = []): array
+    {
+        return array_merge([
+            'user_id' => $this->user()->id,
+            'base' => $this->user()->base(),
+        ], $overrides);
     }
 
     /**
@@ -42,8 +62,8 @@ class SpaceFactory extends Factory
      *
      * @return array
      */
-    public function parseData(array $data): array
+    public function parse(array $data): array
     {
-        return $this->filterFillable($this->productInstance(), $data);
+        return $this->filterFillable($this->merchandise, $data);
     }
 }

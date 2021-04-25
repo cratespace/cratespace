@@ -2,14 +2,11 @@
 
 namespace App\Actions\Products;
 
-use App\Support\Traits\Fillable;
 use App\Products\Factories\SpaceFactory;
 use App\Contracts\Actions\CreatesNewResources;
 
 class CreateNewSpace implements CreatesNewResources
 {
-    use Fillable;
-
     /**
      * The space factory instance.
      *

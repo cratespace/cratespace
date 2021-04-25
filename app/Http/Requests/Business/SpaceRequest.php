@@ -14,7 +14,11 @@ class SpaceRequest extends Request
      */
     public function authorize(): bool
     {
-        return false;
+        if ($this->route('space')) {
+            return $this->isAllowed('manage', $this->space);
+        }
+
+        return $this->isAuthenticated('Business');
     }
 
     /**
@@ -24,7 +28,7 @@ class SpaceRequest extends Request
      */
     public function rules(): array
     {
-        return [];
+        return $this->getRulesFor('space');
     }
 
     /**
@@ -34,8 +38,8 @@ class SpaceRequest extends Request
      */
     protected function passedValidation(): void
     {
-        $this->user()->setResponsibility(
-            $this->resolve(SpaceFactory::class)->createProductInstance()
-        );
+        $factory = $this->resolve(SpaceFactory::class);
+
+        $this->user()->setResponsibility($factory->getProductInstance());
     }
 }

@@ -42,6 +42,18 @@ class Space extends SpaceModel implements Product
     }
 
     /**
+     * The unique code used to identify the product.
+     *
+     * @param string $code
+     *
+     * @return void
+     */
+    public function setCode(string $code): void
+    {
+        $this->forceFill(['code' => $code])->saveQuietly();
+    }
+
+    /**
      * Get the owner of the product.
      *
      * @return mixed

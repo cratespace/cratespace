@@ -82,7 +82,7 @@ trait ManagesBusiness
      */
     public function base(): string
     {
-        return $this->user->address->country;
+        return $this->address->country;
     }
 
     /**

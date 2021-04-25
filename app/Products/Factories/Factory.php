@@ -2,8 +2,9 @@
 
 namespace App\Products\Factories;
 
-use RuntimeException;
+use App\Models\User;
 use App\Contracts\Products\Product;
+use Illuminate\Support\Facades\Auth;
 use App\Support\Concerns\InteractsWithContainer;
 
 abstract class Factory
@@ -11,11 +12,18 @@ abstract class Factory
     use InteractsWithContainer;
 
     /**
+     * The insrtance of the product being manufactured.
+     *
+     * @var \App\Contracts\Products\Product|null
+     */
+    protected $product;
+
+    /**
      * The product the fatory manufactures.
      *
      * @var string
      */
-    protected $product;
+    protected $merchandise;
 
     /**
      * Create new product.
@@ -27,30 +35,26 @@ abstract class Factory
     abstract public function make(array $data = []): Product;
 
     /**
-     * Get an instance of the product.
+     * Get the currently authenticated user.
      *
-     * @return \App\Contracts\Products\Product
+     * @return \App\Models\User|null
      */
-    public function productInstance(): Product
+    public function user(): ?User
     {
-        if (is_null($this->productInstance)) {
-            $this->productInstance = $this->createProductInstance();
-        }
-
-        return $this->productInstance;
+        return Auth::user();
     }
 
     /**
-     * Create an instance of the manufacturable product.
+     * Get the instance of the product being manufactured.
      *
      * @return \App\Contracts\Products\Product
      */
-    public function createProductInstance(): Product
+    public function getProductInstance(): Product
     {
-        if (! is_null($this->product)) {
-            return $this->resolve($this->product);
+        if (is_null($this->product)) {
+            $this->product = $this->resolve($this->merchandise);
         }
 
-        throw new RuntimeException('Product class not set');
+        return $this->product;
     }
 }
