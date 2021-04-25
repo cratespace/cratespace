@@ -47,12 +47,14 @@ abstract class Factory
     /**
      * Get the instance of the product being manufactured.
      *
+     * @param array[] $parameters
+     *
      * @return \App\Contracts\Products\Product
      */
-    public function getProductInstance(): Product
+    public function getProductInstance(array $parameters = []): Product
     {
         if (is_null($this->product)) {
-            $this->product = $this->resolve($this->merchandise);
+            $this->product = $this->resolve($this->merchandise, $parameters);
         }
 
         return $this->product;

@@ -37,6 +37,8 @@ class SpaceFactory extends Factory
             $product->setCode(Crypt::encrypt(
                 get_class($product) . '-' . $product->name()
             ));
+
+            $this->product = $product;
         });
     }
 

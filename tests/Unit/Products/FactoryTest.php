@@ -2,17 +2,46 @@
 
 namespace Tests\Unit\Products;
 
-use PHPUnit\Framework\TestCase;
+use Tests\TestCase;
+use App\Models\User;
+use App\Contracts\Products\Product;
+use Tests\Fixtures\ProductFactoryStub;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class FactoryTest extends TestCase
 {
-    /**
-     * A basic unit test example.
-     *
-     * @return void
-     */
-    public function test_example()
+    use RefreshDatabase;
+
+    public function testMakeProduct()
     {
-        $this->assertTrue(true);
+        $factory = new ProductFactoryStub();
+        $product = $factory->make($attributes = [
+            'name' => 'Test Product',
+            'price' => 1000,
+            'description' => 'Test product',
+        ]);
+
+        $this->assertInstanceOf(Product::class, $product);
+        $this->assertEquals($attributes, $product->details());
+    }
+
+    public function testGetAuthUser()
+    {
+        $this->signIn($user = create(User::class));
+
+        $factory = new ProductFactoryStub();
+
+        $this->assertSame($user, $factory->user());
+    }
+
+    public function testGetProductInstance()
+    {
+        $factory = new ProductFactoryStub();
+        $product = $factory->make($attributes = [
+            'name' => 'Test Product',
+            'description' => 'Test product',
+        ]);
+
+        $this->assertSame($product, $factory->getProductInstance());
     }
 }
