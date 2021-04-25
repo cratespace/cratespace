@@ -82,7 +82,7 @@ class Order extends OrderModel implements OrderContract
     }
 
     /**
-     * Cancel this order.
+     * Cancel a course of action or a resource.
      *
      * @return void
      */

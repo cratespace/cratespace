@@ -3,9 +3,10 @@
 namespace App\Queries;
 
 use RuntimeException;
+use App\Support\Eloquent;
 use Illuminate\Database\Eloquent\Model;
 
-abstract class Query
+class Query extends Eloquent
 {
     /**
      * Create a new model instance.

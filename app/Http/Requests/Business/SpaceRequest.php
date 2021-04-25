@@ -15,7 +15,7 @@ class SpaceRequest extends Request
     public function authorize(): bool
     {
         if ($this->route('space')) {
-            return $this->isAllowed('manage', $this->space);
+            return $this->isAllowed('manage', $this->space, false);
         }
 
         return $this->isAuthenticated('Business');

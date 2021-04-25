@@ -2,30 +2,11 @@
 
 namespace App\Presenters;
 
+use App\Support\Eloquent;
 use InvalidArgumentException;
-use Illuminate\Database\Eloquent\Model;
 
-abstract class Presenter
+class Presenter extends Eloquent
 {
-    /**
-     * Instance of model being presented.
-     *
-     * @var \Illuminate\Database\Eloquent\Model
-     */
-    protected $model;
-
-    /**
-     * Create new view presenter instance.
-     *
-     * @param \Illuminate\Database\Eloquent\Model $model
-     *
-     * @return void
-     */
-    public function __construct(Model $model)
-    {
-        $this->model = $model;
-    }
-
     /**
      * Show method as property if property does not exist.
      *
