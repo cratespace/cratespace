@@ -34,6 +34,6 @@ trait Responsible
      */
     public function isResponsibleFor(Model $resource): bool
     {
-        return $this->responsibility->is($resource);
+        return (bool) optional($this->responsibility)->is($resource);
     }
 }

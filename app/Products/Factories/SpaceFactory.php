@@ -6,6 +6,7 @@ use App\Products\Products\Space;
 use App\Support\Traits\Fillable;
 use App\Contracts\Products\Product;
 use Illuminate\Support\Facades\Crypt;
+use Illuminate\Auth\Access\AuthorizationException;
 
 class SpaceFactory extends Factory
 {
@@ -29,7 +30,9 @@ class SpaceFactory extends Factory
     {
         $product = $this->getProductInstance();
 
-        abort_unless($this->user()->isResponsibleFor($product), 403);
+        if (! $this->user()->isResponsibleFor($product)) {
+            throw new AuthorizationException('User is not authorized to perform this action');
+        }
 
         return tap($product->create(
             array_merge($this->parse($data), $this->options())
