@@ -4,8 +4,8 @@ namespace Tests\Unit\Products;
 
 use Tests\TestCase;
 use App\Models\User;
-use App\Models\Space;
 use Illuminate\Support\Str;
+use Database\Factories\SpaceFactory;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class SpaceTest extends TestCase
@@ -14,14 +14,14 @@ class SpaceTest extends TestCase
 
     public function testSpaceHasUniqueCode()
     {
-        $space = create(Space::class);
+        $space = SpaceFactory::createSpace();
 
         $this->assertIsString($space->code());
     }
 
     public function testSpaceCanSetUniqueCode()
     {
-        $space = create(Space::class);
+        $space = SpaceFactory::createSpace();
 
         $space->setCode($code = Str::random(40));
 
@@ -30,21 +30,21 @@ class SpaceTest extends TestCase
 
     public function testSpaceHasIDAsName()
     {
-        $space = create(Space::class);
+        $space = SpaceFactory::createSpace();
 
         $this->assertEquals($space->id, $space->name());
     }
 
     public function testSpaceHasMerchantDetails()
     {
-        $space = create(Space::class);
+        $space = SpaceFactory::createSpace();
 
         $this->assertInstanceOf(User::class, $space->merchant());
     }
 
     public function testSpaceCanBeReserved()
     {
-        $space = create(Space::class);
+        $space = SpaceFactory::createSpace();
 
         $space->reserve();
 
@@ -54,7 +54,7 @@ class SpaceTest extends TestCase
 
     public function testSpaceCanBeReleasedFromReservation()
     {
-        $space = create(Space::class);
+        $space = SpaceFactory::createSpace();
 
         $space->reserve();
 
@@ -67,7 +67,7 @@ class SpaceTest extends TestCase
 
     public function testSpaceCanGetFullAmount()
     {
-        $space = create(Space::class, [
+        $space = SpaceFactory::createSpace([
             'price' => 1000,
             'tax' => 500,
         ]);
@@ -77,8 +77,8 @@ class SpaceTest extends TestCase
 
     public function testSpaceCanDetermineAvailability()
     {
-        $availableSpace = create(Space::class);
-        $reservedSpace = create(Space::class);
+        $availableSpace = SpaceFactory::createSpace();
+        $reservedSpace = SpaceFactory::createSpace();
 
         $reservedSpace->reserve();
 
@@ -88,7 +88,7 @@ class SpaceTest extends TestCase
 
     public function testSpaceCanDetermineExpiration()
     {
-        $space = create(Space::class, [
+        $space = SpaceFactory::createSpace([
             'departs_at' => now(),
         ]);
 
@@ -97,7 +97,7 @@ class SpaceTest extends TestCase
 
     public function testSpaceCanDetermineNearByExpirationTime()
     {
-        $space = create(Space::class, [
+        $space = SpaceFactory::createSpace([
             'departs_at' => now()->tomorrow(),
         ]);
 
@@ -106,7 +106,7 @@ class SpaceTest extends TestCase
 
     public function testSpaceCanGetFullDetails()
     {
-        $space = create(Space::class);
+        $space = SpaceFactory::createSpace();
 
         $this->assertEquals(
             array_merge(['product_type' => $space->getTable()], $space->toArray()),

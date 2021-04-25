@@ -13,12 +13,10 @@ use App\Contracts\Billing\Payment;
 use App\Contracts\Products\Product;
 use App\Models\Space as SpaceModel;
 use App\Models\Traits\HasEncryptableCode;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Space extends SpaceModel implements Product
 {
     use Orderable;
-    use HasFactory;
     use HasEncryptableCode;
 
     /**

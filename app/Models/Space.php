@@ -8,11 +8,9 @@ use App\Models\Casts\ScheduleCast;
 use App\Models\Traits\Presentable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Space extends Model
 {
-    use HasFactory;
     use Filterable;
     use Presentable;
     use Directable;

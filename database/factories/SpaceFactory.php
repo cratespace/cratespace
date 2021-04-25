@@ -2,45 +2,54 @@
 
 namespace Database\Factories;
 
+use Faker\Factory;
 use App\Models\User;
-use App\Models\Space;
-use Illuminate\Database\Eloquent\Factories\Factory;
+use Faker\Generator as Faker;
+use App\Products\Products\Space;
+use Illuminate\Foundation\Testing\WithFaker;
 
-class SpaceFactory extends Factory
+class SpaceFactory
 {
-    /**
-     * The name of the factory's corresponding model.
-     *
-     * @var string
-     */
-    protected $model = Space::class;
+    use WithFaker;
 
     /**
-     * Define the model's default state.
+     * Create new dummy space.
      *
-     * @return array
+     * @param array $data
+     *
+     * @return \App\Products\Products\Space
      */
-    public function definition()
+    public static function createSpace(array $data = []): Space
     {
         $user = User::factory()->asBusiness()->create();
 
-        return [
+        return Space::create(array_merge([
             'code' => null,
             'departs_at' => now()->addMonths(rand(1, 3)),
             'arrives_at' => now()->addMonths(rand(2, 3)),
             'reserved_at' => null,
-            'origin' => $this->faker->city,
-            'destination' => $this->faker->city,
+            'origin' => static::faker()->city,
+            'destination' => static::faker()->city,
             'height' => rand(1, 9),
             'width' => rand(1, 9),
             'length' => rand(1, 9),
             'weight' => rand(1, 9),
-            'note' => $this->faker->sentence(7),
+            'note' => static::faker()->sentence(7),
             'price' => $price = rand(100, 900),
             'tax' => round($price * 0.05), // 5% tax
-            'type' => $this->faker->randomElement(['Local', 'International']),
+            'type' => static::faker()->randomElement(['Local', 'International']),
             'user_id' => $user->id,
             'base' => $user->address->country,
-        ];
+        ], $data));
+    }
+
+    /**
+     * Custom faker instance.
+     *
+     * @return \Faker\Generator
+     */
+    public static function faker(): Faker
+    {
+        return Factory::create();
     }
 }
