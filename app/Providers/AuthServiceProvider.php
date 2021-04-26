@@ -6,7 +6,6 @@ use App\Models\User;
 use App\Models\Order;
 use App\Models\Invitation;
 use App\Policies\UserPolicy;
-use App\Auth\Guards\APIGuard;
 use App\Policies\OrderPolicy;
 use App\Policies\SpacePolicy;
 use App\Actions\Auth\DeleteUser;
@@ -14,6 +13,7 @@ use App\Products\Products\Space;
 use Illuminate\Auth\RequestGuard;
 use App\Policies\InvitationPolicy;
 use App\Actions\Auth\CreateNewUser;
+use App\Auth\Guards\CratespaceGuard;
 use App\Providers\Traits\HasActions;
 use Illuminate\Support\Facades\Auth;
 use App\Actions\Auth\ConfirmPassword;
@@ -168,7 +168,7 @@ class AuthServiceProvider extends ServiceProvider
     protected function createCratespaceGuard(AuthFactory $auth, array $config): RequestGuard
     {
         return new RequestGuard(
-            new APIGuard($auth, AuthConfig::expiration(), $config['provider']),
+            new CratespaceGuard($auth, AuthConfig::expiration(), $config['provider']),
             $this->app['request'],
             $auth->createUserProvider($config['provider'] ?? null)
         );

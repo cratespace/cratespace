@@ -8,13 +8,13 @@ use Tests\TestCase;
 use App\Models\User;
 use DateTimeInterface;
 use Illuminate\Http\Request;
-use App\Auth\Guards\APIGuard;
+use App\Auth\Guards\CratespaceGuard;
 use App\API\Tokens\PersonalAccessToken;
 use Illuminate\Auth\EloquentUserProvider;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Contracts\Auth\Factory as AuthFactory;
 
-class APIGuardTest extends TestCase
+class CratespaceGuardTest extends TestCase
 {
     use RefreshDatabase;
 
@@ -26,7 +26,7 @@ class APIGuardTest extends TestCase
     public function testAuthenticationIsAttemptedWithWebMiddleware()
     {
         $factory = m::mock(AuthFactory::class);
-        $guard = new APIGuard($factory, null, 'users');
+        $guard = new CratespaceGuard($factory, null, 'users');
         $webGuard = m::mock(stdClass::class);
 
         $factory->shouldReceive('guard')
@@ -46,7 +46,7 @@ class APIGuardTest extends TestCase
     public function testAuthenticationIsAttemptedWithTokenIfNoSessionPresent()
     {
         $factory = m::mock(AuthFactory::class);
-        $guard = new APIGuard($factory, null, 'users');
+        $guard = new CratespaceGuard($factory, null, 'users');
         $webGuard = m::mock(stdClass::class);
 
         $factory->shouldReceive('guard')
@@ -66,7 +66,7 @@ class APIGuardTest extends TestCase
     public function testAuthenticationWithTokenFailsIfExpired()
     {
         $factory = m::mock(AuthFactory::class);
-        $guard = new APIGuard($factory, 1, 'users');
+        $guard = new CratespaceGuard($factory, 1, 'users');
         $webGuard = m::mock(stdClass::class);
 
         $factory->shouldReceive('guard')
@@ -96,7 +96,7 @@ class APIGuardTest extends TestCase
     public function testAuthenticationIsSuccessfulWithTokenIfNoSessionPresent()
     {
         $factory = m::mock(AuthFactory::class);
-        $guard = new APIGuard($factory, null);
+        $guard = new CratespaceGuard($factory, null);
         $webGuard = m::mock(stdClass::class);
 
         $factory->shouldReceive('guard')

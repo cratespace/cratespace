@@ -2,22 +2,16 @@
 
 namespace App\Auth\Guards;
 
-use App\Auth\Config\Auth;
 use Illuminate\Support\Arr;
 use Illuminate\Http\Request;
-use Illuminate\Auth\GuardHelpers;
 use App\API\Tokens\TransientToken;
 use App\Models\Traits\HasApiTokens;
 use App\API\Tokens\PersonalAccessToken;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Contracts\Auth\Authenticatable;
-use Illuminate\Contracts\Auth\Guard as AuthGuard;
 use Illuminate\Contracts\Auth\Factory as AuthFactory;
 
-class APIGuard implements AuthGuard
+class CratespaceGuard
 {
-    use GuardHelpers;
-
     /**
      * The authentication factory implementation.
      *
@@ -121,16 +115,6 @@ class APIGuard implements AuthGuard
         $model = config("auth.providers.{$this->provider}.model");
 
         return $tokenable instanceof $model;
-    }
-
-    /**
-     * Get the currently authenticated user.
-     *
-     * @return \Illuminate\Contracts\Auth\Authenticatable|null
-     */
-    public function user(): ?Authenticatable
-    {
-        return $this->auth->guard(Auth::guard('web'))->user();
     }
 
     /**
