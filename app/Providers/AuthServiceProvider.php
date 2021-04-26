@@ -95,6 +95,8 @@ class AuthServiceProvider extends ServiceProvider
     public function register(): void
     {
         $this->registerAuthGuard();
+
+        $this->configureCratespaceGuard();
     }
 
     /**
@@ -107,8 +109,6 @@ class AuthServiceProvider extends ServiceProvider
         $this->registerPolicies();
 
         $this->registerActions();
-
-        $this->configureCratespaceGuard();
     }
 
     /**

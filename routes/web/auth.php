@@ -71,4 +71,6 @@ Route::group(['middleware' => ['auth']], function (): void {
         ->name('verification.send');
 });
 
-Route::get('/csrf-cookie', [CsrfCookieController::class, '@show'])->name('api.auth');
+Route::prefix('cratespace')
+    ->get('/csrf-cookie', [CsrfCookieController::class, '@show'])
+    ->name('api.auth');
