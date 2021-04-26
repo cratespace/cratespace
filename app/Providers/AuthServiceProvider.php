@@ -120,7 +120,7 @@ class AuthServiceProvider extends ServiceProvider
     {
         $this->app->bind(
             StatefulGuard::class,
-            fn () => Auth::guard(config('auth.defaults.guard'))
+            fn () => Auth::guard(AuthConfig::guard('web'))
         );
     }
 

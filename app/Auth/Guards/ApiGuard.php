@@ -42,8 +42,8 @@ class APIGuard implements AuthGuard
      * Create a new guard instance.
      *
      * @param \Illuminate\Contracts\Auth\Factory $auth
-     * @param int                                $expiration
-     * @param string                             $provider
+     * @param int|null                           $expiration
+     * @param string|null                        $provider
      *
      * @return void
      */

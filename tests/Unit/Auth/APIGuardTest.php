@@ -121,11 +121,16 @@ class APIGuardTest extends TestCase
 
         $this->assertEquals($user->id, $returnedUser->id);
         $this->assertEquals($token->id, $returnedUser->currentAccessToken()->id);
-        $this->assertInstanceOf(DateTimeInterface::class, $returnedUser->currentAccessToken()->last_used_at);
+        $this->assertInstanceOf(
+            DateTimeInterface::class,
+            $returnedUser->currentAccessToken()->last_used_at
+        );
     }
 
     public function testAuthenticationWithTokenFailsIfUserProviderIsInvalid()
     {
+        $this->withoutExceptionHandling();
+
         config()->set('auth.guards.cratespace.provider', 'users');
         config()->set('auth.providers.users.model', 'App\Models\UserFake');
 
