@@ -5,7 +5,7 @@ use App\Http\Controllers\Business\SpaceController;
 use App\Http\Controllers\Business\InviteBusinessController;
 
 Route::group([
-    'middleware' => 'auth.business',
+    'middleware' => ['auth.business', 'auth:cratespace', 'verified'],
 ], function (): void {
     Route::resource('spaces', SpaceController::class);
 });

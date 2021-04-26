@@ -23,11 +23,6 @@ class InviteBusinessTest extends TestCase
         $this->admin = $this->signInAsAdmin();
     }
 
-    protected function tearDown(): void
-    {
-        auth()->logout();
-    }
-
     public function testOnlyAdminCanInviteBusiness()
     {
         $user = User::factory()->asBusiness()->create([

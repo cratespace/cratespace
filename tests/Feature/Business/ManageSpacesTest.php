@@ -43,11 +43,6 @@ class ManageSpacesTest extends TestCase implements Postable
         ]);
     }
 
-    protected function tearDown(): void
-    {
-        $this->app->make(StatefulGuard::class)->logout();
-    }
-
     public function testSpaceDetailsCanBeUpdated()
     {
         $response = $this->put(

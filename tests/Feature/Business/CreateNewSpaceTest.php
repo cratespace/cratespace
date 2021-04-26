@@ -30,11 +30,6 @@ class CreateNewSpaceTest extends TestCase implements Postable
         $this->signIn($this->user);
     }
 
-    protected function tearDown(): void
-    {
-        auth()->logout();
-    }
-
     public function testCreateNewSpace()
     {
         $this->withoutEvents();
@@ -65,8 +60,7 @@ class CreateNewSpaceTest extends TestCase implements Postable
 
         $response = $this->postJson('/spaces', $this->validParameters());
 
-        $response->assertStatus(302);
-        $response->assertRedirect('/login');
+        $response->assertStatus(401);
     }
 
     public function testAutomaticUniqueCodeForSpace()

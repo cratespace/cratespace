@@ -36,11 +36,6 @@ class CreateNewBusinessTest extends TestCase implements Postable
         $this->signIn($user);
     }
 
-    protected function tearDown(): void
-    {
-        auth()->logout();
-    }
-
     public function testBusinessUserCanBeCreated()
     {
         $response = $this->post('/businesses', $this->validParameters());
