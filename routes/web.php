@@ -1,33 +1,18 @@
 <?php
 
-use Inertia\Inertia;
 use Illuminate\Support\Facades\Route;
 
 /*
- * Landing Page Route...
- */
+|--------------------------------------------------------------------------
+| Web Routes
+|--------------------------------------------------------------------------
+|
+| Here is where you can register web routes for your application. These
+| routes are loaded by the RouteServiceProvider within a group which
+| contains the "web" middleware group. Now create something great!
+|
+*/
+
 Route::get('/', function () {
-    auth()->logout();
-
-    return Inertia::render('Welcome/Index');
-})->name('welcome');
-
-/**
- * User Authentication Routes...
- */
-require 'web/auth.php';
-
-/**
- * Business User Routes...
- */
-require 'web/business.php';
-
-/**
- * Customer User Routes...
- */
-require 'web/customer.php';
-
-/**
- * Administrator User Routes...
- */
-require 'web/admin.php';
+    return view('welcome');
+});

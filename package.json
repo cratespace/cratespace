@@ -10,25 +10,9 @@
         "production": "mix --production"
     },
     "devDependencies": {
-        "@inertiajs/inertia": "^0.8.7",
-        "@inertiajs/inertia-vue3": "^0.3.14",
-        "@inertiajs/progress": "^0.2.4",
-        "@tailwindcss/forms": "^0.3.2",
-        "@tailwindcss/typography": "^0.4.0",
-        "@vue/compiler-sfc": "^3.0.11",
-        "autoprefixer": "^10.2.5",
         "axios": "^0.21",
-        "browser-sync": "^2.26.14",
-        "browser-sync-webpack-plugin": "^2.3.0",
-        "laravel-mix": "^6.0.18",
-        "lodash": "^4.17.21",
-        "moment": "^2.29.1",
-        "postcss": "^8.2.12",
-        "postcss-import": "^14.0.1",
-        "stripe": "^8.145.0",
-        "tailwindcss": "^2.1.2",
-        "vue": "^3.0.11",
-        "vue-flatpickr-component": "^9.0.3",
-        "vue-loader": "^16.2.0"
+        "laravel-mix": "^6.0.6",
+        "lodash": "^4.17.19",
+        "postcss": "^8.1.14"
     }
 }

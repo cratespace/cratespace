@@ -1,51 +1,24 @@
 {
-    "name": "cratespace/cratespace",
+    "name": "laravel/laravel",
     "type": "project",
-    "description": "A freight space sales platform.",
-    "keywords": ["freight", "space", "sales"],
-    "license": "proprietary",
-    "support": {
-        "issues": "https://github.com/cratespace/cratespace/issues",
-        "source": "https://github.com/cratespace/cratespace"
-    },
-    "authors": [
-        {
-            "name": "Thavarshan Thayananthajothy",
-            "email": "tjthavarshan@gmail.com"
-        }
-    ],
+    "description": "The Laravel Framework.",
+    "keywords": ["framework", "laravel"],
+    "license": "MIT",
     "require": {
-        "php": "^7.4|^8.0",
-        "ext-intl": "*",
-        "ext-json": "*",
-        "bacon/bacon-qr-code": "^2.0",
-        "dompdf/dompdf": "^1.0",
+        "php": "^7.3|^8.0",
         "fideloper/proxy": "^4.4",
         "fruitcake/laravel-cors": "^2.0",
-        "guzzlehttp/guzzle": "^7.3",
-        "hashids/hashids": "^4.1",
-        "inertiajs/inertia-laravel": "^0.4.1",
-        "ipinfo/ipinfo": "^2.1",
-        "jenssegers/agent": "^2.6",
-        "laravel/framework": "^8.37",
-        "laravel/telescope": "^4.4",
-        "laravel/tinker": "^2.5",
-        "league/iso3166": "^3.0",
-        "moneyphp/money": "^3.3",
-        "pragmarx/google2fa": "^8.0",
-        "stripe/stripe-php": "^7.75",
-        "symfony/intl": "^5.2",
-        "symfony/var-dumper": "^5.2.1",
-        "tightenco/ziggy": "^1.0"
+        "guzzlehttp/guzzle": "^7.0.1",
+        "laravel/framework": "^8.12",
+        "laravel/tinker": "^2.5"
     },
     "require-dev": {
-        "brianium/paratest": "^6.2",
         "facade/ignition": "^2.5",
         "fakerphp/faker": "^1.9.1",
         "laravel/sail": "^1.0.1",
         "mockery/mockery": "^1.4.2",
         "nunomaduro/collision": "^5.0",
-        "phpunit/phpunit": "^9.5"
+        "phpunit/phpunit": "^9.3.3"
     },
     "autoload": {
         "psr-4": {
@@ -57,10 +30,7 @@
     "autoload-dev": {
         "psr-4": {
             "Tests\\": "tests/"
-        },
-        "files": [
-            "tests/Support/helpers.php"
-        ]
+        }
     },
     "scripts": {
         "post-autoload-dump": [
@@ -76,9 +46,7 @@
     },
     "extra": {
         "laravel": {
-            "dont-discover": [
-                "laravel/telescope"
-            ]
+            "dont-discover": []
         }
     },
     "config": {

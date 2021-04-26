@@ -1,3 +1,0 @@
-# Cratespace
-
-This is Cratespace.
