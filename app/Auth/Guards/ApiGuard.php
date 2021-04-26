@@ -3,6 +3,7 @@
 namespace App\Auth\Guards;
 
 use App\Auth\Config\Auth;
+use Illuminate\Support\Arr;
 use Illuminate\Http\Request;
 use Illuminate\Auth\GuardHelpers;
 use App\API\Tokens\TransientToken;
@@ -63,10 +64,12 @@ class APIGuard implements AuthGuard
      */
     public function __invoke(Request $request)
     {
-        if ($user = $this->user()) {
-            return $this->supportsTokens($user)
-                ? $user->withAccessToken(new TransientToken())
-                : $user;
+        foreach (Arr::wrap(config('cratespace.guard', 'web')) as $guard) {
+            if ($user = $this->auth->guard($guard)->user()) {
+                return $this->supportsTokens($user)
+                    ? $user->withAccessToken(new TransientToken())
+                    : $user;
+            }
         }
 
         if ($token = $request->bearerToken()) {
@@ -81,9 +84,7 @@ class APIGuard implements AuthGuard
 
             return $this->supportsTokens($accessToken->tokenable)
                 ? $accessToken->tokenable->withAccessToken(
-                    tap($accessToken->forceFill([
-                        'last_used_at' => now(),
-                    ]))->save()
+                    tap($accessToken->forceFill(['last_used_at' => now()]))->save()
                 )
                 : null;
         }

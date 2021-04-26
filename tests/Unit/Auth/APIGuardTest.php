@@ -129,8 +129,6 @@ class APIGuardTest extends TestCase
 
     public function testAuthenticationWithTokenFailsIfUserProviderIsInvalid()
     {
-        $this->withoutExceptionHandling();
-
         config()->set('auth.guards.cratespace.provider', 'users');
         config()->set('auth.providers.users.model', 'App\Models\UserFake');
 

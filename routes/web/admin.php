@@ -5,7 +5,7 @@ use App\Http\Controllers\Business\BusinessController;
 use App\Http\Controllers\Business\InviteBusinessController;
 
 Route::group([
-    'middleware' => ['auth.admin'],
+    'middleware' => ['auth:cratespace', 'auth.admin', 'verified'],
 ], function (): void {
     Route::post('/businesses/invitations/{user}', [InviteBusinessController::class, 'store'])->name('invitations.store');
     Route::get('/businesses', [BusinessController::class, 'create'])->name('business.create');
