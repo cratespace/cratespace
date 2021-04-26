@@ -6,10 +6,12 @@ use App\Models\User;
 use App\Models\Order;
 use App\Models\Invitation;
 use App\Policies\UserPolicy;
+use App\Auth\Guards\APIGuard;
 use App\Policies\OrderPolicy;
 use App\Policies\SpacePolicy;
 use App\Actions\Auth\DeleteUser;
 use App\Products\Products\Space;
+use Illuminate\Auth\RequestGuard;
 use App\Policies\InvitationPolicy;
 use App\Actions\Auth\CreateNewUser;
 use App\Providers\Traits\HasActions;
@@ -18,6 +20,7 @@ use App\Actions\Auth\ConfirmPassword;
 use App\Actions\Auth\AuthenticateUser;
 use App\Actions\Auth\ResetUserPassword;
 use App\Actions\Auth\UpdateUserProfile;
+use App\Auth\Config\Auth as AuthConfig;
 use App\Contracts\Actions\DeletesUsers;
 use App\Actions\Auth\UpdateUserPassword;
 use App\Auth\Middleware\DenyLockedAccount;
@@ -29,9 +32,12 @@ use App\Auth\Middleware\AttemptToAuthenticate;
 use App\Contracts\Actions\ResetsUserPasswords;
 use App\Contracts\Actions\UpdatesUserProfiles;
 use App\Contracts\Actions\UpdatesUserPasswords;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\Auth\Guard as AuthGuard;
 use App\Auth\Middleware\EnsureLoginIsNotThrottled;
 use App\Actions\Auth\ProvideTwoFactorAuthentication;
 use App\Auth\Middleware\PrepareAuthenticatedSession;
+use Illuminate\Contracts\Auth\Factory as AuthFactory;
 use App\Contracts\Actions\ProvidesTwoFactorAuthentication;
 use App\Auth\Middleware\RedirectIfTwoFactorAuthenticatable;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
@@ -54,7 +60,7 @@ class AuthServiceProvider extends ServiceProvider
     ];
 
     /**
-     * The sentinel action classes.
+     * The cratespace action classes.
      *
      * @var array
      */
@@ -101,6 +107,8 @@ class AuthServiceProvider extends ServiceProvider
         $this->registerPolicies();
 
         $this->registerActions();
+
+        $this->configureCratespaceGuard();
     }
 
     /**
@@ -124,5 +132,45 @@ class AuthServiceProvider extends ServiceProvider
     public static function loginPipeline(): array
     {
         return static::$loginPipeline;
+    }
+
+    /**
+     * Configure the Cratespace authentication guard.
+     *
+     * @return void
+     */
+    protected function configureCratespaceGuard(): void
+    {
+        Auth::resolved(function (AuthFactory $auth) {
+            $auth->extend('cratespace', function (
+                Application $app,
+                string $name,
+                array $config
+            ) use ($auth): AuthGuard {
+                return tap(
+                    $this->createCratespaceGuard($auth, $config),
+                    function (AuthGuard $guard): void {
+                        $this->app->refresh('request', $guard, 'setRequest');
+                    }
+                );
+            });
+        });
+    }
+
+    /**
+     * Register the guard.
+     *
+     * @param \Illuminate\Contracts\Auth\Factory $auth
+     * @param array                              $config
+     *
+     * @return \Illuminate\Auth\RequestGuard
+     */
+    protected function createCratespaceGuard(AuthFactory $auth, array $config): RequestGuard
+    {
+        return new RequestGuard(
+            new APIGuard($auth, AuthConfig::expiration(), $config['provider']),
+            $this->app['request'],
+            $auth->createUserProvider($config['provider'] ?? null)
+        );
     }
 }

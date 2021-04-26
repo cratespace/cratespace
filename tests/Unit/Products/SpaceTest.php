@@ -113,4 +113,11 @@ class SpaceTest extends TestCase
             $space->details()
         );
     }
+
+    public function testSpaceHasSpecificUrl()
+    {
+        $space = SpaceFactory::createSpace();
+
+        $this->assertIsString($space->path);
+    }
 }

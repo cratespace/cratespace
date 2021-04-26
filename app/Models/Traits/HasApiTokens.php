@@ -74,7 +74,7 @@ trait HasApiTokens
      *
      * @param \App\Contracts\Auth\Access $accessToken
      *
-     * @return $this
+     * @return \Illuminate\Database\Eloquent\Model
      */
     public function withAccessToken($accessToken): Model
     {

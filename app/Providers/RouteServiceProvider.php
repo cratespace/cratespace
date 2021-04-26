@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use Illuminate\Http\Request;
+use App\Products\Products\Space;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Support\Facades\RateLimiter;

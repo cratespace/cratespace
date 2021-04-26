@@ -6,10 +6,12 @@ use Tests\TestCase;
 use App\Models\User;
 use Tests\Contracts\Postable;
 use App\Products\Products\Space;
+use Tests\Concerns\HasValidParameters;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class CreateNewSpaceTest extends TestCase implements Postable
 {
+    use HasValidParameters;
     use RefreshDatabase;
 
     /**
@@ -237,19 +239,6 @@ class CreateNewSpaceTest extends TestCase implements Postable
      */
     public function validParameters(array $overrides = []): array
     {
-        return array_merge([
-            'departs_at' => now()->addMonths(rand(1, 2)),
-            'arrives_at' => now()->addMonths(rand(3, 4)),
-            'origin' => $this->faker->city,
-            'destination' => $this->faker->city,
-            'height' => rand(1, 9),
-            'width' => rand(1, 9),
-            'length' => rand(1, 9),
-            'weight' => rand(1, 9),
-            'note' => $this->faker->sentence(7),
-            'price' => 10.00,
-            'tax' => 0.50,
-            'type' => $this->faker->randomElement(['Local', 'International']),
-        ], $overrides);
+        return static::validParametersForSpace($overrides);
     }
 }

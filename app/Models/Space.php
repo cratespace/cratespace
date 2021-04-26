@@ -11,9 +11,9 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Space extends Model
 {
+    use Directable;
     use Filterable;
     use Presentable;
-    use Directable;
 
     /**
      * The accessors to append to the model's array form.

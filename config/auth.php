@@ -37,6 +37,11 @@ return [
     */
 
     'guards' => [
+        'cratespace' => [
+            'driver' => 'cratespace',
+            'provider' => null,
+        ],
+
         'web' => [
             'driver' => 'session',
             'provider' => 'users',
