@@ -16,12 +16,18 @@
         "ext-json": "*",
         "cratespace/preflight": "^3.5.2",
         "cratespace/sentinel": "^3.0.2",
+        "dompdf/dompdf": "^1.0",
         "fideloper/proxy": "^4.4",
         "fruitcake/laravel-cors": "^2.0",
         "guzzlehttp/guzzle": "^7.0.1",
         "inertiajs/inertia-laravel": "^0.4.1",
+        "ipinfo/ipinfo": "^2.2",
         "laravel/framework": "^8.12",
         "laravel/tinker": "^2.5",
+        "league/iso3166": "^3.0",
+        "moneyphp/money": "^3.3",
+        "symfony/intl": "^5.2",
+        "symfony/var-dumper": "^5.2",
         "tightenco/ziggy": "^1.1.0"
     },
     "require-dev": {
