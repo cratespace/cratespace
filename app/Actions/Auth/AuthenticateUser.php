@@ -3,8 +3,8 @@
 namespace App\Actions\Auth;
 
 use Illuminate\Http\Request;
-use Cratespace\Sentinel\Sentinel\Config;
 use Illuminate\Contracts\Auth\StatefulGuard;
+use Cratespace\Sentinel\Sentinel\Config as SentinelConfig;
 use Cratespace\Sentinel\Contracts\Actions\AuthenticatesUsers;
 
 class AuthenticateUser implements AuthenticatesUsers
@@ -38,7 +38,7 @@ class AuthenticateUser implements AuthenticatesUsers
     public function authenticate(Request $request): bool
     {
         return $this->guard->attempt(
-            $request->only(Config::username(), 'password'),
+            $request->only(SentinelConfig::username(), 'password'),
             $request->filled('remember')
         );
     }
