@@ -1,34 +1,16 @@
 {
-    "name": "cratespace/cratespace",
+    "name": "laravel/laravel",
     "type": "project",
-    "description": "A freight sales platform.",
-    "keywords": [
-        "saas",
-        "sales",
-        "freight",
-        "platform",
-        "cratespace"
-    ],
-    "license": "proprietary",
+    "description": "The Laravel Framework.",
+    "keywords": ["framework", "laravel"],
+    "license": "MIT",
     "require": {
-        "php": "^7.4|^8.0",
-        "ext-intl": "*",
-        "ext-json": "*",
-        "cratespace/preflight": "^3.5.2",
-        "cratespace/sentinel": "^3.0.2",
-        "dompdf/dompdf": "^1.0",
+        "php": "^7.3|^8.0",
         "fideloper/proxy": "^4.4",
         "fruitcake/laravel-cors": "^2.0",
         "guzzlehttp/guzzle": "^7.0.1",
-        "inertiajs/inertia-laravel": "^0.4.1",
-        "ipinfo/ipinfo": "^2.2",
         "laravel/framework": "^8.12",
-        "laravel/tinker": "^2.5",
-        "league/iso3166": "^3.0",
-        "moneyphp/money": "^3.3",
-        "symfony/intl": "^5.2",
-        "symfony/var-dumper": "^5.2",
-        "tightenco/ziggy": "^1.1.0"
+        "laravel/tinker": "^2.5"
     },
     "require-dev": {
         "facade/ignition": "^2.5",
@@ -36,7 +18,7 @@
         "laravel/sail": "^1.0.1",
         "mockery/mockery": "^1.4.2",
         "nunomaduro/collision": "^5.0",
-        "phpunit/phpunit": "^9.5"
+        "phpunit/phpunit": "^9.3.3"
     },
     "autoload": {
         "psr-4": {
