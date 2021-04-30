@@ -31,6 +31,7 @@ return [
             'max:255',
             Rule::unique(User::class),
         ],
+        'phone' => ['required', 'numeric', 'regex:/(07)[0-9]{8}/'],
         'password' => ['required', 'string', new PasswordRule()],
     ],
 
