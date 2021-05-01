@@ -2,8 +2,11 @@
 
 namespace App\Models;
 
+use App\Models\Concerns\ManagesBusiness;
+use App\Models\Concerns\ManagesCustomer;
 use Illuminate\Notifications\Notifiable;
 use Cratespace\Sentinel\Models\Traits\HasApiTokens;
+use Cratespace\Preflight\Models\Concerns\ManagesRoles;
 use Cratespace\Sentinel\Models\Traits\HasProfilePhoto;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -14,8 +17,11 @@ class User extends Authenticatable
 {
     use HasFactory;
     use Notifiable;
+    use ManagesRoles;
     use HasApiTokens;
     use HasProfilePhoto;
+    use ManagesCustomer;
+    use ManagesBusiness;
     use InteractsWithSessions;
     use TwoFactorAuthenticatable;
 

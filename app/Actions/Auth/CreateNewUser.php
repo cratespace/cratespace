@@ -23,9 +23,13 @@ class CreateNewUser implements CreatesNewUsers
     public function create(array $data)
     {
         return DB::transaction(function () use ($data) {
-            return $this->createUser(
+            $user = $this->createUser(
                 $this->filterFillable($data, User::class)
             );
+
+            $this->createProfile($user, $data);
+
+            return $user;
         });
     }
 
@@ -45,7 +49,32 @@ class CreateNewUser implements CreatesNewUsers
             'username' => Util::makeUsername($data['name']),
             'password' => Hash::make($data['password']),
             'settings' => $this->setDefaultSettings(),
+            'address' => [],
+            'locked' => $data['type'] === 'business' ? true : false,
         ]);
+    }
+
+    /**
+     * Create a profile for the user.
+     *
+     * @param \App\Models\User $user
+     * @param array            $data
+     *
+     * @return \App\Models\User
+     */
+    protected function createProfile(User $user, array $data): User
+    {
+        if ($data['type'] === 'business') {
+            $user->createBusinessProfile($data);
+            $user->assignRole('Business');
+
+            return $user;
+        }
+
+        $user->createCustomerProfile($data);
+        $user->assignRole('Customer');
+
+        return $user;
     }
 
     /**

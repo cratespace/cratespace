@@ -1,19 +1,37 @@
 {
-    "name": "laravel/laravel",
+    "name": "cratespace/cratespace",
     "type": "project",
-    "description": "The Laravel Framework.",
-    "keywords": ["framework", "laravel"],
-    "license": "MIT",
+    "description": "A freight space sales platform.",
+    "keywords": ["freight", "space", "sales"],
+    "license": "proprietary",
+    "support": {
+        "issues": "https://github.com/cratespace/cratespace/issues",
+        "source": "https://github.com/cratespace/cratespace"
+    },
+    "authors": [
+        {
+            "name": "Thavarshan Thayananthajothy",
+            "email": "tjthavarshan@gmail.com"
+        }
+    ],
     "require": {
-        "php": "^7.3|^8.0",
+        "php": "^7.4|^8.0",
+        "ext-intl": "*",
+        "ext-json": "*",
         "cratespace/preflight": "^3.6",
         "cratespace/sentinel": "^3.1.1",
+        "dompdf/dompdf": "^1.0",
         "fideloper/proxy": "^4.4",
         "fruitcake/laravel-cors": "^2.0",
         "guzzlehttp/guzzle": "^7.0.1",
         "inertiajs/inertia-laravel": "^0.4.1",
+        "ipinfo/ipinfo": "^2.2",
         "laravel/framework": "^8.12",
         "laravel/tinker": "^2.5",
+        "league/iso3166": "^3.0",
+        "moneyphp/money": "^3.3",
+        "stripe/stripe-php": "^7.77",
+        "symfony/intl": "^5.2",
         "tightenco/ziggy": "^1.1.0"
     },
     "require-dev": {
@@ -23,7 +41,7 @@
         "laravel/sail": "^1.0.1",
         "mockery/mockery": "^1.4.2",
         "nunomaduro/collision": "^5.0",
-        "phpunit/phpunit": "^9.3.3"
+        "phpunit/phpunit": "^9.5"
     },
     "autoload": {
         "psr-4": {
