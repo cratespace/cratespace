@@ -24,6 +24,7 @@ return [
      */
     'register' => [
         'name' => ['required', 'string', 'max:255'],
+        'business' => ['exclude_if:type,customer', 'string', 'max:255'],
         'email' => [
             'required',
             'string',
@@ -33,6 +34,7 @@ return [
         ],
         'phone' => ['sometimes', 'string', 'regex:/(07)[0-9]{8}/'],
         'password' => ['required', 'string', new PasswordRule(), 'confirmed'],
+        'type' => ['sometimes', 'string', Rule::in(['business', 'customer'])],
     ],
 
     /*

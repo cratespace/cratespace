@@ -20,6 +20,8 @@ class RegistrationTest extends TestCase implements Postable
 
     public function testNewUsersCanRegister()
     {
+        $this->withoutExceptionHandling();
+
         $response = $this->post('/register', $this->validParameters());
 
         $this->assertAuthenticated();
@@ -93,6 +95,7 @@ class RegistrationTest extends TestCase implements Postable
             'phone' => '0712345678',
             'password' => 'password',
             'password_confirmation' => 'password',
+            'type' => 'customer',
         ], $overrides);
     }
 }

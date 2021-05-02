@@ -6,6 +6,8 @@ use App\Models\User;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Cratespace\Sentinel\Support\Util;
+use App\Actions\Business\CreateNewBusiness;
+use App\Actions\Business\CreateNewCustomer;
 use Cratespace\Sentinel\Support\Traits\Fillable;
 use Cratespace\Sentinel\Contracts\Actions\CreatesNewUsers;
 
@@ -50,7 +52,7 @@ class CreateNewUser implements CreatesNewUsers
             'password' => Hash::make($data['password']),
             'settings' => $this->setDefaultSettings(),
             'address' => [],
-            'locked' => $data['type'] === 'business' ? true : false,
+            'locked' => false,
         ]);
     }
 
@@ -64,17 +66,27 @@ class CreateNewUser implements CreatesNewUsers
      */
     protected function createProfile(User $user, array $data): User
     {
-        if ($data['type'] === 'business') {
-            $user->createBusinessProfile($data);
-            $user->assignRole('Business');
+        return app(
+            $this->parseUserType($data) === 'business'
+                ? CreateNewBusiness::class
+                : CreateNewCustomer::class
+        )->create(array_merge($data, ['user' => $user]));
+    }
 
-            return $user;
+    /**
+     * Determine the type of user to be created.
+     *
+     * @param array $data
+     *
+     * @return string
+     */
+    public function parseUserType(array $data): string
+    {
+        if (isset($data['type']) && $data['type'] === 'business') {
+            return 'business';
         }
 
-        $user->createCustomerProfile($data);
-        $user->assignRole('Customer');
-
-        return $user;
+        return 'customer';
     }
 
     /**
