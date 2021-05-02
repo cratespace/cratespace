@@ -38,6 +38,8 @@ class CreateNewCustomer implements CreatesNewResource
                     : null,
             ]);
 
+            $user->assignRole('Customer');
+
             return $user;
         });
     }

@@ -4,20 +4,9 @@ namespace App\Exceptions;
 
 use Exception;
 use App\Models\User;
+use App\Exceptions\AccountAlreadyCreated;
 
-class CustomerAlreadyCreated extends Exception
+class CustomerAlreadyCreated extends AccountAlreadyCreated
 {
-    /**
-     * Create a new CustomerAlreadyCreated instance.
-     *
-     * @param \App\Models\User $user
-     *
-     * @return \App\Exceptions\CustomerAlreadyCreated
-     */
-    public static function exists(User $user): CustomerAlreadyCreated
-    {
-        return new static(
-            "User is already a Stripe customer with ID {$user->customer->stripe_id}."
-        );
-    }
+
 }
