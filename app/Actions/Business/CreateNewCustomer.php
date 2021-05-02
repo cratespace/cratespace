@@ -2,7 +2,7 @@
 
 namespace App\Actions\Business;
 
-use Stripe\Customer;
+use App\Models\Customer;
 use App\Exceptions\CustomerAlreadyCreated;
 use App\Services\Stripe\Customer as StripeCustomer;
 use Cratespace\Sentinel\Contracts\Actions\CreatesNewResource;
@@ -19,6 +19,8 @@ class CreateNewCustomer implements CreatesNewResource
     public function create(array $data)
     {
         return value($data['user'], function ($user) use ($data) {
+            dd($user);
+
             if (! is_null($user->customerId())) {
                 throw CustomerAlreadyCreated::exists($user->customerId());
             }

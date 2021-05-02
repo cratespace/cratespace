@@ -3,6 +3,7 @@
 namespace Tests\Feature\Auth;
 
 use Tests\TestCase;
+use App\Models\Customer;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Cratespace\Preflight\Testing\Contracts\Postable;
@@ -25,6 +26,7 @@ class RegistrationTest extends TestCase implements Postable
         $response = $this->post('/register', $this->validParameters());
 
         $this->assertAuthenticated();
+        $this->assertCount(1, Customer::all());
         $response->assertRedirect(RouteServiceProvider::HOME);
     }
 
