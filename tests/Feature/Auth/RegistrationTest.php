@@ -4,28 +4,21 @@ namespace Tests\Feature\Auth;
 
 use Tests\TestCase;
 use App\Models\Customer;
-use Cratespace\Preflight\Models\Role;
+use Tests\Concers\CreatesRoles;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Cratespace\Preflight\Testing\Contracts\Postable;
 
 class RegistrationTest extends TestCase implements Postable
 {
+    use CreatesRoles;
     use RefreshDatabase;
 
     protected function setUp(): void
     {
         parent::setUp();
 
-        foreach ([
-            'Business' => 'business',
-            'Customer' => 'customer',
-        ] as $name => $slug) {
-            Role::create([
-                'name' => $name,
-                'slug' => $slug,
-            ]);
-        }
+        $this->createDefaultRoles();
     }
 
     public function testRegistrationScreenCanBeRendered()
