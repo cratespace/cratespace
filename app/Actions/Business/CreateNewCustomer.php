@@ -19,9 +19,7 @@ class CreateNewCustomer implements CreatesNewResource
     public function create(array $data)
     {
         return with($data['user'], function ($user) use ($data) {
-            dd($user);
-
-            if (! is_null($user->customerId())) {
+            if ($user->isCustomer()) {
                 throw CustomerAlreadyCreated::exists($user->customerId());
             }
 
