@@ -22,14 +22,12 @@ class CreateNewBusiness implements CreatesNewResource
                 throw BusinessAlreadyCreated::exists($user->businessId());
             }
 
-            Business::create([
+            Business::create(static::options([
                 'user_id' => $user->id,
-                'type' => 'standard',
                 'name' => $data['business'],
                 'email' => $data['email'],
                 'phone' => $data['phone'],
                 'registration_number' => $data['registration_number'],
-                'business_type' => 'company',
                 'business_profile' => [
                     'name' => $data['business'],
                     'mcc' => $data['mcc'] ?? null,
@@ -37,11 +35,26 @@ class CreateNewBusiness implements CreatesNewResource
                     'support_email' => $data['email'],
                     'url' => $data['url'] ?? null,
                 ],
-            ]);
+            ]));
 
             $user->assignRole('Business');
 
             return $user;
         });
+    }
+
+    /**
+     * Default options to include when creating a new business profile.
+     *
+     * @param array $data
+     *
+     * @return array
+     */
+    public static function options(array $data = []): array
+    {
+        return array_merge([
+            'type' => 'standard',
+            'business_type' => 'company',
+        ], $data);
     }
 }
