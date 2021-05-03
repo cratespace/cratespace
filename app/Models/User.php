@@ -2,9 +2,14 @@
 
 namespace App\Models;
 
+use App\Models\Casts\AddressCast;
+use App\Models\Casts\SettingsCast;
+use App\Models\Concerns\ManagesAdmin;
+use Illuminate\Database\Eloquent\Model;
 use App\Models\Concerns\ManagesBusiness;
 use App\Models\Concerns\ManagesCustomer;
 use Illuminate\Notifications\Notifiable;
+use Cratespace\Preflight\Models\Traits\Responsible;
 use Cratespace\Sentinel\Models\Traits\HasApiTokens;
 use Cratespace\Preflight\Models\Concerns\ManagesRoles;
 use Cratespace\Sentinel\Models\Traits\HasProfilePhoto;
@@ -17,7 +22,9 @@ class User extends Authenticatable
 {
     use HasFactory;
     use Notifiable;
+    use Responsible;
     use ManagesRoles;
+    use ManagesAdmin;
     use HasApiTokens;
     use HasProfilePhoto;
     use ManagesCustomer;
@@ -64,8 +71,8 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
         'two_factor_enabled' => 'boolean',
-        'settings' => 'array',
-        'address' => 'array',
+        'address' => AddressCast::class,
+        'settings' => SettingsCast::class,
     ];
 
     /**
@@ -77,5 +84,33 @@ class User extends Authenticatable
         'profile_photo_url',
         'sessions',
         'two_factor_enabled',
+        'profile',
     ];
+
+    /**
+     * The relations to eager load on every query.
+     *
+     * @var array
+     */
+    protected $with = ['roles'];
+
+    /**
+     * Get the route key for the model.
+     *
+     * @return string
+     */
+    public function getRouteKeyName(): string
+    {
+        return 'username';
+    }
+
+    /**
+     * Get the user's profile.
+     *
+     * @return \Illuminate\Database\Eloquent\Model|null
+     */
+    public function getProfileAttribute(): ?Model
+    {
+        return $this->isCustomer() ? $this->customer : $this->business;
+    }
 }

@@ -5,8 +5,17 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', fn () => Inertia::render('Welcome/Show'))->name('welcome');
 
-Route::group([
-    'middleware' => ['auth:sentinel', 'verified'],
-], function (): void {
-    Route::get('/home', fn () => Inertia::render('Business/Home'))->name('home');
-});
+/**
+ * Admin Routes...
+ */
+require 'web/admin.php';
+
+/**
+ * Business Routes...
+ */
+require 'web/business.php';
+
+/**
+ * Customer Routes...
+ */
+require 'web/customer.php';

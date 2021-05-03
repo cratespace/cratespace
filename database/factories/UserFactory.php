@@ -3,7 +3,10 @@
 namespace Database\Factories;
 
 use App\Models\User;
+use App\Models\Business;
+use App\Models\Customer;
 use Illuminate\Support\Str;
+use Cratespace\Preflight\Models\Role;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class UserFactory extends Factory
@@ -35,5 +38,54 @@ class UserFactory extends Factory
             'two_factor_secret' => null,
             'two_factor_recovery_codes' => null,
         ];
+    }
+
+    /**
+     * Create a business profile for the user.
+     *
+     * @return \Database\Factories\UserFactory
+     */
+    public function asBusiness(): UserFactory
+    {
+        return $this->has(
+            Business::factory()
+                ->state(function (array $attributes, User $user) {
+                    $user->assignRole(
+                        Role::firstOrCreate(['name' => 'Business', 'slug' => 'business'])
+                    );
+
+                    return ['user_id' => $user->id];
+                }),
+            'business'
+        );
+    }
+
+    /**
+     * Create a customer profile for the user.
+     *
+     * @return \Database\Factories\UserFactory
+     */
+    public function asCustomer(): UserFactory
+    {
+        return $this->has(
+            Customer::factory()
+                ->state(function (array $attributes, User $user) {
+                    // $customer = StripeCustomer::create([
+                    //     'name' => $user->name,
+                    //     'email' => $user->email,
+                    //     'phone' => $user->phone,
+                    // ]);
+
+                    $user->assignRole(
+                        Role::firstOrCreate(['name' => 'Customer', 'slug' => 'customer'])
+                    );
+
+                    return [
+                        'stripe_id' => Str::random(40),
+                        'user_id' => $user->id,
+                    ];
+                }),
+            'customer'
+        );
     }
 }

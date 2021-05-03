@@ -80,7 +80,7 @@
 
                                 <div class="mt-6 rounded-xl border border-gray-200 overflow-hidden">
                                     <div class=" flex items-center justify-between px-4 py-5 bg-white sm:px-6">
-                                        <div class="relative flatpickr flex-1" title="Toggle" data-toggle>
+                                        <div class="relative flex-1" title="Toggle" data-toggle>
                                             <div>
                                                 <span class="text-gray-400 text-xs uppercase font-semibold tracking-wide">Departure</span>
                                             </div>
@@ -92,11 +92,9 @@
                                                     </span>
                                                 </div>
                                             </div>
-
-                                            <flat-pickr :config="flatPickrConfig" v-model="departure" name="departure" class="cursor-pointer absolute top-0 w-32 h-16 opacity-0"></flat-pickr>
                                         </div>
 
-                                        <div class="relative flatpickr flex-1">
+                                        <div class="relative flex-1">
                                             <div>
                                                 <span class="text-gray-400 text-xs uppercase font-semibold tracking-wide">Arriving</span>
                                             </div>
@@ -108,8 +106,6 @@
                                                     </span>
                                                 </div>
                                             </div>
-
-                                            <flat-pickr :config="flatPickrConfig" v-model="arrival" name="arrival" class="cursor-pointer absolute top-0 w-32 h-16 opacity-0"></flat-pickr>
                                         </div>
                                     </div>
                                 </div>
@@ -132,8 +128,6 @@
 
 <script>
 import moment from 'moment';
-import '../../../css/vendor/flatpickr.css';
-import flatPickr from 'vue-flatpickr-component';
 import AppLink from '@/Views/Components/Base/Link';
 import AppButton from '@/Views/Components/Buttons/Button';
 import Card from '@/Views/Components/Cards/Card';
@@ -145,9 +139,14 @@ export default {
         AppLink,
         AppButton,
         Card,
-        flatPickr,
         Dropdown,
         DropdownLink,
+    },
+
+    computed: {
+        arrivalStub() {
+            return new Date().setDate(new Date().getDate() + 1);
+        }
     },
 
     data() {
@@ -156,14 +155,7 @@ export default {
             destination: 'Jaffna',
 
             departure: Date.now(),
-            arrival: new Date().setDate(new Date().getDate() + 1),
-
-            flatPickrConfig: {
-                wrap: true,
-                altFormat: 'D, M j',
-                altInput: true,
-                dateFormat: 'Y-m-d',
-            }
+            arrival: this.arrivalStub,
         }
     },
 

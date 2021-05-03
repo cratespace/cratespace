@@ -19,6 +19,10 @@ class UserPolicy
      */
     public function manage(User $user, User $model)
     {
+        if ($user->hasRole('Administrator')) {
+            return true;
+        }
+
         return $user->is($model);
     }
 }

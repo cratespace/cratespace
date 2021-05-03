@@ -38,6 +38,26 @@ return [
     ],
 
     /*
+     * Business User Input Validation Rules.
+     */
+    'business' => [
+        'registration_number' => [
+            'required',
+            'string',
+            'max:255',
+            'unique:businesses,registration_number',
+        ],
+        'mcc' => [
+            'required',
+            'string',
+            'max:255',
+            'unique:businesses,mcc',
+        ],
+        'url' => ['sometimes', 'url', 'string', 'max:255'],
+        'invite' => ['sometimes'],
+    ],
+
+    /*
      * Use Profile Information Validation Rules.
      */
     'update_profile' => [
@@ -71,5 +91,47 @@ return [
             'confirmed',
             'different:current_password',
         ],
+    ],
+
+    /*
+     * Business Invitaion Parameters Validation Rules.
+     */
+    'invitation' => [
+        'email' => ['required', 'email', 'unique:invitations,email'],
+    ],
+
+    /*
+     * Create/Update Space Details Validation Rules...
+     */
+    'space' => [
+        'code' => ['nullable', 'string', 'max:255', 'unique:spaces,code'],
+        'height' => ['required', 'integer'],
+        'width' => ['required', 'integer'],
+        'length' => ['required', 'integer'],
+        'weight' => ['required', 'integer'],
+        'price' => ['required', 'numeric', 'regex:/^\d+(\.\d{1,2})?$/'],
+        'tax' => ['nullable', 'numeric', 'regex:/^\d+(\.\d{1,2})?$/'],
+        'origin' => ['required', 'string'],
+        'destination' => ['required', 'string'],
+        'departs_at' => ['required', 'date'],
+        'arrives_at' => ['required', 'date', 'after:departs_at'],
+        'note' => ['nullable', 'string'],
+        'type' => [
+            'required', 'string',
+            Rule::in(['Local', 'International']),
+        ],
+        'base' => ['sometimes', 'string'],
+    ],
+
+    /*
+     * Purchase (purchase space) Validation Rules...
+     */
+    'order' => [
+        'name' => ['required', 'string', 'max:255'],
+        'email' => ['required', 'string', 'email'],
+        'phone' => ['sometimes', 'string', 'regex:/(0)[0-9]{9}/'],
+        'business' => ['sometimes', 'string', 'max:255'],
+        'payment_method' => ['required', 'string'],
+        'customer' => ['required', 'string'],
     ],
 ];

@@ -12,6 +12,7 @@ trait CreatesRoles
      * @var array
      */
     public static $roles = [
+        'Administrator' => 'administrator',
         'Business' => 'business',
         'Customer' => 'customer',
     ];
