@@ -5,7 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Business\InviteBusinessController;
 
 Route::group([
-    'middleware' => ['auth:sentinel', 'verified'],
+    'middleware' => ['auth:sentinel', 'auth.business', 'verified'],
 ], function (): void {
     Route::get('/home', fn () => Inertia::render('Business/Home'))->name('home');
 });
