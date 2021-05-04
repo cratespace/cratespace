@@ -79,7 +79,7 @@ class Space extends Model
      *
      * @return bool|null
      */
-    public function hasValidSchedule(): ?bool
+    public function validateSchedule(): ?bool
     {
         if ($this->departs_at->isBefore($this->arrives_at)) {
             return true;

@@ -20,6 +20,8 @@ class ScheduleCast implements CastsAttributes
      */
     public function get($model, string $key, $value, array $attributes)
     {
+        $model->validateSchedule();
+
         return new Schedule(
             $this->parse($attributes['departs_at'])->format('M j, Y g:ia'),
             $this->parse($attributes['arrives_at'])->format('M j, Y g:ia')

@@ -25,6 +25,6 @@ class SpaceObserver
             $space->base = $base;
         }
 
-        $space->hasValidSchedule();
+        $space->validateSchedule();
     }
 }
