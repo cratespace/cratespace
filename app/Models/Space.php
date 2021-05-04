@@ -7,13 +7,22 @@ use App\Casts\DimensionsCast;
 use App\Models\Casts\ScheduleCast;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Traits\HasEncryptableCode;
+use Cratespace\Preflight\Models\Traits\Directable;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Space extends Model
 {
+    use Directable;
     use HasFactory;
     use HasEncryptableCode;
+
+    /**
+     * The accessors to append to the model's array form.
+     *
+     * @var array
+     */
+    protected $appends = ['path'];
 
     /**
      * The attributes that are mass assignable.
@@ -51,6 +60,16 @@ class Space extends Model
         'schedule' => ScheduleCast::class,
         'dimensions' => DimensionsCast::class,
     ];
+
+    /**
+     * Get the route key for the model.
+     *
+     * @return string
+     */
+    public function getRouteKeyName(): string
+    {
+        return 'code';
+    }
 
     /**
      * Get the business the space belongs to.

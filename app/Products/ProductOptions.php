@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Products\Factories;
+namespace App\Products;
 
 class ProductOptions
 {

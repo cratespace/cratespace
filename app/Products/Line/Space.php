@@ -9,9 +9,9 @@ use App\Events\OrderPlaced;
 use App\Models\Space as Model;
 use App\Events\ProductReleased;
 use App\Events\ProductReserved;
+use App\Products\ProductOptions;
 use App\Services\Stripe\Customer;
 use App\Contracts\Billing\Payment;
-use App\Products\Factories\ProductOptions;
 
 class Space extends Model
 {
