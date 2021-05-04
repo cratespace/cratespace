@@ -3,7 +3,10 @@
 namespace App\Providers;
 
 use App\Models\Space;
+use App\Events\OrderPlaced;
 use App\Events\BusinessInvited;
+use App\Events\ProductReleased;
+use App\Events\ProductReserved;
 use App\Observers\SpaceObserver;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Auth\Events\Registered;
@@ -32,6 +35,11 @@ class EventServiceProvider extends ServiceProvider
         ],
 
         BusinessInvited::class => [],
+
+        ProductReserved::class => [],
+        ProductReleased::class => [],
+
+        OrderPlaced::class => [],
     ];
 
     /**
