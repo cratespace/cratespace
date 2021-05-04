@@ -2,6 +2,8 @@
 
 namespace Tests\Unit\Models;
 
+use Carbon\Carbon;
+use LogicException;
 use Tests\TestCase;
 use App\Models\User;
 use App\Models\Space;
@@ -87,5 +89,63 @@ class SpaceTest extends TestCase
         $space = create(Space::class, ['user_id' => $user->id]);
 
         $this->assertEquals('United Kingdom', $space->base);
+    }
+
+    public function testHasOriginDestination()
+    {
+        $space = create(Space::class);
+
+        $this->assertNotNull($space->origin);
+    }
+
+    public function testHasArrivalDestination()
+    {
+        $space = create(Space::class);
+
+        $this->assertNotNull($space->destination);
+    }
+
+    public function testHasDepartureDate()
+    {
+        $space = create(Space::class);
+
+        $this->assertNotNull($space->departs_at);
+        $this->assertInstanceOf(Carbon::class, $space->departs_at);
+    }
+
+    public function testHasArrivalDate()
+    {
+        $space = create(Space::class);
+
+        $this->assertNotNull($space->arrives_at);
+        $this->assertInstanceOf(Carbon::class, $space->arrives_at);
+    }
+
+    public function testValidatesDepartureDateAndArrivalDate()
+    {
+        $this->expectException(LogicException::class);
+        $this->expectExceptionMessage('Departure date should be before arrival date');
+
+        create(Space::class, [
+            'departs_at' => now(),
+            'arrives_at' => now()->yesterday(),
+        ]);
+    }
+
+    public function testHasOrganizedSchedule()
+    {
+        $space = create(Space::class);
+
+        $this->assertIsString($space->schedule->departsAt);
+        $this->assertIsString($space->schedule->arrivesAt);
+    }
+
+    public function testCanDetermineNearingDeparture()
+    {
+        $space = create(Space::class, [
+            'departs_at' => now()->tomorrow(),
+        ]);
+
+        $this->assertTrue($space->schedule->nearingDeparture());
     }
 }

@@ -24,5 +24,7 @@ class SpaceObserver
         if ($space->base !== $base) {
             $space->base = $base;
         }
+
+        $space->hasValidSchedule();
     }
 }

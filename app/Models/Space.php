@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use LogicException;
 use App\Casts\DimensionsCast;
 use App\Models\Casts\ScheduleCast;
 use Illuminate\Database\Eloquent\Model;
@@ -71,5 +72,19 @@ class Space extends Model
     public function attachNote(string $note): void
     {
         $this->forceFill(['note' => $note])->save();
+    }
+
+    /**
+     * Determine if the space has a valid schedule.
+     *
+     * @return bool|null
+     */
+    public function hasValidSchedule(): ?bool
+    {
+        if ($this->departs_at->isBefore($this->arrives_at)) {
+            return true;
+        }
+
+        throw new LogicException('Departure date should be before arrival date');
     }
 }
