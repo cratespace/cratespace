@@ -1,18 +1,18 @@
 <template>
     <div class="mt-6 md:grid md:grid-cols-12 md:gap-6">
-        <div class="mb-6 md:mb-0 md:col-span-6 lg:col-span-4">
+        <div v-for="space in spaces" :key="space.id" class="mb-6 md:mb-0 md:col-span-6 lg:col-span-4">
             <card>
                 <template #content>
                     <div>
                         <div>
                             <div>
                                 <span class="text-xs font-medium text-blue-500 ">
-                                    Example, Inc.
+                                    {{ space.business }}
                                 </span>
                             </div>
 
                             <div>
-                                <h5 class="text-base font-bold">UEH893EO8EWQIUHSDUIQW</h5>
+                                <h5 class="text-base font-bold">{{ space.code.slice(0, 10).toUpperCase() }}</h5>
                             </div>
                         </div>
 
@@ -21,7 +21,7 @@
                                 <div class="text-center">
                                     <div>
                                         <span class="rounded-lg py-1 px-2 border border-gray-200">
-                                            <span class="text-lg font-medium">12</span> <span class="text-xs font-light">Ft</span>
+                                            <span class="text-lg font-medium">{{ space.dimensions.height }}</span> <span class="text-xs font-light">Ft</span>
                                         </span>
                                     </div>
 
@@ -33,7 +33,7 @@
                                 <div class="text-center">
                                     <div>
                                         <span class="rounded-lg py-1 px-2 border border-gray-200">
-                                            <span class="text-lg font-medium">6</span> <span class="text-xs font-light">Ft</span>
+                                            <span class="text-lg font-medium">{{ space.dimensions.width }}</span> <span class="text-xs font-light">Ft</span>
                                         </span>
                                     </div>
 
@@ -45,7 +45,7 @@
                                 <div class="text-center">
                                     <div>
                                         <span class="rounded-lg py-1 px-2 border border-gray-200">
-                                            <span class="text-lg font-medium">9</span> <span class="text-xs font-light">Ft</span>
+                                            <span class="text-lg font-medium">{{ space.dimensions.length }}</span> <span class="text-xs font-light">Ft</span>
                                         </span>
                                     </div>
 
@@ -58,7 +58,7 @@
                             <div class="text-center">
                                 <div>
                                     <span class="rounded-lg py-1 px-2 border border-gray-200">
-                                        <span class="text-lg font-medium">1240</span> <span class="text-xs font-light">kg</span>
+                                        <span class="text-lg font-medium">{{ space.weight }}</span> <span class="text-xs font-light">kg</span>
                                     </span>
                                 </div>
 
@@ -77,12 +77,8 @@
                                 <div>
                                     <div>
                                         <span class="text-sm font-semibold">
-                                            Colombo
+                                            {{ space.origin }}
                                         </span>
-                                    </div>
-
-                                    <div>
-                                        <span class="text-gray-400 text-xs">Sri Lanka</span>
                                     </div>
                                 </div>
                             </div>
@@ -95,12 +91,8 @@
                                 <div>
                                     <div>
                                         <span class="text-sm font-semibold">
-                                            Jaffna
+                                            {{ space.destination }}
                                         </span>
-                                    </div>
-
-                                    <div>
-                                        <span class="text-gray-400 text-xs">Sri Lanka</span>
                                     </div>
                                 </div>
                             </div>
@@ -156,6 +148,8 @@ export default {
     components: {
         Card,
         AppButton
-    }
+    },
+
+    props: ['spaces'],
 }
 </script>

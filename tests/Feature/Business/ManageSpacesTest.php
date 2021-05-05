@@ -2,8 +2,6 @@
 
 namespace Tests\Feature\Business;
 
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 
 class ManageSpacesTest extends TestCase
@@ -13,8 +11,10 @@ class ManageSpacesTest extends TestCase
      *
      * @return void
      */
-    public function test_example()
+    public function testExample()
     {
+        $this->markTestSkipped();
+
         $response = $this->get('/');
 
         $response->assertStatus(200);

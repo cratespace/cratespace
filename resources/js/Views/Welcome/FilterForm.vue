@@ -43,10 +43,6 @@
                                                         <option value="Trincomalee">Trincomalee</option>
                                                     </select>
                                                 </div>
-
-                                                <div>
-                                                    <span class="text-gray-400 text-sm">Sri Lanka</span>
-                                                </div>
                                             </div>
                                         </div>
                                     </label>
@@ -62,10 +58,6 @@
                                                     <span class="text-xl font-bold">
                                                         {{ destination }}
                                                     </span>
-                                                </div>
-
-                                                <div>
-                                                    <span class="text-gray-400 text-sm">Sri Lanka</span>
                                                 </div>
                                             </div>
                                         </div>

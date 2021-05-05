@@ -7,15 +7,17 @@ use App\Casts\DimensionsCast;
 use App\Models\Casts\ScheduleCast;
 use App\Models\Concerns\ManagesSpace;
 use Illuminate\Database\Eloquent\Model;
-use App\Models\Traits\HasEncryptableCode;
+use Cratespace\Preflight\Models\Traits\Hashable;
+use Cratespace\Preflight\Models\Traits\Filterable;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Space extends Model
 {
+    use Hashable;
+    use Filterable;
     use HasFactory;
     use ManagesSpace;
-    use HasEncryptableCode;
 
     /**
      * The attributes that are mass assignable.

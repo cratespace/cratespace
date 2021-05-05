@@ -2,6 +2,7 @@
 
 namespace App\Models\Traits;
 
+use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Database\Eloquent\Model;
 
@@ -16,7 +17,7 @@ trait HasEncryptableCode
     {
         static::created(function (Model $model): void {
             $model->forceFill(['code' => Crypt::encryptString(
-                get_class($model) . '-' . $model->id
+                Str::upper(get_class($model) . '-' . $model->id)
             )])->saveQuietly();
         });
     }
