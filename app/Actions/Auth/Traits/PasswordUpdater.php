@@ -14,20 +14,17 @@ trait PasswordUpdater
      *
      * @param \Illuminate\Contracts\Auth\Authenticatable $user
      * @param string                                     $password
-     * @param bool                                       $remember
+     * @param bool                                       $withoutRemember
      *
      * @return void
      */
-    protected function updatePassword(
-        Authenticatable $user,
-        string $password,
-        bool $remember = true
-    ): void {
-        DB::transaction(function () use ($user, $password, $remember) {
+    protected function updatePassword(Authenticatable $user, string $password, bool $withoutRemember = false): void
+    {
+        DB::transaction(function () use ($user, $password, $withoutRemember) {
             $user->forceFill(
                 array_merge([
                     'password' => Hash::make($password),
-                ], $remember ? ['remember_token' => Str::random(60)] : [])
+                ], $withoutRemember ? [] : ['remember_token' => Str::random(60)])
             )->save();
         });
     }

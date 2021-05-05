@@ -2,7 +2,7 @@
 
 namespace App\Events;
 
-use App\Contracts\Billing\Product;
+use App\Contracts\Products\Product;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Broadcasting\InteractsWithSockets;
@@ -16,18 +16,18 @@ class ProductEvent
     /**
      * The product instance.
      *
-     * @var \App\Contracts\Billing\Product
+     * @var \App\Contracts\Products\Product
      */
-    public $product;
+    protected $product;
 
     /**
      * Create a new event instance.
      *
-     * @param \App\Contracts\Billing\Product|null
+     * @param \App\Contracts\Products\Product $product
      *
      * @return void
      */
-    public function __construct(?Product $product = null)
+    public function __construct(Product $product)
     {
         $this->product = $product;
     }

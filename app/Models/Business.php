@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Models\Casts\ProfileCast;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Cratespace\Sentinel\Models\Traits\HasProfilePhoto;
@@ -37,7 +36,7 @@ class Business extends Model
      * @var array
      */
     protected $casts = [
-        'business_profile' => ProfileCast::class,
+        'business_profile' => 'array',
     ];
 
     /**

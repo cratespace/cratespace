@@ -5,32 +5,21 @@ namespace Tests\Feature\Business;
 use Tests\TestCase;
 use App\Models\User;
 use App\Jobs\InviteBusiness;
-use Illuminate\Support\Facades\Mail;
-use Cratespace\Preflight\Models\Role;
+use Tests\Concers\CreatesRoles;
 use Illuminate\Support\Facades\Queue;
-use Illuminate\Contracts\Auth\StatefulGuard;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Cratespace\Preflight\Testing\Contracts\Postable;
 
 class CreateNewBusinessTest extends TestCase implements Postable
 {
     use RefreshDatabase;
+    use CreatesRoles;
 
     protected function setUp(): void
     {
         parent::setUp();
 
-        // Set up Administrator role.
-        Role::create([
-            'name' => 'Administrator',
-            'slug' => 'administrator',
-        ]);
-
-        // Set up Business role.
-        Role::create([
-            'name' => 'Business',
-            'slug' => 'business',
-        ]);
+        $this->createDefaultRoles();
 
         $user = create(User::class);
         $user->assignRole('Administrator');
@@ -38,15 +27,8 @@ class CreateNewBusinessTest extends TestCase implements Postable
         $this->signIn($user);
     }
 
-    protected function tearDown(): void
-    {
-        app(StatefulGuard::class)->logout();
-    }
-
     public function testBusinessUserCanBeCreated()
     {
-        $this->withoutExceptionHandling();
-
         $response = $this->post('/businesses', $this->validParameters());
 
         $response->assertStatus(303);
@@ -56,8 +38,6 @@ class CreateNewBusinessTest extends TestCase implements Postable
     {
         Queue::fake();
 
-        $this->withoutExceptionHandling();
-
         $response = $this->post('/businesses', $this->validParameters([
             'invite' => true,
         ]));
@@ -65,22 +45,6 @@ class CreateNewBusinessTest extends TestCase implements Postable
         Queue::assertPushed(InviteBusiness::class);
 
         $response->assertStatus(303);
-    }
-
-    public function testBusinessInvitationJobIsPushed()
-    {
-        Mail::fake();
-
-        $this->withoutExceptionHandling();
-
-        $response = $this->post('/businesses', $this->validParameters([
-            'invite' => true,
-        ]));
-
-        $response->assertStatus(303);
-
-        $business = User::whereName('Father Jack Hackett')->first();
-        $this->assertTrue($business->invited());
     }
 
     public function testOnlyBusinessUserCanBeInvited()
@@ -239,6 +203,7 @@ class CreateNewBusinessTest extends TestCase implements Postable
             'email' => 'fr.j.hackett@craggyisle.com',
             'phone' => '0712345678',
             'password' => 'dontTellMeImStillInThatFekingIsland',
+            'password_confirmation' => 'dontTellMeImStillInThatFekingIsland',
             'type' => 'business',
             'line1' => 'Glenquin',
             'city' => 'Killinaboy',
@@ -248,6 +213,7 @@ class CreateNewBusinessTest extends TestCase implements Postable
             'registration_number' => '01234567',
             'mcc' => '4798',
             'invite' => false,
+            'type' => 'business',
         ], $overrides);
     }
 }

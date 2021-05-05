@@ -1,54 +1,47 @@
 {
     "name": "cratespace/cratespace",
     "type": "project",
-    "description": "A freight sales platform.",
-    "keywords": [
-        "saas",
-        "freight",
-        "sales",
-        "platform",
-        "cratespace"
+    "description": "A freight space sales platform.",
+    "keywords": ["freight", "space", "sales"],
+    "license": "proprietary",
+    "support": {
+        "issues": "https://github.com/cratespace/cratespace/issues",
+        "source": "https://github.com/cratespace/cratespace"
+    },
+    "authors": [
+        {
+            "name": "Thavarshan Thayananthajothy",
+            "email": "tjthavarshan@gmail.com"
+        }
     ],
-    "license": "MIT",
     "require": {
         "php": "^7.4|^8.0",
         "ext-intl": "*",
         "ext-json": "*",
-        "cratespace/preflight": "^3.4",
-        "cratespace/sentinel": "^2.8.0",
+        "cratespace/preflight": "^3.6",
+        "cratespace/sentinel": "^3.1.1",
         "dompdf/dompdf": "^1.0",
         "fideloper/proxy": "^4.4",
         "fruitcake/laravel-cors": "^2.0",
-        "guzzlehttp/guzzle": "^7.3",
-        "inertiajs/inertia-laravel": "^0.3.5",
+        "guzzlehttp/guzzle": "^7.0.1",
+        "inertiajs/inertia-laravel": "^0.4.1",
+        "ipinfo/ipinfo": "^2.2",
         "laravel/framework": "^8.12",
-        "laravel/telescope": "^4.4",
         "laravel/tinker": "^2.5",
         "league/iso3166": "^3.0",
         "moneyphp/money": "^3.3",
-        "stripe/stripe-php": "^7.75",
-        "tightenco/ziggy": "^1.0"
+        "stripe/stripe-php": "^7.77",
+        "symfony/intl": "^5.2",
+        "tightenco/ziggy": "^1.1.0"
     },
     "require-dev": {
-        "brianium/paratest": "^6.2",
+        "brianium/paratest": "^6.3",
         "facade/ignition": "^2.5",
         "fakerphp/faker": "^1.9.1",
         "laravel/sail": "^1.0.1",
         "mockery/mockery": "^1.4.2",
         "nunomaduro/collision": "^5.0",
-        "phpunit/phpunit": "^9.3.3"
-    },
-    "config": {
-        "optimize-autoloader": true,
-        "preferred-install": "dist",
-        "sort-packages": true
-    },
-    "extra": {
-        "laravel": {
-            "dont-discover": [
-                "laravel/telescope"
-            ]
-        }
+        "phpunit/phpunit": "^9.5"
     },
     "autoload": {
         "psr-4": {
@@ -62,8 +55,6 @@
             "Tests\\": "tests/"
         }
     },
-    "minimum-stability": "dev",
-    "prefer-stable": true,
     "scripts": {
         "post-autoload-dump": [
             "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
@@ -75,5 +66,17 @@
         "post-create-project-cmd": [
             "@php artisan key:generate --ansi"
         ]
-    }
+    },
+    "extra": {
+        "laravel": {
+            "dont-discover": []
+        }
+    },
+    "config": {
+        "optimize-autoloader": true,
+        "preferred-install": "dist",
+        "sort-packages": true
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
 }

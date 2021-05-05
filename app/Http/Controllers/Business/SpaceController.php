@@ -4,43 +4,39 @@ namespace App\Http\Controllers\Business;
 
 use Inertia\Inertia;
 use App\Models\Space;
-use App\Http\Requests\SpaceRequest;
+use App\Filters\SpaceFilter;
 use App\Http\Controllers\Controller;
-use App\Http\Responses\SpaceResponse;
-use App\Actions\Product\CreateNewProduct;
+use App\Actions\Business\CreateNewSpace;
+use Inertia\Response as InertiaResponse;
+use App\Http\Requests\Business\SpaceRequest;
+use App\Http\Responses\Business\SpaceResponse;
 
 class SpaceController extends Controller
 {
     /**
-     * Create new controller instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        $this->middleware('money')->only(['store', 'update']);
-    }
-
-    /**
      * Display a listing of the resource.
      *
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @param \App\Filters\SpaceFilter $filter
+     *
+     * @return \Inertia\Response
      */
-    public function index()
+    public function index(SpaceFilter $filter): InertiaResponse
     {
-        $this->authorize('manage', new Space());
+        $this->authorize('viewAny', new Space());
 
-        return Inertia::render('Business/Spaces/Index');
+        return Inertia::render('Business/Spaces/Index', [
+            'spaces' => [],
+        ]);
     }
 
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return \Inertia\Response
      */
-    public function create()
+    public function create(): InertiaResponse
     {
-        $this->authorize('manage', new Space());
+        $this->authorize('viewAny', new Space());
 
         return Inertia::render('Business/Spaces/Create');
     }
@@ -48,14 +44,14 @@ class SpaceController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param \App\Http\Requests\SpaceRequest       $request
-     * @param \App\Actions\Product\CreateNewProduct $creator
+     * @param \App\Http\Requests\Business\SpaceRequest $request
+     * @param \App\Actions\Business\CreateNewSpace     $request
      *
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return mixed
      */
-    public function store(SpaceRequest $request, CreateNewProduct $creator)
+    public function store(SpaceRequest $request, CreateNewSpace $creator)
     {
-        $space = $creator->create(Space::class, $request->validated());
+        $space = $creator->create($request->validated());
 
         return SpaceResponse::dispatch($space);
     }
@@ -65,9 +61,9 @@ class SpaceController extends Controller
      *
      * @param \App\Models\Space $space
      *
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return \Inertia\Response
      */
-    public function show(Space $space)
+    public function show(Space $space): InertiaResponse
     {
         $this->authorize('manage', $space);
 
@@ -79,9 +75,9 @@ class SpaceController extends Controller
      *
      * @param \App\Models\Space $space
      *
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return \Inertia\Response
      */
-    public function edit(Space $space)
+    public function edit(Space $space): InertiaResponse
     {
         $this->authorize('manage', $space);
 
@@ -91,10 +87,10 @@ class SpaceController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param \Illuminate\Http\Request $request
-     * @param \App\Models\Space        $space
+     * @param \App\Http\Requests\Business\SpaceRequest $request
+     * @param \App\Models\Space                        $space
      *
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return mixed
      */
     public function update(SpaceRequest $request, Space $space)
     {
@@ -108,12 +104,10 @@ class SpaceController extends Controller
      *
      * @param \App\Models\Space $space
      *
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return mixed
      */
     public function destroy(Space $space)
     {
-        $this->authorize('manage', $space);
-
         $space->delete();
 
         return SpaceResponse::dispatch();

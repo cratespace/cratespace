@@ -132,7 +132,7 @@ class Payment extends Resource implements PaymentContract
     }
 
     /**
-     * Cancel payment.
+     * Cancel a course of action or a resource.
      *
      * @return void
      */

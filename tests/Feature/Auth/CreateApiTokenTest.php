@@ -15,22 +15,14 @@ class CreateApiTokenTest extends TestCase implements Postable
     {
         $this->signIn($user = create(User::class));
 
-        $response = $this->post('/user/api-tokens', [
-            'name' => 'Test Token',
-            'permissions' => [
-                'read',
-                'update',
-            ],
-        ]);
+        $response = $this->post('/user/api-tokens', $this->validParameters());
 
         $response->assertStatus(303);
+        $response->assertSessionHasNoErrors();
         $this->assertCount(1, $user->fresh()->tokens);
         $this->assertEquals('Test Token', $user->fresh()->tokens->first()->name);
-        $this->assertTrue($user->fresh()->tokens->first()->can('read'));
-        $this->assertFalse($user->fresh()->tokens->first()->can('delete'));
-        $this->assertTrue($user->tokens->contains(function ($token) {
-            return $token->name === 'Test Token';
-        }));
+        $this->assertFalse($user->fresh()->tokens->first()->can('read'));
+        $this->assertTrue($user->fresh()->tokens->first()->can('delete'));
     }
 
     public function testValidNameIsRequired()
@@ -45,18 +37,6 @@ class CreateApiTokenTest extends TestCase implements Postable
         $response->assertSessionHasErrors('name');
     }
 
-    public function testValidPermissionsAreRequired()
-    {
-        $this->signIn(create(User::class));
-
-        $response = $this->post('/user/api-tokens', $this->validParameters([
-            'permissions' => '',
-        ]));
-
-        $response->assertStatus(302);
-        $response->assertSessionHasErrors('permissions');
-    }
-
     /**
      * Provide only the necessary paramertes for a POST-able type request.
      *
@@ -68,7 +48,10 @@ class CreateApiTokenTest extends TestCase implements Postable
     {
         return array_merge([
             'name' => 'Test Token',
-            'permissions' => ['create', 'read'],
+            'permissions' => [
+                'delete',
+                'missing-permission',
+            ],
         ], $overrides);
     }
 }

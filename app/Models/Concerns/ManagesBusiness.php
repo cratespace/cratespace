@@ -5,46 +5,15 @@ namespace App\Models\Concerns;
 use App\Models\Payout;
 use App\Models\Business;
 use App\Models\Invitation;
-use App\Events\BusinessInvited;
-use App\Exceptions\UserAlreadyOnboard;
+use BadMethodCallException;
+use App\Exceptions\InvitationException;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 trait ManagesBusiness
 {
     /**
-     * Create user as customer type account.
-     *
-     * @param array|null $data
-     *
-     * @return void
-     */
-    public function createAsBusiness(?array $data = null): void
-    {
-        if (is_null($data)) {
-            $data = $this->toArray();
-        }
-
-        Business::create([
-            'user_id' => $this->id,
-            'type' => 'standard',
-            'name' => $data['business'],
-            'email' => $data['email'],
-            'phone' => $data['phone'],
-            'registration_number' => $data['registration_number'],
-            'business_type' => 'company',
-            'business_profile' => [
-                'name' => $data['business'],
-                'mcc' => $data['mcc'] ?? null,
-                'support_phone' => $data['phone'],
-                'support_email' => $data['email'],
-                'url' => $data['url'] ?? null,
-            ],
-        ]);
-    }
-
-    /**
-     * Determine if the user is a customer.
+     * Determine if the user is a business.
      *
      * @return bool
      */
@@ -80,7 +49,7 @@ trait ManagesBusiness
      */
     public function base(): string
     {
-        return $this->user->address->country;
+        return $this->address->country;
     }
 
     /**
@@ -88,19 +57,15 @@ trait ManagesBusiness
      *
      * @return \App\Models\Invitation
      *
-     * @throws \App\Exceptions\UserAlreadyOnboard
+     * @throws \App\Exceptions\InvitationException
      */
     public function invite(): Invitation
     {
         if ($this->invited()) {
-            throw new UserAlreadyOnboard('This user has already been invited');
+            throw new InvitationException('This user has already been invited');
         }
 
-        $invitation = $this->invitation()->create(['email' => $this->email]);
-
-        BusinessInvited::dispatch($invitation);
-
-        return $invitation;
+        return $this->invitation()->create(['email' => $this->email]);
     }
 
     /**
@@ -110,7 +75,8 @@ trait ManagesBusiness
      */
     public function invited(): bool
     {
-        return $this->invitation()->exists() || optional($this->invitation)->accepted;
+        return $this->invitation()->exists() ||
+            optional($this->invitation)->accepted;
     }
 
     /**
@@ -127,11 +93,13 @@ trait ManagesBusiness
      * Get the credit amount that belongs to the business.
      *
      * @return int
+     *
+     * @throws \BadMethodCallException
      */
     public function getCreditAttribute(): int
     {
         if ($this->hasRole('Customer')) {
-            return 0;
+            throw new BadMethodCallException('User is a customer');
         }
 
         return $this->payouts()->pluck('amount')->sum();

@@ -3,17 +3,23 @@
 namespace Tests\Feature\Auth;
 
 use Tests\TestCase;
-use App\Services\Stripe\Customer;
-use Illuminate\Support\Facades\Auth;
+use App\Models\Customer;
+use Tests\Concers\CreatesRoles;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Tests\Feature\Auth\Concerns\CreateDefaultUser;
 use Cratespace\Preflight\Testing\Contracts\Postable;
 
 class RegistrationTest extends TestCase implements Postable
 {
+    use CreatesRoles;
     use RefreshDatabase;
-    use CreateDefaultUser;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->createDefaultRoles();
+    }
 
     public function testRegistrationScreenCanBeRendered()
     {
@@ -22,36 +28,21 @@ class RegistrationTest extends TestCase implements Postable
         $response->assertStatus(200);
     }
 
-    public function testNewCustomerCanRegister()
+    public function testNewUsersCanRegister()
     {
-        $this->withoutExceptionHandling();
-
-        $this->createDefaults();
-
         $response = $this->post('/register', $this->validParameters());
 
         $this->assertAuthenticated();
+        $this->assertCount(1, Customer::all());
         $response->assertRedirect(RouteServiceProvider::HOME);
-        $this->assertNotNull($id = Auth::user()->profile->stripe_id);
-
-        $customer = new Customer($id);
-        $customer->delete();
     }
 
-    public function testNewCustomerCanRegisterThroughJson()
+    public function testNewUsersCanRegisterThrougJsonRequest()
     {
-        $this->withoutExceptionHandling();
-
-        $this->createDefaults();
-
         $response = $this->postJson('/register', $this->validParameters());
 
         $this->assertAuthenticated();
-        $response->assertStatus(200);
-        $this->assertNotNull($id = Auth::user()->profile->stripe_id);
-
-        $customer = new Customer($id);
-        $customer->delete();
+        $response->assertStatus(201);
     }
 
     public function testValidNameIsRequired()
@@ -60,6 +51,7 @@ class RegistrationTest extends TestCase implements Postable
             'name' => '',
         ]));
 
+        $this->assertGuest();
         $response->assertStatus(302);
         $response->assertSessionHasErrors('name');
     }
@@ -70,6 +62,7 @@ class RegistrationTest extends TestCase implements Postable
             'email' => '',
         ]));
 
+        $this->assertGuest();
         $response->assertStatus(302);
         $response->assertSessionHasErrors('email');
     }
@@ -80,6 +73,7 @@ class RegistrationTest extends TestCase implements Postable
             'phone' => '',
         ]));
 
+        $this->assertGuest();
         $response->assertStatus(302);
         $response->assertSessionHasErrors('phone');
     }
@@ -90,6 +84,7 @@ class RegistrationTest extends TestCase implements Postable
             'password' => '',
         ]));
 
+        $this->assertGuest();
         $response->assertStatus(302);
         $response->assertSessionHasErrors('password');
     }
@@ -104,10 +99,11 @@ class RegistrationTest extends TestCase implements Postable
     public function validParameters(array $overrides = []): array
     {
         return array_merge([
-            'name' => 'Father Jack Hackett',
-            'email' => 'fr.j.hackett@craggyisle.com',
+            'name' => 'Test User',
+            'email' => 'test@example.com',
             'phone' => '0712345678',
-            'password' => 'dontTellMeImStillInThatFekingIsland',
+            'password' => 'password',
+            'password_confirmation' => 'password',
             'type' => 'customer',
         ], $overrides);
     }

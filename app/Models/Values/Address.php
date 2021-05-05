@@ -2,6 +2,8 @@
 
 namespace App\Models\Values;
 
+use Cratespace\Preflight\Models\Values\Value;
+
 class Address extends Value
 {
     /**

@@ -2,36 +2,20 @@
 
 namespace App\Models;
 
-use App\Models\Traits\Orderable;
+use LogicException;
+use App\Casts\DimensionsCast;
 use App\Models\Casts\ScheduleCast;
-use App\Models\Traits\Productable;
-use App\Models\Concerns\ManagesProduct;
+use App\Models\Concerns\ManagesSpace;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Traits\HasEncryptableCode;
-use Cratespace\Preflight\Models\Traits\Directable;
-use Cratespace\Preflight\Models\Traits\Filterable;
-use Cratespace\Preflight\Models\Traits\Presentable;
-use App\Contracts\Billing\Product as ProductContract;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class Space extends Model implements ProductContract
+class Space extends Model
 {
     use HasFactory;
-    use Filterable;
-    use Presentable;
-    use Directable;
+    use ManagesSpace;
     use HasEncryptableCode;
-    use ManagesProduct;
-    use Productable;
-    use Orderable;
-
-    /**
-     * The accessors to append to the model's array form.
-     *
-     * @var array
-     */
-    protected $appends = ['path'];
 
     /**
      * The attributes that are mass assignable.
@@ -40,21 +24,19 @@ class Space extends Model implements ProductContract
      */
     protected $fillable = [
         'code',
-        'departs_at',
-        'arrives_at',
-        'reserved_at',
-        'origin',
-        'destination',
-        'height',
-        'width',
-        'length',
+        'user_id',
+        'dimensions',
         'weight',
         'note',
         'price',
         'tax',
-        'user_id',
         'type',
         'base',
+        'reserved_at',
+        'departs_at',
+        'arrives_at',
+        'origin',
+        'destination',
     ];
 
     /**
@@ -63,10 +45,13 @@ class Space extends Model implements ProductContract
      * @var array
      */
     protected $casts = [
+        'tax' => 'integer',
+        'price' => 'integer',
         'reserved_at' => 'datetime',
         'departs_at' => 'datetime',
         'arrives_at' => 'datetime',
         'schedule' => ScheduleCast::class,
+        'dimensions' => DimensionsCast::class,
     ];
 
     /**
@@ -80,12 +65,48 @@ class Space extends Model implements ProductContract
     }
 
     /**
-     * Get the user the space belongs to.
+     * Get the business the space belongs to.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function owner(): BelongsTo
     {
         return $this->belongsTo(User::class, 'user_id');
+    }
+
+    /**
+     * Attach a note to this space.
+     *
+     * @param string $note
+     *
+     * @return void
+     */
+    public function attachNote(string $note): void
+    {
+        $this->forceFill(['note' => $note])->save();
+    }
+
+    /**
+     * Determine if the space has a valid schedule.
+     *
+     * @return bool|null
+     */
+    public function validateSchedule(): ?bool
+    {
+        if ($this->departs_at->isBefore($this->arrives_at)) {
+            return true;
+        }
+
+        throw new LogicException('Departure date should be before arrival date');
+    }
+
+    /**
+     * Get the full path to the resource.
+     *
+     * @return string
+     */
+    public function path(): string
+    {
+        return route('spaces.show', $this);
     }
 }

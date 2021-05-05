@@ -2,11 +2,10 @@
 
 namespace App\Exceptions;
 
-use Exception;
 use Throwable;
 use App\Contracts\Billing\Payment;
 
-class IncompletePaymentException extends Exception
+class IncompletePaymentException extends PaymentException
 {
     /**
      * The Cratespace Payment object.
@@ -25,8 +24,12 @@ class IncompletePaymentException extends Exception
      *
      * @return void
      */
-    public function __construct(?Payment $payment, string $message = '', int $code = 0, ?Throwable $previous = null)
-    {
+    public function __construct(
+        ?Payment $payment,
+        string $message = '',
+        int $code = 0,
+        ?Throwable $previous = null
+    ) {
         parent::__construct($message, $code, $previous);
 
         $this->payment = $payment;

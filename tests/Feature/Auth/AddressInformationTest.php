@@ -4,7 +4,6 @@ namespace Tests\Feature\Auth;
 
 use Tests\TestCase;
 use App\Models\User;
-use App\Services\Stripe\Customer;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Cratespace\Preflight\Testing\Contracts\Postable;
 
@@ -12,126 +11,107 @@ class AddressInformationTest extends TestCase implements Postable
 {
     use RefreshDatabase;
 
-    public function testBusinessUserCanUpdateAddress()
+    public function testAddressInformationCanBeUpdated()
     {
-        $user = User::factory()->asBusiness()->create();
+        $this->signIn($user = create(User::class));
 
-        $this->signIn($user);
+        $response = $this->put(
+            '/user/profile-address',
+            $this->validParameters()
+        );
 
-        $response = $this->put('/user/address', $this->validParameters());
-
-        $response->assertStatus(303);
-        $this->assertEquals('Glenquin', $user->fresh()->address->line1);
+        $response->assertStatus(302);
+        $this->assertEquals('Indiana', $user->fresh()->address->state);
+        $this->assertEquals('United States', $user->fresh()->address->country);
     }
 
-    public function testBusinessUserCanUpdateAddressThroughJson()
+    public function testAddressInformationCanBeUpdatedThroughJsonRequest()
     {
-        $user = User::factory()->asBusiness()->create();
+        $this->signIn($user = create(User::class));
 
-        $this->signIn($user);
-
-        $response = $this->putJson('/user/address', $this->validParameters());
+        $response = $this->putJson(
+            '/user/profile-address',
+            $this->validParameters()
+        );
 
         $response->assertStatus(204);
-        $this->assertEquals('Glenquin', $user->fresh()->address->line1);
+        $this->assertEquals('Indiana', $user->fresh()->address->state);
+        $this->assertEquals('United States', $user->fresh()->address->country);
     }
 
-    public function testCustomerUserCanUpdateAddress()
+    public function validStreetNameIsRequired()
     {
-        $user = User::factory()->asCustomer()->create();
+        $this->signIn(create(User::class));
 
-        $this->signIn($user);
-
-        $response = $this->put('/user/address', $this->validParameters());
-
-        $response->assertStatus(303);
-        $this->assertEquals('Glenquin', $user->fresh()->address->line1);
-        $customer = new Customer($user->customerId());
-        $this->assertEquals('Glenquin', $customer->address['line1']);
-    }
-
-    public function testCustomerUserCanUpdateAddressThroughJson()
-    {
-        $user = User::factory()->asCustomer()->create();
-
-        $this->signIn($user);
-
-        $response = $this->putJson('/user/address', $this->validParameters());
-
-        $response->assertStatus(204);
-        $this->assertEquals('Glenquin', $user->fresh()->address->line1);
-        $customer = new Customer($user->customerId());
-        $this->assertEquals('Glenquin', $customer->address['line1']);
-    }
-
-    public function testValidLine1IsRequired()
-    {
-        $user = create(User::class);
-
-        $this->signIn($user);
-
-        $response = $this->put('/user/address', $this->validParameters([
-            'line1' => '',
-        ]));
+        $response = $this->put(
+            '/user/profile-address',
+            $this->validParameters([
+                'line1' => '',
+            ])
+        );
 
         $response->assertStatus(302);
         $response->assertSessionHasErrorsIn('updateAddressInformation', 'line1');
     }
 
-    public function testValidCityIsRequired()
+    public function validCityIsRequired()
     {
-        $user = create(User::class);
+        $this->signIn(create(User::class));
 
-        $this->signIn($user);
-
-        $response = $this->put('/user/address', $this->validParameters([
-            'city' => '',
-        ]));
+        $response = $this->put(
+            '/user/profile-address',
+            $this->validParameters([
+                'city' => '',
+            ])
+        );
 
         $response->assertStatus(302);
         $response->assertSessionHasErrorsIn('updateAddressInformation', 'city');
     }
 
-    public function testValidStateIsRequired()
+    public function validStateIsRequired()
     {
-        $user = create(User::class);
+        $this->signIn(create(User::class));
 
-        $this->signIn($user);
-
-        $response = $this->put('/user/address', $this->validParameters([
-            'state' => '',
-        ]));
+        $response = $this->put(
+            '/user/profile-address',
+            $this->validParameters([
+                'state' => '',
+            ])
+        );
 
         $response->assertStatus(302);
         $response->assertSessionHasErrorsIn('updateAddressInformation', 'state');
     }
 
-    public function testValidCountryIsRequired()
+    public function validPostalCodeIsRequired()
     {
-        $user = create(User::class);
+        $this->signIn(create(User::class));
 
-        $this->signIn($user);
-
-        $response = $this->put('/user/address', $this->validParameters([
-            'country' => '',
-        ]));
-
-        $response->assertStatus(302);
-        $response->assertSessionHasErrorsIn('updateAddressInformation', 'country');
-    }
-
-    public function testValidPostalcodeIsRequired()
-    {
-        $user = create(User::class);
-
-        $this->signIn($user);
-
-        $response = $this->put('/user/address', $this->validParameters([
-            'postal_code' => '',
-        ]));
+        $response = $this->put(
+            '/user/profile-address',
+            $this->validParameters([
+                'postal_code' => '',
+            ])
+        );
 
         $response->assertStatus(302);
         $response->assertSessionHasErrorsIn('updateAddressInformation', 'postal_code');
+    }
+
+    public function validCountryIsRequired()
+    {
+        $this->signIn(create(User::class));
+
+        $response = $this->put(
+            '/user/profile-address',
+            $this->validParameters([
+                'country' => '',
+            ])
+        );
+
+        $response->assertStatus(302);
+        $response->assertSessionHasErrorsIn('updateAddressInformation', 'country');
     }
 
     /**
@@ -144,11 +124,11 @@ class AddressInformationTest extends TestCase implements Postable
     public function validParameters(array $overrides = []): array
     {
         return array_merge([
-            'line1' => 'Glenquin',
-            'city' => 'Killinaboy',
-            'state' => 'Munster',
-            'country' => 'Ireland',
-            'postal_code' => '48161',
+            'line1' => '4431 Birch Street',
+            'city' => 'Greenwood',
+            'state' => 'Indiana',
+            'country' => 'United States',
+            'postal_code' => '46142',
         ], $overrides);
     }
 }

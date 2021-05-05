@@ -3,9 +3,9 @@
 namespace App\Actions\Auth;
 
 use App\Models\User;
-use Cratespace\Sentinel\Contracts\Actions\UpdatesUserProfiles;
+use Cratespace\Sentinel\Contracts\Actions\UpdateUserInformation;
 
-class UpdateUserAddress implements UpdatesUserProfiles
+class UpdateUserAddress implements UpdateUserInformation
 {
     /**
      * Validate and update the given user's profile information.
@@ -18,7 +18,7 @@ class UpdateUserAddress implements UpdatesUserProfiles
     public function update(User $user, array $data): void
     {
         $user->forceFill([
-            'address' => $address = [
+            'address' => [
                 'line1' => $data['line1'],
                 'line2' => $data['line2'] ?? null,
                 'city' => $data['city'],
@@ -27,9 +27,5 @@ class UpdateUserAddress implements UpdatesUserProfiles
                 'postal_code' => $data['postal_code'],
             ],
         ])->save();
-
-        if ($user->isCustomer()) {
-            $user->asStripeCustomer()->update(['address' => $address]);
-        }
     }
 }

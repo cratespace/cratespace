@@ -4,113 +4,142 @@ namespace Tests\Feature\Business;
 
 use Tests\TestCase;
 use App\Models\User;
-use Cratespace\Preflight\Models\Role;
+use App\Events\BusinessInvited;
+use Tests\Concers\CreatesRoles;
+use App\Mail\BusinessInvitation;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Queue;
-use Illuminate\Contracts\Auth\StatefulGuard;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Cratespace\Preflight\Testing\Contracts\Postable;
 
-class InviteBusinessTest extends TestCase implements Postable
+class InviteBusinessTest extends TestCase
 {
     use RefreshDatabase;
+    use CreatesRoles;
 
     protected function setUp(): void
     {
         parent::setUp();
 
-        // Set up Administrator role.
-        Role::create([
-            'name' => 'Administrator',
-            'slug' => 'administrator',
-        ]);
+        $this->admin = $this->signInAsAdmin();
+    }
 
-        // Set up Business role.
-        Role::create([
-            'name' => 'Business',
-            'slug' => 'business',
+    public function testOnlyAdminCanInviteBusiness()
+    {
+        $user = User::factory()->asBusiness()->create([
+            'locked' => true,
         ]);
-
-        $user = create(User::class);
-        $user->assignRole('Administrator');
 
         $this->signIn($user);
+
+        $response = $this->post("/businesses/invitations/{$user->username}");
+
+        $response->assertStatus(403);
     }
 
-    protected function tearDown(): void
-    {
-        app(StatefulGuard::class)->logout();
-    }
-
-    public function testABusinessUserCanBeInvited()
+    public function testBusinessUserCanBeInvited()
     {
         Queue::fake();
 
-        $user = User::factory()->asBusiness()->create();
+        $user = User::factory()->asBusiness()->create([
+            'locked' => true,
+        ]);
 
-        $response = $this->post(
-            "/businesses/invite/{$user->username}",
-            $this->validParameters(['email' => $user->email])
-        );
+        $this->admin->setResponsibility($user);
+
+        $response = $this->post("/businesses/invitations/{$user->username}");
 
         $response->assertStatus(303);
     }
 
-    public function testRoleFieldIsRequired()
+    public function testBusinessUserCanBeInvitedThroughJsonRequest()
     {
-        $user = User::factory()->asBusiness()->create();
+        Queue::fake();
 
-        $response = $this->post(
-            "/businesses/invite/{$user->username}",
-            $this->validParameters([
-                'email' => $user->email,
-                'role' => '',
-            ])
-        );
+        $user = User::factory()->asBusiness()->create([
+            'locked' => true,
+        ]);
 
-        $response->assertStatus(302);
-        $response->assertSessionHasErrors('role');
+        $this->admin->setResponsibility($user);
+
+        $response = $this->postJson("/businesses/invitations/{$user->username}");
+
+        $response->assertStatus(201);
     }
 
-    public function testEmailFieldIsRequired()
+    public function testPreviouslyInvitedUserCannotBeInvited()
     {
-        $user = User::factory()->asBusiness()->create();
+        Queue::fake();
 
-        $response = $this->post(
-            "/businesses/invite/{$user->username}",
-            $this->validParameters(['email' => ''])
-        );
+        $user = User::factory()->asBusiness()->create([
+            'locked' => true,
+        ]);
 
-        $response->assertStatus(302);
-        $response->assertSessionHasErrors('email');
-    }
-
-    public function testInvitedUsersCannotBeInvitedANew()
-    {
-        $user = User::factory()->asBusiness()->create();
         $user->invite();
 
-        $this->assertTrue($user->invited());
+        $this->admin->setResponsibility($user);
 
-        $response = $this->post(
-            "/businesses/invite/{$user->username}",
-            $this->validParameters(['email' => $user->email])
-        );
+        $response = $this->post("/businesses/invitations/{$user->username}");
 
         $response->assertStatus(302);
         $response->assertSessionHasErrors('email');
+    }
+
+    public function testInvitationEmailIsSentToUser()
+    {
+        $this->withoutEvents();
+
+        Mail::fake();
+
+        $user = User::factory()->asBusiness()->create([
+            'locked' => true,
+        ]);
+
+        $this->admin->setResponsibility($user);
+
+        $response = $this->post("/businesses/invitations/{$user->username}");
+
+        Mail::assertQueued(function (BusinessInvitation $mail) use ($user) {
+            return $mail->invitation()->user->is($user) &&
+                $mail->hasTo($user->email);
+        });
+
+        $response->assertStatus(303);
+    }
+
+    public function testInvitationSentEventIsDispatched()
+    {
+        Mail::fake();
+        Event::fake([BusinessInvited::class]);
+
+        $user = User::factory()->asBusiness()->create([
+            'locked' => true,
+        ]);
+
+        $this->admin->setResponsibility($user);
+
+        $response = $this->post("/businesses/invitations/{$user->username}");
+
+        Event::assertDispatched(BusinessInvited::class);
+
+        $response->assertStatus(303);
     }
 
     /**
-     * Provide only the necessary paramertes for a POST-able type request.
+     * Create an Admin user.
      *
-     * @param array $overrides
-     *
-     * @return array
+     * @return \App\Models\User
      */
-    public function validParameters(array $overrides = []): array
+    protected function signInAsAdmin(): User
     {
-        return array_merge([
-            'role' => 'Business',
-        ], $overrides);
+        $admin = create(User::class);
+
+        $this->createDefaultRoles();
+
+        $admin->assignRole('Administrator');
+
+        $this->signIn($admin);
+
+        return $admin;
     }
 }

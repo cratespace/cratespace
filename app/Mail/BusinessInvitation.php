@@ -19,7 +19,7 @@ class BusinessInvitation extends Mailable implements ShouldQueue
      *
      * @var \App\Models\Invitation
      */
-    public $invitation;
+    protected $invitation;
 
     /**
      * Create a new message instance.
@@ -48,5 +48,15 @@ class BusinessInvitation extends Mailable implements ShouldQueue
                 ]),
             ]
         )->subject(__('Cratespace Invitation'));
+    }
+
+    /**
+     * Get the invitation that was sent through this mail.
+     *
+     * @return \App\Models\Invitation
+     */
+    public function invitation(): Invitation
+    {
+        return $this->invitation;
     }
 }

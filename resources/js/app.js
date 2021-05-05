@@ -16,7 +16,7 @@ const app = document.getElementById('app');
 createApp({
     metaInfo: {
         titleTemplate: (title) =>
-            title ? `${title} - Cratespace` : 'Cratespace',
+            title ? `${title} - Preflight` : 'Preflight',
     },
 
     render: () =>

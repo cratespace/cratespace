@@ -1,6 +1,7 @@
 <?php
 
 return [
+
     /*
     |--------------------------------------------------------------------------
     | Default Mailer
@@ -83,8 +84,8 @@ return [
     */
 
     'from' => [
-        'address' => env('MAIL_FROM_ADDRESS', 'hello@cratespace.biz'),
-        'name' => env('MAIL_FROM_NAME', 'Good People @ Cratespace'),
+        'address' => env('MAIL_FROM_ADDRESS', 'hello@example.com'),
+        'name' => env('MAIL_FROM_NAME', 'Example'),
     ],
 
     /*
@@ -105,4 +106,5 @@ return [
             resource_path('views/vendor/mail'),
         ],
     ],
+
 ];

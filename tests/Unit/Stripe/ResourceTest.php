@@ -7,6 +7,9 @@ use Tests\TestCase;
 use InvalidArgumentException;
 use Tests\Fixtures\StripeResourceStub;
 
+/**
+ * @group Stripe
+ */
 class ResourceTest extends TestCase
 {
     public function testFilterAllowableAttributes()

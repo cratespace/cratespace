@@ -4,12 +4,13 @@ namespace App\Models;
 
 use App\Models\Casts\AddressCast;
 use App\Models\Casts\SettingsCast;
+use App\Models\Concerns\ManagesAdmin;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Concerns\ManagesBusiness;
 use App\Models\Concerns\ManagesCustomer;
 use Illuminate\Notifications\Notifiable;
+use Cratespace\Preflight\Models\Traits\Responsible;
 use Cratespace\Sentinel\Models\Traits\HasApiTokens;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 use Cratespace\Preflight\Models\Concerns\ManagesRoles;
 use Cratespace\Sentinel\Models\Traits\HasProfilePhoto;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -19,13 +20,15 @@ use Cratespace\Sentinel\Models\Traits\TwoFactorAuthenticatable;
 
 class User extends Authenticatable
 {
-    use Notifiable;
     use HasFactory;
-    use HasApiTokens;
+    use Notifiable;
+    use Responsible;
     use ManagesRoles;
+    use ManagesAdmin;
+    use HasApiTokens;
+    use HasProfilePhoto;
     use ManagesCustomer;
     use ManagesBusiness;
-    use HasProfilePhoto;
     use InteractsWithSessions;
     use TwoFactorAuthenticatable;
 
@@ -41,7 +44,6 @@ class User extends Authenticatable
         'password',
         'username',
         'settings',
-        'profile',
         'address',
         'locked',
         'profile_photo_path',
@@ -83,7 +85,6 @@ class User extends Authenticatable
         'sessions',
         'two_factor_enabled',
         'profile',
-        'credit',
     ];
 
     /**
@@ -111,29 +112,5 @@ class User extends Authenticatable
     public function getProfileAttribute(): ?Model
     {
         return $this->isCustomer() ? $this->customer : $this->business;
-    }
-
-    /**
-     * Get business details of the user.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
-    public function spaces(): HasMany
-    {
-        return $this->hasMany(Space::class, 'user_id');
-    }
-
-    /**
-     * Get business details of the user.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
-    public function orders(): HasMany
-    {
-        if ($this->isCustomer()) {
-            return $this->hasMany(Order::class, 'customer_id');
-        }
-
-        return $this->hasMany(Order::class, 'user_id');
     }
 }

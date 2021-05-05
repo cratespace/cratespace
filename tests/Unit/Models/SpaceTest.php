@@ -3,110 +3,149 @@
 namespace Tests\Unit\Models;
 
 use Carbon\Carbon;
+use LogicException;
 use Tests\TestCase;
 use App\Models\User;
 use App\Models\Space;
-use App\Models\Product;
-use App\Models\Values\Schedule;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class SpaceTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function testUniqueCodeIsGeneratedOnModelCreate()
-    {
-        $space = create(Space::class, ['code' => '']);
-
-        $entity = Space::find($space->id);
-
-        $this->assertFalse(empty($entity->code));
-        $this->assertIsString($entity->code);
-    }
-
-    public function testItBelongsToAUser()
+    public function testBelongsToOwner()
     {
         $space = create(Space::class);
 
         $this->assertInstanceOf(User::class, $space->owner);
     }
 
-    public function testItHasACountryWhereItIsBasedIn()
+    public function testHasUniqueCode()
     {
-        $space = create(Space::class);
+        $spaces = create(Space::class, [], null, 10);
+        $space = $spaces->first();
 
-        $this->assertEquals($space->owner->address->country, $space->base);
+        $codes = $spaces->pluck('code')
+            ->filter(function ($code) use ($space) {
+                return $code === $space->code;
+            });
+
+        $this->assertEquals(1, $codes->count());
     }
 
-    public function testItHasASetOfRequiredAttributes()
+    public function testHasDimensions()
     {
         $space = create(Space::class);
 
-        $this->assertDatabaseHas('spaces', [
-            'code' => $space->code,
-            'reserved_at' => null,
-            'departs_at' => $space->departs_at,
-            'arrives_at' => $space->arrives_at,
-            'origin' => $space->origin,
-            'destination' => $space->destination,
-            'height' => $space->height,
-            'width' => $space->width,
-            'length' => $space->length,
-            'weight' => $space->weight,
-            'price' => $space->price,
-            'tax' => $space->tax,
-            'user_id' => $space->user_id,
-            'type' => $space->type,
-            'base' => $space->base,
-            'note' => $space->note,
+        $this->assertNotNull($space->dimensions->height);
+        $this->assertIsInt($space->dimensions->height);
+        $this->assertNotNull($space->dimensions->width);
+        $this->assertIsInt($space->dimensions->width);
+        $this->assertNotNull($space->dimensions->length);
+        $this->assertIsInt($space->dimensions->length);
+    }
+
+    public function testHasMaximumAllowableWeight()
+    {
+        $space = create(Space::class);
+
+        $this->assertNotNull($space->weight);
+        $this->assertIsInt($space->weight);
+    }
+
+    public function testNoteCanBeAttached()
+    {
+        $space = create(Space::class);
+
+        $this->assertNull($space->note);
+
+        $space->attachNote($note = 'This space is for internal use only');
+
+        $this->assertEquals($note, $space->fresh()->note);
+    }
+
+    public function testHasPriceAndOptionalTax()
+    {
+        $space = create(Space::class);
+
+        $this->assertNotNull($space->price);
+        $this->assertIsInt($space->price);
+        $this->assertNotNull($space->tax);
+        $this->assertIsInt($space->tax);
+    }
+
+    public function testBelongsToAType()
+    {
+        $space = create(Space::class);
+
+        $this->assertNotNull($space->type);
+    }
+
+    public function testAlwaysBasedAtUserBase()
+    {
+        $user = create(User::class, [
+            'address' => ['country' => 'United Kingdom'],
+        ], 'asBusiness');
+        $space = create(Space::class, ['user_id' => $user->id]);
+
+        $this->assertEquals('United Kingdom', $space->base);
+    }
+
+    public function testHasOriginDestination()
+    {
+        $space = create(Space::class);
+
+        $this->assertNotNull($space->origin);
+    }
+
+    public function testHasArrivalDestination()
+    {
+        $space = create(Space::class);
+
+        $this->assertNotNull($space->destination);
+    }
+
+    public function testHasDepartureDate()
+    {
+        $space = create(Space::class);
+
+        $this->assertNotNull($space->departs_at);
+        $this->assertInstanceOf(Carbon::class, $space->departs_at);
+    }
+
+    public function testHasArrivalDate()
+    {
+        $space = create(Space::class);
+
+        $this->assertNotNull($space->arrives_at);
+        $this->assertInstanceOf(Carbon::class, $space->arrives_at);
+    }
+
+    public function testValidatesDepartureDateAndArrivalDate()
+    {
+        $this->expectException(LogicException::class);
+        $this->expectExceptionMessage('Departure date should be before arrival date');
+
+        create(Space::class, [
+            'departs_at' => now(),
+            'arrives_at' => now()->yesterday(),
         ]);
     }
 
-    public function testItCanCastDepartureAndArrivalDatesAsCarbonInstances()
+    public function testHasOrganizedSchedule()
     {
         $space = create(Space::class);
 
-        $this->assertInstanceOf(Carbon::class, $space->departs_at);
-        $this->assertInstanceOf(Carbon::class, $space->arrives_at);
-        $this->assertInstanceOf(Schedule::class, $space->schedule);
+        $this->assertIsString($space->schedule->departsAt);
+        $this->assertIsString($space->schedule->arrivesAt);
     }
 
-    public function testItCanCreateAScheduleValueObjectOfGivenDates()
-    {
-        $space = create(Space::class);
-
-        $this->assertEquals($space->departs_at->format('M j, Y g:ia'), $space->schedule->departsAt);
-        $this->assertEquals($space->arrives_at->format('M j, Y g:ia'), $space->schedule->arrivesAt);
-    }
-
-    public function testItCanDetermineItsDepartureDate()
+    public function testCanDetermineNearingDeparture()
     {
         $space = create(Space::class, [
-            'departs_at' => Carbon::tomorrow(),
+            'departs_at' => now()->tomorrow(),
         ]);
 
         $this->assertTrue($space->schedule->nearingDeparture());
-    }
-
-    public function testHasPathAttribute()
-    {
-        $space = create(Space::class);
-
-        $this->assertEquals(route('spaces.show', $space), $space->path);
-    }
-
-    public function testProductableTrait()
-    {
-        $space = create(Space::class);
-
-        $this->assertInstanceOf(Product::class, $space->product);
-    }
-
-    public function testProductStoreRecord()
-    {
-        $space = create(Space::class);
-        $store = new Product();
-
-        $this->assertTrue($store->where('code', $space->code)->exists());
     }
 }

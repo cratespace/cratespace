@@ -1,6 +1,6 @@
 <template>
     <div class="shadow overflow-hidden rounded-xl">
-        <div :class="bgColor + ' px-4 py-5 sm:px-6'">
+        <div class="px-4 py-5 bg-white sm:px-6">
             <slot name="content"></slot>
         </div>
 
@@ -16,11 +16,6 @@ export default {
         hasActions: {
             type: Boolean,
             default: false
-        },
-
-        bgColor: {
-            type: String,
-            default: 'bg-white'
         }
     }
 }

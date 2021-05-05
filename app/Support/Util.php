@@ -41,10 +41,10 @@ class Util
      */
     public static function makeUsername(string $name): string
     {
-        $name = trim($name);
+        $name = trim(preg_replace('/\s+/', '', $name));
 
         if (User::where('username', 'like', '%' . $name . '%')->count() !== 0) {
-            return Str::studly("{$name}-" . Str::random('5'));
+            return Str::studly($name . Str::random('5'));
         }
 
         return Str::studly($name);

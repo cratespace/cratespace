@@ -17,8 +17,12 @@ class RedirectIfCustomer
      */
     public function handle(Request $request, Closure $next)
     {
-        if ($request->user()->hasRole('Customer')) {
-            return response()->redirectToRoute('welcome');
+        if (is_null($request->user())) {
+            return redirect()->route('login');
+        }
+
+        if ($request->user()->isCustomer()) {
+            return redirect(url('/'));
         }
 
         return $next($request);

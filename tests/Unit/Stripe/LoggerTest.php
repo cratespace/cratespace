@@ -9,6 +9,9 @@ use Psr\Log\LoggerInterface;
 use App\Services\Stripe\Logger;
 use Stripe\Util\LoggerInterface as StripeLoggerInterface;
 
+/**
+ * @group Stripe
+ */
 class LoggerTest extends TestCase
 {
     protected function tearDown(): void

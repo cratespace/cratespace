@@ -22,36 +22,16 @@ class ApiTokenPermissionsTest extends TestCase implements Postable
             'abilities' => ['create', 'read'],
         ]);
 
-        $response = $this->put('/user/api-tokens/' . $token->id, [
-            'name' => $token->name,
-            'permissions' => [
-                'delete',
-                'missing-permission',
-            ],
-        ]);
+        $response = $this->put(
+            "/user/api-tokens/{$token->id}",
+            $this->validParameters(['name' => $token->name])
+        );
 
         $response->assertStatus(303);
+        $response->assertSessionHasNoErrors();
         $this->assertTrue($user->fresh()->tokens->first()->can('delete'));
         $this->assertFalse($user->fresh()->tokens->first()->can('read'));
         $this->assertFalse($user->fresh()->tokens->first()->can('missing-permission'));
-    }
-
-    public function testValidPermissionsAreRequired()
-    {
-        $this->signIn($user = create(User::class));
-
-        $token = $user->tokens()->create([
-            'name' => 'Test Token',
-            'token' => Str::random(40),
-            'abilities' => ['create', 'read'],
-        ]);
-
-        $response = $this->put('/user/api-tokens/' . $token->id, $this->validParameters([
-            'permissions' => '',
-        ]));
-
-        $response->assertStatus(302);
-        $response->assertSessionHasErrors('permissions');
     }
 
     /**
@@ -65,7 +45,10 @@ class ApiTokenPermissionsTest extends TestCase implements Postable
     {
         return array_merge([
             'name' => 'Test Token',
-            'permissions' => ['create', 'read'],
+            'permissions' => [
+                'delete',
+                'missing-permission',
+            ],
         ], $overrides);
     }
 }

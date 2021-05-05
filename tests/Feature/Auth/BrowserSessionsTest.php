@@ -18,18 +18,6 @@ class BrowserSessionsTest extends TestCase
             'password' => 'password',
         ]);
 
-        $this->assertEmpty($user->sessions);
         $response->assertSessionHasNoErrors();
-    }
-
-    public function testValidPasswordIsRequired()
-    {
-        $this->signIn(create(User::class));
-
-        $response = $this->delete('/user/other-browser-sessions', [
-            'password' => 'invalid-password',
-        ]);
-
-        $response->assertSessionHasErrors('password');
     }
 }

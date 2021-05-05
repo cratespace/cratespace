@@ -113,11 +113,11 @@ class Client implements ClientContract
     /**
      * Get shared instance of Stripe client,.
      *
-     * @return \App\Contracts\Services\Client
+     * @return \App\Services\Stripe\Client
      */
-    protected function getInstane(): ClientContract
+    protected function getInstane(): Client
     {
-        return $this->app->make(ClientContract::class);
+        return $this->app->make('stripe.client');
     }
 
     /**

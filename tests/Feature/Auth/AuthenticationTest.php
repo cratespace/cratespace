@@ -4,6 +4,7 @@ namespace Tests\Feature\Auth;
 
 use Tests\TestCase;
 use App\Models\User;
+use Illuminate\Support\Facades\Hash;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Cratespace\Preflight\Testing\Contracts\Postable;
@@ -19,55 +20,45 @@ class AuthenticationTest extends TestCase implements Postable
         $response->assertStatus(200);
     }
 
-    public function testUserCanAuthenticateThroughJson()
+    public function testUsersCanAuthenticateUsingTheLoginScreen()
     {
-        $user = create(User::class);
+        $user = create(User::class, [
+            'email' => 'test.user@example.com',
+            'password' => Hash::make('secretpassword'),
+        ]);
 
-        $response = $this->postJson('/login', $this->validParameters([
-            'email' => $user->email,
-            'password' => 'password',
-        ]));
+        $response = $this->from('/login')->post('/login', $this->validParameters());
 
+        $this->assertAuthenticated();
+        $response->assertRedirect(RouteServiceProvider::HOME);
+    }
+
+    public function testUsersCanAuthenticateThroughJsonRequest()
+    {
+        $user = create(User::class, [
+            'email' => 'test.user@example.com',
+            'password' => Hash::make('secretpassword'),
+        ]);
+
+        $response = $this->postJson('/login', $this->validParameters());
+
+        $this->assertAuthenticated();
         $response->assertStatus(200);
-        $this->assertAuthenticated();
     }
 
-    public function testBusinessUsersCanAuthenticateUsingTheLoginScreen()
+    public function testValidEmailIsRequired()
     {
-        $user = User::factory()->asBusiness()->create();
-
-        $response = $this->post('/login', $this->validParameters([
-            'email' => $user->email,
-            'password' => 'password',
-        ]));
-
-        $this->assertAuthenticated();
-        $response->assertRedirect(RouteServiceProvider::HOME);
-    }
-
-    public function testCustomerUsersCanAuthenticateUsingTheLoginScreen()
-    {
-        $user = User::factory()->asCustomer()->create();
-
-        $response = $this->post('/login', $this->validParameters([
-            'email' => $user->email,
-            'password' => 'password',
-        ]));
-
-        $this->assertAuthenticated();
-        $response->assertRedirect(RouteServiceProvider::HOME);
-    }
-
-    public function testUsersCanNotAuthenticateWithInvalidEmail()
-    {
-        $user = create(User::class);
+        create(User::class, [
+            'email' => 'test.user@example.com',
+            'password' => Hash::make('secretpassword'),
+        ]);
 
         $response = $this->post('/login', $this->validParameters([
             'email' => '',
-            'password' => $user->password,
         ]));
 
         $this->assertGuest();
+        $response->assertStatus(302);
         $response->assertSessionHasErrors('email');
     }
 
@@ -75,23 +66,12 @@ class AuthenticationTest extends TestCase implements Postable
     {
         $user = create(User::class);
 
-        $this->post('/login', $this->validParameters([
+        $this->post('/login', [
             'email' => $user->email,
             'password' => 'wrong-password',
-        ]));
+        ]);
 
         $this->assertGuest();
-    }
-
-    public function testCustomersCannotAccessBusinessArea()
-    {
-        $user = User::factory()->asCustomer()->create();
-
-        $this->signIn($user);
-
-        $response = $this->get('/home');
-
-        $response->assertRedirect('/');
     }
 
     /**
@@ -104,8 +84,8 @@ class AuthenticationTest extends TestCase implements Postable
     public function validParameters(array $overrides = []): array
     {
         return array_merge([
-            'email' => null,
-            'password' => null,
+            'email' => 'test.user@example.com',
+            'password' => 'secretpassword',
         ], $overrides);
     }
 }

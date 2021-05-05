@@ -12,58 +12,17 @@ class SpaceFilter extends Filter
      *
      * @var array
      */
-    protected $filters = [
-        'departs_at',
-        'arrives_at',
-        'origin',
-        'destination',
-    ];
+    protected $filters = ['filter'];
 
     /**
      * Filter the query by a given attribute value.
      *
-     * @param mixed $date
+     * @param string $attribute
      *
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    protected function departsAt($date): Builder
+    protected function filter(string $attribute): Builder
     {
-        return $this->builder->whereDate('departs_at', $date);
-    }
-
-    /**
-     * Filter the query by a given attribute value.
-     *
-     * @param mixed $date
-     *
-     * @return \Illuminate\Database\Eloquent\Builder
-     */
-    protected function arrivesAt($date): Builder
-    {
-        return $this->builder->whereDate('arrives_at', $date);
-    }
-
-    /**
-     * Filter the query by a given attribute value.
-     *
-     * @param string $place
-     *
-     * @return \Illuminate\Database\Eloquent\Builder
-     */
-    protected function origin(string $place): Builder
-    {
-        return $this->builder->where('origin', $place);
-    }
-
-    /**
-     * Filter the query by a given attribute value.
-     *
-     * @param string $place
-     *
-     * @return \Illuminate\Database\Eloquent\Builder
-     */
-    protected function destination(string $place): Builder
-    {
-        return $this->builder->where('destination', $place);
+        return $this->builder->whereAttribute($attribute);
     }
 }

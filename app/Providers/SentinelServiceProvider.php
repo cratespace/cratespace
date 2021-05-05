@@ -6,7 +6,7 @@ use App\Actions\Auth\DeleteUser;
 use App\Actions\Auth\CreateNewUser;
 use App\Actions\Auth\AuthenticateUser;
 use App\Actions\Auth\ResetUserPassword;
-use App\Actions\Auth\UpdateUserAccount;
+use App\Actions\Auth\UpdateUserProfile;
 use Illuminate\Support\ServiceProvider;
 use App\Actions\Auth\UpdateUserPassword;
 use Cratespace\Sentinel\Providers\Traits\HasActions;
@@ -31,7 +31,7 @@ class SentinelServiceProvider extends ServiceProvider
         CreatesNewUsers::class => CreateNewUser::class,
         ResetsUserPasswords::class => ResetUserPassword::class,
         UpdatesUserPasswords::class => UpdateUserPassword::class,
-        UpdatesUserProfiles::class => UpdateUserAccount::class,
+        UpdatesUserProfiles::class => UpdateUserProfile::class,
         DeletesUsers::class => DeleteUser::class,
     ];
 

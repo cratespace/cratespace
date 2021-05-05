@@ -11,20 +11,32 @@ class SpacePolicy
     use HandlesAuthorization;
 
     /**
-     * Determine whether the user can update the model.
+     * Determine whether the user can view any models.
+     *
+     * @param \App\Models\User $user
+     *
+     * @return mixed
+     */
+    public function viewAny(User $user)
+    {
+        return $user->isAdmin() || $user->usBusiness();
+    }
+
+    /**
+     * Determine whether the user can view the model.
      *
      * @param \App\Models\User  $user
      * @param \App\Models\Space $space
      *
-     * @return bool
+     * @return mixed
      */
-    public function manage(User $user, Space $space): bool
+    public function manage(User $user, Space $space)
     {
-        if ($user->hasRole('Administrator')) {
+        if ($user->isAdmin()) {
             return true;
         }
 
-        if ($user->hasRole('Business')) {
+        if ($user->isBusiness()) {
             return $user->is($space->owner);
         }
 

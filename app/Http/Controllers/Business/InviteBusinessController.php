@@ -4,26 +4,29 @@ namespace App\Http\Controllers\Business;
 
 use App\Models\User;
 use App\Models\Invitation;
-use App\Jobs\InviteBusiness;
 use App\Http\Controllers\Controller;
-use App\Http\Responses\BusinessResponse;
-use App\Http\Requests\InviteBusinessRequest;
+use App\Http\Controllers\Traits\Invitable;
+use App\Http\Requests\Business\InviteBusinessRequest;
+use App\Http\Responses\Business\InviteBusinessResponse;
+use App\Http\Responses\Business\InvitationAcceptedResponse;
 
 class InviteBusinessController extends Controller
 {
+    use Invitable;
+
     /**
      * Invite a business in to Cratespace.
      *
-     * @param \App\Http\Requests\InviteBusinessRequest $request
-     * @param \App\Models\User                         $user
+     * @param \App\Http\Requests\Business\InviteBusinessRequest $request
+     * @param \App\Models\User                                  $user
      *
      * @return \Illuminate\Http\Response
      */
     public function store(InviteBusinessRequest $request, User $user)
     {
-        InviteBusiness::dispatch($user);
+        $this->invite($request, $user);
 
-        return BusinessResponse::dispatch($request);
+        return InviteBusinessResponse::dispatch($user);
     }
 
     /**
@@ -36,5 +39,7 @@ class InviteBusinessController extends Controller
     public function update(Invitation $invitation)
     {
         $invitation->accept();
+
+        return InvitationAcceptedResponse::dispatch($invitation->user);
     }
 }

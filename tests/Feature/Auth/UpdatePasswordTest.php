@@ -19,7 +19,16 @@ class UpdatePasswordTest extends TestCase implements Postable
         $response = $this->put('/user/password', $this->validParameters());
 
         $response->assertStatus(302);
-        $response->assertSessionHasNoErrors();
+        $this->assertTrue(Hash::check('new-password', $user->fresh()->password));
+    }
+
+    public function testPasswordCanBeUpdatedThroughJsonRequest()
+    {
+        $this->signIn($user = create(User::class));
+
+        $response = $this->putJson('/user/password', $this->validParameters());
+
+        $response->assertStatus(200);
         $this->assertTrue(Hash::check('new-password', $user->fresh()->password));
     }
 
@@ -31,7 +40,8 @@ class UpdatePasswordTest extends TestCase implements Postable
             'current_password' => 'wrong-password',
         ]));
 
-        $response->assertSessionHasErrorsIn('updatePassword', 'current_password');
+        $response->assertSessionHasErrors();
+
         $this->assertTrue(Hash::check('password', $user->fresh()->password));
     }
 
@@ -40,11 +50,11 @@ class UpdatePasswordTest extends TestCase implements Postable
         $this->signIn($user = create(User::class));
 
         $response = $this->put('/user/password', $this->validParameters([
-            'password' => 'new-password',
             'password_confirmation' => 'wrong-password',
         ]));
 
-        $response->assertSessionHasErrorsIn('updatePassword', 'password');
+        $response->assertSessionHasErrors();
+
         $this->assertTrue(Hash::check('password', $user->fresh()->password));
     }
 
