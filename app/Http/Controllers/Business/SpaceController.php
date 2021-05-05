@@ -4,8 +4,10 @@ namespace App\Http\Controllers\Business;
 
 use Inertia\Inertia;
 use App\Models\Space;
+use App\Filters\SpaceFilter;
 use App\Http\Controllers\Controller;
 use App\Actions\Business\CreateNewSpace;
+use Inertia\Response as InertiaResponse;
 use App\Http\Requests\Business\SpaceRequest;
 use App\Http\Responses\Business\SpaceResponse;
 
@@ -14,21 +16,25 @@ class SpaceController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @param \App\Filters\SpaceFilter $filter
+     *
+     * @return \Inertia\Response
      */
-    public function index()
+    public function index(SpaceFilter $filter): InertiaResponse
     {
         $this->authorize('viewAny', new Space());
 
-        return Inertia::render('Business/Spaces/Index');
+        return Inertia::render('Business/Spaces/Index', [
+            'spaces' => [],
+        ]);
     }
 
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Inertia\Response
      */
-    public function create()
+    public function create(): InertiaResponse
     {
         $this->authorize('viewAny', new Space());
 
@@ -41,7 +47,7 @@ class SpaceController extends Controller
      * @param \App\Http\Requests\Business\SpaceRequest $request
      * @param \App\Actions\Business\CreateNewSpace     $request
      *
-     * @return \Illuminate\Http\Response
+     * @return mixed
      */
     public function store(SpaceRequest $request, CreateNewSpace $creator)
     {
@@ -55,13 +61,13 @@ class SpaceController extends Controller
      *
      * @param \App\Models\Space $space
      *
-     * @return \Illuminate\Http\Response
+     * @return \Inertia\Response
      */
-    public function show(Space $space)
+    public function show(Space $space): InertiaResponse
     {
         $this->authorize('manage', $space);
 
-        return Inertia::render('Business/Spaces/Show');
+        return Inertia::render('Business/Spaces/Show', compact('space'));
     }
 
     /**
@@ -69,13 +75,13 @@ class SpaceController extends Controller
      *
      * @param \App\Models\Space $space
      *
-     * @return \Illuminate\Http\Response
+     * @return \Inertia\Response
      */
-    public function edit(Space $space)
+    public function edit(Space $space): InertiaResponse
     {
         $this->authorize('manage', $space);
 
-        return Inertia::render('Business/Spaces/Edit');
+        return Inertia::render('Business/Spaces/Edit', compact('space'));
     }
 
     /**
@@ -84,7 +90,7 @@ class SpaceController extends Controller
      * @param \App\Http\Requests\Business\SpaceRequest $request
      * @param \App\Models\Space                        $space
      *
-     * @return \Illuminate\Http\Response
+     * @return mixed
      */
     public function update(SpaceRequest $request, Space $space)
     {
@@ -98,7 +104,7 @@ class SpaceController extends Controller
      *
      * @param \App\Models\Space $space
      *
-     * @return \Illuminate\Http\Response
+     * @return mixed
      */
     public function destroy(Space $space)
     {

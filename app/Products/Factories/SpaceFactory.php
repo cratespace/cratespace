@@ -13,6 +13,13 @@ class SpaceFactory extends Factory
     use Fillable;
 
     /**
+     * The instance of the product being manufactured.
+     *
+     * @var \App\Contracts\Products\Product|null
+     */
+    protected $product = Space::class;
+
+    /**
      * Create new product.
      *
      * @param array $data
@@ -21,36 +28,36 @@ class SpaceFactory extends Factory
      */
     public function make(array $data = []): Product
     {
-        $product = new Space($data);
+        $product = $this->createProductInstance($data);
 
-        $this->product = with($product->create(
-            array_merge($this->parse($data), [
-                'user_id' => auth()->id(),
-            ])
-        ), function (Product $product): Product {
+        return with($product, function (Product $product): Product {
             try {
                 $product->getCode();
             } catch (Throwable $e) {
-                $product->setCode(Crypt::encrypt(
-                    get_class($product) . '-' . $product->getName()
+                $product->setCode(Crypt::encryptString(
+                    get_class($product) . '-' . $product->id
                 ));
             }
 
             return $product;
         });
-
-        return $this->product;
     }
 
     /**
-     * Parse the data array, filtering out unnecessary data.
+     * Create an instance of the product.
      *
-     * @param array $data
+     * @param array $attributes
      *
-     * @return array
+     * @return \App\Contracts\Products\Product
      */
-    public function parse(array $data): array
+    public function createProductInstance(array $attributes): Product
     {
-        return $this->filterFillable($data, Space::class);
+        if (is_null($this->product) || ! $this->product instanceof Product) {
+            $this->product = Space::create(
+                $this->filterFillable($attributes, $this->product)
+            );
+        }
+
+        return $this->product;
     }
 }

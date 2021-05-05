@@ -2,13 +2,10 @@
 
 namespace App\Providers;
 
-use App\Models\Space;
 use App\Events\OrderPlaced;
 use App\Events\BusinessInvited;
 use App\Events\ProductReleased;
 use App\Events\ProductReserved;
-use App\Observers\SpaceObserver;
-use Illuminate\Support\Facades\Event;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
@@ -20,9 +17,7 @@ class EventServiceProvider extends ServiceProvider
      *
      * @var array
      */
-    protected $observers = [
-        Space::class => SpaceObserver::class,
-    ];
+    protected $observers = [];
 
     /**
      * The event listener mappings for the application.

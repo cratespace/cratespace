@@ -9,52 +9,12 @@ use App\Events\OrderPlaced;
 use App\Models\Space as Model;
 use App\Events\ProductReleased;
 use App\Events\ProductReserved;
-use App\Products\ProductOptions;
 use App\Services\Stripe\Customer;
 use App\Contracts\Billing\Payment;
+use App\Contracts\Products\Product;
 
-class Space extends Model
+class Space extends Model implements Product
 {
-    /**
-     * The name of the product.
-     *
-     * @var string
-     */
-    protected $name;
-
-    /**
-     * The product options.
-     *
-     * @var array
-     */
-    protected $options = [];
-
-    /**
-     * Create a new SpaceProduct instance.
-     *
-     * @param array $options
-     *
-     * @return void
-     */
-    public function __construct(array $options = [])
-    {
-        parent::__construct();
-
-        $this->options = $this->parseOptions($options);
-    }
-
-    /**
-     * Parse the product options into a standard format.
-     *
-     * @param array $options
-     *
-     * @return array
-     */
-    protected function parseOptions(array $options): array
-    {
-        return ProductOptions::parse($options);
-    }
-
     /**
      * Get the total amount that will be paid.
      *

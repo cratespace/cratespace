@@ -5,24 +5,17 @@ namespace App\Models;
 use LogicException;
 use App\Casts\DimensionsCast;
 use App\Models\Casts\ScheduleCast;
+use App\Models\Concerns\ManagesSpace;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Traits\HasEncryptableCode;
-use Cratespace\Preflight\Models\Traits\Directable;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Space extends Model
 {
-    use Directable;
     use HasFactory;
+    use ManagesSpace;
     use HasEncryptableCode;
-
-    /**
-     * The accessors to append to the model's array form.
-     *
-     * @var array
-     */
-    protected $appends = ['path'];
 
     /**
      * The attributes that are mass assignable.
@@ -105,5 +98,15 @@ class Space extends Model
         }
 
         throw new LogicException('Departure date should be before arrival date');
+    }
+
+    /**
+     * Get the full path to the resource.
+     *
+     * @return string
+     */
+    public function path(): string
+    {
+        return route('spaces.show', $this);
     }
 }

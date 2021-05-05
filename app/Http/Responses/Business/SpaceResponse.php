@@ -24,6 +24,6 @@ class SpaceResponse extends Response implements Responsable
 
         return $request->expectsJson()
             ? $this->json($this->content, $request->method() === 'PUT' ? 200 : 201)
-            : $this->redirectTo($this->content->path, 303);
+            : $this->redirectTo($this->content->path(), 303);
     }
 }

@@ -105,9 +105,7 @@ return [
      */
     'space' => [
         'code' => ['nullable', 'string', 'max:255', 'unique:spaces,code'],
-        'height' => ['required', 'integer'],
-        'width' => ['required', 'integer'],
-        'length' => ['required', 'integer'],
+        'dimensions' => ['required', 'array'],
         'weight' => ['required', 'integer'],
         'price' => ['required', 'numeric', 'regex:/^\d+(\.\d{1,2})?$/'],
         'tax' => ['nullable', 'numeric', 'regex:/^\d+(\.\d{1,2})?$/'],
@@ -121,6 +119,7 @@ return [
             Rule::in(['Local', 'International']),
         ],
         'base' => ['sometimes', 'string'],
+        'user_id' => ['required', 'integer', 'exists:users,id'],
     ],
 
     /*

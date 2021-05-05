@@ -29,4 +29,14 @@ class SpaceRequest extends Request
     {
         return $this->getRulesFor('space');
     }
+
+    /**
+     * Prepare the data for validation.
+     *
+     * @return void
+     */
+    protected function prepareForValidation(): void
+    {
+        $this->merge(['user_id' => $this->user()->id]);
+    }
 }
