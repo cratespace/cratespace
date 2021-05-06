@@ -3,7 +3,6 @@
 namespace App\Models;
 
 use LogicException;
-use App\Casts\DimensionsCast;
 use App\Models\Casts\ScheduleCast;
 use App\Models\Concerns\ManagesSpace;
 use Illuminate\Database\Eloquent\Model;
@@ -27,7 +26,9 @@ class Space extends Model
     protected $fillable = [
         'code',
         'user_id',
-        'dimensions',
+        'height',
+        'width',
+        'length',
         'weight',
         'note',
         'price',
@@ -53,7 +54,6 @@ class Space extends Model
         'departs_at' => 'datetime',
         'arrives_at' => 'datetime',
         'schedule' => ScheduleCast::class,
-        'dimensions' => DimensionsCast::class,
     ];
 
     /**

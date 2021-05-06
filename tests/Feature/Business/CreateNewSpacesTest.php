@@ -34,16 +34,42 @@ class CreateNewSpacesTest extends TestCase implements Postable
         $response->assertStatus(201);
     }
 
-    public function testValidDimenssionsAreRequired()
+    public function testValidHeightIsRequired()
     {
         $user = create(User::class, [], 'asBusiness');
 
         $this->signIn($user);
 
         tap($this->post('/spaces', $this->validParameters([
-            'dimensions' => '',
+            'height' => '',
         ])), function ($response) {
-            $response->assertSessionHasErrors('dimensions');
+            $response->assertSessionHasErrors('height');
+        });
+    }
+
+    public function testValidWidthIsRequired()
+    {
+        $user = create(User::class, [], 'asBusiness');
+
+        $this->signIn($user);
+
+        tap($this->post('/spaces', $this->validParameters([
+            'width' => '',
+        ])), function ($response) {
+            $response->assertSessionHasErrors('width');
+        });
+    }
+
+    public function testValidLengthIsRequired()
+    {
+        $user = create(User::class, [], 'asBusiness');
+
+        $this->signIn($user);
+
+        tap($this->post('/spaces', $this->validParameters([
+            'length' => '',
+        ])), function ($response) {
+            $response->assertSessionHasErrors('length');
         });
     }
 
@@ -174,11 +200,9 @@ class CreateNewSpacesTest extends TestCase implements Postable
     public function validParameters(array $overrides = []): array
     {
         return array_merge([
-            'dimensions' => [
-                'height' => rand(1, 9),
-                'width' => rand(1, 9),
-                'length' => rand(1, 9),
-            ],
+            'height' => rand(1, 9),
+            'width' => rand(1, 9),
+            'length' => rand(1, 9),
             'weight' => rand(1, 9),
             'note' => null,
             'price' => 1000,

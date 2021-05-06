@@ -105,8 +105,10 @@ return [
      */
     'space' => [
         'code' => ['nullable', 'string', 'max:255', 'unique:spaces,code'],
-        'dimensions' => ['required', 'array'],
-        'weight' => ['required', 'integer'],
+        'height' => ['required', 'numeric'],
+        'width' => ['required', 'numeric'],
+        'length' => ['required', 'numeric'],
+        'weight' => ['required', 'numeric'],
         'price' => ['required', 'numeric', 'regex:/^\d+(\.\d{1,2})?$/'],
         'tax' => ['nullable', 'numeric', 'regex:/^\d+(\.\d{1,2})?$/'],
         'origin' => ['required', 'string'],

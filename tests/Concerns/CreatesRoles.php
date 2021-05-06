@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Concers;
+namespace Tests\Concerns;
 
 use Cratespace\Preflight\Models\Role;
 
