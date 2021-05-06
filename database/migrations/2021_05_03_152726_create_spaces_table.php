@@ -23,7 +23,9 @@ class CreateSpacesTable extends Migration
                 ->constrained('users', 'id')
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
-            $table->json('dimensions');
+            $table->float('height')->default(0);
+            $table->float('width')->default(0);
+            $table->float('length')->default(0);
             $table->float('weight')->default(0);
             $table->text('note')->nullable();
             $table->integer('price')->default(0);

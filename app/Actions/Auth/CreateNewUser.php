@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Cratespace\Sentinel\Support\Util;
 use App\Actions\Business\CreateNewBusiness;
-use App\Actions\Business\CreateNewCustomer;
+use App\Actions\Customer\CreateNewCustomer;
 use Cratespace\Sentinel\Support\Traits\Fillable;
 use Cratespace\Sentinel\Contracts\Actions\CreatesNewUsers;
 

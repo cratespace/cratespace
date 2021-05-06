@@ -67,4 +67,13 @@ interface Product extends Payable
      * @return bool
      */
     public function available(): bool;
+
+    /**
+     * Determine if the given code matches the product's unique code.
+     *
+     * @param string $code
+     *
+     * @return \App\Contracts\Products\Product|bool
+     */
+    public function match(string $code);
 }

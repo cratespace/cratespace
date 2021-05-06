@@ -5,7 +5,7 @@ namespace Tests\Feature\Business;
 use Tests\TestCase;
 use App\Models\User;
 use App\Jobs\InviteBusiness;
-use Tests\Concers\CreatesRoles;
+use Tests\Concerns\CreatesRoles;
 use Illuminate\Support\Facades\Queue;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Cratespace\Preflight\Testing\Contracts\Postable;

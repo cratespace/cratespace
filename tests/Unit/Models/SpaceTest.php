@@ -37,12 +37,12 @@ class SpaceTest extends TestCase
     {
         $space = create(Space::class);
 
-        $this->assertNotNull($space->dimensions->height);
-        $this->assertIsInt($space->dimensions->height);
-        $this->assertNotNull($space->dimensions->width);
-        $this->assertIsInt($space->dimensions->width);
-        $this->assertNotNull($space->dimensions->length);
-        $this->assertIsInt($space->dimensions->length);
+        $this->assertNotNull($space->height);
+        $this->assertIsInt($space->height);
+        $this->assertNotNull($space->width);
+        $this->assertIsInt($space->width);
+        $this->assertNotNull($space->length);
+        $this->assertIsInt($space->length);
     }
 
     public function testHasMaximumAllowableWeight()
@@ -95,14 +95,16 @@ class SpaceTest extends TestCase
     {
         $space = create(Space::class);
 
-        $this->assertNotNull($space->origin);
+        $this->assertNotNull($space->origin->city);
+        $this->assertNotNull($space->origin->country);
     }
 
     public function testHasArrivalDestination()
     {
         $space = create(Space::class);
 
-        $this->assertNotNull($space->destination);
+        $this->assertNotNull($space->destination->city);
+        $this->assertNotNull($space->destination->country);
     }
 
     public function testHasDepartureDate()

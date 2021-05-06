@@ -54,13 +54,35 @@ class Payout extends Model implements PaymentContract
     }
 
     /**
-     * Determine if the payment was successfully completed.
+     * Validate if the payment intent was successful and throw an exception if not.
+     *
+     * @return void
+     *
+     * @throws \App\Exceptions\PaymentActionRequired
+     * @throws \App\Exceptions\PaymentFailure
+     */
+    public function validate(): void
+    {
+    }
+
+    /**
+     * Determine if the payment was successful.
      *
      * @return bool
      */
-    public function paid(): bool
+    public function isSucceeded(): bool
     {
         return ! is_null($this->paid_at);
+    }
+
+    /**
+     * Determine if the payment was cancelled.
+     *
+     * @return bool
+     */
+    public function isCancelled(): bool
+    {
+        return ! $this->isSucceeded();
     }
 
     /**

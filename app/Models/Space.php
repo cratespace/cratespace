@@ -3,19 +3,23 @@
 namespace App\Models;
 
 use LogicException;
-use App\Casts\DimensionsCast;
+use App\Models\Traits\Orderable;
 use App\Models\Casts\ScheduleCast;
+use App\Models\Casts\DestinationCast;
 use App\Models\Concerns\ManagesSpace;
 use Illuminate\Database\Eloquent\Model;
-use App\Models\Traits\HasEncryptableCode;
+use Cratespace\Preflight\Models\Traits\Hashable;
+use Cratespace\Preflight\Models\Traits\Filterable;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Space extends Model
 {
+    use Hashable;
+    use Orderable;
+    use Filterable;
     use HasFactory;
     use ManagesSpace;
-    use HasEncryptableCode;
 
     /**
      * The attributes that are mass assignable.
@@ -25,7 +29,9 @@ class Space extends Model
     protected $fillable = [
         'code',
         'user_id',
-        'dimensions',
+        'height',
+        'width',
+        'length',
         'weight',
         'note',
         'price',
@@ -47,11 +53,12 @@ class Space extends Model
     protected $casts = [
         'tax' => 'integer',
         'price' => 'integer',
+        'origin' => DestinationCast::class,
+        'destination' => DestinationCast::class,
         'reserved_at' => 'datetime',
         'departs_at' => 'datetime',
         'arrives_at' => 'datetime',
         'schedule' => ScheduleCast::class,
-        'dimensions' => DimensionsCast::class,
     ];
 
     /**

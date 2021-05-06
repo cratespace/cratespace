@@ -1,11 +1,10 @@
 <?php
 
-namespace App\Casts;
+namespace App\Models\Casts;
 
-use App\Models\Values\Dimensions;
 use Illuminate\Contracts\Database\Eloquent\CastsAttributes;
 
-class DimensionsCast implements CastsAttributes
+class DestinationCast implements CastsAttributes
 {
     /**
      * Cast the given value.
@@ -19,7 +18,9 @@ class DimensionsCast implements CastsAttributes
      */
     public function get($model, $key, $value, $attributes)
     {
-        return new Dimensions(json_decode($value, true));
+        [$city, $country] = explode(',', trim(preg_replace('/\s+/', '', $value)));
+
+        return (object) compact('city', 'country');
     }
 
     /**
@@ -34,6 +35,6 @@ class DimensionsCast implements CastsAttributes
      */
     public function set($model, $key, $value, $attributes)
     {
-        return json_encode($value);
+        return $value;
     }
 }

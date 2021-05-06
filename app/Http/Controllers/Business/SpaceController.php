@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Business;
 
 use Inertia\Inertia;
 use App\Models\Space;
+use App\Queries\SpaceQuery;
 use App\Filters\SpaceFilter;
 use App\Http\Controllers\Controller;
 use App\Actions\Business\CreateNewSpace;
@@ -16,16 +17,17 @@ class SpaceController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @param \App\Filters\SpaceFilter $filter
+     * @param \App\Filters\SpaceFilter $filters
+     * @param \App\Queries\SpaceQuery  $filter
      *
      * @return \Inertia\Response
      */
-    public function index(SpaceFilter $filter): InertiaResponse
+    public function index(SpaceFilter $filters, SpaceQuery $query): InertiaResponse
     {
-        $this->authorize('viewAny', new Space());
+        $this->authorize('viewAny', Space::class);
 
         return Inertia::render('Business/Spaces/Index', [
-            'spaces' => [],
+            'spaces' => $query->business($filters)->paginate(),
         ]);
     }
 
@@ -36,7 +38,7 @@ class SpaceController extends Controller
      */
     public function create(): InertiaResponse
     {
-        $this->authorize('viewAny', new Space());
+        $this->authorize('viewAny', Space::class);
 
         return Inertia::render('Business/Spaces/Create');
     }

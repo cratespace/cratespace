@@ -1,9 +1,9 @@
 <?php
 
-use Inertia\Inertia;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Customer\SpaceController as CustomerSpaceController;
 
-Route::get('/', fn () => Inertia::render('Welcome/Show'))->name('welcome');
+Route::get('/', [CustomerSpaceController::class, '__invoke'])->name('welcome');
 
 /**
  * Admin Routes...

@@ -25,7 +25,7 @@ class IncompletePaymentException extends PaymentException
      * @return void
      */
     public function __construct(
-        ?Payment $payment,
+        ?Payment $payment = null,
         string $message = '',
         int $code = 0,
         ?Throwable $previous = null

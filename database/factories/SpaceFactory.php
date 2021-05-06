@@ -27,11 +27,9 @@ class SpaceFactory extends Factory
         return [
             'code' => null,
             'user_id' => $user->id,
-            'dimensions' => [
-                'height' => rand(1, 9),
-                'width' => rand(1, 9),
-                'length' => rand(1, 9),
-            ],
+            'height' => rand(1, 9),
+            'width' => rand(1, 9),
+            'length' => rand(1, 9),
             'weight' => rand(1, 9),
             'note' => null,
             'price' => 1000,
@@ -41,8 +39,8 @@ class SpaceFactory extends Factory
             'reserved_at' => null,
             'departs_at' => now()->addMonths(rand(1, 2)),
             'arrives_at' => now()->addMonths(rand(3, 4)),
-            'origin' => $this->faker->city,
-            'destination' => $this->faker->city,
+            'origin' => $this->faker->city . ', ' . $this->faker->country,
+            'destination' => $this->faker->city . ', ' . $this->faker->country,
         ];
     }
 

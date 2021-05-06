@@ -176,6 +176,8 @@ return [
         App\Providers\PreflightServiceProvider::class,
         App\Providers\StripeServiceProvider::class,
         App\Providers\IpinfoServiceProvider::class,
+        App\Providers\InventoryServiceProvider::class,
+        App\Providers\BillingServiceProvider::class,
     ],
 
     /*
