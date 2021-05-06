@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use LogicException;
+use App\Models\Casts\LocationCast;
 use App\Models\Casts\ScheduleCast;
 use App\Models\Concerns\ManagesSpace;
 use Illuminate\Database\Eloquent\Model;
@@ -50,6 +51,8 @@ class Space extends Model
     protected $casts = [
         'tax' => 'integer',
         'price' => 'integer',
+        'origin' => LocationCast::class,
+        'destination' => LocationCast::class,
         'reserved_at' => 'datetime',
         'departs_at' => 'datetime',
         'arrives_at' => 'datetime',

@@ -1,5 +1,6 @@
 <?php
 
+use App\Rules\LocationRule;
 use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Auth\User;
 use Cratespace\Sentinel\Rules\PasswordRule;
@@ -111,8 +112,8 @@ return [
         'weight' => ['required', 'numeric'],
         'price' => ['required', 'numeric', 'regex:/^\d+(\.\d{1,2})?$/'],
         'tax' => ['nullable', 'numeric', 'regex:/^\d+(\.\d{1,2})?$/'],
-        'origin' => ['required', 'string'],
-        'destination' => ['required', 'string'],
+        'origin' => ['required', 'string', new LocationRule()],
+        'destination' => ['required', 'string', new LocationRule()],
         'departs_at' => ['required', 'date'],
         'arrives_at' => ['required', 'date', 'after:departs_at'],
         'note' => ['nullable', 'string'],
