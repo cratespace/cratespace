@@ -5,9 +5,11 @@ namespace App\Http\Controllers\Business;
 use Inertia\Inertia;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Traits\Invitable;
+use App\Actions\Business\UpdateBusinessProfile;
 use App\Http\Requests\Business\BusinessRequest;
 use App\Http\Responses\Business\BusinessResponse;
 use Cratespace\Sentinel\Contracts\Actions\CreatesNewUsers;
+use Cratespace\Sentinel\Http\Responses\UpdateUserProfileResponse;
 
 class BusinessController extends Controller
 {
@@ -35,7 +37,8 @@ class BusinessController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param \Illuminate\Http\Request $request
+     * @param \App\Http\Requests\Business\BusinessRequest            $request
+     * @param \Cratespace\Sentinel\Contracts\Actions\CreatesNewUsers $request
      *
      * @return mixed
      */
@@ -50,5 +53,20 @@ class BusinessController extends Controller
         }
 
         return BusinessResponse::dispatch($user);
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param \App\Http\Requests\Business\BusinessRequest $request
+     * @param \App\Actions\Business\UpdateBusinessProfile $updater
+     *
+     * @return mixed
+     */
+    public function update(BusinessRequest $request, UpdateBusinessProfile $updater)
+    {
+        $updater->update($request->user(), $request->validated());
+
+        return UpdateUserProfileResponse::dispatch();
     }
 }

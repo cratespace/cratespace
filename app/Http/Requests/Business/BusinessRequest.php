@@ -15,7 +15,7 @@ class BusinessRequest extends Request
      */
     public function authorize(): bool
     {
-        return $this->isAllowed('manage', new User(), false);
+        return $this->isAllowed('manage', $this->user(), false);
     }
 
     /**
@@ -36,5 +36,17 @@ class BusinessRequest extends Request
                 Rule::in(['business']),
             ],
         ]);
+    }
+
+    /**
+     * Prepare the data for validation.
+     *
+     * @return void
+     */
+    protected function prepareForValidation(): void
+    {
+        if ($this->method() === 'PUT') {
+            $this->setErrorBag('updateBusinessInformation');
+        }
     }
 }

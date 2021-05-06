@@ -30,7 +30,7 @@ class SpaceQuery extends Query
             ->addSelect([
                 'business' => Business::select('name')
                     ->whereColumn('user_id', 'spaces.user_id')
-                    ->first(),
+                    ->limit(1),
             ])
             ->whereDate('departs_at', '>', now())
             ->whereNull('reserved_at')
@@ -47,6 +47,29 @@ class SpaceQuery extends Query
      */
     public function business(SpaceFilter $filters): Builder
     {
-        return $this->query()->filter($filters);
+        return $this->query()
+            ->whereUserId(auth()->id())
+            ->filter($filters)
+            ->latest('created_at');
+    }
+
+    /**
+     * All origin destinations from the database.
+     *
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function origins(): Builder
+    {
+        return $this->query();
+    }
+
+    /**
+     * All final destinations from the database.
+     *
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function destinations(): Builder
+    {
+        return $this->query();
     }
 }
