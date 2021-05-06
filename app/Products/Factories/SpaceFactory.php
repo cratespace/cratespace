@@ -3,9 +3,11 @@
 namespace App\Products\Factories;
 
 use Throwable;
+use Illuminate\Support\Str;
 use App\Products\Line\Space;
 use App\Contracts\Products\Product;
 use Illuminate\Support\Facades\Crypt;
+use Cratespace\Preflight\Support\HashId;
 use Cratespace\Sentinel\Support\Traits\Fillable;
 
 class SpaceFactory extends Factory
@@ -34,9 +36,7 @@ class SpaceFactory extends Factory
             try {
                 $product->getCode();
             } catch (Throwable $e) {
-                $product->setCode(Crypt::encryptString(
-                    get_class($product) . '-' . $product->id
-                ));
+                $product->setCode(Str::upper(HashId::generate($product->id)));
             }
 
             return $product;
