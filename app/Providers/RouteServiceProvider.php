@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Orders\Order;
 use Illuminate\Http\Request;
 use App\Contracts\Products\Finder;
 use Illuminate\Support\Facades\Route;
@@ -71,6 +72,10 @@ class RouteServiceProvider extends ServiceProvider
     {
         Route::bind('product', function ($value) {
             return $this->app->make(Finder::class)->find($value);
+        });
+
+        Route::bind('order', function ($value) {
+            return Order::whereUid($value)->first();
         });
     }
 }

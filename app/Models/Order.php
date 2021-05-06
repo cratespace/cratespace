@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Models\Casts\PaymentCast;
 use Illuminate\Database\Eloquent\Model;
+use Cratespace\Preflight\Models\Traits\Filterable;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -11,6 +12,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class Order extends Model
 {
     use HasFactory;
+    use Filterable;
 
     /**
      * The attributes that are mass assignable.

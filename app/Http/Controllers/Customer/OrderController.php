@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Customer;
 
 use Inertia\Inertia;
-use App\Models\Order;
+use App\Orders\Order;
 use App\Jobs\CancelOrder;
 use App\Contracts\Products\Product;
 use App\Http\Controllers\Controller;
@@ -42,7 +42,7 @@ class OrderController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param \App\Models\Order $order
+     * @param \App\Orders\Order $order
      *
      * @return \Illuminate\Http\Response
      */
@@ -56,7 +56,7 @@ class OrderController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param \App\Models\Order $order
+     * @param \App\Orders\Order $order
      *
      * @return \Illuminate\Http\Response
      */

@@ -37,4 +37,16 @@ class SpaceQuery extends Query
             ->filter($filters)
             ->latest('departs_at');
     }
+
+    /**
+     * The space listing query.
+     *
+     * @param \App\Filters\SpaceFilter $filters
+     *
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function business(SpaceFilter $filters): Builder
+    {
+        return $this->query()->filter($filters);
+    }
 }

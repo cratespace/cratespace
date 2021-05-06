@@ -3,9 +3,12 @@
 namespace App\Http\Controllers\Business;
 
 use Inertia\Inertia;
-use App\Models\Order;
+use App\Orders\Order;
 use App\Jobs\CancelOrder;
+use App\Queries\OrderQuery;
+use App\Filters\OrderFilter;
 use App\Http\Controllers\Controller;
+use Inertia\Response as InertiaResponse;
 use App\Http\Requests\Business\OrderRequest;
 use App\Http\Responses\Business\OrderResponse;
 
@@ -14,20 +17,25 @@ class OrderController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @param \App\Filters\OrderFilter $filters
+     * @param \App\Queries\OrderQuery  $query
+     *
+     * @return \Inertia\Response
      */
-    public function index()
+    public function index(OrderFilter $filters, OrderQuery $query): InertiaResponse
     {
         $this->authorize('manage', Order::class);
 
-        return Inertia::render('Business/Orders/Index');
+        return Inertia::render('Business/Orders/Index', [
+            'orders' => $query->business($filters)->paginate(),
+        ]);
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param \App\Http\Requests\Business\OrderRequest $request
-     * @param \App\Models\Order                        $order
+     * @param \App\Orders\Order                        $order
      *
      * @return mixed
      */
@@ -41,7 +49,7 @@ class OrderController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param \App\Models\Order $order
+     * @param \App\Orders\Order $order
      *
      * @return mixed
      */

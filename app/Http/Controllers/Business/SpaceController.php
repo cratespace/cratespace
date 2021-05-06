@@ -27,7 +27,7 @@ class SpaceController extends Controller
         $this->authorize('viewAny', Space::class);
 
         return Inertia::render('Business/Spaces/Index', [
-            'spaces' => $query->listing($filters)->paginate(),
+            'spaces' => $query->business($filters)->paginate(),
         ]);
     }
 
