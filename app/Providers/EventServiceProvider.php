@@ -12,6 +12,8 @@ use App\Events\ProductReserved;
 use App\Events\PaymentCancelled;
 use App\Events\PaymentSuccessful;
 use Illuminate\Auth\Events\Registered;
+use App\Actions\Business\MakeNewPayout;
+use App\Listeners\SendNewOrderPlacedNotification;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 
@@ -39,10 +41,16 @@ class EventServiceProvider extends ServiceProvider
         ProductReserved::class => [],
         ProductReleased::class => [],
 
-        OrderPlaced::class => [],
+        OrderPlaced::class => [
+            SendNewOrderPlacedNotification::class,
+        ],
+
         OrderCancelled::class => [],
 
-        PaymentSuccessful::class => [],
+        PaymentSuccessful::class => [
+            MakeNewPayout::class,
+        ],
+
         PaymentCancelled::class => [],
         PaymentFailed::class => [],
         PaymentRefunded::class => [],

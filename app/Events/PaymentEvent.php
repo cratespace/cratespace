@@ -2,7 +2,9 @@
 
 namespace App\Events;
 
+use App\Models\User;
 use App\Facades\Stripe;
+use App\Models\Business;
 use App\Contracts\Billing\Payment;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Foundation\Events\Dispatchable;
@@ -36,5 +38,19 @@ abstract class PaymentEvent
         if (! is_null($context)) {
             Stripe::logger()->error($context);
         }
+    }
+
+    /**
+     * Get the merchant the product belongs to.
+     *
+     * @return \App\Models\User
+     */
+    public function business(): User
+    {
+        $business = Business::findUsingRegistrationNumber(
+            $this->payment->metadata['merchant_registration_number']
+        );
+
+        return $business->user;
     }
 }
