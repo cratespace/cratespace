@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Events\OrderPlaced;
+use App\Events\OrderCancelled;
 use App\Events\BusinessInvited;
 use App\Events\ProductReleased;
 use App\Events\ProductReserved;
@@ -35,6 +36,7 @@ class EventServiceProvider extends ServiceProvider
         ProductReleased::class => [],
 
         OrderPlaced::class => [],
+        OrderCancelled::class => [],
     ];
 
     /**

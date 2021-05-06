@@ -175,4 +175,20 @@ class Space extends Model implements Product
     {
         return $this->schedule->nearingDeparture();
     }
+
+    /**
+     * Determine if the given code matches the product's unique code.
+     *
+     * @param string $code
+     *
+     * @return \App\Contracts\Products\Product|bool
+     */
+    public function match(string $code)
+    {
+        if ($this->getCode() === $code) {
+            return $this;
+        }
+
+        return false;
+    }
 }

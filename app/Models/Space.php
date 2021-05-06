@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use LogicException;
+use App\Models\Traits\Orderable;
 use App\Models\Casts\ScheduleCast;
 use App\Models\Casts\DestinationCast;
 use App\Models\Concerns\ManagesSpace;
@@ -15,6 +16,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class Space extends Model
 {
     use Hashable;
+    use Orderable;
     use Filterable;
     use HasFactory;
     use ManagesSpace;

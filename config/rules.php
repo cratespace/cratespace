@@ -133,7 +133,7 @@ return [
     'order' => [
         'name' => ['required', 'string', 'max:255'],
         'email' => ['required', 'string', 'email'],
-        'phone' => ['sometimes', 'string', 'regex:/(0)[0-9]{9}/'],
+        'phone' => ['sometimes', 'string', new PhoneNumberRule()],
         'business' => ['sometimes', 'string', 'max:255'],
         'payment_method' => ['required', 'string'],
         'customer' => ['required', 'string'],
