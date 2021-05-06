@@ -2,25 +2,20 @@
 
 namespace App\Queries;
 
-use App\Models\Space;
 use App\Models\Business;
 use App\Filters\SpaceFilter;
+use App\Products\Line\Space;
 use Cratespace\Preflight\Queries\Query;
 use Illuminate\Database\Eloquent\Builder;
 
 class SpaceQuery extends Query
 {
     /**
-     * Create new SpaceQuery instance.
+     * Instance of model being queried.
      *
-     * @param \App\Models\Space $space
-     *
-     * @return void
+     * @var \Illuminate\Database\Eloquent\Model
      */
-    public function __construct(Space $space)
-    {
-        parent::__construct($space);
-    }
+    protected $model = Space::class;
 
     /**
      * The space listing query.
@@ -31,13 +26,11 @@ class SpaceQuery extends Query
      */
     public function listing(SpaceFilter $filters): Builder
     {
-        return $this->model
-            ->query()
+        return $this->query()
             ->addSelect([
                 'business' => Business::select('name')
                     ->whereColumn('user_id', 'spaces.user_id')
-                    ->latest()
-                    ->take(1),
+                    ->first(),
             ])
             ->whereDate('departs_at', '>', now())
             ->whereNull('reserved_at')

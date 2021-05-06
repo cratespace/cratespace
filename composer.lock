@@ -173,16 +173,16 @@
         },
         {
             "name": "cratespace/preflight",
-            "version": "v3.6.1",
+            "version": "v3.6.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cratespace/preflight.git",
-                "reference": "d26f35bc7a6314f2973f7048e6f3239c86f3dd76"
+                "reference": "1140c8bf43f89e87c54b2de30c8485d8d1380434"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cratespace/preflight/zipball/d26f35bc7a6314f2973f7048e6f3239c86f3dd76",
-                "reference": "d26f35bc7a6314f2973f7048e6f3239c86f3dd76",
+                "url": "https://api.github.com/repos/cratespace/preflight/zipball/1140c8bf43f89e87c54b2de30c8485d8d1380434",
+                "reference": "1140c8bf43f89e87c54b2de30c8485d8d1380434",
                 "shasum": ""
             },
             "require": {
@@ -238,7 +238,7 @@
                 "issues": "https://github.com/cratespace/preflight/issues",
                 "source": "https://github.com/cratespace/preflight"
             },
-            "time": "2021-05-05T13:40:15+00:00"
+            "time": "2021-05-06T07:33:50+00:00"
         },
         {
             "name": "cratespace/sentinel",
@@ -3487,16 +3487,16 @@
         },
         {
             "name": "stripe/stripe-php",
-            "version": "v7.77.0",
+            "version": "v7.78.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/stripe/stripe-php.git",
-                "reference": "f6724447481f6fb8c2e714165e092adad9ca470a"
+                "reference": "6ec33fa8e9de2322be93d28dfd685661c67ca549"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/stripe/stripe-php/zipball/f6724447481f6fb8c2e714165e092adad9ca470a",
-                "reference": "f6724447481f6fb8c2e714165e092adad9ca470a",
+                "url": "https://api.github.com/repos/stripe/stripe-php/zipball/6ec33fa8e9de2322be93d28dfd685661c67ca549",
+                "reference": "6ec33fa8e9de2322be93d28dfd685661c67ca549",
                 "shasum": ""
             },
             "require": {
@@ -3542,9 +3542,9 @@
             ],
             "support": {
                 "issues": "https://github.com/stripe/stripe-php/issues",
-                "source": "https://github.com/stripe/stripe-php/tree/v7.77.0"
+                "source": "https://github.com/stripe/stripe-php/tree/v7.78.0"
             },
-            "time": "2021-04-12T17:19:16+00:00"
+            "time": "2021-05-05T23:55:32+00:00"
         },
         {
             "name": "swiftmailer/swiftmailer",

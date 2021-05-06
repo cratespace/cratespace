@@ -4,7 +4,7 @@ namespace App\Models\Casts;
 
 use Illuminate\Contracts\Database\Eloquent\CastsAttributes;
 
-class LocationCast implements CastsAttributes
+class DestinationCast implements CastsAttributes
 {
     /**
      * Cast the given value.
@@ -18,9 +18,9 @@ class LocationCast implements CastsAttributes
      */
     public function get($model, $key, $value, $attributes)
     {
-        [$city, $country] = explode(',', trim($value));
+        [$city, $country] = explode(',', trim(preg_replace('/\s+/', '', $value)));
 
-        return compact('city', 'country');
+        return (object) compact('city', 'country');
     }
 
     /**

@@ -1,6 +1,8 @@
 <?php
 
-use App\Rules\LocationRule;
+use App\Rules\ChargeRule;
+use App\Rules\DestinationRule;
+use App\Rules\PhoneNumberRule;
 use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Auth\User;
 use Cratespace\Sentinel\Rules\PasswordRule;
@@ -33,7 +35,7 @@ return [
             'max:255',
             Rule::unique(User::class),
         ],
-        'phone' => ['sometimes', 'string', 'regex:/(07)[0-9]{8}/'],
+        'phone' => ['sometimes', 'string', new PhoneNumberRule()],
         'password' => ['required', 'string', new PasswordRule(), 'confirmed'],
         'type' => ['sometimes', 'string', Rule::in(['business', 'customer'])],
     ],
@@ -65,7 +67,7 @@ return [
         'name' => ['required', 'string', 'max:255'],
         'username' => ['required', 'string', 'max:255'],
         'email' => ['required', 'string', 'email'],
-        'phone' => ['sometimes', 'string', 'regex:/(07)[0-9]{8}/'],
+        'phone' => ['sometimes', 'string', new PhoneNumberRule()],
         'photo' => ['nullable', 'image', 'mimes:jpg,jpeg,png', 'max:1024'],
     ],
 
@@ -110,10 +112,10 @@ return [
         'width' => ['required', 'numeric'],
         'length' => ['required', 'numeric'],
         'weight' => ['required', 'numeric'],
-        'price' => ['required', 'numeric', 'regex:/^\d+(\.\d{1,2})?$/'],
-        'tax' => ['nullable', 'numeric', 'regex:/^\d+(\.\d{1,2})?$/'],
-        'origin' => ['required', 'string', new LocationRule()],
-        'destination' => ['required', 'string', new LocationRule()],
+        'price' => ['required', 'numeric', new ChargeRule()],
+        'tax' => ['nullable', 'numeric', new ChargeRule()],
+        'origin' => ['required', 'string', new DestinationRule()],
+        'destination' => ['required', 'string', new DestinationRule()],
         'departs_at' => ['required', 'date'],
         'arrives_at' => ['required', 'date', 'after:departs_at'],
         'note' => ['nullable', 'string'],

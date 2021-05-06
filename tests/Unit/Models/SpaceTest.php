@@ -95,16 +95,16 @@ class SpaceTest extends TestCase
     {
         $space = create(Space::class);
 
-        $this->assertNotNull($space->origin['city']);
-        $this->assertNotNull($space->origin['country']);
+        $this->assertNotNull($space->origin->city);
+        $this->assertNotNull($space->origin->country);
     }
 
     public function testHasArrivalDestination()
     {
         $space = create(Space::class);
 
-        $this->assertNotNull($space->destination['city']);
-        $this->assertNotNull($space->destination['country']);
+        $this->assertNotNull($space->destination->city);
+        $this->assertNotNull($space->destination->country);
     }
 
     public function testHasDepartureDate()

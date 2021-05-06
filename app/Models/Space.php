@@ -3,8 +3,8 @@
 namespace App\Models;
 
 use LogicException;
-use App\Models\Casts\LocationCast;
 use App\Models\Casts\ScheduleCast;
+use App\Models\Casts\DestinationCast;
 use App\Models\Concerns\ManagesSpace;
 use Illuminate\Database\Eloquent\Model;
 use Cratespace\Preflight\Models\Traits\Hashable;
@@ -51,8 +51,8 @@ class Space extends Model
     protected $casts = [
         'tax' => 'integer',
         'price' => 'integer',
-        'origin' => LocationCast::class,
-        'destination' => LocationCast::class,
+        'origin' => DestinationCast::class,
+        'destination' => DestinationCast::class,
         'reserved_at' => 'datetime',
         'departs_at' => 'datetime',
         'arrives_at' => 'datetime',

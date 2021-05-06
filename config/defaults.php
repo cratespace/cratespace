@@ -11,7 +11,7 @@ return [
             'name' => 'Thavarshan Thayananthajothy',
             'username' => 'Thavarshan',
             'email' => 'tjthavarshan@gmail.com',
-            'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
+            'password' => '$2y$10$E8lDpaJXHVVgGNMQJ43hR.A3TLtgD2JYJXLIiK9HLAlHaVaSLxa0a', // alphaxion77
             'email_verified_at' => now(),
             'remember_token' => Str::random(10),
             'settings' => [],

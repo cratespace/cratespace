@@ -5,8 +5,15 @@ namespace App\Rules;
 use Illuminate\Support\Str;
 use Illuminate\Contracts\Validation\Rule;
 
-class LocationRule implements Rule
+class DestinationRule extends RegexRule implements Rule
 {
+    /**
+     * The value pattern to compare against.
+     *
+     * @var string
+     */
+    protected static $pattern = '/([a-zA-Z])+( )*([a-zA-Z])*(, )([a-zA-Z])+( )*([a-zA-Z])*/';
+
     /**
      * Determine if the validation rule passes.
      *
@@ -17,7 +24,7 @@ class LocationRule implements Rule
      */
     public function passes($attribute, $value)
     {
-        if (preg_match('/([a-zA-Z])+( )*([a-zA-Z])*(, )([a-zA-Z])+( )*([a-zA-Z])*/', $value)) {
+        if (preg_match(static::$pattern, $value)) {
             return Str::contains($value, ',');
         }
 
