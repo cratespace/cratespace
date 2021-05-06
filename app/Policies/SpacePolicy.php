@@ -3,7 +3,7 @@
 namespace App\Policies;
 
 use App\Models\User;
-use App\Models\Space;
+use App\Products\Line\Space;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class SpacePolicy
@@ -25,8 +25,8 @@ class SpacePolicy
     /**
      * Determine whether the user can view the model.
      *
-     * @param \App\Models\User  $user
-     * @param \App\Models\Space $space
+     * @param \App\Models\User         $user
+     * @param \App\Products\Line\Space $space
      *
      * @return mixed
      */
@@ -38,6 +38,23 @@ class SpacePolicy
 
         if ($user->isBusiness()) {
             return $user->is($space->owner);
+        }
+
+        return false;
+    }
+
+    /**
+     * Determine whether the user can view the model.
+     *
+     * @param \App\Models\User         $user
+     * @param \App\Products\Line\Space $space
+     *
+     * @return mixed
+     */
+    public function destroy(User $user, Space $space)
+    {
+        if ($this->manage($user, $space)) {
+            return ! $space->reserved();
         }
 
         return false;

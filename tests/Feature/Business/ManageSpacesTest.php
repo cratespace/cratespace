@@ -5,6 +5,7 @@ namespace Tests\Feature\Business;
 use Tests\TestCase;
 use App\Models\User;
 use App\Models\Space;
+use App\Products\Line\Space as SpaceProduct;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Cratespace\Preflight\Testing\Contracts\Postable;
 
@@ -227,6 +228,38 @@ class ManageSpacesTest extends TestCase implements Postable
 
         $response->assertStatus(302);
         $response->assertSessionHasErrors('type');
+    }
+
+    public function testSpaceCanBeDeleted()
+    {
+        $user = create(User::class, [], 'asBusiness');
+
+        $this->signIn($user);
+
+        $space = create(Space::class, ['user_id' => $user->id]);
+
+        $response = $this->delete("/spaces/{$space->code}");
+
+        $response->assertStatus(303);
+
+        $this->assertNull($space->fresh());
+    }
+
+    public function testReservedSpaceCannnotBeDeleted()
+    {
+        $user = create(User::class, [], 'asBusiness');
+
+        $this->signIn($user);
+
+        $space = create(Space::class, ['user_id' => $user->id]);
+        $space = SpaceProduct::find($space->id);
+        $space->reserve();
+
+        $response = $this->delete("/spaces/{$space->code}");
+
+        $response->assertStatus(403);
+
+        $this->assertNotNull($space->fresh());
     }
 
     /**
