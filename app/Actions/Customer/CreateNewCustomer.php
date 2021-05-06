@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Actions\Business;
+namespace App\Actions\Customer;
 
 use App\Models\Customer;
 use App\Exceptions\CustomerAlreadyCreated;

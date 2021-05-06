@@ -3,10 +3,14 @@
 namespace App\Providers;
 
 use App\Events\OrderPlaced;
+use App\Events\PaymentFailed;
 use App\Events\OrderCancelled;
 use App\Events\BusinessInvited;
+use App\Events\PaymentRefunded;
 use App\Events\ProductReleased;
 use App\Events\ProductReserved;
+use App\Events\PaymentCancelled;
+use App\Events\PaymentSuccessful;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
@@ -37,6 +41,11 @@ class EventServiceProvider extends ServiceProvider
 
         OrderPlaced::class => [],
         OrderCancelled::class => [],
+
+        PaymentSuccessful::class => [],
+        PaymentCancelled::class => [],
+        PaymentFailed::class => [],
+        PaymentRefunded::class => [],
     ];
 
     /**

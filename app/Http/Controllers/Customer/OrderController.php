@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Customer;
 
 use Inertia\Inertia;
 use App\Models\Order;
+use App\Jobs\CancelOrder;
 use App\Contracts\Products\Product;
 use App\Http\Controllers\Controller;
 use App\Contracts\Billing\MakesPurchases;
@@ -19,6 +20,7 @@ class OrderController extends Controller
      */
     public function create()
     {
+        return Inertia::render('Customer/Checkout/Show');
     }
 
     /**
@@ -46,6 +48,8 @@ class OrderController extends Controller
      */
     public function show(Order $order)
     {
+        $this->authorize('view', $order);
+
         return Inertia::render('Customer/Orders/Show', compact('order'));
     }
 
@@ -58,5 +62,10 @@ class OrderController extends Controller
      */
     public function destroy(Order $order)
     {
+        $this->authorize('destroy', $order);
+
+        CancelOrder::dispatch($order);
+
+        return OrderResponse::dispath();
     }
 }

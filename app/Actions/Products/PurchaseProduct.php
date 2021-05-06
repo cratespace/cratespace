@@ -2,12 +2,9 @@
 
 namespace App\Actions\Products;
 
-use Throwable;
-use App\Facades\Stripe;
 use App\Contracts\Billing\Payment;
 use App\Contracts\Products\Product;
 use App\Contracts\Billing\MakesPurchases;
-use App\Exceptions\PaymentFailedException;
 use App\Billing\PaymentGateways\PaymentGateway;
 
 class PurchaseProduct implements MakesPurchases
@@ -41,15 +38,7 @@ class PurchaseProduct implements MakesPurchases
      */
     public function purchase(Product $product, array $details)
     {
-        try {
-            $payment = retry(3, function () use ($product, $details) {
-                return $this->charge($product, $details);
-            }, 60);
-        } catch (Throwable $e) {
-            Stripe::logger()->error($e->getMessage());
-
-            throw new PaymentFailedException(null, $e->getMessage());
-        }
+        $payment = $this->charge($product, $details);
 
         return $product->placeOrder($payment);
     }

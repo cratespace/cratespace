@@ -5,7 +5,9 @@ namespace App\Providers;
 use Illuminate\Support\ServiceProvider;
 use App\Actions\Products\PurchaseProduct;
 use App\Contracts\Billing\MakesPurchases;
+use App\Billing\PaymentGateways\PaymentGateway;
 use Cratespace\Sentinel\Providers\Traits\HasActions;
+use App\Billing\PaymentGateways\StripePaymentGateway;
 
 class BillingServiceProvider extends ServiceProvider
 {
@@ -27,6 +29,7 @@ class BillingServiceProvider extends ServiceProvider
      */
     public function register()
     {
+        $this->registerPaymentGateway();
     }
 
     /**
@@ -37,5 +40,15 @@ class BillingServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->registerActions();
+    }
+
+    /**
+     * Register default payment gateway.
+     *
+     * @return void
+     */
+    protected function registerPaymentGateway(): void
+    {
+        $this->app->singleton(PaymentGateway::class, StripePaymentGateway::class);
     }
 }

@@ -84,9 +84,14 @@ class Order extends Model
      * @param string $confirmationNumber
      *
      * @return \App\Models\Order
+     *
+     * @throws \Illuminate\Database\Eloquent\ModelNotFoundException
      */
     public static function findByConfirmationNumber(string $confirmationNumber): Order
     {
-        return static::where('confirmation_number', $confirmationNumber)->firstOrFail();
+        return static::where(
+            'confirmation_number',
+            $confirmationNumber
+        )->firstOrFail();
     }
 }
