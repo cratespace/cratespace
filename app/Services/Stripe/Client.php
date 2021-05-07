@@ -133,11 +133,13 @@ class Client implements ClientContract
         $stripe = $this->getInstane()->stripe();
 
         try {
+            $returnable = $stripe->{$name};
+
             if (! empty($arguments)) {
-                return $stripe->{$name}($arguments);
+                return $returnable($arguments);
             }
 
-            return $stripe->{$name};
+            return $returnable;
         } catch (Throwable $e) {
             $this->logger()->error($e->getMessage());
 

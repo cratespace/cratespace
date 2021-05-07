@@ -5,8 +5,11 @@ namespace App\Models;
 use Stripe\Order;
 use Carbon\Carbon;
 use App\Support\Money;
+use InvalidArgumentException;
 use App\Models\Casts\PaymentCast;
+use App\Contracts\Products\Product;
 use Illuminate\Database\Eloquent\Model;
+use App\Contracts\Products\FindsProducts;
 use App\Exceptions\InvalidActionException;
 use App\Contracts\Billing\Payment as PaymentContract;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -129,6 +132,22 @@ class Payout extends Model implements PaymentContract
     public function order(): Order
     {
         return $this->product()->order;
+    }
+
+    /**
+     * Get the product details this payout was for.
+     *
+     * @return \App\Contracts\Products\Product
+     */
+    public function product(): Product
+    {
+        if (! isset($this->payment->meta['product_code'])) {
+            throw new InvalidArgumentException('Product code not set on this payout');
+        }
+
+        $code = $this->payment->meta['product_code'];
+
+        return app(FindsProducts::class)->find($code);
     }
 
     /**

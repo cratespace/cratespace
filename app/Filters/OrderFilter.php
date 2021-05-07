@@ -2,6 +2,7 @@
 
 namespace App\Filters;
 
+use Carbon\Carbon;
 use Cratespace\Preflight\Filters\Filter;
 use Illuminate\Database\Eloquent\Builder;
 
@@ -12,17 +13,19 @@ class OrderFilter extends Filter
      *
      * @var array
      */
-    protected $filters = ['filter'];
+    protected $filters = [
+        'created_at',
+    ];
 
     /**
-     * Filter the query by a given attribute value.
+     * Filter according to created date and time.
      *
-     * @param string $attribute
+     * @param \Carbon\Carbon $date
      *
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    protected function filter(string $attribute): Builder
+    protected function createdAt(Carbon $date): Builder
     {
-        return $this->builder->whereAttribute($attribute);
+        return $this->builder->whereDate('created_at', $date);
     }
 }
