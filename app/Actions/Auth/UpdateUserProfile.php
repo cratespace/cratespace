@@ -46,6 +46,7 @@ class UpdateUserProfile implements UpdatesUserProfiles
             'name' => $data['name'],
             'username' => $data['username'],
             'email' => $data['email'],
+            'phone' => $data['phone'],
         ], $verified ? ['email_verified_at' => null] : []))->save();
     }
 }

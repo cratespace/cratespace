@@ -4,7 +4,7 @@
         <header>
             <navbar class="bg-blue-800">
                 <template #logo>
-                    <logo classes="h-8 w-auto text-blue-500" :title="config('app.name')"></logo>
+                    <logo classes="h-10 w-10 text-blue-500" :title="config('app.name')"></logo>
                 </template>
 
                 <template #linksleft>

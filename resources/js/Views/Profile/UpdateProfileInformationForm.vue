@@ -52,6 +52,10 @@
                     <div class="mt-6 lg:mt-0 md:col-span-6">
                         <app-input type="email" v-model="form.email" :error="form.errors.email" label="Email address" placeholder="john.doe@example.com"></app-input>
                     </div>
+
+                    <div class="mt-6 lg:mt-0 md:col-span-6">
+                        <app-input type="tel" v-model="form.phone" :error="form.errors.phone" label="Phone number" placeholder="07xxxxxxxx"></app-input>
+                    </div>
                 </div>
 
                 <div class="flex items-center justify-end mt-6">
@@ -93,6 +97,7 @@ export default {
                 name: this.user.name,
                 username: this.user.username,
                 email: this.user.email,
+                phone: this.user.phone,
                 photo: null
             }),
 
