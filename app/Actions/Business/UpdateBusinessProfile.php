@@ -20,6 +20,6 @@ class UpdateBusinessProfile implements UpdatesUserProfiles
      */
     public function update(User $user, array $data): void
     {
-        $user->business->update($this->filterFillable($data));
+        $user->business->update($this->filterFillable($data, $user->business));
     }
 }

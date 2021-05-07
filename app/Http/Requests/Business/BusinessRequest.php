@@ -3,6 +3,7 @@
 namespace App\Http\Requests\Business;
 
 use App\Models\User;
+use App\Rules\PhoneNumberRule;
 use Illuminate\Validation\Rule;
 use Cratespace\Sentinel\Http\Requests\Request;
 
@@ -25,16 +26,24 @@ class BusinessRequest extends Request
      */
     public function rules(): array
     {
-        return $this->getRulesFor([
-            'register',
-            'business',
-            'address',
-        ], [
-            'type' => [
-                'required',
-                'string',
-                Rule::in(['business']),
-            ],
+        if ($this->method() !== 'PUT') {
+            return $this->getRulesFor([
+                'register',
+                'business',
+                'address',
+            ], [
+                'type' => [
+                    'required',
+                    'string',
+                    Rule::in(['business']),
+                ],
+            ]);
+        }
+
+        return $this->getRulesFor('business', [
+            'name' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'string', 'email'],
+            'phone' => ['sometimes', 'string', new PhoneNumberRule()],
         ]);
     }
 

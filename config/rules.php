@@ -46,12 +46,11 @@ return [
     'business' => [
         'registration_number' => [
             'required',
-            'string',
             'max:255',
             'unique:businesses,registration_number',
         ],
         'mcc' => [
-            'required',
+            'nullable',
             'string',
             'max:255',
             'unique:businesses,mcc',

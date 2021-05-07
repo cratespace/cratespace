@@ -5,6 +5,10 @@
 
             <section-border></section-border>
 
+            <update-business-information-form :profile="$page.props.user.profile"></update-business-information-form>
+
+            <section-border></section-border>
+
             <update-address-information-form :address="$page.props.user.address"></update-address-information-form>
 
             <section-border></section-border>
@@ -31,6 +35,7 @@ import AppLayout from '@/Views/Layouts/AppLayout';
 import SectionBorder from '@/Views/Components/Sections/SectionBorder';
 import UpdateProfileInformationForm from './UpdateProfileInformationForm';
 import UpdateAddressInformationForm from './UpdateAddressInformationForm';
+import UpdateBusinessInformationForm from './UpdateBusinessInformationForm';
 import UpdatePasswordForm from './UpdatePasswordForm';
 import TwoFactorAuthenticationForm from './TwoFactorAuthenticationForm';
 import DeleteUserForm from './DeleteUserForm';
@@ -42,6 +47,7 @@ export default {
         SectionBorder,
         UpdateProfileInformationForm,
         UpdateAddressInformationForm,
+        UpdateBusinessInformationForm,
         UpdatePasswordForm,
         TwoFactorAuthenticationForm,
         DeleteUserForm,

@@ -36,7 +36,7 @@ trait ManagesCustomer
      */
     public function customerId(): ?string
     {
-        return $this->customer->stripe_id;
+        return $this->customer->service_id;
     }
 
     /**

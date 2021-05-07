@@ -2,16 +2,27 @@
 
 namespace App\Rules;
 
+use App\Contracts\Products\Finder;
 use Illuminate\Contracts\Validation\Rule;
 
-class PhoneNumberRule extends RegexRule implements Rule
+class ProductRule implements Rule
 {
     /**
-     * The value pattern to compare against.
+     * The product finder instance.
      *
-     * @var string
+     * @var \App\Contracts\Products\Finder
      */
-    protected static $pattern = '/(0)([1-9]{1})([0-9]{8})/';
+    protected $finder;
+
+    /**
+     * Create a new rule instance.
+     *
+     * @return void
+     */
+    public function __construct(Finder $finder)
+    {
+        $this->finder = $finder;
+    }
 
     /**
      * Determine if the validation rule passes.
@@ -23,7 +34,7 @@ class PhoneNumberRule extends RegexRule implements Rule
      */
     public function passes($attribute, $value)
     {
-        return (bool) preg_match(static::$pattern, $value);
+        return $this->finder->exists($value);
     }
 
     /**
@@ -33,6 +44,6 @@ class PhoneNumberRule extends RegexRule implements Rule
      */
     public function message()
     {
-        return 'Phone number should match this pattern 07xxxxxxxx.';
+        return 'The validation error message.';
     }
 }

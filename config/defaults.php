@@ -11,6 +11,7 @@ return [
             'name' => 'Thavarshan Thayananthajothy',
             'username' => 'Thavarshan',
             'email' => 'tjthavarshan@gmail.com',
+            'phone' => '0775018795',
             'password' => '$2y$10$E8lDpaJXHVVgGNMQJ43hR.A3TLtgD2JYJXLIiK9HLAlHaVaSLxa0a', // alphaxion77
             'email_verified_at' => now(),
             'remember_token' => Str::random(10),
@@ -29,6 +30,16 @@ return [
         ],
 
         'settings' => [],
+
+        'business' => [
+            'name' => 'Cratespace, Inc.',
+            'email' => 'info@cratespace.biz',
+            'phone' => '0117100200',
+            'registration_number' => 'FTD64578HYU',
+            'type' => 'standard',
+            'business_type' => 'company',
+            'mcc' => '6785234',
+        ],
     ],
 
     /*

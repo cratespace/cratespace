@@ -5,10 +5,15 @@ namespace App\Actions\Products;
 use App\Contracts\Billing\Payment;
 use App\Contracts\Products\Product;
 use App\Contracts\Billing\MakesPurchases;
+use App\Billing\PaymentToken\PaymentToken;
 use App\Billing\PaymentGateways\PaymentGateway;
+use App\Billing\PaymentToken\DestroyPaymentToken;
+use Cratespace\Sentinel\Support\Concerns\InteractsWithContainer;
 
 class PurchaseProduct implements MakesPurchases
 {
+    use InteractsWithContainer;
+
     /**
      * The PaymentGateway instance.
      *
@@ -40,7 +45,9 @@ class PurchaseProduct implements MakesPurchases
     {
         $payment = $this->charge($product, $details);
 
-        return $product->placeOrder($payment);
+        $this->paymentToken()->destroy($details['payment_token']);
+
+        $order = $product->placeOrder($payment);
     }
 
     /**
@@ -54,5 +61,15 @@ class PurchaseProduct implements MakesPurchases
     protected function charge(Product $product, array $details): Payment
     {
         return $this->paymentGateway->charge($product->rawAmount(), $details);
+    }
+
+    /**
+     * Payment token manager.
+     *
+     * @return \App\Billing\PaymentToken\PaymentToken
+     */
+    protected function paymentToken(): PaymentToken
+    {
+        return $this->resolve(DestroyPaymentToken::class);
     }
 }

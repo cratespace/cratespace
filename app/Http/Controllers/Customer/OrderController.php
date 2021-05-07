@@ -7,34 +7,44 @@ use App\Orders\Order;
 use App\Jobs\CancelOrder;
 use App\Contracts\Products\Product;
 use App\Http\Controllers\Controller;
+use Inertia\Response as InertiaResponse;
 use App\Contracts\Billing\MakesPurchases;
+use App\Contracts\Products\FindsProducts;
 use App\Http\Requests\Customer\OrderRequest;
 use App\Http\Responses\Customer\OrderResponse;
+use App\Billing\PaymentToken\GeneratePaymentToken;
 
 class OrderController extends Controller
 {
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response
+     * @param \App\Billing\PaymentTokens\GeneratePaymentToken $generator
+     * @param \App\Contracts\Billing\Product                  $product
+     *
+     * @return \Inertia\Response
      */
-    public function create()
+    public function create(GeneratePaymentToken $generator, Product $product): InertiaResponse
     {
-        return Inertia::render('Customer/Checkout/Show');
+        return Inertia::render('Customer/Checkout/Show', [
+            'payementToken' => $generator->generate($product),
+        ]);
     }
 
     /**
      * Store a newly created resource in storage.
      *
      * @param \App\Http\Requests\Customer\OrderRequest $request
-     * @param \App\Contracts\Products\Product          $product
+     * @param \App\Contracts\Products\FindsProducts    $finder
      * @param \App\Contracts\Billing\MakesPurchases    $purchaser
      *
      * @return mixed
      */
-    public function store(OrderRequest $request, Product $product, MakesPurchases $purchaser)
+    public function store(OrderRequest $request, FindsProducts $finder, MakesPurchases $purchaser)
     {
-        $order = $purchaser->purchase($product, $request->validated());
+        $order = $purchaser->purchase(
+            $finder->find($request->product), $request->validated()
+        );
 
         return OrderResponse::dispatch($order);
     }

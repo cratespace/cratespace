@@ -24,10 +24,10 @@ class CustomerFactory extends Factory
     public function definition()
     {
         return [
-            'stripe_id' => Str::random(40),
+            'service_id' => 'native-' . Str::random(24),
             'pm_type' => 'card',
             'pm_last_four' => 1234,
-            'user_id' => create(User::class),
+            'user_id' => create(User::class)->id,
         ];
     }
 }
