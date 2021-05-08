@@ -12,6 +12,7 @@ use App\Events\ProductReserved;
 use App\Services\Stripe\Customer;
 use App\Contracts\Billing\Payment;
 use App\Contracts\Products\Product;
+use App\Exceptions\ProductNotFoundException;
 
 class Space extends Model implements Product
 {
@@ -190,5 +191,19 @@ class Space extends Model implements Product
         }
 
         return false;
+    }
+
+    /**
+     * Determine if the product is a valid product instance.
+     *
+     * @return void
+     *
+     * @throws \App\Exceptions\ProductNotFoundException
+     */
+    public function validate(): void
+    {
+        if (! filled($this->getAttributes())) {
+            throw new ProductNotFoundException();
+        }
     }
 }

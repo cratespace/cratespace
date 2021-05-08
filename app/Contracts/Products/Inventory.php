@@ -15,9 +15,19 @@ interface Inventory
     public function store($product, ?array $parameters = null);
 
     /**
+     * Determine if the given product or code is stored in the inventory.
+     *
+     * @param \App\Contracts\Products\Product|string $product
+     *
+     * @return bool
+     */
+    public function has($product): bool;
+
+    /**
      * Get a product out of the inventory.
      *
      * @param string $code
+     * @param bool   $queitly
      *
      * @return \App\Contracts\Products\Product|null
      *

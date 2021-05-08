@@ -4,6 +4,7 @@ namespace App\Products;
 
 use App\Contracts\Products\Product;
 use App\Contracts\Products\Inventory;
+use Illuminate\Database\Eloquent\Model;
 use App\Providers\InventoryServiceProvider;
 use App\Exceptions\ProductNotFoundException;
 use App\Contracts\Products\Finder as FinderContract;
@@ -44,22 +45,42 @@ class Finder implements FinderContract
      */
     public function find(string $code): Product
     {
-        if ($product = $this->inventory->get($code, true)) {
-            return $product;
+        if ($this->inventory->has($code)) {
+            return $this->inventory->get($code, true);
         }
 
         foreach ($this->productLine() as $product) {
             try {
                 $product = $this->resolve($product);
             } catch (BindingResolutionException $e) {
-                $product = null;
+                $this->throwProductNotFoundException($code);
+            }
+
+            if ($product instanceof Model) {
+                $product = $product->where('code', $code)->first();
             }
 
             if (! is_null($product)) {
-                return $product->where('code', $code)->first();
+                $product->validate();
+
+                return $product;
             }
         }
 
+        $this->throwProductNotFoundException($code);
+    }
+
+    /**
+     * Indicate to the developer that a valid product was not found.
+     *
+     * @param string $code
+     *
+     * @return void
+     *
+     * @throws \App\Exceptions\ProductNotFoundException
+     */
+    protected function throwProductNotFoundException(string $code): void
+    {
         throw new ProductNotFoundException("Product with code [{$code}] not found");
     }
 

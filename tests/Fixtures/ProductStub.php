@@ -2,6 +2,7 @@
 
 namespace Tests\Fixtures;
 
+use Throwable;
 use Mockery as m;
 use App\Models\User;
 use App\Support\Money;
@@ -10,6 +11,7 @@ use InvalidArgumentException;
 use App\Contracts\Orders\Order;
 use App\Contracts\Billing\Payment;
 use App\Contracts\Products\Product;
+use App\Exceptions\ProductNotFoundException;
 
 class ProductStub implements Product
 {
@@ -63,7 +65,29 @@ class ProductStub implements Product
         $this->amount = $amount;
         $this->code = $code ?? Str::upper(Str::random(7));
 
-        $this->merchant = create(User::class, [], 'asBusiness');
+        $this->setMerchant();
+    }
+
+    /**
+     * Set a merchant for the product.
+     *
+     * @param \App\Models\User|null $user
+     *
+     * @return void
+     */
+    public function setMerchant(?User $user = null): void
+    {
+        if (! is_null($user)) {
+            $merchant = $user;
+        } else {
+            try {
+                $merchant = create(User::class, [], 'asBusiness');
+            } catch (Throwable $e) {
+                $merchant = m::mock(User::class);
+            }
+        }
+
+        $this->merchant = $merchant;
     }
 
     /**
@@ -188,5 +212,33 @@ class ProductStub implements Product
         }
 
         throw new InvalidArgumentException("Code [{$code}] does not belong to this product.");
+    }
+
+    /**
+     * Determine if the product is a valid product instance.
+     *
+     * @return void
+     *
+     * @throws \App\Exceptions\ProductNotFoundException
+     */
+    public function validate(): void
+    {
+        foreach (['name', 'amount', 'code'] as $attribute) {
+            if (! is_null($this->{$attribute})) {
+                return;
+            }
+        }
+
+        throw new ProductNotFoundException();
+    }
+
+    /**
+     * Destroy the ProductStub instance.
+     *
+     * @return void
+     */
+    public function __destruct()
+    {
+        m::close();
     }
 }

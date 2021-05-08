@@ -60,6 +60,7 @@ class Inventory implements InventoryContract
      * Get a product out of the inventory.
      *
      * @param string $code
+     * @param bool   $queitly
      *
      * @return \App\Contracts\Products\Product|null
      *
@@ -82,6 +83,28 @@ class Inventory implements InventoryContract
         }
 
         throw new ProductNotFoundException("Product with code [{$code}] was not found in the inventory");
+    }
+
+    /**
+     * Determine if the given product or code is stored in the inventory.
+     *
+     * @param \App\Contracts\Products\Product|string $product
+     *
+     * @return bool
+     */
+    public function has($product): bool
+    {
+        if ($product instanceof Product) {
+            $code = $product->getCode();
+        }
+
+        if (is_string($product)) {
+            $code = $product;
+        }
+
+        $alias = $this->normalizeAlias($code);
+
+        return $this->app->has($alias);
     }
 
     /**
