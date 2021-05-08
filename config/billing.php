@@ -1,5 +1,6 @@
 <?php
 
+use App\Billing\Gateways\FakePaymentGateway;
 use App\Billing\Gateways\StripePaymentGateway;
 
 return [
@@ -8,6 +9,11 @@ return [
     ],
 
     'services' => [
+        'fake' => [
+            'key' => env('APP_KEY'),
+            'gateway' => FakePaymentGateway::class,
+        ],
+
         'stripe' => [
             'key' => env('STRIPE_KEY'),
             'secret' => env('STRIPE_SECRET'),
@@ -17,9 +23,13 @@ return [
             'gateway' => StripePaymentGateway::class,
         ],
 
-        'mollie' => [],
+        'paddle' => [
+            'vendor_id' => env('PADDLE_VENDOR_ID'),
+            'vendor_auth_code' => env('PADDLE_VENDOR_AUTH_CODE'),
+            'public_key' => env('PADDLE_PUBLIC_KEY'),
+        ],
 
-        'paddle' => [],
+        'mollie' => [],
     ],
 
     'currency' => env('BILLING_CURRENCY', 'usd'),

@@ -7,10 +7,8 @@ use App\Models\User;
 use Tests\Fixtures\ProductStub;
 use App\Contracts\Products\Product;
 use App\Contracts\Products\Inventory;
-use App\Billing\Gateways\PaymentGateway;
 use App\Billing\Token\GeneratePaymentToken;
 use App\Providers\InventoryServiceProvider;
-use App\Billing\Gateways\FakePaymentGateway;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Cratespace\Preflight\Testing\Contracts\Postable;
 
@@ -29,7 +27,7 @@ class PurchaseTest extends TestCase implements Postable
     {
         parent::setUp();
 
-        $this->app->singleton(PaymentGateway::class, FakePaymentGateway::class);
+        config()->set('billing.defaults.service', 'fake');
 
         InventoryServiceProvider::addToProductLine(ProductStub::class);
 

@@ -15,6 +15,13 @@ class StripePurchaseTest extends TestCase
 {
     use RefreshDatabase;
 
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        config()->set('billing.defaults.service', 'stripe');
+    }
+
     public function testCustomerCanPurchaseItem()
     {
         $this->withoutEvents();
