@@ -164,7 +164,9 @@ jobs:
         env:
           DB_CONNECTION: sqlite
           DB_DATABASE: ':memory:'
-          STRIPE_KEY:
+          STRIPE_KEY: ${{ secrets.STRIPE_KEY }}
+          STRIPE_SECRET: ${{ secrets.STRIPE_SECRET }}
+          STRIPE_ACCOUNT: ${{ secrets.STRIPE_ACCOUNT }}
         run: vendor/bin/phpunit
 
       - name: 📚 Upload artifacts
