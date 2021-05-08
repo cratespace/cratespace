@@ -74,9 +74,9 @@ class Client implements ClientContract
     public function options(array $options = []): array
     {
         return array_merge([
-            'api_key' => config('billing.secret'),
+            'api_key' => $this->getConfig('secret'),
             'stripe_version' => static::STRIPE_VERSION,
-            'stripe_account' => config('billing.account'),
+            'stripe_account' => $this->getConfig('account'),
         ], $options);
     }
 
@@ -98,6 +98,18 @@ class Client implements ClientContract
     public function stripe(): StripeClientInterface
     {
         return $this->stripe;
+    }
+
+    /**
+     * Get a specific stripe config value.
+     *
+     * @param string $key
+     *
+     * @return mixed
+     */
+    public function getConfig(string $key)
+    {
+        return config("billing.services.stripe.{$key}");
     }
 
     /**

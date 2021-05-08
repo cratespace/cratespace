@@ -8,7 +8,6 @@ use Illuminate\Support\ServiceProvider;
 use App\Billing\Gateways\PaymentGateway;
 use App\Actions\Products\PurchaseProduct;
 use App\Contracts\Billing\MakesPurchases;
-use App\Billing\Gateways\StripePaymentGateway;
 use App\Contracts\Orders\Order as OrderContract;
 use Cratespace\Sentinel\Providers\Traits\HasActions;
 
@@ -54,7 +53,23 @@ class BillingServiceProvider extends ServiceProvider
      */
     protected function registerPaymentGateway(): void
     {
-        $this->app->singleton(PaymentGateway::class, StripePaymentGateway::class);
+        $this->app->singleton(PaymentGateway::class, function () {
+            return $this->createDefaultPaymentService();
+        });
+    }
+
+    /**
+     * Create the default billing service.
+     *
+     * @return \App\Billing\Gateways\PaymentGateway
+     */
+    protected function createDefaultPaymentService(): PaymentGateway
+    {
+        $service = config('billing.defaults.service');
+
+        return $this->app->make(
+            config("billing.services.{$service}.gateway")
+        );
     }
 
     /**

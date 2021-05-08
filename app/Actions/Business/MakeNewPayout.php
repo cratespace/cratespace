@@ -44,6 +44,6 @@ class MakeNewPayout
      */
     protected function getServicePercentage(): float
     {
-        return config('billing.service');
+        return config('billing.service_charge');
     }
 }
