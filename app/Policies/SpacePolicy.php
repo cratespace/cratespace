@@ -19,7 +19,7 @@ class SpacePolicy
      */
     public function viewAny(User $user)
     {
-        return $user->isAdmin() || $user->usBusiness();
+        return $user->isAdmin() || $user->isBusiness();
     }
 
     /**

@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Customer;
 use Inertia\Inertia;
 use App\Orders\Order;
 use App\Jobs\CancelOrder;
-use App\Contracts\Products\Product;
 use App\Http\Controllers\Controller;
 use Inertia\Response as InertiaResponse;
 use App\Contracts\Billing\MakesPurchases;
@@ -17,16 +16,37 @@ use App\Http\Responses\Customer\OrderResponse;
 class OrderController extends Controller
 {
     /**
+     * The product finder cation class instance.
+     *
+     * @var \App\Contracts\Products\FindsProducts
+     */
+    protected $finder;
+
+    /**
+     * Create new customer OrderController instance.
+     *
+     * @param \App\Contracts\Products\FindsProducts $finder
+     *
+     * @return void
+     */
+    public function __construct(FindsProducts $finder)
+    {
+        $this->finder = $finder;
+    }
+
+    /**
      * Show the form for creating a new resource.
      *
      * @param \App\Billing\Tokens\GeneratePaymentToken $generator
-     * @param \App\Contracts\Billing\Product           $product
+     * @param string                                   $product
      *
      * @return \Inertia\Response
      */
-    public function create(GeneratePaymentToken $generator, Product $product): InertiaResponse
+    public function create(GeneratePaymentToken $generator, string $product): InertiaResponse
     {
-        return Inertia::render('Customer/Checkout/Show', [
+        $product = $this->finder->find($product);
+
+        return Inertia::render('Customer/Orders/Show', [
             'payementToken' => $generator->generate($product),
         ]);
     }
@@ -35,15 +55,15 @@ class OrderController extends Controller
      * Store a newly created resource in storage.
      *
      * @param \App\Http\Requests\Customer\OrderRequest $request
-     * @param \App\Contracts\Products\FindsProducts    $finder
      * @param \App\Contracts\Billing\MakesPurchases    $purchaser
      *
      * @return mixed
      */
-    public function store(OrderRequest $request, FindsProducts $finder, MakesPurchases $purchaser)
+    public function store(OrderRequest $request, MakesPurchases $purchaser)
     {
         $order = $purchaser->purchase(
-            $finder->find($request->product), $request->validated()
+            $this->finder->find($request->product),
+            $request->validated()
         );
 
         return OrderResponse::dispatch($order);

@@ -44,6 +44,18 @@ class BusinessRequest extends Request
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email'],
             'phone' => ['sometimes', 'string', new PhoneNumberRule()],
+            'registration_number' => [
+                'required',
+                'max:255',
+                Rule::unique('businesses', 'registration_number')
+                    ->ignore($this->user()->id, 'user_id'),
+            ],
+            'mcc' => [
+                'nullable',
+                'max:255',
+                Rule::unique('businesses', 'mcc')
+                    ->ignore($this->user()->id, 'user_id'),
+            ],
         ]);
     }
 

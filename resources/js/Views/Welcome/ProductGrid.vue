@@ -1,7 +1,7 @@
 <template>
     <div class="mt-8 md:grid md:grid-cols-12 md:gap-8">
-        <div v-for="space in spaces" :key="space.id" class="mb-6 md:mb-0 md:col-span-6 lg:col-span-4">
-            <card>
+        <div v-for="space in spaces" :key="space.id" class="mb-6 md:mb-0 md:col-span-6 lg:col-span-4 flex flex-col">
+            <card :has-actions="true">
                 <template #content>
                     <div>
                         <div>
@@ -135,13 +135,13 @@
                                 </div>
                             </div>
                         </div>
-
-                        <div class="mt-6">
-                            <app-button mode="primary" href="#" :link="true" class="justify-center w-full px-5 py-3">
-                                <span class="text-base">Buy for {{ space.amount }}</span>
-                            </app-button>
-                        </div>
                     </div>
+                </template>
+
+                <template #actions>
+                    <app-button mode="primary" :href="route('orders.create', { 'product': space.code })" :link="true" class="justify-center w-full px-5 py-3">
+                        <span class="text-base">Buy for {{ space.amount }}</span>
+                    </app-button>
                 </template>
             </card>
         </div>
