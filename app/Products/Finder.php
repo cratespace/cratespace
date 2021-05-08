@@ -3,10 +3,11 @@
 namespace App\Products;
 
 use App\Contracts\Products\Product;
-use Illuminate\Database\Eloquent\Model;
+use App\Contracts\Products\Inventory;
 use App\Providers\InventoryServiceProvider;
-use Illuminate\Collections\ItemNotFoundException;
+use App\Exceptions\ProductNotFoundException;
 use App\Contracts\Products\Finder as FinderContract;
+use Illuminate\Contracts\Container\BindingResolutionException;
 use Cratespace\Sentinel\Support\Concerns\InteractsWithContainer;
 
 class Finder implements FinderContract
@@ -14,27 +15,52 @@ class Finder implements FinderContract
     use InteractsWithContainer;
 
     /**
+     * The product inventory instance.
+     *
+     * @var \App\Contracts\Products\Inventory
+     */
+    protected $inventory;
+
+    /**
+     * Create new ProductFinder instance.
+     *
+     * @param \App\Contracts\Products\Inventory $inventory
+     *
+     * @return void
+     */
+    public function __construct(Inventory $inventory)
+    {
+        $this->inventory = $inventory;
+    }
+
+    /**
      * Find a product using the given product code.
      *
      * @param string $code
      *
      * @return \App\Contracts\Products
+     *
+     * @throws \App\Exceptions\ProductNotFoundException
      */
     public function find(string $code): Product
     {
-        foreach ($this->productLine() as $product) {
-            $product = $this->resolve($product);
+        if ($product = $this->inventory->get($code, true)) {
+            return $product;
+        }
 
-            $product = $product instanceof Model
-                ? $product->where('code', $code)->first()
-                : $product->match($code);
+        foreach ($this->productLine() as $product) {
+            try {
+                $product = $this->resolve($product);
+            } catch (BindingResolutionException $e) {
+                $product = null;
+            }
 
             if (! is_null($product)) {
-                return $product;
+                return $product->where('code', $code)->first();
             }
         }
 
-        throw new ItemNotFoundException("Product with code [{$code}] not found");
+        throw new ProductNotFoundException("Product with code [{$code}] not found");
     }
 
     /**

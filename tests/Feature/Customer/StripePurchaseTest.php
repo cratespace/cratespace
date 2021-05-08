@@ -4,53 +4,38 @@ namespace Tests\Feature\Customer;
 
 use Tests\TestCase;
 use App\Models\User;
-use Tests\Fixtures\ProductStub;
+use App\Products\Line\Space;
+use App\Services\Stripe\Customer;
 use App\Contracts\Products\Product;
-use App\Contracts\Products\Inventory;
-use App\Billing\Gateways\PaymentGateway;
+use App\Models\Space as ModelsSpace;
 use App\Billing\Token\GeneratePaymentToken;
-use App\Providers\InventoryServiceProvider;
-use App\Billing\Gateways\FakePaymentGateway;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Cratespace\Preflight\Testing\Contracts\Postable;
 
-class PurchaseTest extends TestCase implements Postable
+class StripePurchaseTest extends TestCase
 {
     use RefreshDatabase;
 
-    /**
-     * The product stub instance.
-     *
-     * @var \App\Contracts\Products\Product
-     */
-    protected $product;
-
-    protected function setUp(): void
-    {
-        parent::setUp();
-
-        $this->app->singleton(PaymentGateway::class, FakePaymentGateway::class);
-
-        InventoryServiceProvider::addToProductLine(ProductStub::class);
-
-        $this->app->make(Inventory::class)->store(
-            $this->product = new ProductStub('Test Product', 1500)
-        );
-    }
-
     public function testCustomerCanPurchaseItem()
     {
+        $this->withoutEvents();
         $this->withoutExceptionHandling();
 
         $user = create(User::class, [], 'asCustomer');
+        $stripeService = Customer::create([
+            'name' => $user->name,
+            'email' => $user->email,
+            'phone' => $user->phone,
+        ]);
+        $user->customer->update(['service_id' => $stripeService->id]);
+        $product = Space::find(create(ModelsSpace::class)->id);
         $this->signIn($user);
 
         $response = $this->post('/orders', $this->validParameters([
             'name' => $user->name,
             'email' => $user->email,
             'phone' => $user->phone,
-            'payment_token' => $this->generatePaymentToken($this->product),
-            'product' => $this->product->getCode(),
+            'payment_token' => $this->generatePaymentToken($product),
+            'product' => $product->getCode(),
             'customer' => $user->customerId(),
         ]));
 

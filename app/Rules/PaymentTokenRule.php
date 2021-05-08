@@ -3,7 +3,7 @@
 namespace App\Rules;
 
 use Illuminate\Contracts\Validation\Rule;
-use App\Billing\PaymentToken\ValidatePaymentToken;
+use App\Billing\Token\ValidatePaymentToken;
 
 class PaymentTokenRule implements Rule
 {
@@ -17,7 +17,7 @@ class PaymentTokenRule implements Rule
     /**
      * Create a new rule instance.
      *
-     * @param \App\Billing\PaymentToken\ValidatePaymentToken $tokenValidator
+     * @param \App\Billing\Token\ValidatePaymentToken $tokenValidator
      *
      * @return void
      */

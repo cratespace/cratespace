@@ -10,17 +10,17 @@ use App\Http\Controllers\Controller;
 use Inertia\Response as InertiaResponse;
 use App\Contracts\Billing\MakesPurchases;
 use App\Contracts\Products\FindsProducts;
+use App\Billing\Token\GeneratePaymentToken;
 use App\Http\Requests\Customer\OrderRequest;
 use App\Http\Responses\Customer\OrderResponse;
-use App\Billing\PaymentToken\GeneratePaymentToken;
 
 class OrderController extends Controller
 {
     /**
      * Show the form for creating a new resource.
      *
-     * @param \App\Billing\PaymentTokens\GeneratePaymentToken $generator
-     * @param \App\Contracts\Billing\Product                  $product
+     * @param \App\Billing\Tokens\GeneratePaymentToken $generator
+     * @param \App\Contracts\Billing\Product           $product
      *
      * @return \Inertia\Response
      */

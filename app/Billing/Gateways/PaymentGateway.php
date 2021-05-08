@@ -1,6 +1,8 @@
 <?php
 
-namespace App\Billing\PaymentGateways;
+namespace App\Billing\Gateways;
+
+use App\Contracts\Billing\Payment;
 
 abstract class PaymentGateway
 {
@@ -18,9 +20,9 @@ abstract class PaymentGateway
      * @param array      $details
      * @param array|null $options
      *
-     * @return mixed
+     * @return \App\Contracts\Billing\Payment
      */
-    abstract public function charge(int $amount, array $details, ?array $options = null);
+    abstract public function charge(int $amount, array $details, ?array $options = null): Payment;
 
     /**
      * Determine if the charge was succesful.

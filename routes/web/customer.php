@@ -7,4 +7,5 @@ Route::group([
     'middleware' => ['auth:sentinel', 'verified'],
 ], function () {
     Route::post('/orders', [CustomerOrderController::class, 'store'])->name('orders.store');
+    Route::get('/orders/{order}', [CustomerOrderController::class, 'show'])->name('orders.show');
 });

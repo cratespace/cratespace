@@ -2,7 +2,7 @@
 
 namespace App\Contracts\Products;
 
-use Stripe\Order;
+use App\Contracts\Orders\Order;
 use App\Contracts\Billing\Payable;
 use App\Contracts\Billing\Payment;
 

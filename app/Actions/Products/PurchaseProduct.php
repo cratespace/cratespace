@@ -3,11 +3,12 @@
 namespace App\Actions\Products;
 
 use App\Contracts\Billing\Payment;
+use App\Events\PurchaseSuccessful;
+use App\Billing\Token\PaymentToken;
 use App\Contracts\Products\Product;
+use App\Billing\Gateways\PaymentGateway;
 use App\Contracts\Billing\MakesPurchases;
-use App\Billing\PaymentToken\PaymentToken;
-use App\Billing\PaymentGateways\PaymentGateway;
-use App\Billing\PaymentToken\DestroyPaymentToken;
+use App\Billing\Token\DestroyPaymentToken;
 use Cratespace\Sentinel\Support\Concerns\InteractsWithContainer;
 
 class PurchaseProduct implements MakesPurchases
@@ -24,7 +25,7 @@ class PurchaseProduct implements MakesPurchases
     /**
      * Create new instance of PurchaseProduct action class.
      *
-     * @param \App\Billing\PaymentGateways\PaymentGateway $paymentGateway
+     * @param \App\Billing\Gateways\PaymentGateway $paymentGateway
      *
      * @return void
      */
@@ -43,11 +44,17 @@ class PurchaseProduct implements MakesPurchases
      */
     public function purchase(Product $product, array $details)
     {
-        $payment = $this->charge($product, $details);
+        $payment = $this->charge($product, array_merge([
+            'product' => $product->getCode(),
+        ], $details));
 
         $this->paymentToken()->destroy($details['payment_token']);
 
         $order = $product->placeOrder($payment);
+
+        PurchaseSuccessful::dispatch($order);
+
+        return $order;
     }
 
     /**

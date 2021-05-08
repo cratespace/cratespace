@@ -33,6 +33,8 @@ class FindProduct implements FindsProducts
      * @param string $code
      *
      * @return \App\Contracts\Products
+     *
+     * @throws \App\Exceptions\ProductNotFoundException
      */
     public function find(string $code): Product
     {

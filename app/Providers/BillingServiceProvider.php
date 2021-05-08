@@ -5,12 +5,12 @@ namespace App\Providers;
 use App\Orders\Order;
 use App\Orders\ConfirmationNumber;
 use Illuminate\Support\ServiceProvider;
+use App\Billing\Gateways\PaymentGateway;
 use App\Actions\Products\PurchaseProduct;
 use App\Contracts\Billing\MakesPurchases;
-use App\Billing\PaymentGateways\PaymentGateway;
+use App\Billing\Gateways\StripePaymentGateway;
 use App\Contracts\Orders\Order as OrderContract;
 use Cratespace\Sentinel\Providers\Traits\HasActions;
-use App\Billing\PaymentGateways\StripePaymentGateway;
 
 class BillingServiceProvider extends ServiceProvider
 {

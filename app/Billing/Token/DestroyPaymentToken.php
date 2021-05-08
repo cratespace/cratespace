@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Billing\PaymentToken;
+namespace App\Billing\Token;
 
 class DestroyPaymentToken extends PaymentToken
 {

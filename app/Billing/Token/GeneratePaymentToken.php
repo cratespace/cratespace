@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Billing\PaymentToken;
+namespace App\Billing\Token;
 
 use App\Contracts\Products\Product;
 use Illuminate\Support\Facades\Hash;

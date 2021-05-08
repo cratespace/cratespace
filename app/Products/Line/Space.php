@@ -2,11 +2,11 @@
 
 namespace App\Products\Line;
 
-use Stripe\Order;
 use Carbon\Carbon;
 use App\Support\Money;
 use App\Events\OrderPlaced;
 use App\Models\Space as Model;
+use App\Contracts\Orders\Order;
 use App\Events\ProductReleased;
 use App\Events\ProductReserved;
 use App\Services\Stripe\Customer;
