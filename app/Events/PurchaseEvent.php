@@ -26,4 +26,14 @@ class PurchaseEvent
     {
         $this->order = $order;
     }
+
+    /**
+     * Get the order details.
+     *
+     * @return \App\Contracts\Orders\Order
+     */
+    public function getOrder(): Order
+    {
+        return $this->order;
+    }
 }

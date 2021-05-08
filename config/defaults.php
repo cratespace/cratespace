@@ -15,7 +15,9 @@ return [
             'password' => '$2y$10$E8lDpaJXHVVgGNMQJ43hR.A3TLtgD2JYJXLIiK9HLAlHaVaSLxa0a', // alphaxion77
             'email_verified_at' => now(),
             'remember_token' => Str::random(10),
-            'settings' => [],
+            'settings' => [
+                'notifications' => ['mail', 'database'],
+            ],
             'address' => [
                 'line1' => '4431 Birch Street',
                 'city' => 'Greenwood',
@@ -29,7 +31,9 @@ return [
             'two_factor_recovery_codes' => null,
         ],
 
-        'settings' => [],
+        'settings' => [
+            'notifications' => ['mail', 'database'],
+        ],
 
         'business' => [
             'name' => 'Cratespace, Inc.',
@@ -39,6 +43,10 @@ return [
             'type' => 'standard',
             'business_type' => 'company',
             'mcc' => '6785234',
+        ],
+
+        'customer' => [
+            'service_id' => 'cus_JRk3j80RH7qsOr',
         ],
     ],
 

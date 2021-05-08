@@ -67,7 +67,10 @@ class Space extends Model
      *
      * @var array
      */
-    protected $appends = ['amount'];
+    protected $appends = [
+        'amount',
+        'business',
+    ];
 
     /**
      * Get the route key for the model.
@@ -133,5 +136,15 @@ class Space extends Model
     public function getAmountAttribute(): string
     {
         return Money::format($this->price + $this->tax);
+    }
+
+    /**
+     * Get presentable money format.
+     *
+     * @return string
+     */
+    public function getBusinessAttribute(): string
+    {
+        return $this->owner->business->name;
     }
 }

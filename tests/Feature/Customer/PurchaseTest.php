@@ -38,6 +38,7 @@ class PurchaseTest extends TestCase implements Postable
 
     public function testCustomerCanPurchaseItem()
     {
+        $this->withoutEvents();
         $this->withoutExceptionHandling();
 
         $user = create(User::class, [], 'asCustomer');

@@ -15,6 +15,7 @@ return [
         ],
 
         'stripe' => [
+            'enabled' => false,
             'key' => env('STRIPE_KEY'),
             'secret' => env('STRIPE_SECRET'),
             'account' => env('STRIPE_ACCOUNT'),

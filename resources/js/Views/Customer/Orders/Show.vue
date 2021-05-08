@@ -16,6 +16,6 @@ export default {
         AppLink,
     },
 
-    props: ['payementToken'],
+    props: ['order'],
 };
 </script>

@@ -115,7 +115,7 @@
                                 <div>
                                     <div>
                                         <span class="cursor-pointer text-sm font-semibold">
-                                            <time datetime="2021-03-28">Sun, Mar 28</time>
+                                            <time datetime="2021-03-28">{{ simple(space.departs_at) }}</time>
                                         </span>
                                     </div>
                                 </div>
@@ -129,7 +129,7 @@
                                 <div>
                                     <div>
                                         <span class="cursor-pointer text-sm font-semibold">
-                                            <time datetime="2021-03-28">Sun, Mar 28</time>
+                                            <time datetime="2021-03-28">{{ simple(space.arrives_at) }}</time>
                                         </span>
                                     </div>
                                 </div>

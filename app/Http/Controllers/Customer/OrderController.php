@@ -46,7 +46,9 @@ class OrderController extends Controller
     {
         $product = $this->finder->find($product);
 
-        return Inertia::render('Customer/Orders/Show', [
+        return Inertia::render('Customer/Orders/Create', [
+            'stripeKey' => config('billing.services.stripe.key'),
+            'product' => $product,
             'payementToken' => $generator->generate($product),
         ]);
     }

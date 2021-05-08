@@ -3,6 +3,7 @@
 namespace App\Listeners;
 
 use App\Events\PaymentSuccessful;
+use App\Events\PurchaseSuccessful;
 use App\Actions\Business\MakeNewPayout;
 
 class MakePayout
@@ -29,12 +30,12 @@ class MakePayout
     /**
      * Handle the event.
      *
-     * @param \App\Events\PaymentSuccessful $event
+     * @param \App\Events\PurchaseSuccessful $event
      *
      * @return void
      */
-    public function handle(PaymentSuccessful $event)
+    public function handle(PurchaseSuccessful $event)
     {
-        $this->payoutMaker->make($event->business(), $event->payment);
+        $this->payoutMaker->make($event->business(), $event->payment());
     }
 }

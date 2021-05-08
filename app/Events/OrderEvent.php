@@ -19,7 +19,7 @@ class OrderEvent
      *
      * @var \App\Models\Order
      */
-    protected $order;
+    public $order;
 
     /**
      * Create a new event instance.

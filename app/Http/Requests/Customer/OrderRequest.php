@@ -31,6 +31,7 @@ class OrderRequest extends Request
                 'string',
                 $this->resolve(PaymentTokenRule::class),
             ],
+            'product' => ['required', 'string'],
         ]);
     }
 
