@@ -30,7 +30,7 @@ class SpaceFactory extends Factory
             'height' => rand(1, 9),
             'width' => rand(1, 9),
             'length' => rand(1, 9),
-            'weight' => rand(1, 9),
+            'weight' => rand(10, 90),
             'note' => null,
             'price' => 1000,
             'tax' => 50,

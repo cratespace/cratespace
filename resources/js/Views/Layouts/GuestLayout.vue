@@ -38,9 +38,15 @@
                 </template>
 
                 <template #linksright v-else>
-                    <navbar-link :href="route('home')" :active="route().current('home')" class="text-gray-500 bg-tranparent hover:bg-tranparent focus:bg-tranparent">
+                    <navbar-link v-if="$page.props.user.business" :href="route('home')" :active="route().current('home')" class="text-gray-500 bg-tranparent hover:bg-tranparent focus:bg-tranparent">
                         <span>
                             Dashboard <span class="ml-1">&rarr;</span>
+                        </span>
+                    </navbar-link>
+
+                    <navbar-link v-else href="#" @clicked="logout" class="text-gray-500 bg-tranparent hover:bg-tranparent focus:bg-tranparent">
+                        <span>
+                            Sign out <span class="ml-1">&rarr;</span>
                         </span>
                     </navbar-link>
                 </template>
@@ -86,5 +92,11 @@ export default {
             copyright: `© ${new Date().getFullYear()} ${this.config('app.name')}. All rights reserved.`,
         };
     },
+
+    methods: {
+        logout() {
+            this.$inertia.post(this.route('logout'));
+        }
+    }
 };
 </script>

@@ -54,11 +54,11 @@
                     </div>
 
                     <div class="mt-6 lg:mt-0 md:col-span-6">
-                        <app-input type="tel" v-model="form.registration_number" :error="form.errors.registration_number" label="Registration number" placeholder="07xxxxxxxx"></app-input>
+                        <app-input type="text" v-model="form.registration_number" :error="form.errors.registration_number" label="Registration number" placeholder="12345678"></app-input>
                     </div>
 
                     <div class="mt-6 lg:mt-0 md:col-span-6">
-                        <app-input type="tel" v-model="form.mcc" :error="form.errors.mcc" label="MCC number" placeholder="07xxxxxxxx"></app-input>
+                        <app-input type="text" v-model="form.mcc" :error="form.errors.mcc" label="MCC number" placeholder="4214"></app-input>
                     </div>
                 </div>
 

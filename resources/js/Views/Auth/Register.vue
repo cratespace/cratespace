@@ -7,7 +7,7 @@
         <template #right>
             <div>
                 <div>
-                    <div class="mb-6 block md:hidden">
+                    <div class="mb-6 block lg:hidden">
                         <logo :title="config('app.name')" classes="h-16 w-16 text-blue-500"></logo>
                     </div>
 

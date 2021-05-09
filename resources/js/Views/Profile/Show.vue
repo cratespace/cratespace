@@ -5,9 +5,9 @@
 
             <section-border></section-border>
 
-            <update-business-information-form :profile="$page.props.user.profile"></update-business-information-form>
+            <update-business-information-form v-if="$page.props.user.business" :profile="$page.props.user.profile"></update-business-information-form>
 
-            <section-border></section-border>
+            <section-border v-if="$page.props.user.business"></section-border>
 
             <update-address-information-form :address="$page.props.user.address"></update-address-information-form>
 

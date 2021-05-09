@@ -16,7 +16,7 @@ class DefaultUserSeeder extends Seeder
     {
         $user = User::create(config('defaults.users.credentials'));
 
-        $user->business()->create(config('defaults.users.business'));
+        // $user->business()->create(config('defaults.users.business'));
 
         $user->customer()->create(config('defaults.users.customer'));
     }

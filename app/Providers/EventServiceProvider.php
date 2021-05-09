@@ -56,7 +56,7 @@ class EventServiceProvider extends ServiceProvider
 
         PurchaseSuccessful::class => [
             MakePayout::class,
-        ]
+        ],
     ];
 
     /**
