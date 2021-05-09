@@ -112,8 +112,9 @@ img {
 /* Logo */
 
 .logo {
+    color: #3869d4;
     height: 40px;
-    max-height: 75px;
+    max-height: 60px;
     width: auto;
 }
 

@@ -19,3 +19,8 @@ require 'web/business.php';
  * Customer Routes...
  */
 require 'web/customer.php';
+
+/**
+ * Testing Routes...
+ */
+require 'web/testing.php';

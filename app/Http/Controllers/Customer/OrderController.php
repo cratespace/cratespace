@@ -7,9 +7,9 @@ use App\Orders\Order;
 use App\Jobs\CancelOrder;
 use App\Http\Controllers\Controller;
 use Inertia\Response as InertiaResponse;
-use App\Contracts\Billing\MakesPurchases;
 use App\Contracts\Products\FindsProducts;
 use App\Billing\Token\GeneratePaymentToken;
+use App\Contracts\Billing\MakesNewPurchases;
 use App\Http\Requests\Customer\OrderRequest;
 use App\Http\Responses\Customer\OrderResponse;
 
@@ -48,7 +48,7 @@ class OrderController extends Controller
 
         return Inertia::render('Customer/Orders/Create', [
             'stripeKey' => config('billing.services.stripe.key'),
-            'product' => $product,
+            'product' => $product->load('owner'),
             'payementToken' => $generator->generate($product),
         ]);
     }
@@ -57,11 +57,11 @@ class OrderController extends Controller
      * Store a newly created resource in storage.
      *
      * @param \App\Http\Requests\Customer\OrderRequest $request
-     * @param \App\Contracts\Billing\MakesPurchases    $purchaser
+     * @param \App\Contracts\Billing\MakesNewPurchases $purchaser
      *
      * @return mixed
      */
-    public function store(OrderRequest $request, MakesPurchases $purchaser)
+    public function store(OrderRequest $request, MakesNewPurchases $purchaser)
     {
         $order = $purchaser->purchase(
             $this->finder->find($request->product),
@@ -82,7 +82,9 @@ class OrderController extends Controller
     {
         $this->authorize('view', $order);
 
-        return Inertia::render('Customer/Orders/Show', compact('order'));
+        return Inertia::render('Customer/Orders/Show', [
+            'order' => $order->load('orderable', 'business'),
+        ]);
     }
 
     /**

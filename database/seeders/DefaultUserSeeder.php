@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\User;
 use Illuminate\Database\Seeder;
+use Cratespace\Preflight\Models\Role;
 
 class DefaultUserSeeder extends Seeder
 {
@@ -16,7 +17,12 @@ class DefaultUserSeeder extends Seeder
     {
         $user = User::create(config('defaults.users.credentials'));
 
-        // $user->business()->create(config('defaults.users.business'));
+        $user->assignRole(Role::firstOrCreate([
+            'name' => 'Administrator',
+            'slug' => 'administrator',
+        ]));
+
+        $user->business()->create(config('defaults.users.business'));
 
         $user->customer()->create(config('defaults.users.customer'));
     }

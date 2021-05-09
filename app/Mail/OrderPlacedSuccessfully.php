@@ -13,12 +13,13 @@ class OrderPlacedSuccessfully extends OrderMail
      */
     public function build()
     {
-        return $this->markdown(
-            'emails.customers.orders.order-placed', [
-                'orderUrl' => URL::signedRoute('orders.show', [
-                    'order' => $this->order,
-                ]),
-            ]
-        )->subject(__('Cratespace - Order Placed Successfully'));
+        return $this->from('people@cratesapce.biz')
+            ->markdown(
+                'emails.customers.orders.order-placed', [
+                    'orderUrl' => URL::signedRoute('orders.show', [
+                        'order' => $this->order,
+                    ]),
+                ]
+            )->subject(__('Cratespace - Order Placed Successfully'));
     }
 }

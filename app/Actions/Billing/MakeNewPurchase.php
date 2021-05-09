@@ -1,17 +1,18 @@
 <?php
 
-namespace App\Actions\Products;
+namespace App\Actions\Billing;
 
 use App\Contracts\Billing\Payment;
 use App\Events\PurchaseSuccessful;
 use App\Billing\Token\PaymentToken;
 use App\Contracts\Products\Product;
 use App\Billing\Gateways\PaymentGateway;
-use App\Contracts\Billing\MakesPurchases;
+use App\Contracts\Products\FindsProducts;
 use App\Billing\Token\DestroyPaymentToken;
+use App\Contracts\Billing\MakesNewPurchases;
 use Cratespace\Sentinel\Support\Concerns\InteractsWithContainer;
 
-class PurchaseProduct implements MakesPurchases
+class MakeNewPurchase implements MakesNewPurchases
 {
     use InteractsWithContainer;
 
@@ -35,15 +36,19 @@ class PurchaseProduct implements MakesPurchases
     }
 
     /**
-     * Makes a purchase.
+     * Makes a new purchase.
      *
-     * @param \App\Contracts\Products\Product $product
-     * @param array                           $details
+     * @param \App\Contracts\Products\Product|string $product
+     * @param array                                  $details
      *
      * @return mixed
      */
-    public function purchase(Product $product, array $details)
+    public function purchase($product, array $details)
     {
+        if (is_string($product)) {
+            $product = $this->resolve(FindsProducts::class)->find($product);
+        }
+
         $payment = $this->charge($product, array_merge([
             'product' => $product->getCode(),
         ], $details));

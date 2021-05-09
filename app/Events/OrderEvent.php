@@ -3,7 +3,8 @@
 namespace App\Events;
 
 use App\Models\User;
-use App\Models\Order;
+use App\Contracts\Orders\Order;
+use App\Contracts\Billing\Payment;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Broadcasting\InteractsWithSockets;
@@ -17,14 +18,14 @@ class OrderEvent
     /**
      * Te order instance.
      *
-     * @var \App\Models\Order
+     * @var \App\Contracts\Orders\Order
      */
     public $order;
 
     /**
      * Create a new event instance.
      *
-     * @param \App\Models\Order
+     * @param \App\Contracts\Orders\Order
      *
      * @return void
      */
@@ -51,5 +52,15 @@ class OrderEvent
     public function customer(): User
     {
         return $this->order->customer;
+    }
+
+    /**
+     * Get the payment details that was made.
+     *
+     * @return \App\Contracts\Billing\Payment
+     */
+    public function payment(): Payment
+    {
+        return $this->order->payment;
     }
 }

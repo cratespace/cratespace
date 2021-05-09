@@ -5,9 +5,9 @@ namespace App\Providers;
 use App\Orders\Order;
 use App\Orders\ConfirmationNumber;
 use Illuminate\Support\ServiceProvider;
+use App\Actions\Billing\MakeNewPurchase;
 use App\Billing\Gateways\PaymentGateway;
-use App\Actions\Products\PurchaseProduct;
-use App\Contracts\Billing\MakesPurchases;
+use App\Contracts\Billing\MakesNewPurchases;
 use App\Contracts\Orders\Order as OrderContract;
 use Cratespace\Sentinel\Providers\Traits\HasActions;
 
@@ -21,7 +21,7 @@ class BillingServiceProvider extends ServiceProvider
      * @var array
      */
     protected $actions = [
-        MakesPurchases::class => PurchaseProduct::class,
+        MakesNewPurchases::class => MakeNewPurchase::class,
     ];
 
     /**
