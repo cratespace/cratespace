@@ -18525,11 +18525,6 @@ __webpack_require__.r(__webpack_exports__);
     return {
       copyright: "\xA9 ".concat(new Date().getFullYear(), " ").concat(this.config('app.name'), ". All rights reserved.")
     };
-  },
-  methods: {
-    logout: function logout() {
-      this.$inertia.post(this.route('logout'));
-    }
   }
 });
 
@@ -23302,12 +23297,12 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       /* PROPS */
       , ["href", "active"])) : ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(_component_navbar_link, {
         key: 1,
-        href: "#",
-        onClicked: $options.logout,
+        href: _ctx.route('user.show'),
+        active: _ctx.route().current('user.show'),
         "class": "text-gray-500 bg-tranparent hover:bg-tranparent focus:bg-tranparent"
       }, {
         "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
-          return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("span", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Sign out "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("span", {
+          return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("span", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Profile "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("span", {
             "class": "ml-1"
           }, "→")])];
         }),
@@ -23316,7 +23311,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
 
       }, 8
       /* PROPS */
-      , ["onClicked"]))];
+      , ["href", "active"]))];
     })
   }]), 1024
   /* DYNAMIC_SLOTS */

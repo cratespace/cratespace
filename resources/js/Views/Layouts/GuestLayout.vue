@@ -44,9 +44,9 @@
                         </span>
                     </navbar-link>
 
-                    <navbar-link v-else href="#" @clicked="logout" class="text-gray-500 bg-tranparent hover:bg-tranparent focus:bg-tranparent">
+                    <navbar-link v-else :href="route('user.show')" :active="route().current('user.show')" class="text-gray-500 bg-tranparent hover:bg-tranparent focus:bg-tranparent">
                         <span>
-                            Sign out <span class="ml-1">&rarr;</span>
+                            Profile <span class="ml-1">&rarr;</span>
                         </span>
                     </navbar-link>
                 </template>
@@ -92,11 +92,5 @@ export default {
             copyright: `© ${new Date().getFullYear()} ${this.config('app.name')}. All rights reserved.`,
         };
     },
-
-    methods: {
-        logout() {
-            this.$inertia.post(this.route('logout'));
-        }
-    }
 };
 </script>
