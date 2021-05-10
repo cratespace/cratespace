@@ -1,4 +1,4 @@
-name: Cratespace Tests CI
+name: Tests CI
 
 on:
   push:
