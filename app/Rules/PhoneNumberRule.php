@@ -11,7 +11,7 @@ class PhoneNumberRule extends RegexRule implements Rule
      *
      * @var string
      */
-    protected static $pattern = '/(07)[0-9]{8}/';
+    protected static $pattern = '/(0)([1-9]{1})([0-9]{8})/';
 
     /**
      * Determine if the validation rule passes.
@@ -33,6 +33,6 @@ class PhoneNumberRule extends RegexRule implements Rule
      */
     public function message()
     {
-        return 'The validation error message.';
+        return 'Phone number should match this pattern 07xxxxxxxx.';
     }
 }

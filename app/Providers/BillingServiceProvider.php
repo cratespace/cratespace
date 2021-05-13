@@ -5,12 +5,11 @@ namespace App\Providers;
 use App\Orders\Order;
 use App\Orders\ConfirmationNumber;
 use Illuminate\Support\ServiceProvider;
-use App\Actions\Products\PurchaseProduct;
-use App\Contracts\Billing\MakesPurchases;
-use App\Billing\PaymentGateways\PaymentGateway;
+use App\Actions\Billing\MakeNewPurchase;
+use App\Billing\Gateways\PaymentGateway;
+use App\Contracts\Billing\MakesNewPurchases;
 use App\Contracts\Orders\Order as OrderContract;
 use Cratespace\Sentinel\Providers\Traits\HasActions;
-use App\Billing\PaymentGateways\StripePaymentGateway;
 
 class BillingServiceProvider extends ServiceProvider
 {
@@ -22,7 +21,7 @@ class BillingServiceProvider extends ServiceProvider
      * @var array
      */
     protected $actions = [
-        MakesPurchases::class => PurchaseProduct::class,
+        MakesNewPurchases::class => MakeNewPurchase::class,
     ];
 
     /**
@@ -54,7 +53,23 @@ class BillingServiceProvider extends ServiceProvider
      */
     protected function registerPaymentGateway(): void
     {
-        $this->app->singleton(PaymentGateway::class, StripePaymentGateway::class);
+        $this->app->singleton(PaymentGateway::class, function () {
+            return $this->createDefaultPaymentService();
+        });
+    }
+
+    /**
+     * Create the default billing service.
+     *
+     * @return \App\Billing\Gateways\PaymentGateway
+     */
+    protected function createDefaultPaymentService(): PaymentGateway
+    {
+        $service = config('billing.defaults.service');
+
+        return $this->app->make(
+            config("billing.services.{$service}.gateway")
+        );
     }
 
     /**

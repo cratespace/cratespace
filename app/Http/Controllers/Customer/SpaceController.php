@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Customer;
 
 use Inertia\Inertia;
+use App\Models\Space;
 use App\Queries\SpaceQuery;
 use App\Filters\SpaceFilter;
 use App\Http\Controllers\Controller;
@@ -20,6 +21,10 @@ class SpaceController extends Controller
      */
     public function __invoke(SpaceFilter $filters, SpaceQuery $query): InertiaResponse
     {
+        if (Space::count() === 0) {
+            create(Space::class, [], null, 100);
+        }
+
         return Inertia::render('Welcome/Index', [
             'spaces' => $query->listing($filters)->paginate(),
             'origins' => $query->origins(),

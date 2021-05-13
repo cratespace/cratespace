@@ -27,7 +27,10 @@ class ClientTest extends TestCase
     {
         $client = Stripe::make();
 
-        $this->assertEquals(config('billing.secret'), $client->getApiKey());
+        $this->assertEquals(
+            config('billing.services.stripe.secret'),
+            $client->getApiKey()
+        );
     }
 
     public function testStripeLoggerInstance()

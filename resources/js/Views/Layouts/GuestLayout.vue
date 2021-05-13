@@ -38,9 +38,15 @@
                 </template>
 
                 <template #linksright v-else>
-                    <navbar-link :href="route('home')" :active="route().current('home')" class="text-gray-500 bg-tranparent hover:bg-tranparent focus:bg-tranparent">
+                    <navbar-link v-if="$page.props.user.business" :href="route('home')" :active="route().current('home')" class="text-gray-500 bg-tranparent hover:bg-tranparent focus:bg-tranparent">
                         <span>
                             Dashboard <span class="ml-1">&rarr;</span>
+                        </span>
+                    </navbar-link>
+
+                    <navbar-link v-else :href="route('user.show')" :active="route().current('user.show')" class="text-gray-500 bg-tranparent hover:bg-tranparent focus:bg-tranparent">
+                        <span>
+                            Profile <span class="ml-1">&rarr;</span>
                         </span>
                     </navbar-link>
                 </template>

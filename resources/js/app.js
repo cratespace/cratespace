@@ -6,7 +6,7 @@ import {
     plugin as InertiaPlugin,
 } from '@inertiajs/inertia-vue3';
 
-import diffForHumans from './Plugins/moment';
+import { diffForHumans, simple, expanded } from './Plugins/moment';
 import { InertiaProgress } from '@inertiajs/progress';
 
 axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
@@ -16,7 +16,7 @@ const app = document.getElementById('app');
 createApp({
     metaInfo: {
         titleTemplate: (title) =>
-            title ? `${title} - Preflight` : 'Preflight',
+            title ? `${title} - Cratespace` : 'Cratespace',
     },
 
     render: () =>
@@ -25,7 +25,15 @@ createApp({
             resolveComponent: (name) => require(`./Views/${name}`).default,
         }),
 })
-    .mixin({ methods: { route, config, diffForHumans } })
+    .mixin({
+        methods: {
+            route,
+            config,
+            diffForHumans,
+            simple,
+            expanded
+        }
+    })
     .use(InertiaPlugin)
     .mount(app);
 

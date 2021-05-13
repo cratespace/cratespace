@@ -3,9 +3,9 @@
 namespace App\Http\Controllers\Business;
 
 use Inertia\Inertia;
-use App\Models\Space;
 use App\Queries\SpaceQuery;
 use App\Filters\SpaceFilter;
+use App\Products\Line\Space;
 use App\Http\Controllers\Controller;
 use App\Actions\Business\CreateNewSpace;
 use Inertia\Response as InertiaResponse;
@@ -61,7 +61,7 @@ class SpaceController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param \App\Models\Space $space
+     * @param \App\Products\Line\Space $space
      *
      * @return \Inertia\Response
      */
@@ -75,7 +75,7 @@ class SpaceController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param \App\Models\Space $space
+     * @param \App\Products\Line\Space $space
      *
      * @return \Inertia\Response
      */
@@ -90,7 +90,7 @@ class SpaceController extends Controller
      * Update the specified resource in storage.
      *
      * @param \App\Http\Requests\Business\SpaceRequest $request
-     * @param \App\Models\Space                        $space
+     * @param \App\Products\Line\Space                 $space
      *
      * @return mixed
      */
@@ -104,12 +104,14 @@ class SpaceController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param \App\Models\Space $space
+     * @param \App\Products\Line\Space $space
      *
      * @return mixed
      */
     public function destroy(Space $space)
     {
+        $this->authorize('destroy', $space);
+
         $space->delete();
 
         return SpaceResponse::dispatch();

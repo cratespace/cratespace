@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Models\Casts\PaymentCast;
 use Illuminate\Database\Eloquent\Model;
+use Cratespace\Preflight\Models\Traits\Hashable;
 use Cratespace\Preflight\Models\Traits\Filterable;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -13,6 +14,7 @@ class Order extends Model
 {
     use HasFactory;
     use Filterable;
+    use Hashable;
 
     /**
      * The attributes that are mass assignable.
@@ -20,7 +22,7 @@ class Order extends Model
      * @var string[]
      */
     protected $fillable = [
-        'uid',
+        'code',
         'user_id',
         'customer_id',
         'confirmation_number',
@@ -47,7 +49,7 @@ class Order extends Model
      */
     public function getRouteKeyName(): string
     {
-        return 'uid';
+        return 'code';
     }
 
     /**

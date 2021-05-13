@@ -178,6 +178,7 @@ return [
         App\Providers\IpinfoServiceProvider::class,
         App\Providers\InventoryServiceProvider::class,
         App\Providers\BillingServiceProvider::class,
+        App\Providers\DocumentServiceProvider::class,
     ],
 
     /*

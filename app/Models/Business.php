@@ -27,7 +27,7 @@ class Business extends Model
         'country',
         'business_type',
         'profile_photo_path',
-        'business_profile',
+        'mcc',
     ];
 
     /**

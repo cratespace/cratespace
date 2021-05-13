@@ -4,12 +4,32 @@
         <header>
             <navbar class="bg-blue-800">
                 <template #logo>
-                    <logo classes="h-8 w-auto text-blue-500" :title="config('app.name')"></logo>
+                    <logo classes="h-8 w-8 text-white" :title="config('app.name')"></logo>
                 </template>
 
                 <template #linksleft>
                     <navbar-link :href="route('home')" :active="route().current('home')" class="text-white bg-blue-900 hover:bg-blue-900 focus:bg-blue-900">
                         Home
+                    </navbar-link>
+
+                    <navbar-link :href="route('orders.index')" :active="route().current('orders.index')" class="text-white bg-blue-900 hover:bg-blue-900 focus:bg-blue-900">
+                        Orders
+                    </navbar-link>
+
+                    <navbar-link :href="route('spaces.index')" :active="route().current('spaces.index')" class="text-white bg-blue-900 hover:bg-blue-900 focus:bg-blue-900">
+                        Spaces
+                    </navbar-link>
+
+                    <navbar-link href="/customers" :active="false" class="text-white bg-blue-900 hover:bg-blue-900 focus:bg-blue-900">
+                        Customers
+                    </navbar-link>
+
+                    <navbar-link href="/reports" :active="false" class="text-white bg-blue-900 hover:bg-blue-900 focus:bg-blue-900">
+                        Reports
+                    </navbar-link>
+
+                    <navbar-link href="/support" :active="false" class="text-white bg-blue-900 hover:bg-blue-900 focus:bg-blue-900">
+                        Support
                     </navbar-link>
                 </template>
 

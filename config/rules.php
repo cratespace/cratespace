@@ -46,12 +46,11 @@ return [
     'business' => [
         'registration_number' => [
             'required',
-            'string',
             'max:255',
             'unique:businesses,registration_number',
         ],
         'mcc' => [
-            'required',
+            'nullable',
             'string',
             'max:255',
             'unique:businesses,mcc',
@@ -134,7 +133,7 @@ return [
         'name' => ['required', 'string', 'max:255'],
         'email' => ['required', 'string', 'email'],
         'phone' => ['sometimes', 'string', new PhoneNumberRule()],
-        'business' => ['sometimes', 'string', 'max:255'],
+        'business' => ['nullable', 'string', 'max:255'],
         'payment_method' => ['required', 'string'],
         'customer' => ['required', 'string'],
     ],

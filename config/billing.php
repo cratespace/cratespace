@@ -1,102 +1,45 @@
 <?php
 
+use App\Billing\Gateways\FakePaymentGateway;
+use App\Billing\Gateways\StripePaymentGateway;
+
 return [
-    /*
-    |--------------------------------------------------------------------------
-    | Stripe Keys
-    |--------------------------------------------------------------------------
-    |
-    | The Stripe publishable key and secret key give you access to Stripe's
-    | API. The "publishable" key is typically used when interacting with
-    | Stripe.js while the "secret" key accesses private API endpoints.
-    |
-    */
+    'defaults' => [
+        'service' => 'stripe',
+    ],
 
-    'enable' => false,
+    'services' => [
+        'fake' => [
+            'key' => env('APP_KEY'),
+            'gateway' => FakePaymentGateway::class,
+        ],
 
-    'key' => env('STRIPE_KEY'),
+        'stripe' => [
+            'enabled' => false,
+            'key' => env('STRIPE_KEY'),
+            'secret' => env('STRIPE_SECRET'),
+            'account' => env('STRIPE_ACCOUNT'),
+            'client_id' => env('STRIPE_CLIENT_ID'),
+            'logger' => env('BILLING_LOGGER'),
+            'gateway' => StripePaymentGateway::class,
+        ],
 
-    'secret' => env('STRIPE_SECRET'),
+        'paddle' => [
+            'vendor_id' => env('PADDLE_VENDOR_ID'),
+            'vendor_auth_code' => env('PADDLE_VENDOR_AUTH_CODE'),
+            'public_key' => env('PADDLE_PUBLIC_KEY'),
+        ],
 
-    'account' => env('STRIPE_ACCOUNT'),
-
-    'client_id' => env('STRIPE_CLIENT_ID'),
-
-    /*
-    |--------------------------------------------------------------------------
-    | Currency
-    |--------------------------------------------------------------------------
-    |
-    | This is the default currency that will be used when generating charges
-    | from your application. Of course, you are welcome to use any of the
-    | various world currencies that are currently supported via Stripe.
-    |
-    */
+        'mollie' => [],
+    ],
 
     'currency' => env('BILLING_CURRENCY', 'usd'),
 
-    /*
-    |--------------------------------------------------------------------------
-    | Currency Locale
-    |--------------------------------------------------------------------------
-    |
-    | This is the default locale in which your money values are formatted in
-    | for display. To utilize other locales besides the default en locale
-    | verify you have the "intl" PHP extension installed on the system.
-    |
-    */
-
     'currency_locale' => env('BILLING_CURRENCY_LOCALE', 'en'),
-
-    /*
-    |--------------------------------------------------------------------------
-    | Invoice Paper Size
-    |--------------------------------------------------------------------------
-    |
-    | This option is the default paper size for all invoices generated using
-    | Cashier. You are free to customize this settings based on the usual
-    | paper size used by the customers using your Laravel applications.
-    |
-    | Supported sizes: 'letter', 'legal', 'A4'
-    |
-    */
 
     'paper' => env('BILLING_PAPER', 'letter'),
 
-    /*
-    |--------------------------------------------------------------------------
-    | Stripe Logger
-    |--------------------------------------------------------------------------
-    |
-    | This setting defines which logging channel will be used by the Stripe
-    | library to write log messages. You are free to specify any of your
-    | logging channels listed inside the "logging" configuration file.
-    |
-    */
-
-    'logger' => env('BILLING_LOGGER'),
-
-    /*
-    |--------------------------------------------------------------------------
-    | Service Charge
-    |--------------------------------------------------------------------------
-    |
-    | This amount is by how much a percentage of the sales will be deducted
-    | from the business as charge for service provided by Cratespace.
-    |
-    */
-
-    'service' => 0.03, // 3%
-
-    /*
-    |--------------------------------------------------------------------------
-    | Service Charge
-    |--------------------------------------------------------------------------
-    |
-    | This amount is by how much a percentage of the sales will be deducted
-    | from the business as charge for service provided by Cratespace.
-    |
-    */
+    'service_charge' => 0.03, // 3%
 
     'key_words' => [
         'price',

@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Orders\Order;
+use App\Products\Line\Space;
 use Illuminate\Http\Request;
 use App\Contracts\Products\Finder;
 use Illuminate\Support\Facades\Route;

@@ -18,7 +18,7 @@ class DestinationCast implements CastsAttributes
      */
     public function get($model, $key, $value, $attributes)
     {
-        [$city, $country] = explode(',', trim(preg_replace('/\s+/', '', $value)));
+        [$city, $country] = explode(',', $value);
 
         return (object) compact('city', 'country');
     }

@@ -2,7 +2,7 @@
 
 namespace App\Contracts\Products;
 
-use Stripe\Order;
+use App\Contracts\Orders\Order;
 use App\Contracts\Billing\Payable;
 use App\Contracts\Billing\Payment;
 
@@ -76,4 +76,13 @@ interface Product extends Payable
      * @return \App\Contracts\Products\Product|bool
      */
     public function match(string $code);
+
+    /**
+     * Determine if the product is a valid product instance.
+     *
+     * @return void
+     *
+     * @throws \App\Exceptions\ProductNotFoundException
+     */
+    public function validate(): void;
 }

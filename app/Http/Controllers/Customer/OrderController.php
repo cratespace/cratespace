@@ -5,36 +5,70 @@ namespace App\Http\Controllers\Customer;
 use Inertia\Inertia;
 use App\Orders\Order;
 use App\Jobs\CancelOrder;
-use App\Contracts\Products\Product;
 use App\Http\Controllers\Controller;
-use App\Contracts\Billing\MakesPurchases;
+use Inertia\Response as InertiaResponse;
+use App\Contracts\Products\FindsProducts;
+use App\Billing\Token\GeneratePaymentToken;
+use App\Contracts\Billing\MakesNewPurchases;
 use App\Http\Requests\Customer\OrderRequest;
 use App\Http\Responses\Customer\OrderResponse;
+use App\Http\Requests\Customer\CancelOrderRequest;
+use App\Http\Responses\Customer\CancelOrderResponse;
 
 class OrderController extends Controller
 {
     /**
+     * The product finder cation class instance.
+     *
+     * @var \App\Contracts\Products\FindsProducts
+     */
+    protected $finder;
+
+    /**
+     * Create new customer OrderController instance.
+     *
+     * @param \App\Contracts\Products\FindsProducts $finder
+     *
+     * @return void
+     */
+    public function __construct(FindsProducts $finder)
+    {
+        $this->finder = $finder;
+    }
+
+    /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response
+     * @param \App\Billing\Tokens\GeneratePaymentToken $generator
+     * @param string                                   $product
+     *
+     * @return \Inertia\Response
      */
-    public function create()
+    public function create(GeneratePaymentToken $generator, string $product): InertiaResponse
     {
-        return Inertia::render('Customer/Checkout/Show');
+        $product = $this->finder->find($product);
+
+        return Inertia::render('Customer/Orders/Create', [
+            'stripeKey' => config('billing.services.stripe.key'),
+            'product' => $product->load('owner'),
+            'payementToken' => $generator->generate($product),
+        ]);
     }
 
     /**
      * Store a newly created resource in storage.
      *
      * @param \App\Http\Requests\Customer\OrderRequest $request
-     * @param \App\Contracts\Products\Product          $product
-     * @param \App\Contracts\Billing\MakesPurchases    $purchaser
+     * @param \App\Contracts\Billing\MakesNewPurchases $purchaser
      *
      * @return mixed
      */
-    public function store(OrderRequest $request, Product $product, MakesPurchases $purchaser)
+    public function store(OrderRequest $request, MakesNewPurchases $purchaser)
     {
-        $order = $purchaser->purchase($product, $request->validated());
+        $order = $purchaser->purchase(
+            $this->finder->find($request->product),
+            $request->validated()
+        );
 
         return OrderResponse::dispatch($order);
     }
@@ -50,22 +84,27 @@ class OrderController extends Controller
     {
         $this->authorize('view', $order);
 
-        return Inertia::render('Customer/Orders/Show', compact('order'));
+        return Inertia::render('Customer/Orders/Show', [
+            'order' => $order->load('orderable', 'business'),
+        ]);
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param \App\Orders\Order $order
+     * @param \App\Http\Requests\Customer\CancelOrderRequest $request
+     * @param \App\Orders\Order                              $order
      *
-     * @return \Illuminate\Http\Response
+     * @return mixed
      */
-    public function destroy(Order $order)
+    public function destroy(CancelOrderRequest $request, Order $order)
     {
-        $this->authorize('destroy', $order);
+        $request->tap(function ($request) use ($order) {
+            $request->user()->is($order->customer);
+        });
 
         CancelOrder::dispatch($order);
 
-        return OrderResponse::dispath();
+        return CancelOrderResponse::dispatch();
     }
 }

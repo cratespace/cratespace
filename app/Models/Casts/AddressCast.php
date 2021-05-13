@@ -2,7 +2,6 @@
 
 namespace App\Models\Casts;
 
-use App\Models\Values\Address;
 use Illuminate\Contracts\Database\Eloquent\CastsAttributes;
 
 class AddressCast implements CastsAttributes
@@ -19,7 +18,7 @@ class AddressCast implements CastsAttributes
      */
     public function get($model, $key, $value, $attributes)
     {
-        return new Address(json_decode($value, true));
+        return (object) json_decode($value, true);
     }
 
     /**

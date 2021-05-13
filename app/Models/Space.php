@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use LogicException;
+use App\Support\Money;
 use App\Models\Traits\Orderable;
 use App\Models\Casts\ScheduleCast;
 use App\Models\Casts\DestinationCast;
@@ -62,6 +63,16 @@ class Space extends Model
     ];
 
     /**
+     * The accessors to append to the model's array form.
+     *
+     * @var array
+     */
+    protected $appends = [
+        'amount',
+        'business',
+    ];
+
+    /**
      * Get the route key for the model.
      *
      * @return string
@@ -115,5 +126,25 @@ class Space extends Model
     public function path(): string
     {
         return route('spaces.show', $this);
+    }
+
+    /**
+     * Get presentable money format.
+     *
+     * @return string
+     */
+    public function getAmountAttribute(): string
+    {
+        return Money::format($this->price + $this->tax);
+    }
+
+    /**
+     * Get presentable money format.
+     *
+     * @return string
+     */
+    public function getBusinessAttribute(): string
+    {
+        return $this->owner->business->name;
     }
 }

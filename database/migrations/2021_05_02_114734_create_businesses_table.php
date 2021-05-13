@@ -22,7 +22,7 @@ class CreateBusinessesTable extends Migration
             $table->string('registration_number')->unique();
             $table->string('type')->default('standard');
             $table->string('business_type')->default('company');
-            $table->json('business_profile')->nullable();
+            $table->string('mcc')->nullable();
             $table->foreignId('user_id')
                 ->constrained('users', 'id')
                 ->onUpdate('cascade')

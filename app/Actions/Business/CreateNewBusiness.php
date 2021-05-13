@@ -28,13 +28,7 @@ class CreateNewBusiness implements CreatesNewResource
                 'email' => $data['email'],
                 'phone' => $data['phone'],
                 'registration_number' => $data['registration_number'],
-                'business_profile' => [
-                    'name' => $data['business'],
-                    'mcc' => $data['mcc'] ?? null,
-                    'support_phone' => $data['phone'],
-                    'support_email' => $data['email'],
-                    'url' => $data['url'] ?? null,
-                ],
+                'mcc' => $data['mcc'] ?? null,
             ]));
 
             $user->assignRole('Business');

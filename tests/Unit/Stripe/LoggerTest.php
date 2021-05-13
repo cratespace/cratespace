@@ -54,7 +54,7 @@ class LoggerTest extends TestCase
                 ->andReturn($channel);
         });
 
-        config(['billing.logger' => 'default']);
+        config(['billing.services.stripe.logger' => 'default']);
 
         $logger = $this->app->make(StripeLoggerInterface::class);
 
@@ -74,7 +74,7 @@ class LoggerTest extends TestCase
         $this->assertInstanceOf(
             Logger::class,
             $logger,
-            'Failed asserting that Stripe uses the Cashier logger.'
+            'Failed asserting that Stripe uses the native logger.'
         );
     }
 }

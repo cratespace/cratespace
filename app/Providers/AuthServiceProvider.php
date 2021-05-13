@@ -3,10 +3,10 @@
 namespace App\Providers;
 
 use App\Models\User;
-use App\Models\Order;
-use App\Models\Space;
+use App\Orders\Order;
 use App\Models\Invitation;
 use App\Policies\UserPolicy;
+use App\Products\Line\Space;
 use App\Policies\OrderPolicy;
 use App\Policies\SpacePolicy;
 use App\Policies\InvitationPolicy;

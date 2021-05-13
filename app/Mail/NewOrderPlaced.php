@@ -13,12 +13,13 @@ class NewOrderPlaced extends OrderMail
      */
     public function build()
     {
-        return $this->markdown(
-            'emails.businesses.orders.new-order', [
-                'orderUrl' => URL::signedRoute('orders.show', [
-                    'order' => $this->order,
-                ]),
-            ]
-        )->subject(__('Cratespace - New Order Placed'));
+        return $this->from('people@cratesapce.biz')
+            ->markdown(
+                'emails.businesses.orders.new-order', [
+                    'orderUrl' => URL::signedRoute('spaces.show', [
+                        'space' => $this->order->orderable,
+                    ]),
+                ]
+            )->subject(__('Cratespace - New Order Placed'));
     }
 }

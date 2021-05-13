@@ -43,6 +43,10 @@
                                                         <option value="Trincomalee">Trincomalee</option>
                                                     </select>
                                                 </div>
+
+                                                <div>
+                                                    <span class="text-gray-400 text-sm">Sri Lanka</span>
+                                                </div>
                                             </div>
                                         </div>
                                     </label>
@@ -59,14 +63,18 @@
                                                         {{ destination }}
                                                     </span>
                                                 </div>
+
+                                                <select name="destination" v-model="destination" class="cursor-pointer absolute w-full inset-0 border-none opacity-0">
+                                                    <option value="Colombo">Colombo</option>
+                                                    <option value="Jaffna">Jaffna</option>
+                                                    <option value="Trincomalee">Trincomalee</option>
+                                                </select>
+                                            </div>
+
+                                            <div>
+                                                <span class="text-gray-400 text-sm">Sri Lanka</span>
                                             </div>
                                         </div>
-
-                                        <select name="destination" v-model="destination" class="cursor-pointer absolute w-full inset-0 border-none opacity-0">
-                                            <option value="Colombo">Colombo</option>
-                                            <option value="Jaffna">Jaffna</option>
-                                            <option value="Trincomalee">Trincomalee</option>
-                                        </select>
                                     </label>
                                 </div>
 

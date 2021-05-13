@@ -41,6 +41,16 @@ abstract class PaymentEvent
     }
 
     /**
+     * Get the payment made.
+     *
+     * @return \App\Contracts\Billing\Payment|null
+     */
+    public function payment(): ?Payment
+    {
+        return $this->payment;
+    }
+
+    /**
      * Get the merchant the product belongs to.
      *
      * @return \App\Models\User

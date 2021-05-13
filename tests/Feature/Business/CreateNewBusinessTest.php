@@ -178,14 +178,14 @@ class CreateNewBusinessTest extends TestCase implements Postable
         $response->assertSessionHasErrors('registration_number');
     }
 
-    public function testMCCFieldIsRequired()
+    public function testMCCFieldIsOptional()
     {
         $response = $this->post('/businesses', $this->validParameters([
             'mcc' => '',
         ]));
 
-        $response->assertStatus(302);
-        $response->assertSessionHasErrors('mcc');
+        $response->assertStatus(303);
+        $response->assertSessionHasNoErrors();
     }
 
     /**

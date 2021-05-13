@@ -47,7 +47,7 @@ class StripeServiceProvider extends ServiceProvider
     {
         $this->app->bind(LoggerInterface::class, function ($app) {
             return new Logger(
-                $app->make('log')->channel(config('billing.logger'))
+                $app->make('log')->channel($this->getConfig('logger'))
             );
         });
     }
@@ -59,9 +59,21 @@ class StripeServiceProvider extends ServiceProvider
      */
     protected function registerLogger(): void
     {
-        if (config('billing.logger')) {
+        if ($this->getConfig('logger')) {
             Stripe::setLogger($this->app->make(LoggerInterface::class));
         }
+    }
+
+    /**
+     * Get Stripe service configurations.
+     *
+     * @param string $key
+     *
+     * @return mixed
+     */
+    protected function getConfig(string $key)
+    {
+        return config("billing.services.stripe.{$key}");
     }
 
     /**

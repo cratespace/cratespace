@@ -51,6 +51,6 @@ class CreateNewCustomer implements CreatesNewResource
      */
     protected function stripeEnabled(): bool
     {
-        return app()->isProduction() || config('billing.enabled');
+        return app()->isProduction() || config('billing.services.stripe.enabled');
     }
 }

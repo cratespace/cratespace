@@ -3,6 +3,7 @@
 namespace App\Http\Requests\Business;
 
 use App\Models\User;
+use App\Rules\PhoneNumberRule;
 use Illuminate\Validation\Rule;
 use Cratespace\Sentinel\Http\Requests\Request;
 
@@ -15,7 +16,7 @@ class BusinessRequest extends Request
      */
     public function authorize(): bool
     {
-        return $this->isAllowed('manage', new User(), false);
+        return $this->isAllowed('manage', $this->user(), false);
     }
 
     /**
@@ -25,16 +26,48 @@ class BusinessRequest extends Request
      */
     public function rules(): array
     {
-        return $this->getRulesFor([
-            'register',
-            'business',
-            'address',
-        ], [
-            'type' => [
+        if ($this->method() !== 'PUT') {
+            return $this->getRulesFor([
+                'register',
+                'business',
+                'address',
+            ], [
+                'type' => [
+                    'required',
+                    'string',
+                    Rule::in(['business']),
+                ],
+            ]);
+        }
+
+        return $this->getRulesFor('business', [
+            'name' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'string', 'email'],
+            'phone' => ['sometimes', 'string', new PhoneNumberRule()],
+            'registration_number' => [
                 'required',
-                'string',
-                Rule::in(['business']),
+                'max:255',
+                Rule::unique('businesses', 'registration_number')
+                    ->ignore($this->user()->id, 'user_id'),
+            ],
+            'mcc' => [
+                'nullable',
+                'max:255',
+                Rule::unique('businesses', 'mcc')
+                    ->ignore($this->user()->id, 'user_id'),
             ],
         ]);
+    }
+
+    /**
+     * Prepare the data for validation.
+     *
+     * @return void
+     */
+    protected function prepareForValidation(): void
+    {
+        if ($this->method() === 'PUT') {
+            $this->setErrorBag('updateBusinessInformation');
+        }
     }
 }

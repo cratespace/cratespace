@@ -24,7 +24,7 @@ class OrderController extends Controller
      */
     public function index(OrderFilter $filters, OrderQuery $query): InertiaResponse
     {
-        $this->authorize('manage', Order::class);
+        $this->authorize('viewAny', Order::class);
 
         return Inertia::render('Business/Orders/Index', [
             'orders' => $query->business($filters)->paginate(),

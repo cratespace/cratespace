@@ -30,13 +30,7 @@ class BusinessFactory extends Factory
             'phone' => $this->faker->phoneNumber,
             'registration_number' => rand(10000, 100000),
             'business_type' => 'company',
-            'business_profile' => [
-                'name' => $name,
-                'mcc' => rand(10000, 100000),
-                'support_phone' => $this->faker->phoneNumber,
-                'support_email' => $this->faker->email,
-                'url' => $this->faker->url,
-            ],
+            'mcc' => rand(10000, 100000),
         ];
     }
 }

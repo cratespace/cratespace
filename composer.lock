@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "d30a58aff356ce87180ffda957339d67",
+    "content-hash": "4c311eeb03d5a32c59dfd67d9394e50d",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -242,16 +242,16 @@
         },
         {
             "name": "cratespace/sentinel",
-            "version": "v3.1.1",
+            "version": "v3.1.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cratespace/sentinel.git",
-                "reference": "45a16f58c442e6f912911adce2c2b5f925520b24"
+                "reference": "caf93d35f480939733533c52cb19977f2740d003"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cratespace/sentinel/zipball/45a16f58c442e6f912911adce2c2b5f925520b24",
-                "reference": "45a16f58c442e6f912911adce2c2b5f925520b24",
+                "url": "https://api.github.com/repos/cratespace/sentinel/zipball/caf93d35f480939733533c52cb19977f2740d003",
+                "reference": "caf93d35f480939733533c52cb19977f2740d003",
                 "shasum": ""
             },
             "require": {
@@ -309,7 +309,7 @@
                 "issues": "https://github.com/cratespace/sentinel/issues",
                 "source": "https://github.com/cratespace/sentinel"
             },
-            "time": "2021-05-01T06:27:16+00:00"
+            "time": "2021-05-09T01:28:42+00:00"
         },
         {
             "name": "dasprid/enum",
@@ -1743,16 +1743,16 @@
         },
         {
             "name": "league/commonmark",
-            "version": "1.6.0",
+            "version": "1.6.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/thephpleague/commonmark.git",
-                "reference": "19a9673b833cc37770439097b381d86cd125bfe8"
+                "reference": "2651c497f005de305c7ba3f232cbd87b8c00ee8c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thephpleague/commonmark/zipball/19a9673b833cc37770439097b381d86cd125bfe8",
-                "reference": "19a9673b833cc37770439097b381d86cd125bfe8",
+                "url": "https://api.github.com/repos/thephpleague/commonmark/zipball/2651c497f005de305c7ba3f232cbd87b8c00ee8c",
+                "reference": "2651c497f005de305c7ba3f232cbd87b8c00ee8c",
                 "shasum": ""
             },
             "require": {
@@ -1840,7 +1840,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2021-05-01T19:00:49+00:00"
+            "time": "2021-05-08T16:08:00+00:00"
         },
         {
             "name": "league/flysystem",

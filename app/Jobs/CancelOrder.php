@@ -23,7 +23,7 @@ class CancelOrder implements ShouldQueue
      *
      * @var \App\Contracts\Orders\Order
      */
-    protected $order;
+    public $order;
 
     /**
      * Create a new job instance.
