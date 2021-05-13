@@ -12,6 +12,8 @@ use App\Billing\Token\GeneratePaymentToken;
 use App\Contracts\Billing\MakesNewPurchases;
 use App\Http\Requests\Customer\OrderRequest;
 use App\Http\Responses\Customer\OrderResponse;
+use App\Http\Requests\Customer\CancelOrderRequest;
+use App\Http\Responses\Customer\CancelOrderResponse;
 
 class OrderController extends Controller
 {
@@ -90,16 +92,19 @@ class OrderController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param \App\Orders\Order $order
+     * @param \App\Http\Requests\Customer\CancelOrderRequest $request
+     * @param \App\Orders\Order                              $order
      *
-     * @return \Illuminate\Http\Response
+     * @return mixed
      */
-    public function destroy(Order $order)
+    public function destroy(CancelOrderRequest $request, Order $order)
     {
-        $this->authorize('destroy', $order);
+        $request->tap(function ($request) use ($order) {
+            $request->user()->is($order->customer);
+        });
 
         CancelOrder::dispatch($order);
 
-        return OrderResponse::dispath();
+        return CancelOrderResponse::dispatch();
     }
 }
