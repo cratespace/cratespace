@@ -1,29 +1,16 @@
 {
-    "name": "cratespace/cratespace",
+    "name": "laravel/laravel",
     "type": "project",
-    "description": "A Freight sales platform.",
-    "keywords": [
-        "saas",
-        "freight",
-        "sales",
-        "platform",
-        "cratespace"
-    ],
+    "description": "The Laravel Framework.",
+    "keywords": ["framework", "laravel"],
     "license": "MIT",
     "require": {
-        "php": "^7.4|^8.0",
-        "ext-intl": "*",
-        "cratespace/preflight": "^3.3.4",
-        "cratespace/sentinel": "^2.0.1",
-        "fideloper/proxy": "^4.4",
+        "php": "^7.3|^8.0",
         "fruitcake/laravel-cors": "^2.0",
         "guzzlehttp/guzzle": "^7.0.1",
-        "hashids/hashids": "^4.1",
-        "inertiajs/inertia-laravel": "^0.3.5",
-        "laravel/framework": "^8.12",
-        "laravel/tinker": "^2.5",
-        "moneyphp/money": "^3.3",
-        "tightenco/ziggy": "^1.0"
+        "laravel/framework": "^8.54",
+        "laravel/sanctum": "^2.11",
+        "laravel/tinker": "^2.5"
     },
     "require-dev": {
         "facade/ignition": "^2.5",
@@ -31,17 +18,7 @@
         "laravel/sail": "^1.0.1",
         "mockery/mockery": "^1.4.2",
         "nunomaduro/collision": "^5.0",
-        "phpunit/phpunit": "^9.5"
-    },
-    "config": {
-        "optimize-autoloader": true,
-        "preferred-install": "dist",
-        "sort-packages": true
-    },
-    "extra": {
-        "laravel": {
-            "dont-discover": []
-        }
+        "phpunit/phpunit": "^9.3.3"
     },
     "autoload": {
         "psr-4": {
@@ -55,12 +32,13 @@
             "Tests\\": "tests/"
         }
     },
-    "minimum-stability": "dev",
-    "prefer-stable": true,
     "scripts": {
         "post-autoload-dump": [
             "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
             "@php artisan package:discover --ansi"
+        ],
+        "post-update-cmd": [
+            "@php artisan vendor:publish --tag=laravel-assets --ansi"
         ],
         "post-root-package-install": [
             "@php -r \"file_exists('.env') || copy('.env.example', '.env');\""
@@ -68,5 +46,17 @@
         "post-create-project-cmd": [
             "@php artisan key:generate --ansi"
         ]
-    }
+    },
+    "extra": {
+        "laravel": {
+            "dont-discover": []
+        }
+    },
+    "config": {
+        "optimize-autoloader": true,
+        "preferred-install": "dist",
+        "sort-packages": true
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
 }
