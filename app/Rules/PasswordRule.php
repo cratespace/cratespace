@@ -5,6 +5,7 @@ namespace App\Rules;
 use Illuminate\Contracts\Validation\Rule;
 use Illuminate\Support\Str;
 
+// phpcs:ignoreFile
 class PasswordRule implements Rule
 {
     /**

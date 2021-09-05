@@ -4,8 +4,8 @@ namespace App\Http\Requests;
 
 use App\Http\Requests\Concerns\AuthorizesRequests;
 use App\Http\Requests\Traits\HasCustomValidator;
+use App\Http\Requests\Traits\InputValidationRules;
 use App\Support\Concerns\InteractsWithContainer;
-use Emberfuse\Scorch\Http\Requests\Traits\InputValidationRules;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Traits\Tappable;
 

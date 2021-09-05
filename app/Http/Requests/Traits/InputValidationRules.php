@@ -1,10 +1,9 @@
 <?php
 
-namespace Emberfuse\Scorch\Http\Requests\Traits;
+namespace App\Http\Requests\Traits;
 
+use App\Rules\PasswordRule;
 use Illuminate\Support\Arr;
-use Illuminate\Support\Facades\Config;
-use Emberfuse\Scorch\Rules\PasswordRule;
 
 trait InputValidationRules
 {
@@ -40,7 +39,7 @@ trait InputValidationRules
      */
     public function getRules(string $category): array
     {
-        return Config::get("rules.{$category}", []);
+        return config("rules.{$category}", []);
     }
 
     /**
