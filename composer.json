@@ -1,24 +1,49 @@
 {
-    "name": "laravel/laravel",
+    "name": "cratespace/cratespace",
     "type": "project",
-    "description": "The Laravel Framework.",
-    "keywords": ["framework", "laravel"],
-    "license": "MIT",
+    "description": "A freight space sales platform.",
+    "keywords": [
+        "freight",
+        "space",
+        "sales"
+    ],
+    "license": "proprietary",
+    "support": {
+        "issues": "https://github.com/cratespace/cratespace/issues",
+        "source": "https://github.com/cratespace/cratespace"
+    },
+    "authors": [
+        {
+            "name": "Thavarshan Thayananthajothy",
+            "email": "tjthavarshan@gmail.com"
+        }
+    ],
     "require": {
-        "php": "^7.3|^8.0",
+        "php": "^7.4|^8.0",
+        "ext-intl": "*",
+        "ext-json": "*",
+        "dompdf/dompdf": "^1.0",
         "fruitcake/laravel-cors": "^2.0",
         "guzzlehttp/guzzle": "^7.0.1",
+        "inertiajs/inertia-laravel": "^0.4.4",
+        "ipinfo/ipinfo": "^2.2",
         "laravel/framework": "^8.54",
-        "laravel/sanctum": "^2.11",
-        "laravel/tinker": "^2.5"
+        "laravel/tinker": "^2.5",
+        "league/commonmark": "^2.0",
+        "league/iso3166": "^3.0",
+        "moneyphp/money": "^4.0",
+        "stripe/stripe-php": "^7.95",
+        "symfony/intl": "^5.3",
+        "tightenco/ziggy": "^1.4"
     },
     "require-dev": {
+        "brianium/paratest": "^6.3",
         "facade/ignition": "^2.5",
         "fakerphp/faker": "^1.9.1",
         "laravel/sail": "^1.0.1",
         "mockery/mockery": "^1.4.2",
         "nunomaduro/collision": "^5.0",
-        "phpunit/phpunit": "^9.3.3"
+        "phpunit/phpunit": "^9.5"
     },
     "autoload": {
         "psr-4": {
