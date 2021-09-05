@@ -9,10 +9,10 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        php-versions: ['7.4', '8.0']
-        dependency-stability: [prefer-stable]
+        php: [8.0]
+        stability: [prefer-stable]
 
-    name: PHP ${{ matrix.php-versions }} - ${{ matrix.dependency-stability }}
+    name: PHP ${{ matrix.php }} - ${{ matrix.stability }}
 
     steps:
     - uses: actions/checkout@v2

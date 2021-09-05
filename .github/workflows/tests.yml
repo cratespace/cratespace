@@ -23,7 +23,7 @@ jobs:
     strategy:
       fail-fast: true
       matrix:
-        php: [7.4, 8.0]
+        php: [8.0]
         stability: [prefer-stable]
 
     steps:
@@ -103,7 +103,7 @@ jobs:
     strategy:
       fail-fast: true
       matrix:
-        php: [7.4, 8.0]
+        php: [8.0]
         stability: [prefer-stable]
 
     steps:
