@@ -11,6 +11,8 @@
         "watch-poll": "mix watch -- --watch-options-poll=1000"
     },
     "devDependencies": {
+        "@babel/core": "^7.15.5",
+        "@babel/preset-env": "^7.15.4",
         "@inertiajs/inertia": "^0.10",
         "@inertiajs/inertia-vue3": "^0.5",
         "@inertiajs/progress": "^0.2.6",
@@ -19,8 +21,10 @@
         "@vue/compiler-sfc": "^3.2.8",
         "autoprefixer": "^10.3.4",
         "axios": "^0.21",
+        "babel-jest": "^27.1.0",
         "browser-sync": "^2.27.5",
         "browser-sync-webpack-plugin": "^2.3.0",
+        "jest": "^27.1.0",
         "laravel-mix": "^6.0.29",
         "lodash": "^4.17.21",
         "moment": "^2.29.1",

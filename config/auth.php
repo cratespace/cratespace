@@ -1,7 +1,6 @@
 <?php
 
 return [
-
     /*
     |--------------------------------------------------------------------------
     | Authentication Defaults
@@ -39,6 +38,12 @@ return [
         'web' => [
             'driver' => 'session',
             'provider' => 'users',
+        ],
+
+        'api' => [
+            'driver' => 'token',
+            'provider' => 'users',
+            'hash' => false,
         ],
     ],
 
@@ -108,4 +113,10 @@ return [
 
     'password_timeout' => 10800,
 
+    'home' => '/home',
+
+    'credentials' => [
+        'username' => 'email',
+        'password' => 'password',
+    ],
 ];

@@ -160,7 +160,10 @@ jobs:
           DB_DATABASE: ':memory:'
         run: php artisan test --parallel
 
-      - name: 📚 Upload artifacts
+      - name: 🧪 Run tests
+        run: npm test
+
+      - name: 📦 Upload artifacts
         uses: actions/upload-artifact@master
         if: failure()
         with:
