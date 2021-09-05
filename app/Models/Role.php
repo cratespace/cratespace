@@ -21,7 +21,7 @@ class Role extends Model
     /**
      * Allow role to have given permission.
      *
-     * @param \Emberfuse\Blaze\Models\Permission|string $permission
+     * @param \App\Models\Permission|string $permission
      *
      * @return void
      */
@@ -37,7 +37,7 @@ class Role extends Model
     /**
      * Determine if the role has the given permission.
      *
-     * @param \Emberfuse\Blaze\Models\Permission|string $permission
+     * @param \App\Models\Permission|string $permission
      *
      * @return bool
      */

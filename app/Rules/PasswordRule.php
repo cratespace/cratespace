@@ -143,7 +143,7 @@ class PasswordRule implements Rule
      *
      * @param int $length
      *
-     * @return \Emberfuse\Scorch\Rules\PasswordRule
+     * @return \App\Rules\PasswordRule
      */
     public function length(int $length): PasswordRule
     {
@@ -155,7 +155,7 @@ class PasswordRule implements Rule
     /**
      * Indicate that at least one uppercase character is required.
      *
-     * @return \Emberfuse\Scorch\Rules\PasswordRule
+     * @return \App\Rules\PasswordRule
      */
     public function requireUppercase(): PasswordRule
     {
@@ -167,7 +167,7 @@ class PasswordRule implements Rule
     /**
      * Indicate that at least one numeric digit is required.
      *
-     * @return \Emberfuse\Scorch\Rules\PasswordRule
+     * @return \App\Rules\PasswordRule
      */
     public function requireNumeric(): PasswordRule
     {
@@ -179,7 +179,7 @@ class PasswordRule implements Rule
     /**
      * Indicate that at least one special character is required.
      *
-     * @return \Emberfuse\Scorch\Rules\PasswordRule
+     * @return \App\Rules\PasswordRule
      */
     public function requireSpecialCharacter(): PasswordRule
     {
@@ -193,7 +193,7 @@ class PasswordRule implements Rule
      *
      * @param string $message
      *
-     * @return \Emberfuse\Scorch\Rules\PasswordRule
+     * @return \App\Rules\PasswordRule
      */
     public function withMessage(string $message): PasswordRule
     {
